@@ -1,0 +1,17 @@
+{
+  "entry": ["src/main.tsx"],
+  "extensions": [".ts", ".tsx"],
+  "ignore": [
+    "src/vite-env.d.ts",
+    "**/*.d.ts",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*",
+    "**/__mocks__/**",
+    "**/assets/**"
+  ],
+  "aliases": {
+    "@/*": "src/*"
+  },
+  "tsConfig": "./tsconfig.json"
+}
