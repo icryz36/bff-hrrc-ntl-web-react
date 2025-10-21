@@ -14,7 +14,7 @@ type DataGridPaginationProps = BasePaginationProps &
   };
 
 const DataGridPagination = function BasePagination({ ref, ...props }: DataGridPaginationProps) {
-  const { onRowsPerPageChange, disabled, showFullPagination = false, showAllHref, ...rest } = props;
+  const { onRowsPerPageChange, showFullPagination = false, ...rest } = props;
 
   return (
     <TablePagination

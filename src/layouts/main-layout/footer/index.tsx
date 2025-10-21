@@ -1,5 +1,4 @@
-import { Box, Divider, Link, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 
 const Footer = () => {
   return (
@@ -12,7 +11,7 @@ const Footer = () => {
             columnGap: 2,
             rowGap: 0.5,
             bgcolor: 'background.default',
-            justifyContent: { xs: 'center', sm: 'space-between' },
+            justifyContent: 'center',
             alignItems: 'center',
             height: ({ mixins }) => mixins.footer,
             py: 1,
@@ -33,36 +32,8 @@ const Footer = () => {
           }}
         >
           <Box component="span" whiteSpace="nowrap">
-            Thank you for creating with
-            <Box component="strong" mx={0.5}>
-              Aurora{' '}
-            </Box>
+            © NTL - Recruitment Lead Management System 2025
           </Box>
-
-          <Box component="span" whiteSpace="nowrap">
-            <Box component="span" display={{ xs: 'none', sm: 'inline' }}>
-              |
-            </Box>{' '}
-            {dayjs().year()} ©
-            <Link
-              href="https://themewagon.com/"
-              target="_blank"
-              sx={{ textDecoration: 'none', mx: 0.5 }}
-            >
-              ThemeWagon
-            </Link>
-          </Box>
-        </Typography>
-
-        <Typography
-          variant="caption"
-          component="p"
-          sx={{
-            fontWeight: 'light',
-            color: 'text.secondary',
-          }}
-        >
-          v{import.meta.env.VITE_APP_VERSION}
         </Typography>
       </Stack>
     </>

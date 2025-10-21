@@ -34,7 +34,7 @@ const SlimSidenav = () => {
             },
           ]}
         >
-          {navigationMenuType === 'sidenav' && <Logo showName={false} />}
+          {navigationMenuType === 'sidenav' && <Logo />}
         </Toolbar>
         <Box
           sx={{

@@ -69,7 +69,7 @@ const TopnavSlim = ({ sx }: TopnavSlimProps) => {
             <IconifyIcon icon="material-symbols:menu-rounded" sx={{ fontSize: 20 }} />
           </IconButton>
 
-          <Logo showName={false} sx={{ height: 24, width: 15 }} />
+          <Logo />
         </Box>
 
         <Stack

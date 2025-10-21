@@ -19,7 +19,6 @@ const Topnav = () => {
   } = useSettingsContext();
 
   const { up } = useBreakpoints();
-  const upSm = up('sm');
   const upLg = up('lg');
 
   return (
@@ -69,7 +68,7 @@ const Topnav = () => {
             <IconifyIcon icon="material-symbols:menu-rounded" sx={{ fontSize: 20 }} />
           </IconButton>
 
-          <Logo showName={upSm} />
+          <Logo />
         </Box>
         <Stack
           sx={{
