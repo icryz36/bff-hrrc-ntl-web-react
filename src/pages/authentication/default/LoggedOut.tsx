@@ -1,5 +1,4 @@
 import { Box, Button, Link, Stack, Typography } from '@mui/material';
-import { authPaths } from 'routes/paths';
 
 const LoggedOut = () => {
   return (
@@ -22,7 +21,7 @@ const LoggedOut = () => {
         <Typography sx={{ mb: 6 }}>
           We are sad to see you go away but hey, you can log back in anytime you want!
         </Typography>
-        <Button variant="contained" href={authPaths.login} color="primary" fullWidth>
+        <Button variant="contained" href={'#'} color="primary" fullWidth>
           Log back in
         </Button>
       </Box>

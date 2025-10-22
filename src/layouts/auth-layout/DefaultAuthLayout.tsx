@@ -132,7 +132,7 @@ const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
               <Tab
                 component={Link}
                 underline="none"
-                href={paths.defaultFirebaseLogin}
+                href={'#'}
                 value="firebase"
                 label="Firebase"
                 icon={<FirebaseIcon />}

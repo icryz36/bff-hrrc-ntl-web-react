@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { defaultJwtAuthCredentials } from 'config';
 import { useAuth } from 'providers/AuthProvider';
-import paths, { rootPaths } from 'routes/paths';
+import { rootPaths } from 'routes/paths';
 import { useLoginUser } from 'services/swr/api-hooks/useAuthApi';
 import LoginForm, { LoginFormValues } from 'components/sections/authentications/default/LoginForm';
 
@@ -21,8 +21,8 @@ const Login = () => {
   return (
     <LoginForm
       handleLogin={handleLogin}
-      signUpLink={paths.defaultJwtSignup}
-      forgotPasswordLink={paths.defaultJwtForgotPassword}
+      signUpLink={'#'}
+      forgotPasswordLink={'#'}
       defaultCredential={defaultJwtAuthCredentials}
     />
   );

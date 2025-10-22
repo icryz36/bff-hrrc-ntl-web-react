@@ -1,6 +1,5 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useAuth } from 'providers/AuthProvider';
-import paths from 'routes/paths';
 import { firebaseAuth } from 'services/firebase/firebase';
 import SignupForm, {
   SignupFormValues,
@@ -37,13 +36,7 @@ const Signup = () => {
     }
   };
 
-  return (
-    <SignupForm
-      provider="firebase"
-      handleSignup={handleSignup}
-      loginLink={paths.defaultFirebaseLogin}
-    />
-  );
+  return <SignupForm provider="firebase" handleSignup={handleSignup} loginLink={'#'} />;
 };
 
 export default Signup;

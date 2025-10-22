@@ -1,6 +1,8 @@
 import { Box, Link, typographyClasses } from '@mui/material';
 import { useSettingsContext } from 'providers/SettingsProvider';
 import { rootPaths } from 'routes/paths';
+import NTLLogoH from '../../assets/images/logo/logo-NTL-h.svg';
+import NTLLogo from '../../assets/images/logo/logo-NTL.svg';
 
 const Logo = () => {
   const {
@@ -24,11 +26,7 @@ const Logo = () => {
     >
       <Box
         component={'img'}
-        src={
-          sidenavCollapsed
-            ? 'src/assets/images/logo/logo-NTL-h.svg'
-            : 'src/assets/images/logo/logo-NTL.svg'
-        }
+        src={sidenavCollapsed ? NTLLogoH : NTLLogo}
         alt="Logo"
         sx={{
           width: sidenavCollapsed ? 56 : 172,

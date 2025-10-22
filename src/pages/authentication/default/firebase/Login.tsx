@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { defaultJwtAuthCredentials } from 'config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from 'providers/AuthProvider';
-import paths, { rootPaths } from 'routes/paths';
+import { rootPaths } from 'routes/paths';
 import { firebaseAuth } from 'services/firebase/firebase';
 import LoginForm, { LoginFormValues } from 'components/sections/authentications/default/LoginForm';
 
@@ -39,8 +39,8 @@ const Login = () => {
     <LoginForm
       provider="firebase"
       handleLogin={handleLogin}
-      signUpLink={paths.defaultFirebaseSignup}
-      forgotPasswordLink={paths.defaultFirebaseForgotPassword}
+      signUpLink={'#'}
+      forgotPasswordLink={'#'}
       defaultCredential={defaultJwtAuthCredentials}
     />
   );

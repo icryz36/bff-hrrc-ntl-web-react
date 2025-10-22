@@ -22,7 +22,6 @@ import { useAuth } from 'providers/AuthProvider';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import { useSettingsContext } from 'providers/SettingsProvider';
 import { demoUser } from 'providers/auth-provider/AuthJwtProvider';
-import paths, { authPaths } from 'routes/paths';
 import IconifyIcon from 'components/base/IconifyIcon';
 import StatusAvatar from 'components/base/StatusAvatar';
 
@@ -62,7 +61,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
 
   const handleSignout = () => {
     signout();
-    navigate(paths.defaultLoggedOut);
+    navigate('#');
     handleClose();
   };
 
@@ -210,7 +209,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
               Sign Out
             </ProfileMenuItem>
           ) : (
-            <ProfileMenuItem href={authPaths.login} icon="material-symbols:login-rounded">
+            <ProfileMenuItem href={'#'} icon="material-symbols:login-rounded">
               Sign In
             </ProfileMenuItem>
           )}

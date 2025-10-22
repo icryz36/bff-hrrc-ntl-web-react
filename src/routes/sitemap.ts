@@ -59,7 +59,7 @@ const sitemap: MenuItem[] = [
         pathName: 'Create Job',
         active: true,
         icon: 'formkit:add',
-        path: paths[404],
+        path: paths.createJob,
       },
       {
         name: 'List Job Post',
