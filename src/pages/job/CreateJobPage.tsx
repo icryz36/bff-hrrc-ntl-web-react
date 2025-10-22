@@ -1,6 +1,6 @@
-import { Paper } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import PageHeader from 'components/page-header/page-header';
+import PageContent from 'components/sections/common/PageContent';
 
 const CreateJobPage = () => {
   return (
@@ -9,7 +9,7 @@ const CreateJobPage = () => {
         <PageHeader title="Create Job" />
       </Grid>
       <Grid size={12}>
-        <Paper sx={{ px: { xs: 3, md: 5 }, py: 3 }}>Create Job Form</Paper>
+        <PageContent>Create Job Form</PageContent>
       </Grid>
     </Grid>
   );

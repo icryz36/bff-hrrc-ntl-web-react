@@ -1,7 +1,8 @@
 import { JSX, PropsWithChildren } from 'react';
-import { Paper, Stack, SxProps, Typography } from '@mui/material';
+import { Stack, SxProps, Typography } from '@mui/material';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import PageBreadcrumb from 'components/sections/common/PageBreadcrumb';
+import PageContent from 'components/sections/common/PageContent';
 
 interface PageHeaderProps {
   title: string;
@@ -19,7 +20,7 @@ const PageHeader = ({
   const { down } = useBreakpoints();
   const downLg = down('lg');
   return (
-    <Paper sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
+    <PageContent>
       <Stack
         sx={{
           gap: 2,
@@ -38,7 +39,7 @@ const PageHeader = ({
 
         {actionComponent}
       </Stack>
-    </Paper>
+    </PageContent>
   );
 };
 
