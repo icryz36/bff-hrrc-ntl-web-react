@@ -18,7 +18,6 @@ const TopNavStacked = () => {
   } = useSettingsContext();
 
   const { up } = useBreakpoints();
-  const upSm = up('sm');
   const upMd = up('md');
 
   return (
@@ -59,7 +58,7 @@ const TopNavStacked = () => {
             >
               <IconifyIcon icon="material-symbols:menu-rounded" sx={{ fontSize: 20 }} />
             </IconButton>
-            <Logo showName={upSm} />
+            <Logo />
           </Box>
 
           {upMd && (

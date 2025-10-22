@@ -1,4 +1,4 @@
-import { PaletteOptions, alpha } from '@mui/material/styles';
+import { PaletteOptions } from '@mui/material/styles';
 import { cssVarRgba, generatePaletteChannel } from 'lib/utils';
 import {
   basic,
@@ -97,8 +97,8 @@ const vibrant = {
   buttonHover: cssVarRgba(common.whiteChannel, 0.7),
   textFieldHover: cssVarRgba(common.whiteChannel, 0.7),
   text: {
-    secondary: alpha('#1B150F', 0.76),
-    disabled: alpha('#1B150F', 0.4),
+    secondary: basic.white,
+    disabled: basic.white,
   },
   overlay: cssVarRgba(common.whiteChannel, 0.7),
 };

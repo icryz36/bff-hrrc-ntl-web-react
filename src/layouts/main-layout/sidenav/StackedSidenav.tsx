@@ -90,7 +90,7 @@ const StackedSidenav = () => {
               },
             ]}
           >
-            {navigationMenuType === 'sidenav' && <Logo showName={false} />}
+            {navigationMenuType === 'sidenav' && <Logo />}
           </Toolbar>
           <Box
             sx={{

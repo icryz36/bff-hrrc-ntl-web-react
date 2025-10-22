@@ -13,13 +13,16 @@ import {
 } from '@mui/material';
 import type { SystemStyleObject } from '@mui/system';
 
-const vibrantNav = (_theme: Theme) => ({
-  '& .nav-vibrant': {
-    display: 'flex',
-    zIndex: 1,
-    position: 'relative',
-  },
-});
+const vibrantNav = (_theme: Theme) => {
+  void _theme;
+  return {
+    '& .nav-vibrant': {
+      display: 'flex',
+      zIndex: 1,
+      position: 'relative',
+    },
+  };
+};
 
 export const sidenavVibrantStyle: SystemStyleObject<Theme> = {
   [`& .${drawerClasses.paper}`]: {

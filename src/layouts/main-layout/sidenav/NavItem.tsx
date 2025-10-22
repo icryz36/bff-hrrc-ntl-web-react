@@ -211,7 +211,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
                     lineHeight: 1.3,
-                    color: level === 0 ? 'text.primary' : 'text.secondary',
+                    color: level === 0 ? 'common.white' : 'common.white',
                   },
                 },
                 sidenavCollapsed && {

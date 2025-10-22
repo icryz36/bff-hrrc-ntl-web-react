@@ -1,14 +1,14 @@
-# Getting Started with Aurora
+# Getting Started with NTL
 
-This document will guide you on how to get started with the Aurora theme.
+This document will guide you on how to get started with the NTL theme.
 
 ## Running in Local Environment
 
 This project is scaffolded using Vite.
 
 - Install Node.js if you do not already have it installed on your machine.
-- Open the “Aurora” directory with your cmd or terminal and run “npm i”
-- This command will download all the necessary dependencies for the Aurora theme in the node_modules directory.
+- Open the “NTL” directory with your cmd or terminal and run “npm i”
+- This command will download all the necessary dependencies for the NTL theme in the node_modules directory.
 - Run “npm run dev”. A local web server will start at http://localhost:3000.
 
 ## Creating a Production Build

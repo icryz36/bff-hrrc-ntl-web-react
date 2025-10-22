@@ -26,7 +26,7 @@ export const initialConfig: Config = {
   sidenavType: 'default',
   sidenavCollapsed: false,
   topnavType: 'default',
-  navColor: 'default',
+  navColor: 'vibrant',
   openNavbarDrawer: false,
   drawerWidth: mainDrawerWidth.full,
   locale: 'en-US',

@@ -9,7 +9,6 @@ import IconifyIcon from 'components/base/IconifyIcon';
 import Logo from 'components/common/Logo';
 import VibrantBackground from 'components/common/VibrantBackground';
 import AppbarActionItems from '../common/AppbarActionItems';
-import SearchBox, { SearchBoxButton } from '../common/search-box/SearchBox';
 
 const AppBar = () => {
   const {
@@ -18,7 +17,6 @@ const AppBar = () => {
   } = useSettingsContext();
 
   const { up } = useBreakpoints();
-  const upSm = up('sm');
   const upMd = up('md');
 
   const prevSidenavTypeRef = useRef(sidenavType);
@@ -73,7 +71,7 @@ const AppBar = () => {
           </Button>
 
           <Box>
-            <Logo showName={upSm} />
+            <Logo />
           </Box>
         </Box>
 
@@ -83,16 +81,6 @@ const AppBar = () => {
             flex: 1,
           }}
         >
-          {upMd ? (
-            <SearchBox
-              sx={{
-                width: 1,
-                maxWidth: 420,
-              }}
-            />
-          ) : (
-            <SearchBoxButton />
-          )}
           <AppbarActionItems />
         </Stack>
       </Toolbar>

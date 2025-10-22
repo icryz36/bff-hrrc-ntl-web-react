@@ -10,16 +10,22 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
     disableColumnMenu: true,
     columnHeaderHeight: 48,
     slots: {
-      columnSortedDescendingIcon: ({ onLoad, ...props }) => (
-        <IconifyIcon icon="material-symbols:sort-rounded" {...props} />
-      ),
-      columnSortedAscendingIcon: ({ onLoad, ...props }) => (
-        <IconifyIcon
-          icon="material-symbols:sort-rounded"
-          {...props}
-          sx={{ transform: 'rotateX(180deg)' }}
-        />
-      ),
+      columnSortedDescendingIcon: (props) => {
+        const { onLoad, ...rest } = props as any;
+        void onLoad;
+        return <IconifyIcon icon="material-symbols:sort-rounded" {...rest} />;
+      },
+      columnSortedAscendingIcon: (props) => {
+        const { onLoad, ...rest } = props as any;
+        void onLoad;
+        return (
+          <IconifyIcon
+            icon="material-symbols:sort-rounded"
+            {...rest}
+            sx={{ transform: 'rotateX(180deg)' }}
+          />
+        );
+      },
       basePagination: DataGridPagination,
     },
     slotProps: {
