@@ -133,14 +133,15 @@ const NavItem = ({ item, level }: NavItemProps) => {
             (theme) => ({
               p: theme.spacing('3.5px', 2),
               '&.Mui-selected': {
+                backgroundColor: 'rgba(255, 255, 255, 0.15)',
                 [`& .${listItemTextClasses.primary}`]: {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
                 [`& .${listItemIconClasses.root}`]: {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
                 '& .iconify': {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
               },
             }),
@@ -181,14 +182,15 @@ const NavItem = ({ item, level }: NavItemProps) => {
             },
             {
               '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.15)',
                 [`& .${listItemTextClasses.primary}`]: {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
                 [`& .${listItemIconClasses.root}`]: {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
                 '& .iconify': {
-                  color: 'primary.main',
+                  color: 'common.white',
                 },
               },
             },
