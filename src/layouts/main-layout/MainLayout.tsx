@@ -49,6 +49,8 @@ const MainLayout = ({ children }: PropsWithChildren) => {
     return 'appbar';
   }, [navigationMenuType, topnavType]);
 
+  console.log('MainLayout render', navColor);
+
   return (
     <Box>
       <Box
@@ -89,8 +91,10 @@ const MainLayout = ({ children }: PropsWithChildren) => {
                 [`& .${drawerClasses.paper}`]: {
                   pt: 3,
                   boxSizing: 'border-box',
+
                   width: mainDrawerWidth.full,
                 },
+                bgcolor: 'primary.main',
               },
               navigationMenuType === 'topnav' && {
                 display: { md: 'block', lg: 'none' },

@@ -89,6 +89,7 @@ const ComboLayout = ({ children }: PropsWithChildren) => {
                   pt: 3,
                   boxSizing: 'border-box',
                   width: mainDrawerWidth.full,
+                  bgcolor: 'background.default',
                 },
               },
               navColor === 'vibrant' && sidenavVibrantStyle,

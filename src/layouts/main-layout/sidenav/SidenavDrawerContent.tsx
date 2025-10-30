@@ -38,7 +38,10 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
 
   return (
     <>
-      <Toolbar variant={sidenavAppbarVariant} sx={{ display: 'block', px: { xs: 0 } }}>
+      <Toolbar
+        variant={sidenavAppbarVariant}
+        sx={{ display: 'block', px: { xs: 0 }, bgcolor: 'primary.main' }}
+      >
         <Box
           sx={[
             {
@@ -68,7 +71,7 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
           )}
         </Box>
       </Toolbar>
-      <Box sx={{ flex: 1, overflow: 'hidden' }}>
+      <Box sx={{ flex: 1, overflow: 'hidden', bgcolor: 'primary.main' }}>
         <SidenavSimpleBar>
           <Box
             sx={[
@@ -107,7 +110,7 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
                         disableGutters
                         sx={{
                           textAlign: expanded ? 'left' : 'center',
-                          color: 'text.disabled',
+                          color: 'background.default',
                           typography: 'overline',
                           fontWeight: 700,
                           py: 1,

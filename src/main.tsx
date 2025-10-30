@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router';
+import '@fontsource/noto-sans-thai/300.css';
+import '@fontsource/noto-sans-thai/400.css';
+import '@fontsource/noto-sans-thai/500.css';
+import '@fontsource/noto-sans-thai/700.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import BreakpointsProvider from 'providers/BreakpointsProvider';

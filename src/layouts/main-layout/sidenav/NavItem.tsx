@@ -136,6 +136,12 @@ const NavItem = ({ item, level }: NavItemProps) => {
                 [`& .${listItemTextClasses.primary}`]: {
                   color: 'primary.main',
                 },
+                [`& .${listItemIconClasses.root}`]: {
+                  color: 'primary.main',
+                },
+                '& .iconify': {
+                  color: 'primary.main',
+                },
               },
             }),
             !item.active && {
@@ -149,7 +155,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
                 color: ({ palette }) =>
                   navColor === 'vibrant'
                     ? `${palette.vibrant.text.disabled} !important`
-                    : 'text.disabled',
+                    : 'common.white',
               },
             },
             sidenavCollapsed &&
@@ -173,13 +179,28 @@ const NavItem = ({ item, level }: NavItemProps) => {
                   ? cssVarRgba(vars.palette.primary.mainChannel, 0.36)
                   : 'action.hover',
             },
+            {
+              '&:hover': {
+                [`& .${listItemTextClasses.primary}`]: {
+                  color: 'primary.main',
+                },
+                [`& .${listItemIconClasses.root}`]: {
+                  color: 'primary.main',
+                },
+                '& .iconify': {
+                  color: 'primary.main',
+                },
+              },
+            },
           ]}
         >
           {item.icon && !isStackedSideNav && (
             <ListItemIcon
               sx={{
+                color: 'common.white',
                 '& .iconify': {
                   fontSize: sidenavCollapsed ? 24 : 14,
+                  color: 'common.white',
                 },
               }}
             >
@@ -211,7 +232,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
                     lineHeight: 1.3,
-                    color: level === 0 ? 'common.white' : 'common.white',
+                    color: 'common.white',
                   },
                 },
                 sidenavCollapsed && {
