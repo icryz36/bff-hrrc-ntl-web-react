@@ -1,0 +1,194 @@
+import { RefObject, useMemo } from 'react';
+import { useNavigate } from 'react-router';
+import { Box, Chip, ChipOwnProps, Link, Stack } from '@mui/material';
+import { DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
+import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import DataGridPagination from 'components/pagination/DataGridPagination';
+import DashboardMenu from 'components/common/DashboardMenu';
+
+export interface IListJobData {
+    id: number;
+    jobPostID: string;
+    jobTitle: string,
+    department: string,
+    regional: string,
+    province: string,
+    district: string,
+    startDate: string,
+    activeDay: string,
+    hc: string,
+    owner: string,
+    jobStatus: string,
+}
+
+export const ListJobData: IListJobData[] = [
+    {
+        id: 1,
+        jobPostID: 'H0001',
+        jobTitle: 'Treasury cccc',
+        department: 'Finance & Accounting',
+        regional: 'Head Office',
+        province: 'Province 01',
+        district: 'District 01, District 02',
+        startDate: '01/10/2025',
+        activeDay: '9 Day',
+        hc: '1',
+        owner: 'Chaiya Phongthun',
+        jobStatus: 'open',
+    },
+]
+
+const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+    switch (val) {
+        case 'open':
+            return 'success';
+        case 'close':
+            return 'neutral';
+        case 'hold':
+            return 'warning';
+        case 'cancel':
+            return 'error';
+        default:
+            return 'primary';
+    }
+};
+
+const defaultPageSize = 8;
+
+interface ProductsTableProps {
+    apiRef: RefObject<GridApiCommunity | null>;
+    filterButtonEl: HTMLButtonElement | null;
+}
+
+const ListJobTable = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
+    const navigate = useNavigate();
+    const columns: GridColDef<IListJobData>[] = useMemo(
+        () => [
+            {
+                ...GRID_CHECKBOX_SELECTION_COL_DEF,
+                width: 64,
+            },
+            {
+                field: 'jobPostID',
+                headerName: 'Job Post ID',
+                minWidth: 148,
+                flex: 1,
+            },
+            {
+                field: 'jobTitle',
+                headerName: 'Job Title',
+                minWidth: 330,
+            },
+            {
+                field: 'department',
+                headerName: 'Department',
+                minWidth: 160,
+            },
+            {
+                field: 'regional',
+                headerName: 'NTL Regional',
+                minWidth: 160,
+            },
+            {
+                field: 'province',
+                headerName: 'Province',
+                minWidth: 160,
+            },
+            {
+                field: 'district',
+                headerName: 'District',
+                minWidth: 160,
+                filterable: false,
+            },
+            {
+                field: 'startDate',
+                headerName: 'Start Date',
+                minWidth: 160,
+                filterable: false,
+            },
+            {
+                field: 'activeDay',
+                headerName: 'Active Day',
+                minWidth: 130,
+                filterable: false,
+            },
+            {
+                field: 'hc',
+                headerName: 'HC',
+                minWidth: 80,
+                filterable: false,
+            },
+            {
+                field: 'owner',
+                headerName: 'Owner',
+                minWidth: 130,
+                filterable: false,
+            },
+            {
+                field: 'jobStatus',
+                headerName: 'Job Status',
+                minWidth: 130,
+                renderCell: (params) => {
+                    return (
+                        <Chip
+                            label={params.row.jobStatus}
+                            variant="soft"
+                            color={getStatusBadgeColor(params.row.jobStatus)}
+                            sx={{ textTransform: 'capitalize' }}
+                        />
+                    );
+                },
+            },
+            {
+                field: 'action',
+                headerName: 'Actions',
+                filterable: false,
+                sortable: false,
+                width: 90,
+                align: 'center',
+                headerAlign: 'right',
+                renderCell: () => <DashboardMenu menuItems={[
+                    {
+                        label: 'Edit',
+                    },
+                    {
+                        label: 'Duplicate',
+                    },
+                    {
+                        label: 'Delete'
+                    }
+                ]} />,
+            },
+        ],
+        [],
+    );
+    return (
+        <Box sx={{ width: 1 }}>
+            <DataGrid
+                rowHeight={64}
+                rows={ListJobData}
+                apiRef={apiRef}
+                columns={columns}
+                pageSizeOptions={[defaultPageSize, 15]}
+                initialState={{
+                    pagination: {
+                        paginationModel: {
+                            pageSize: defaultPageSize,
+                        },
+                    },
+                }}
+                checkboxSelection
+                slots={{
+                    basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+                }}
+                slotProps={{
+                    panel: {
+                        target: filterButtonEl,
+                    },
+                }}
+            />
+        </Box>
+    );
+};
+
+export default ListJobTable;

@@ -13,6 +13,7 @@ import paths, { rootPaths } from './paths';
 const Starter = lazy(() => import('pages/others/Starter'));
 
 const CreateJobPage = lazy(() => import('pages/job/CreateJobPage'));
+const ListJobPage = lazy(() => import('pages/job/list-job/ListJobPage'));
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -58,6 +59,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.createJob,
                     element: <CreateJobPage />,
+                  },
+                  {
+                    path: paths.listJob,
+                    element: <ListJobPage />,
                   },
                 ],
               },

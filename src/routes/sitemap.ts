@@ -67,7 +67,7 @@ const sitemap: MenuItem[] = [
         pathName: 'List Job Post',
         active: true,
         icon: 'bytesize:bag',
-        path: paths[404],
+        path: paths.listJob,
       },
       {
         name: 'Import Job',
