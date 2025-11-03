@@ -1,0 +1,38 @@
+import { ReactNode } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle } from '@mui/material';
+
+// ----------------------------------------------------------------------
+
+type CustomConfirmDialogProps = DialogProps & {
+  open: boolean;
+  action: ReactNode;
+  onClose?: VoidFunction;
+  title: string | ReactNode;
+  description?: string | ReactNode;
+};
+
+// ----------------------------------------------------------------------
+
+const CustomConfirmDialog = ({
+  open,
+  onClose,
+  title,
+  description,
+  action,
+}: CustomConfirmDialogProps) => {
+  return (
+    <Dialog
+      fullWidth
+      open={open}
+      maxWidth="xs"
+      onClose={onClose}
+      slotProps={{ paper: { sx: { minWidth: 460, p: 1, borderRadius: '24px' } } }}
+    >
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{description}</DialogContent>
+      <DialogActions sx={{ pb: 2, pr: 2 }}>{action}</DialogActions>
+    </Dialog>
+  );
+};
+
+export default CustomConfirmDialog;
