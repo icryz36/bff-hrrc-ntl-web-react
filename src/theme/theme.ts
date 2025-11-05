@@ -202,6 +202,7 @@ export const createTheme = (
         MuiImageList: ImageList,
         MuiImageListItem: ImageListItem,
       },
+      shadows: [],
     },
     muiLocales,
   );

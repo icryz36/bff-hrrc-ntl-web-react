@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle } from '
 
 // ----------------------------------------------------------------------
 
-type CustomConfirmDialogProps = DialogProps & {
+export type CustomConfirmDialogProps = DialogProps & {
   open: boolean;
   action: ReactNode;
   onClose?: VoidFunction;
