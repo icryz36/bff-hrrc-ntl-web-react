@@ -29,7 +29,7 @@ const  ListJobView = () => {
             >
                 <FilterSection apiRef={apiRef} handleToggleFilterPanel={handleToggleFilterPanel} />
                 <Button
-                    href={"/"}
+                    href={"/manage/job/create"}
                     variant="contained"
                     color="primary"
                     sx={{ flexShrink: 0}}

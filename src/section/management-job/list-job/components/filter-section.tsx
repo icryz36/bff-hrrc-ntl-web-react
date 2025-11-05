@@ -26,8 +26,6 @@ const FilterSection = ({ apiRef, handleToggleFilterPanel }: FilterSectionProps) 
     return (
         <Stack justifyContent="space-between" sx={{ gap: 1 }}>
             <Stack spacing={{ xs: 1, sm: 2, md: 3 }}>
-
-                {/* ปุ่ม Filter */}
                 <Button
                     variant="text"
                     sx={{ flexShrink: 0 }}
@@ -35,8 +33,7 @@ const FilterSection = ({ apiRef, handleToggleFilterPanel }: FilterSectionProps) 
                     shape={upSm ? undefined : 'square'}
                     onClick={handleOpenMenu}
                 >
-                    {upSm && <IconifyIcon icon="material-symbols:swap-vert-rounded" fontSize="20px" />}
-                    {!upSm && <IconifyIcon icon="material-symbols:filter-alt-outline" fontSize="20px" />}
+                    {upSm && <IconifyIcon icon="material-symbols:filter-list-rounded" fontSize="20px" color={'#111417'} />}
                     {upSm && <Box component="span">Filters</Box>}
                 </Button>
 
