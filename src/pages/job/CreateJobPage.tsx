@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Grid';
+import CreateJobView from 'section/management-job/create-job/view/create-job-view';
 import PageHeader from 'components/page-header/page-header';
 import PageContent from 'components/sections/common/PageContent';
 
@@ -9,7 +10,9 @@ const CreateJobPage = () => {
         <PageHeader title="Create Job" />
       </Grid>
       <Grid size={12}>
-        <PageContent>Create Job Form</PageContent>
+        <PageContent>
+          <CreateJobView />
+        </PageContent>
       </Grid>
     </Grid>
   );
