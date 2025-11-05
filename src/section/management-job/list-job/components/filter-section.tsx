@@ -3,7 +3,7 @@ import { Box, Button, Stack, Menu, MenuItem, Popover } from '@mui/material';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import IconifyIcon from 'components/base/IconifyIcon';
-import FilterMenuContent from "pages/job/list-job/filters/FilterMenuContent";
+import FilterMenuContent from "section/management-job/list-job/components/filter-menu-content";
 
 interface FilterSectionProps {
     apiRef: RefObject<GridApiCommunity | null>;

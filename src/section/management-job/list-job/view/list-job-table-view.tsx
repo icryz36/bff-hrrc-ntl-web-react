@@ -60,7 +60,7 @@ interface ProductsTableProps {
     filterButtonEl: HTMLButtonElement | null;
 }
 
-const ListJobTable = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
+const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
     const navigate = useNavigate();
     const columns: GridColDef<IListJobData>[] = useMemo(
         () => [
@@ -197,4 +197,4 @@ const ListJobTable = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
     );
 };
 
-export default ListJobTable;
+export default ListJobTableView;
