@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material';
-import { Components } from '@mui/material/styles';
+import { Components, alpha } from '@mui/material/styles';
 
 const Dialog: Components<Omit<Theme, 'components'>>['MuiDialog'] = {
   defaultProps: {
@@ -7,6 +7,13 @@ const Dialog: Components<Omit<Theme, 'components'>>['MuiDialog'] = {
       paper: {
         variant: 'elevation',
         elevation: 6,
+      },
+      backdrop: {
+        sx: {
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          backgroundColor: (theme) => alpha(theme.palette.common.black, 0.2),
+        },
       },
     },
   },
