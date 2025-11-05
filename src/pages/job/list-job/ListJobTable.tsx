@@ -186,6 +186,12 @@ const ListJobTable = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                         target: filterButtonEl,
                     },
                 }}
+                sx={{
+                    "& .MuiPaginationItem-root.Mui-selected": {
+                        backgroundColor: "#E31837",
+                        color: "#fff",
+                    },
+                }}
             />
         </Box>
     );
