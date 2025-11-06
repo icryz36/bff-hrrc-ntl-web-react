@@ -10,7 +10,7 @@ import paths, { rootPaths } from './paths';
 // import GuestGurad from 'components/guard/GuestGurad';
 // import Splash from 'components/loading/Splash';
 
-const Starter = lazy(() => import('pages/others/Starter'));
+const WelcomePage = lazy(() => import('pages/Welcome'));
 
 const CreateJobPage = lazy(() => import('pages/job/CreateJobPage'));
 
@@ -48,7 +48,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Starter />,
+            element: <WelcomePage />,
           },
           {
             path: rootPaths.manageRoot,

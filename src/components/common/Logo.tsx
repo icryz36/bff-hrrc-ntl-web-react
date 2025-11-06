@@ -9,7 +9,6 @@ const Logo = () => {
     config: { sidenavCollapsed },
   } = useSettingsContext();
 
-  console.log('sidenavCollapsed', sidenavCollapsed);
   return (
     <Link
       href={rootPaths.root}
