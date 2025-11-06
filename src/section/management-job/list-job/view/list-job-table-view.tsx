@@ -128,8 +128,8 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                 field: 'jobStatus',
                 headerName: 'Job Status',
                 minWidth: 130,
-                headerClassName: 'sticky-right-header',
-                cellClassName: 'sticky-right',
+                headerClassName: 'job-status-header',
+                cellClassName: 'job-status-cell',
                 renderCell: (params) => {
                     return (
                         <Chip
@@ -149,8 +149,8 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                 width: 90,
                 align: 'center',
                 headerAlign: 'right',
-                headerClassName: 'sticky-right-header-2',
-                cellClassName: 'sticky-right-2',
+                headerClassName: 'action-header',
+                cellClassName: 'action-cell',
                 renderCell: () => <DashboardMenu menuItems={[
                     {
                         label: 'Edit',
@@ -202,27 +202,27 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                         backgroundColor: "#E31837",
                         color: "#fff",
                     },
-                    "& .sticky-right": {
+                    "& .job-status-cell": {
                         position: "sticky",
                         right: 90,
                         background: "#FFF",
                         zIndex: 5,
                         boxShadow: "-5px 0px 10px 0px #0000000D"
                 },
-                    "& .sticky-right-header": {
+                    "& .job-status-header": {
                         position: "sticky",
                         right: 90,
                         background: "#F7FAFC",
                         zIndex: 5,
                         boxShadow: "-5px 0px 10px 0px #0000000D"
                     },
-                    "& .sticky-right-2": {
+                    "& .action-cell": {
                         position: "sticky",
                         right: 0,
                         background: "#fff",
                         zIndex: 6,
                     },
-                    "& .sticky-right-header-2": {
+                    "& .action-header": {
                         position: "sticky",
                         right: 0,
                         background: "#F7FAFC",
