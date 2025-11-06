@@ -28,7 +28,7 @@ const FilterSection = ({ apiRef, handleToggleFilterPanel }: FilterSectionProps) 
             <Stack spacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Button
                     variant="text"
-                    sx={{ flexShrink: 0 }}
+                    sx={{ flexShrink: 0, gap: '2px' }}
                     color="neutral"
                     shape={upSm ? undefined : 'square'}
                     onClick={handleOpenMenu}

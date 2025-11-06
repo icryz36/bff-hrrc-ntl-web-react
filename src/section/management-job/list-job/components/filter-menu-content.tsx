@@ -62,7 +62,7 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
         <Box p={3} maxHeight="80vh" >
             <Stack justifyContent="space-between" alignItems="center">
                 <Typography variant="h6">Filter</Typography>
-                <IconButton  aria-label="close" onClick={onClose}>
+                <IconButton  aria-label="close" onClick={onClose} sx={{ p: 0 }}>
                     <IconifyIcon icon="material-symbols-light:close-rounded" fontSize="20px" color={'#111417'} />
                 </IconButton>
             </Stack>
@@ -70,7 +70,7 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
                 Easily find the List Job Post you’re looking for using filters.
             </Typography>
 
-            <Stack spacing={2}  pr={1} direction="column">
+            <Stack spacing={2} direction="column">
                 <TextField
                     label="Job Title"
                     value={filters.jobTitle}
@@ -118,11 +118,11 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
                 </TextField>
             </Stack>
 
-            <Box mt={3} display="flex" justifyContent="space-between">
-                <Button variant="outlined" onClick={handleReset} fullWidth sx={{ mr: 1 }}>
+            <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
+                <Button variant="outlined" onClick={handleReset} sx={{ width: '25%' }}>
                     Reset
                 </Button>
-                <Button variant="contained" onClick={handleApply} fullWidth sx={{ ml: 1 }}>
+                <Button variant="contained" onClick={handleApply} sx={{ width: '25%' }}>
                     Apply
                 </Button>
             </Box>
