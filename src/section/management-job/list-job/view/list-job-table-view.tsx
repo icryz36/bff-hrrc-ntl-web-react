@@ -121,13 +121,15 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
             {
                 field: 'owner',
                 headerName: 'Owner',
-                minWidth: 130,
+                minWidth: 150,
                 filterable: false,
             },
             {
                 field: 'jobStatus',
                 headerName: 'Job Status',
                 minWidth: 130,
+                headerClassName: 'sticky-right-header',
+                cellClassName: 'sticky-right',
                 renderCell: (params) => {
                     return (
                         <Chip
@@ -147,6 +149,8 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                 width: 90,
                 align: 'center',
                 headerAlign: 'right',
+                headerClassName: 'sticky-right-header-2',
+                cellClassName: 'sticky-right-2',
                 renderCell: () => <DashboardMenu menuItems={[
                     {
                         label: 'Edit',
@@ -175,6 +179,7 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                 rows={ListJobData}
                 apiRef={apiRef}
                 columns={columns}
+                disableVirtualization
                 pageSizeOptions={[defaultPageSize, 15]}
                 initialState={{
                     pagination: {
@@ -196,6 +201,35 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                     "& .MuiPaginationItem-root.Mui-selected": {
                         backgroundColor: "#E31837",
                         color: "#fff",
+                    },
+                    "& .sticky-right": {
+                        position: "sticky",
+                        right: 90,
+                        background: "#FFF",
+                        zIndex: 5,
+                        boxShadow: "-5px 0px 10px 0px #0000000D"
+                },
+                    "& .sticky-right-header": {
+                        position: "sticky",
+                        right: 90,
+                        background: "#F7FAFC",
+                        zIndex: 5,
+                        boxShadow: "-5px 0px 10px 0px #0000000D"
+                    },
+                    "& .sticky-right-2": {
+                        position: "sticky",
+                        right: 0,
+                        background: "#fff",
+                        zIndex: 6,
+                    },
+                    "& .sticky-right-header-2": {
+                        position: "sticky",
+                        right: 0,
+                        background: "#F7FAFC",
+                        zIndex: 6,
+                    },
+                    "& .MuiDataGrid-row, .MuiDataGrid-columnHeaders": {
+                        overflow: "visible !important",
                     },
                 }}
             />
