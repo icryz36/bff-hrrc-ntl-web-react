@@ -6,10 +6,12 @@ import {
     Button,
     Autocomplete,
     MenuItem,
+    IconButton
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { RefObject, useState } from 'react';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import IconifyIcon from "components/base/IconifyIcon.tsx";
 
 interface FilterMenuContentProps {
     apiRef: RefObject<GridApiCommunity | null>;
@@ -58,8 +60,13 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
 
     return (
         <Box p={3} maxHeight="80vh" >
-            <Typography variant="h6">Filter</Typography>
-            <Typography variant="body2" sx={{ mb: 3 }}>
+            <Stack justifyContent="space-between" alignItems="center">
+                <Typography variant="h6">Filter</Typography>
+                <IconButton  aria-label="close" onClick={onClose}>
+                    <IconifyIcon icon="material-symbols-light:close-rounded" fontSize="20px" color={'#111417'} />
+                </IconButton>
+            </Stack>
+            <Typography variant="body2" sx={{ my: 2 }}>
                 Easily find the List Job Post you’re looking for using filters.
             </Typography>
 
