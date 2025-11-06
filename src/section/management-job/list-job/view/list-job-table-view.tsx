@@ -1,6 +1,6 @@
 import { RefObject, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { Box, Chip, ChipOwnProps, Link, Stack } from '@mui/material';
+import { Box, Chip, ChipOwnProps } from '@mui/material';
 import { DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import DataGridPagination from 'components/pagination/DataGridPagination';
@@ -150,12 +150,18 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                 renderCell: () => <DashboardMenu menuItems={[
                     {
                         label: 'Edit',
+                        icon: 'mdi-light:pencil',
+                        onClick: () => {}
                     },
                     {
                         label: 'Duplicate',
+                        icon: 'material-symbols-light:file-copy-outline',
+                        onClick: () => {}
                     },
                     {
-                        label: 'Delete'
+                        label: 'Delete',
+                        icon: 'material-symbols-light:delete-outline-sharp',
+                        onClick: () => {}
                     }
                 ]} />,
             },

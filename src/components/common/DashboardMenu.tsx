@@ -8,12 +8,15 @@ import {
   SxProps,
   listClasses,
   menuClasses,
+  Stack
 } from '@mui/material';
 import EllipsisHorizontalIcon from 'components/icons/EllipsisHorizontalIcon';
+import IconifyIcon from "components/base/IconifyIcon.tsx";
 
 interface DashboardMenuProps {
   menuItems?: ({
     label: string;
+    icon?: string;
   } & MenuItemProps)[];
   icon?: JSX.Element;
   size?: ButtonOwnProps['size'];
@@ -21,18 +24,7 @@ interface DashboardMenuProps {
   sx?: SxProps;
 }
 
-const defaultItems: DashboardMenuProps['menuItems'] = [
-  {
-    label: 'Sync',
-  },
-  {
-    label: 'Export',
-  },
-  {
-    label: 'Remove',
-    sx: { color: 'error.main' },
-  },
-];
+const defaultItems: DashboardMenuProps['menuItems'] = [];
 
 const DashboardMenu = ({
   menuItems = defaultItems,
@@ -95,7 +87,7 @@ const DashboardMenu = ({
           },
         }}
       >
-        {menuItems.map(({ label, onClick, ...rest }) => (
+        {menuItems.map(({ label, onClick, icon, ...rest }) => (
           <MenuItem
             key={label}
             onClick={(e) => {
@@ -106,7 +98,10 @@ const DashboardMenu = ({
             }}
             {...rest}
           >
-            {label}
+            <Stack alignItems={'center'} gap={'4px'}>
+              {icon && <IconifyIcon icon={icon} fontSize="18px" color={'#4D595E'} /> }
+              {label}
+            </Stack>
           </MenuItem>
         ))}
       </Menu>
