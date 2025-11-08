@@ -1,12 +1,15 @@
-import {Button, Stack} from "@mui/material";
+import {Button, Stack, Typography} from "@mui/material";
 import FilterSection from "section/management-job/list-job/components/filter-section";
 import ListJobTableView from "section/management-job/list-job/view/list-job-table-view";
 import {MouseEvent, useState} from "react";
 import {useGridApiRef} from "@mui/x-data-grid";
+import CustomConfirmDialog from "components/custom-confirm-dialog/CustomDialog.tsx";
+import {useBoolean} from "hooks/useBoolean.ts";
 
 const  ListJobView = () => {
     const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
     const apiRef = useGridApiRef();
+    const isOpenJobFailedDialog = useBoolean();
 
     const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
         const clickedEl = e.currentTarget;
@@ -38,6 +41,21 @@ const  ListJobView = () => {
                 </Button>
             </Stack>
             <ListJobTableView apiRef={apiRef} filterButtonEl={filterButtonEl} />
+            <CustomConfirmDialog
+                title="เกิดข้อผิดพลาด"
+                open={isOpenJobFailedDialog.value}
+                onClose={isOpenJobFailedDialog.onFalse}
+                description={
+                    <Typography color="text.secondary" variant="subtitle1">
+                        ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง
+                    </Typography>
+                }
+                action={
+                    <Button variant="contained" onClick={isOpenJobFailedDialog.onFalse}>
+                        Close
+                    </Button>
+                }
+            />
         </>
     )
 }
