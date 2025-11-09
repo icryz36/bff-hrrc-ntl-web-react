@@ -12,9 +12,9 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
     const { open } = props
 
     const InfoRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
-        <Stack direction="row" gap={2}>
-            <Typography variant="subtitle2" color="text.secondary">{label}</Typography>
-            <Typography variant="body2" fontWeight={500}>{value}</Typography>
+        <Stack direction="row" gap={1}>
+            <Typography variant="subtitle2" color="text.primary" fontWeight={700}>{label} : </Typography>
+            <Typography variant="subtitle2" color="text.secondary">{value}</Typography>
         </Stack>
     );
 
@@ -51,17 +51,16 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                     py: 6,
                     position: 'relative',
                 }}
-                spacing={4}
+                spacing={3}
                 direction="column"
             >
-                {/* Title */}
-                <Typography variant="h4" fontWeight={600}>
+
+                <Typography variant="h5" fontWeight={700} color="text.primary">
                     Job Post Detail : H00001
                 </Typography>
 
-                {/* Job Detail Header */}
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Typography variant="h6" fontWeight={600}>
+                    <Typography variant="subtitle1" fontWeight={700} color="text.primary">
                         Job Detail
                     </Typography>
 
@@ -75,7 +74,6 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                     />
                 </Stack>
 
-                {/* Job Info Table */}
                 <Stack spacing={2} direction="column" px={3} py={0}>
                     <InfoRow label="Job Title" value="Sr/Mgr Risk Mitigation Strategy and Collateral Management" />
                     <Grid container spacing={2}>
