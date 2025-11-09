@@ -264,7 +264,7 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
                     </Stack>
                 }
             />
-            <ListJobDetailComponent open={true} />
+            <ListJobDetailComponent open={isOpenDetailDialog.value} onClose={isOpenDetailDialog.onFalse} />
         </>
     );
 };

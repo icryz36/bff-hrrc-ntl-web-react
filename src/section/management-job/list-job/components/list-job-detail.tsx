@@ -5,21 +5,20 @@ import {FC} from "react";
 
 interface IListJobDetailComponentProps {
     open: boolean;
+    onClose: () => void;
 }
 
-const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
+const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClose }) => {
 
-    const { open } = props
-
-    const InfoRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
-        <Stack direction="row" gap={1}>
-            <Typography variant="subtitle2" color="text.primary" fontWeight={700}>{label} : </Typography>
-            <Typography variant="subtitle2" color="text.secondary">{value}</Typography>
+    const InfoRow = ({ label, value, gap = 1 }: { label: string; value: React.ReactNode, gap?: number }) => (
+        <Stack direction="row" gap={gap}>
+            <Typography variant="subtitle2" color="text.primary"  sx={{ whiteSpace: "pre-line" }} fontWeight={700}>{label} : </Typography>
+            <Typography variant="subtitle2" color="text.secondary"  sx={{ whiteSpace: "pre-line" }}>{value}</Typography>
         </Stack>
     );
 
     const SectionTitle = ({ title }: { title: string }) => (
-        <Typography variant="h6" fontWeight={600}>
+        <Typography variant="subtitle1" fontWeight={700}>
             {title}
         </Typography>
     );
@@ -28,6 +27,7 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
         <Drawer
             anchor="bottom"
             open={open}
+            onClose={onClose}
             sx={{
                 [`& .${drawerClasses.paper}`]: {
                     borderTopLeftRadius: 16,
@@ -41,7 +41,7 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                 fontSize="32px"
                 color="#111417"
                 sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}
-                // onClick={isOpenDetailDialog.onFalse}
+                onClick={onClose}
             />
             <Stack
                 sx={{
@@ -101,40 +101,22 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                     </Grid>
                 </Stack>
 
-                <Box px={4} py={2} bgcolor={'#F7FAFC'}>
+                <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
                     <SectionTitle title="Position" />
                     <Grid container spacing={2}>
                         <Grid size={{ md: 4 }}>
-                            <InfoRow label="Position No. From HRMS" value="N000001" />
+                            <InfoRow label={`Position No.\nFrom HRMS`} value="N000001" gap={4} />
                         </Grid>
                         <Grid size={{ md: 4 }}>
-                            <InfoRow label="Rationale of Vacancy" value="Replacement" />
+                            <InfoRow label={`Rationale of\nVacancy`} value="Replacement" gap={4} />
                         </Grid>
                         <Grid size={{ md: 4 }}>
-                            <InfoRow label="Source of Recruitment" value="Internal Only" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Position No. From HRMS" value="N000004" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Rationale of Vacancy" value="Replacement" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Source of Recruitment" value="Internal Only" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Position No. From HRMS" value="N000005" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Rationale of Vacancy" value="Replacement" />
-                        </Grid>
-                        <Grid size={{ md: 4 }}>
-                            <InfoRow label="Source of Recruitment" value="Internal Only" />
+                            <InfoRow label={`Source of\nRecruitment`} value="Internal Only" gap={4} />
                         </Grid>
                     </Grid>
-                </Box>
+                </Stack>
 
-                <Box px={4} py={2} bgcolor={'#F7FAFC'}>
+                <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
                     <SectionTitle title="Work Location" />
                     <Grid container spacing={2}>
                         <Grid size={{ md: 6 }}>
@@ -144,9 +126,9 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                             <InfoRow label="District" value="District01, District02" />
                         </Grid>
                     </Grid>
-                </Box>
+                </Stack>
 
-                <Box px={4} py={2} bgcolor={'#F7FAFC'}>
+                <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
                     <SectionTitle title="Department" />
                     <Grid container spacing={2}>
                         <Grid size={{ md: 6 }}>
@@ -156,24 +138,24 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                             <InfoRow label="Section" value="เงินติดล้อ" />
                         </Grid>
                     </Grid>
-                </Box>
+                </Stack>
 
-                <Box px={4} py={2} bgcolor={'#F7FAFC'}>
+                <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
                     <SectionTitle title="Type of Employee" />
                     <Grid container spacing={2}>
-                        <Grid size={{ md: 6 }}>
+                        <Grid size={{ md: 4 }}>
                             <InfoRow label="Job Level" value="Officer/Branch Staff 1" />
                         </Grid>
-                        <Grid size={{ md: 6 }}>
+                        <Grid size={{ md: 4 }}>
                             <InfoRow label="Degree" value="ปริญญาตรี" />
                         </Grid>
-                        <Grid size={{ md: 6 }}>
+                        <Grid size={{ md: 4 }}>
                             <InfoRow label="Employee Type" value="งานประจำ" />
                         </Grid>
                     </Grid>
-                </Box>
+                </Stack>
 
-                <Box px={4} py={2}>
+                <Stack px={3} py={2} spacing={2} direction="column">
                     <Grid container spacing={2}>
                         <Grid size={{ md: 4 }}>
                             <InfoRow label="Start Date" value="01/10/2025" />
@@ -191,27 +173,40 @@ const  ListJobDetailComponent: FC<IListJobDetailComponentProps> = (props) => {
                             <InfoRow label="Group Recruiter" value="Somchai Prasert, Niran Chaiyaporn" />
                         </Grid>
                     </Grid>
-                </Box>
+                </Stack>
 
-                <Box>
+                <Stack pt={2} spacing={2} direction="column">
                     <SectionTitle title="Job Description" />
-                    <Typography variant="body2" color="text.secondary" px={4}>
+                    <Typography variant="subtitle2" color="text.secondary" px={4}>
                         ดูแลการออกนโยบายด้านงานพัฒนาความเสี่ยง...
                     </Typography>
-                </Box>
+                </Stack>
 
-                <Box>
+                <Stack pt={2} spacing={2} direction="column">
                     <SectionTitle title="Job Specification" />
                     <Stack>
                         <ul>
-                            <li>มีประสบการณ์ในงานสายอาชีพไม่น้อยกว่า 1 ปี</li>
-                            <li>มีทักษะการสื่อสาร และเจรจาต่อรอง</li>
-                            <li>สามารถประสานงานหลายฝ่ายได้ดี</li>
-                            <li>สามารถทำงานเป็นทีม และทำงานภายใต้แรงกดดันได้</li>
+                            <li>
+                                <Typography variant="subtitle2" color="text.secondary">มีประสบการณ์ในงานสายอาชีพไม่น้อยกว่า 1 ปี</Typography>
+                            </li>
+                            <li>
+                                <Typography variant="subtitle2" color="text.secondary">มีทักษะการสื่อสาร และเจรจาต่อรอง</Typography>
+                            </li>
+                            <li>
+                                <Typography variant="subtitle2" color="text.secondary">สามารถประสานงานหลายฝ่ายได้ดี</Typography>
+                            </li>
+                            <li>
+                                <Typography variant="subtitle2" color="text.secondary">สามารถทำงานเป็นทีม และทำงานภายใต้แรงกดดันได้</Typography>
+                            </li>
                         </ul>
                     </Stack>
-                </Box>
-
+                </Stack>
+                <Stack pt={2} pb={6} spacing={2} direction="column">
+                    <SectionTitle title="Benefit" />
+                    <Typography variant="subtitle2" color="text.secondary" px={4}>
+                        -
+                    </Typography>
+                </Stack>
             </Stack>
         </Drawer>
     )
