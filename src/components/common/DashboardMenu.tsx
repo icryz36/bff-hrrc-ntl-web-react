@@ -5,13 +5,13 @@ import {
   Menu,
   MenuItem,
   MenuItemProps,
+  Stack,
   SxProps,
   listClasses,
   menuClasses,
-  Stack
 } from '@mui/material';
+import IconifyIcon from 'components/base/IconifyIcon.tsx';
 import EllipsisHorizontalIcon from 'components/icons/EllipsisHorizontalIcon';
-import IconifyIcon from "components/base/IconifyIcon.tsx";
 
 interface DashboardMenuProps {
   menuItems?: ({
@@ -99,7 +99,7 @@ const DashboardMenu = ({
             {...rest}
           >
             <Stack alignItems={'center'} gap={'4px'}>
-              {icon && <IconifyIcon icon={icon} fontSize="18px" color={'#4D595E'} /> }
+              {icon && <IconifyIcon icon={icon} fontSize="18px" color={'#4D595E'} />}
               {label}
             </Stack>
           </MenuItem>
