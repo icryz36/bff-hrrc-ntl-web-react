@@ -86,9 +86,7 @@ const CreateJobView = () => {
             <Typography variant="subtitle1" color="text.secondary">
               เลข Job No. คือ{' '}
             </Typography>
-            <Typography variant="subtitle1" fontWeight={700}>
-              H202510-0000010
-            </Typography>
+            <Typography variant="subtitle1_bold">H202510-0000010</Typography>
             <IconButton>
               <IconifyIcon
                 icon="material-symbols-light:content-copy-outline"

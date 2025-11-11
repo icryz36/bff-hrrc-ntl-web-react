@@ -94,9 +94,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
     <Container maxWidth="md">
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack mb={3}>
-          <Typography variant="subtitle2" fontWeight={700}>
-            Job Detail
-          </Typography>
+          <Typography variant="subtitle2_bold">Job Detail</Typography>
         </Stack>
 
         <Grid container spacing={2}>
@@ -181,9 +179,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12}>
             <StyledFormContainerBox>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Position
-              </Typography>
+              <Typography variant="subtitle1_bold">Position</Typography>
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
@@ -221,9 +217,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12}>
             <StyledFormContainerBox>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Work Location
-              </Typography>
+              <Typography variant="subtitle1_bold">Work Location</Typography>
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -255,9 +249,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12}>
             <StyledFormContainerBox>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Department
-              </Typography>
+              <Typography variant="subtitle1_bold">Department</Typography>
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -286,9 +278,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12}>
             <StyledFormContainerBox>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Type of Employee
-              </Typography>
+              <Typography variant="subtitle1_bold">Type of Employee</Typography>
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
@@ -350,9 +340,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Job Description
-              </Typography>
+              <Typography variant="subtitle1_bold">Job Description</Typography>
 
               <Field.Editor name="" />
             </Stack>
@@ -360,9 +348,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Job Specification
-              </Typography>
+              <Typography variant="subtitle1_bold">Job Specification</Typography>
 
               <Field.Editor name="" />
             </Stack>
@@ -370,9 +356,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                Benefit
-              </Typography>
+              <Typography variant="subtitle1_bold">Benefit</Typography>
 
               <Field.Editor name="" />
             </Stack>
