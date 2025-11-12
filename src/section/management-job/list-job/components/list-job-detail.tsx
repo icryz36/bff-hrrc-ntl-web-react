@@ -19,12 +19,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     gap?: number;
   }) => (
     <Stack direction="row" gap={gap}>
-      <Typography
-        variant="subtitle2"
-        color="text.primary"
-        sx={{ whiteSpace: 'pre-line' }}
-        fontWeight={700}
-      >
+      <Typography variant="subtitle2" color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
         {label} :{' '}
       </Typography>
       <Typography variant="subtitle2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
@@ -34,9 +29,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
   );
 
   const SectionTitle = ({ title }: { title: string }) => (
-    <Typography variant="subtitle1" fontWeight={700}>
-      {title}
-    </Typography>
+    <Typography variant="subtitle1">{title}</Typography>
   );
 
   return (
@@ -55,7 +48,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
       <IconifyIcon
         icon="material-symbols-light:close-rounded"
         fontSize="32px"
-        color="#111417"
+        color="text.secondary"
         sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}
         onClick={onClose}
       />
@@ -70,12 +63,12 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         spacing={3}
         direction="column"
       >
-        <Typography variant="h5" fontWeight={700} color="text.primary">
+        <Typography variant="h5" color="text.primary">
           Job Post Detail : H00001
         </Typography>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="subtitle1" fontWeight={700} color="text.primary">
+          <Typography variant="subtitle1" color="text.primary">
             Job Detail
           </Typography>
 

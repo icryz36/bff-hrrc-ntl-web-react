@@ -1,12 +1,13 @@
 import { RefObject, useMemo } from 'react';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
-import { DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
+import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useBoolean } from 'hooks/useBoolean';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
 import DashboardMenu from 'components/common/DashboardMenu';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
+import { StyledDataGrid } from '../styles';
 
 export interface IListJobData {
   id: number;
@@ -188,7 +189,7 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
   return (
     <>
       <Box width={1}>
-        <DataGrid
+        <StyledDataGrid
           rowHeight={64}
           rows={ListJobData}
           apiRef={apiRef}
@@ -209,41 +210,6 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
           slotProps={{
             panel: {
               target: filterButtonEl,
-            },
-          }}
-          sx={{
-            '& .MuiPaginationItem-root.Mui-selected': {
-              backgroundColor: '#E31837',
-              color: '#fff',
-            },
-            '& .job-status-cell': {
-              position: 'sticky',
-              right: 90,
-              background: '#FFF',
-              zIndex: 5,
-              boxShadow: '-5px 0px 10px 0px #0000000D',
-            },
-            '& .job-status-header': {
-              position: 'sticky',
-              right: 90,
-              background: '#F7FAFC',
-              zIndex: 5,
-              boxShadow: '-5px 0px 10px 0px #0000000D',
-            },
-            '& .action-cell': {
-              position: 'sticky',
-              right: 0,
-              background: '#fff',
-              zIndex: 6,
-            },
-            '& .action-header': {
-              position: 'sticky',
-              right: 0,
-              background: '#F7FAFC',
-              zIndex: 6,
-            },
-            '& .MuiDataGrid-row, .MuiDataGrid-columnHeaders': {
-              overflow: 'visible !important',
             },
           }}
         />

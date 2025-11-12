@@ -6,7 +6,7 @@ const ListJobPage = () => {
   return (
     <Grid container>
       <Grid size={12}>
-        <PageHeader title="Create Job" />
+        <PageHeader title="List Job Post" />
       </Grid>
       <Grid size={12} sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
         <ListJobView />
