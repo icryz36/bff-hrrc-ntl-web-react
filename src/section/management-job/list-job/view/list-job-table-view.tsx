@@ -203,7 +203,6 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
               },
             },
           }}
-          checkboxSelection
           slots={{
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}

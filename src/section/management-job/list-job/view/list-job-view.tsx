@@ -1,15 +1,28 @@
 import { MouseEvent, useState } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
-import { useBoolean } from 'hooks/useBoolean.ts';
+import { useQuery } from '@tanstack/react-query';
+import { useBoolean } from 'hooks/useBoolean';
 import FilterSection from 'section/management-job/list-job/components/filter-section';
 import ListJobTableView from 'section/management-job/list-job/view/list-job-table-view';
-import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog.tsx';
+import { useListJobDataQuery } from 'services/management-job/list-job/query';
+import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 
 const ListJobView = () => {
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
   const apiRef = useGridApiRef();
   const isOpenJobFailedDialog = useBoolean();
+
+  const query = useListJobDataQuery.getListJob({
+    ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
+    recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
+    pageNo: 1,
+    pageSize: 10,
+  });
+
+  const { data } = useQuery(query);
+
+  console.log('data ==> ', data);
 
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;
