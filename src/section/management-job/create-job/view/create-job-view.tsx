@@ -1,44 +1,65 @@
+import { useState } from 'react';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { useBoolean } from 'hooks/useBoolean';
+import { useCreateJobpostMutation } from 'services/jobpost/mutation';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { CreateJobForm } from '../components/create-job-form';
+import { convertCreateJobPostPayload } from '../helper';
 import { CreateJobSchemaType } from '../schema';
 
-// ----------------------------------------------------------------------
+// ---------------------------------------------------------------------
 
 const CreateJobView = () => {
+  const [jobNo, setJobNo] = useState<string>('');
+  const [formKey, setFormKey] = useState<number>(0);
+
   const isOpenCreateJobFailedDialog = useBoolean();
   const isOpenCreateJobSuccessDialog = useBoolean();
-  const isOpenConfirmLeavePageDialog = useBoolean();
 
-  // Func ---------------------------------------------------------------
+  // api ----------------------------------------------------------------
+
+  const { mutate: createJobPost, isPending: isLoadingCreateJobPost } = useCreateJobpostMutation();
+
+  // func ---------------------------------------------------------------
 
   const onSubmit = (data: CreateJobSchemaType) => {
-    console.log('data', data);
+    const payload = convertCreateJobPostPayload(data);
+
+    createJobPost(payload, {
+      onSuccess: (response) => {
+        if (response.status) {
+          setJobNo(response.data.jobPostNo);
+          isOpenCreateJobSuccessDialog.onTrue();
+          return;
+        }
+
+        isOpenCreateJobFailedDialog.onTrue();
+      },
+      onError: () => {
+        isOpenCreateJobFailedDialog.onTrue();
+      },
+    });
+  };
+
+  const handleCopyJobNo = () => {
+    if (jobNo) {
+      // TODO: เด้ง toast
+      navigator.clipboard.writeText(jobNo);
+    }
+  };
+
+  const handleCreateNewJob = () => {
+    isOpenCreateJobSuccessDialog.onFalse();
+    setFormKey((prev) => prev + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // --------------------------------------------------------------------
 
   return (
     <>
-      {/* Example dialog 🚀 */}
-
-      <Stack spacing={2} mb={4}>
-        <Button variant="contained" onClick={isOpenCreateJobSuccessDialog.onTrue}>
-          สร้าง Job สำเร็จ Dialog
-        </Button>
-
-        <Button variant="contained" onClick={isOpenCreateJobFailedDialog.onTrue}>
-          สร้าง Job ไม่สำเร็จ Dialog
-        </Button>
-
-        <Button variant="contained" onClick={isOpenConfirmLeavePageDialog.onTrue}>
-          ยืนยันการออกจากหน้า Dialog
-        </Button>
-      </Stack>
-
-      <CreateJobForm onSubmit={onSubmit} />
+      <CreateJobForm onSubmit={onSubmit} isLoading={isLoadingCreateJobPost} key={formKey} />
 
       {/* Dialog */}
 
@@ -59,25 +80,6 @@ const CreateJobView = () => {
       />
 
       <CustomConfirmDialog
-        title="ยืนยันการออกจากหน้านี้"
-        open={isOpenConfirmLeavePageDialog.value}
-        onClose={isOpenConfirmLeavePageDialog.onFalse}
-        description={
-          <Typography color="text.secondary" variant="subtitle1" whiteSpace="pre-wrap">
-            {'คุณต้องการออกจากหน้านี้หรือไม่\nหากยืนยัน ข้อมูลที่กรอกไว้จะไม่ถูกบันทึก'}
-          </Typography>
-        }
-        action={
-          <Stack spacing={1}>
-            <Button variant="outlined" color="neutral">
-              Cancel
-            </Button>
-            <Button variant="contained">Confirm</Button>
-          </Stack>
-        }
-      />
-
-      <CustomConfirmDialog
         title="สร้าง Job สำเร็จ"
         open={isOpenCreateJobSuccessDialog.value}
         onClose={isOpenCreateJobSuccessDialog.onFalse}
@@ -86,8 +88,8 @@ const CreateJobView = () => {
             <Typography variant="subtitle1" color="text.secondary">
               เลข Job No. คือ{' '}
             </Typography>
-            <Typography variant="subtitle1_bold">H202510-0000010</Typography>
-            <IconButton>
+            <Typography variant="subtitle1_bold">{jobNo}</Typography>
+            <IconButton onClick={handleCopyJobNo}>
               <IconifyIcon
                 icon="material-symbols-light:content-copy-outline"
                 color="text.primary"
@@ -97,7 +99,7 @@ const CreateJobView = () => {
         }
         action={
           <Stack spacing={1}>
-            <Button variant="outlined" color="neutral">
+            <Button variant="outlined" color="neutral" onClick={handleCreateNewJob}>
               Create new Job
             </Button>
             <Button variant="contained">Go to List Job Post</Button>

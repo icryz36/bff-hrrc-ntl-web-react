@@ -68,6 +68,10 @@ export function RHFAutocomplete({
           )}
           slotProps={{
             ...otherSlotProps,
+            popper: {
+              modifiers: [{ name: 'offset', options: { offset: [0, 5] } }],
+              ...otherSlotProps?.popper,
+            },
             chip: {
               size: 'small',
               variant: 'soft',

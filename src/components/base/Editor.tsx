@@ -14,8 +14,8 @@ import {
   MenuButtonAlignRight,
   MenuButtonBold,
   MenuButtonBulletedList,
-  MenuButtonEditLink,
-  MenuButtonImageUpload,
+  // MenuButtonEditLink,
+  // MenuButtonImageUpload,
   MenuButtonItalic,
   MenuButtonOrderedList,
   MenuButtonRedo,
@@ -42,15 +42,15 @@ interface EditorProps extends Omit<RichTextEditorProps, 'extensions'> {
   onBlur?: () => void;
 }
 
-export const editorDefaultToolbar = (imageUploadHandler?: any) => {
-  const handleImageUpload = async (files: File[]): Promise<ImageNodeAttributes[]> => {
-    return imageUploadHandler
-      ? imageUploadHandler(files)
-      : files.map((file) => ({
-          src: URL.createObjectURL(file),
-          alt: file.name,
-        }));
-  };
+export const editorDefaultToolbar = () => {
+  // const handleImageUpload = async (files: File[]): Promise<ImageNodeAttributes[]> => {
+  //   return imageUploadHandler
+  //     ? imageUploadHandler(files)
+  //     : files.map((file) => ({
+  //         src: URL.createObjectURL(file),
+  //         alt: file.name,
+  //       }));
+  // };
   return (
     <MenuControlsContainer>
       <MenuButtonUndo
@@ -157,8 +157,8 @@ export const editorDefaultToolbar = (imageUploadHandler?: any) => {
           />
         )}
       />
-      <MenuDivider />
-      <MenuButtonImageUpload
+      {/* <MenuDivider />3 */}
+      {/* <MenuButtonImageUpload
         onUploadFiles={handleImageUpload}
         IconComponent={() => (
           <IconifyIcon
@@ -176,7 +176,7 @@ export const editorDefaultToolbar = (imageUploadHandler?: any) => {
             fontSize={20}
           />
         )}
-      />
+      /> */}
     </MenuControlsContainer>
   );
 };
@@ -187,7 +187,6 @@ const Editor = ({
   onBlur,
   isValid = true,
   placeholder = 'Write a description...',
-  imageUploadHandler,
   extensions = [] as Extensions,
   sx,
   ref,
@@ -225,7 +224,7 @@ const Editor = ({
       // content=""
       content={value ?? ''}
       extensions={defaultExtensions}
-      renderControls={() => editorDefaultToolbar(imageUploadHandler)}
+      renderControls={() => editorDefaultToolbar()}
       // onUpdate={({ editor }) => {
       //   const html = editor.getHTML();
       //   if (onChange) {

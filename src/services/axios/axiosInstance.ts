@@ -1,40 +1,70 @@
+// import axios from 'axios';
+// const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localhost:8000/api';
+// const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
+// const axiosInstance = axios.create({
+//   baseURL: BASE_URL,
+// });
+// axiosInstance.interceptors.request.use(async (config) => {
+//   const authToken = KEY_ACCESS_TOKEN;
+//   if (authToken) {
+//     config.headers['authorization'] = `Bearer ${authToken}`;
+//   }
+//   config.headers['Content-Type'] = 'application/json';
+//   config.headers['sender'] = 'ntlhrrecruit';
+//   config.headers['refer'] = 'ntlhrrecruit';
+//   config.headers['forward'] = '192.168.1.100';
+//   config.headers['sendDate'] = new Date().toISOString().split('T')[0];
+//   config.headers['clientid'] = 'web-app-client';
+//   return config;
+// });
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     return Promise.reject({
+//       status: error.response?.status,
+//       data: error.response?.data || error.message,
+//     });
+//   },
+// );
+// export default axiosInstance;
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localhost:8000/api';
 const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-});
+const setupInterceptors = (instance: any) => {
+  instance.interceptors.request.use(async (config: any) => {
+    const authToken = KEY_ACCESS_TOKEN;
+    if (authToken) {
+      config.headers['authorization'] = `Bearer ${authToken}`;
+    }
+    config.headers['Content-Type'] = 'application/json';
+    config.headers['sender'] = 'ntlhrrecruit';
+    config.headers['refer'] = 'ntlhrrecruit';
+    config.headers['forward'] = '192.168.1.100';
+    config.headers['sendDate'] = new Date().toISOString().split('T')[0];
+    config.headers['clientid'] = 'web-app-client';
+    return config;
+  });
 
-// Adding authorization header to axios instance if session exists
-axiosInstance.interceptors.request.use(async (config) => {
-  // const authToken = localStorage.getItem('auth_token');
-  const authToken = KEY_ACCESS_TOKEN;
+  instance.interceptors.response.use(
+    (response: any) => response,
+    (error: any) => {
+      return Promise.reject({
+        status: error.response?.status,
+        data: error.response?.data || error.message,
+      });
+    },
+  );
+};
 
-  if (authToken) {
-    config.headers.token = `Bearer ${authToken}`;
-  }
-  config.headers['Content-Type'] = 'application/json';
-  config.headers['sender'] = 'ntlhrrecruit';
-  config.headers['refer'] = 'ntlhrrecruit';
-  config.headers['forward'] = '192.168.1.100';
-  config.headers['sendDate'] = new Date().toISOString().split('T')[0];
-  config.headers['branch'] = '0001';
-  config.headers['clientid'] = 'web-app-client';
+const axiosInstance = axios.create({ baseURL: BASE_URL });
+setupInterceptors(axiosInstance);
 
-  return config;
-});
-
-axiosInstance.interceptors.response.use(
-  (response) => (response.data.data ? response.data.data : response.data),
-  (error) => {
-    return Promise.reject({
-      status: error.response?.status,
-      data: error.response?.data || error.message,
-    });
-  },
-);
+const axiosJobPostInstance = axios.create({ baseURL: BASE_URL_JOBPOST });
+setupInterceptors(axiosJobPostInstance);
 
 export default axiosInstance;
+export { axiosJobPostInstance };
