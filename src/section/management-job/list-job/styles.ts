@@ -2,41 +2,48 @@ import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 
-// ----------------------------------------------------------------------
-
-export const StyledDataGrid = styled(DataGrid)(() => ({
+export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  borderRadius: '8px',
+  overflow: 'hidden',
   '& .MuiPaginationItem-root.Mui-selected': {
-    backgroundColor: '#E31837',
-    color: '#fff',
+    backgroundColor: theme.palette.chRed[500],
+    color: theme.palette.common.white,
+  },
+  '& .MuiDataGrid-row .MuiDataGrid-cell:nth-of-type(2):not(.MuiDataGrid-cellCheckbox)': {
+    paddingLeft: '10px !important',
   },
   '& .job-status-cell': {
     position: 'sticky',
     right: 90,
-    background: '#FFF',
+    background: theme.palette.background.paper,
     zIndex: 5,
-    boxShadow: '-5px 0px 10px 0px #0000000D',
+    boxShadow: theme.shadows[1],
   },
   '& .job-status-header': {
     position: 'sticky',
     right: 90,
-    background: '#F7FAFC',
+    background: theme.palette.grey[100],
     zIndex: 5,
-    boxShadow: '-5px 0px 10px 0px #0000000D',
+    boxShadow: theme.shadows[1],
   },
   '& .action-cell': {
     position: 'sticky',
     right: 0,
-    background: '#fff',
+    background: theme.palette.background.paper,
     zIndex: 6,
   },
   '& .action-header': {
     position: 'sticky',
     right: 0,
-    background: '#F7FAFC',
+    background: theme.palette.grey[100],
     zIndex: 6,
   },
   '& .MuiDataGrid-row, .MuiDataGrid-columnHeaders': {
     overflow: 'visible !important',
+  },
+  '& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within': {
+    outline: 'none',
+    boxShadow: 'none',
   },
 }));
 
