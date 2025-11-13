@@ -12,6 +12,7 @@ import {
   fetchPostStatus,
   fetchProvince,
   fetchSection,
+  fetchUsers,
 } from './services';
 
 // ----------------------------------------------------------------------
@@ -86,6 +87,13 @@ const useMasterDataQuery = {
     queryOptions({
       queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.employeeType],
       queryFn: () => fetchEmployeeType(),
+      select: (response) => response.data,
+    }),
+
+  users: () =>
+    queryOptions({
+      queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.users],
+      queryFn: () => fetchUsers(),
       select: (response) => response.data,
     }),
 };

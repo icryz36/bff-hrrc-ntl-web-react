@@ -134,3 +134,29 @@ export type TGroupLocation = {
   label: string;
   value: string;
 };
+
+// Vacancy ---------------------------------------------------------------------
+
+export type TVacancy = {
+  label: string;
+  value: string;
+};
+
+//  Source Of Recruitment ------------------------------------------------------
+
+export type TSourceOfRecruitment = {
+  label: string;
+  value: string;
+};
+
+// users -----------------------------------------------------------------------
+
+export type TGetUserResponse = TStatusResponse & {
+  data: TPostStatus[];
+};
+
+export type TUser = {
+  userId: string;
+  name: string;
+  surname: string;
+};
