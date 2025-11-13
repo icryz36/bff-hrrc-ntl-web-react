@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useJobpostQuery } from 'services/jobpost/query';
 import { fDate } from 'utils/format-time';
 import IconifyIcon from 'components/base/IconifyIcon';
+import { getStatusBadgeColor } from '../view/list-job-table-view';
 
 interface IListJobDetailComponentProps {
   open: boolean;
@@ -17,7 +18,10 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     jobPostId: jobPostId ?? '',
   });
 
-  const { data: jobData } = useQuery(query);
+  const { data: jobData } = useQuery({
+    ...query,
+    enabled: !!jobPostId,
+  });
 
   const InfoRow = ({
     label,
@@ -113,7 +117,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             <Grid size={{ md: 6 }}>
               <InfoRow
                 label="Job Status"
-                value={<Chip label={jobData?.statusName} color="success" variant="soft" />}
+                value={
+                  <Chip
+                    label={jobData?.statusName}
+                    color={getStatusBadgeColor(jobData?.statusName || '')}
+                    variant="soft"
+                  />
+                }
               />
             </Grid>
           </Grid>

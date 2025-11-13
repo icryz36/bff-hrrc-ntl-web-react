@@ -11,8 +11,8 @@ import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledDataGrid, StyledTypography2Line } from '../styles';
 
-const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
-  switch (val.toLocaleLowerCase()) {
+export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+  switch (val?.toLocaleLowerCase()) {
     case 'open':
       return 'success';
     case 'close':
