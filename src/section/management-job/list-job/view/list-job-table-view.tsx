@@ -1,7 +1,8 @@
 import { RefObject, useMemo, useState } from 'react';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
-import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
@@ -79,14 +80,11 @@ const ListJobTableView = ({
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
-        ...GRID_CHECKBOX_SELECTION_COL_DEF,
-        width: 64,
-      },
-      {
         field: 'jobPostNo',
         headerName: 'Job Post ID',
+        filterable: false,
+        sortable: false,
         minWidth: 148,
-        flex: 1,
         renderCell: (params) => {
           return (
             <Link
@@ -123,47 +121,56 @@ const ListJobTableView = ({
       {
         field: 'regionName',
         headerName: 'NTL Regional',
-        minWidth: 160,
+        minWidth: 140,
       },
       {
         field: 'provinceName',
         headerName: 'Province',
-        minWidth: 160,
+        filterable: false,
+        sortable: false,
+        minWidth: 140,
       },
       {
         field: 'districtName',
         headerName: 'District',
-        minWidth: 160,
         filterable: false,
+        sortable: false,
+        minWidth: 140,
       },
       {
         field: 'startDate',
         headerName: 'Start Date',
-        minWidth: 160,
+        minWidth: 140,
         filterable: false,
+        renderCell: (params) => {
+          return dayjs(params.row.startDate).format('DD/MM/YYYY');
+        },
       },
       {
         field: 'totalActiveDays',
         headerName: 'Active Day',
         minWidth: 130,
         filterable: false,
+        renderCell: (params) => {
+          return `${params.row.totalActiveDays} Days`;
+        },
       },
       {
         field: 'headcount',
         headerName: 'HC',
-        minWidth: 80,
+        minWidth: 74,
         filterable: false,
       },
       {
         field: 'ownerUserName',
         headerName: 'Owner',
-        minWidth: 150,
+        minWidth: 200,
         filterable: false,
       },
       {
         field: 'statusName',
         headerName: 'Job Status',
-        minWidth: 130,
+        minWidth: 90,
         headerClassName: 'job-status-header',
         cellClassName: 'job-status-cell',
         renderCell: (params) => {
@@ -227,6 +234,7 @@ const ListJobTableView = ({
           getRowId={(row) => row.jobPostId}
           disableVirtualization
           rowCount={totalItem}
+          checkboxSelection={false}
           pagination
           paginationMode="server"
           onPaginationModelChange={(model) => {
