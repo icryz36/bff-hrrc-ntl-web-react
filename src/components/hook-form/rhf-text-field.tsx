@@ -7,9 +7,10 @@ import TextField from '@mui/material/TextField';
 
 type Props = TextFieldProps & {
   name: string;
+  maxLength?: number;
 };
 
-export function RHFTextField({ name, helperText, type, ...other }: Props) {
+export function RHFTextField({ name, helperText, maxLength, type, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -33,6 +34,9 @@ export function RHFTextField({ name, helperText, type, ...other }: Props) {
           helperText={<Typography variant="caption">{error?.message ?? helperText}</Typography>}
           inputProps={{
             autoComplete: 'off',
+            ...(maxLength && {
+              maxLength,
+            }),
           }}
           {...other}
         />

@@ -20,12 +20,23 @@ const CustomConfirmDialog = ({
   description,
   action,
 }: CustomConfirmDialogProps) => {
+  // Func ---------------------------------------------------------------
+
+  const handleClose: DialogProps['onClose'] = (_, reason) => {
+    if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+      return;
+    }
+    onClose?.();
+  };
+
+  // ---------------------------------------------------------------------
+
   return (
     <Dialog
       fullWidth
       open={open}
       maxWidth="xs"
-      onClose={onClose}
+      onClose={handleClose}
       slotProps={{ paper: { sx: { minWidth: 460, p: 1, borderRadius: '24px' } } }}
     >
       <DialogTitle>{title}</DialogTitle>

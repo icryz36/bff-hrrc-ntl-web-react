@@ -11,6 +11,10 @@ const endpoint = {
     degree: `get-degree-master-xapi`,
     employeeType: `get-employeetype-master-xapi`,
   },
+  jobpost: {
+    list: `get-jobpost-list-xapi`,
+    create: `create-jobpost-xapi`,
+  },
 };
 
 export { endpoint };

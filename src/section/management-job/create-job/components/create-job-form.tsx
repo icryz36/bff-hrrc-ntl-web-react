@@ -1,5 +1,5 @@
-import { useForm } from 'react-hook-form';
-// import { useFieldArray } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -12,12 +12,16 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
-// import { useDebounce } from 'hooks/useDebounce';
+import dayjs from 'dayjs';
+import { useDebounce } from 'hooks/useDebounce';
+import { useMasterDataQuery } from 'services/master-data/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
+import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
 import { CreateJobSchema, CreateJobSchemaType } from '../schema';
 import { StyledFormContainerBox } from '../styles';
 
@@ -25,68 +29,154 @@ import { StyledFormContainerBox } from '../styles';
 
 type CreateJobFormProps = {
   isEdit?: boolean;
+  isLoading?: boolean;
   onSubmit: (data: CreateJobSchemaType) => void;
 };
 
-export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
+// ----------------------------------------------------------------------
+
+const defaultValues: CreateJobSchemaType = {
+  // Job Detail
+  jobPostId: '',
+  statusId: '',
+  jobTitle: '',
+  groupLocation: null,
+  regionId: null,
+  headCount: '',
+  prNo: '',
+
+  // Position
+  position: [],
+
+  // Work Location
+  province: null,
+  districtId: [],
+
+  // Department
+  departmentId: null,
+  sectionId: null,
+
+  // Type of Employee
+  levelId: null,
+  degreeId: null,
+  employeeTypeId: null,
+
+  // Date
+  startDate: '',
+  endDate: '',
+  acknowledgeDate: '',
+
+  ownerUserId: '',
+  recruiterUserId: [],
+  jobDescription: '',
+  jobSpecification: '',
+  jobBenefit: '',
+};
+
+// ----------------------------------------------------------------------
+
+export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProps) => {
   const theme = useTheme();
 
-  // Form ---------------------------------------------------------------
+  // form -----------------------------------------------------------------
 
-  const defaultValues: CreateJobSchemaType = {
-    // Job Detail
-    jobPostId: '',
-    statusId: '',
-    jobTitle: '',
-    groupLocation: '',
-    regionId: '',
-    headCount: '',
-    prNo: '',
-
-    // Position
-    position: [],
-
-    // Work Location
-    province: '',
-    districtId: [],
-
-    // Department
-    department: '',
-    sectionId: '',
-
-    // Type of Employee
-    levelId: '',
-    degreeId: '',
-    employeeTypeId: '',
-
-    // Date
-    startDate: '',
-    endDate: '',
-    acknowledgeDate: '',
-
-    owner: '',
-    recruiterUserId: [],
-    jobDescription: '',
-    jobSpecification: '',
-    jobBenefit: '',
-  };
-
-  const methods = useForm({
+  const methods = useForm<CreateJobSchemaType>({
     resolver: zodResolver(CreateJobSchema),
     defaultValues,
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, control } = methods;
 
-  // const {
-  //   fields: fieldsPosition,
-  //   append: appendPosition,
-  //   remove: removePosition,
-  // } = useFieldArray({ control, name: 'position' });
+  const selectedProvince = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'province',
+  });
 
-  // const debouncedHeadCount = useDebounce(String(headCount), 2000);
+  const selectedDepartmentId = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'departmentId',
+  });
 
-  // console.log('debouncedHeadCount', debouncedHeadCount);
+  const selectedHeadCount = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'headCount',
+  });
+
+  const selectedGroupLocation = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'groupLocation',
+  });
+
+  const selectedStartDate = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'startDate',
+  });
+
+  const selectedEndDate = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'endDate',
+  });
+
+  const { fields: fieldsPosition, replace: replacePosition } = useFieldArray({
+    control,
+    name: 'position',
+  });
+
+  // api ----------------------------------------------------------------
+
+  const { data: postStatusList = [] } = useQuery(useMasterDataQuery.postStatus());
+  const { data: ntlRegionList = [] } = useQuery(useMasterDataQuery.ntlRegion());
+  const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
+  const { data: departmentList = [] } = useQuery(useMasterDataQuery.department());
+  const { data: jobLevelList = [] } = useQuery(useMasterDataQuery.jobLevel());
+  const { data: degreeList = [] } = useQuery(useMasterDataQuery.degree());
+  const { data: employeeTypeList = [] } = useQuery(useMasterDataQuery.employeeType());
+
+  const { data: districtList = [] } = useQuery({
+    ...useMasterDataQuery.district({ provinceId: selectedProvince?.provinceId }),
+    enabled: !!selectedProvince,
+  });
+
+  const { data: sectionList = [] } = useQuery({
+    ...useMasterDataQuery.section({ departmentId: selectedDepartmentId?.departmentId }),
+    enabled: !!selectedDepartmentId,
+  });
+
+  // Hook ---------------------------------------------------------------
+
+  const debouncedHeadCount = useDebounce(selectedHeadCount, 300);
+
+  // reset district when province change
+  // useEffect(() => {
+  //   resetField('districtId');
+  // }, [selectedProvince, resetField]);
+
+  // reset sectionId when departmentId change
+  // useEffect(() => {
+  //   resetField('sectionId');
+  // }, [selectedDepartmentId, resetField]);
+
+  // for dynamic field position
+  useEffect(() => {
+    const newHeadCount = Number(debouncedHeadCount) || 0;
+
+    if (newHeadCount < 0) return;
+
+    if (newHeadCount === fieldsPosition.length) return;
+
+    if (newHeadCount > fieldsPosition.length) {
+      const diff = newHeadCount - fieldsPosition.length;
+      const newItems: CreateJobSchemaType['position'] = Array.from({ length: diff }, () => ({
+        positionId: undefined,
+        vacancy: '',
+        srcOfRecruitment: '',
+      }));
+
+      replacePosition([...fieldsPosition, ...newItems]);
+    } else {
+      replacePosition(fieldsPosition.slice(0, newHeadCount));
+    }
+  }, [debouncedHeadCount, fieldsPosition, replacePosition]);
 
   // ----------------------------------------------------------------------
 
@@ -135,9 +225,9 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Select name="statusId" label="Job Status *">
-              {MOCK_OPTION.map((option) => (
-                <MenuItem key={option.value} value={option.label}>
-                  {option.label}
+              {postStatusList.map((option) => (
+                <MenuItem key={option.statusId} value={option.statusId}>
+                  {option.statusNameEn}
                 </MenuItem>
               ))}
             </Field.Select>
@@ -148,27 +238,42 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Select name="groupLocation" label="Group Location *">
-              {GROUP_LOCATION.map((option) => (
-                <MenuItem key={option.value} value={option.label}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Field.Select>
+            <Field.Autocomplete
+              fullWidth
+              name="groupLocation"
+              label="Group Location *"
+              getOptionLabel={(option) => option.label}
+              options={GROUP_LOCATION.map((option) => option)}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Select name="regionId" label="NTL Regional">
-              {MOCK_OPTION.map((option) => (
-                <MenuItem key={option.value} value={option.label}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Field.Select>
+            <Field.Autocomplete
+              fullWidth
+              name="regionId"
+              label="NTL Regional"
+              getOptionLabel={(option) => option.regionNameEn}
+              options={ntlRegionList.map((option) => option)}
+              isOptionEqualToValue={(option, value) => option.regionId === value.regionId}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Text name="headCount" label="Headcount *" />
+            <Field.Text
+              name="headCount"
+              label="Headcount *"
+              slotProps={{
+                input: {
+                  inputProps: {
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    onKeyPress: handleHeadcountKeyPress,
+                    onPaste: handleHeadcountPaste,
+                  },
+                },
+              }}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
@@ -177,41 +282,53 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
           {/* Position */}
 
-          <Grid size={12}>
-            <StyledFormContainerBox>
-              <Typography variant="subtitle1_bold">Position</Typography>
+          {!!selectedGroupLocation && !!selectedHeadCount && (
+            <Grid size={12}>
+              <StyledFormContainerBox>
+                <Typography variant="subtitle1_bold">Position</Typography>
 
-              <Grid container spacing={2} mt={2}>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Position No. From HRMS">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                <Grid container spacing={2} mt={2}>
+                  {fieldsPosition.map((field, index) => (
+                    <Grid key={field.id} container spacing={2} size={12}>
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Text
+                          name={`position.${index}.positionId`}
+                          label="Position No. From HRMS"
+                          maxLength={20}
+                        />
+                      </Grid>
+
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Select
+                          name={`position.${index}.vacancy`}
+                          label="Rationale of Vacancy *"
+                        >
+                          {MOCK_OPTION.map((option) => (
+                            <MenuItem key={option.value} value={option.label}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </Field.Select>
+                      </Grid>
+
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Select
+                          name={`position.${index}.srcOfRecruitment`}
+                          label="Source of Recruitment *"
+                        >
+                          {MOCK_OPTION.map((option) => (
+                            <MenuItem key={option.value} value={option.label}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </Field.Select>
+                      </Grid>
+                    </Grid>
+                  ))}
                 </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Rationale of Vacancy *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Source of Recruitment *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
-                </Grid>
-              </Grid>
-            </StyledFormContainerBox>
-          </Grid>
+              </StyledFormContainerBox>
+            </Grid>
+          )}
 
           {/* Work Location */}
 
@@ -221,13 +338,14 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
-                  <Field.Select name="" label="Province *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="province"
+                    label="Province *"
+                    getOptionLabel={(option) => option.provinceNameEn}
+                    options={provinceList.map((option) => option)}
+                    isOptionEqualToValue={(option, value) => option.provinceId === value.provinceId}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <Field.Autocomplete
@@ -236,9 +354,11 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
                     name="districtId"
                     label="District *"
                     disableCloseOnSelect
-                    getOptionLabel={(option) => option.label}
-                    options={MOCK_OPTION.map((option) => option)}
+                    disabled={!selectedProvince}
+                    getOptionLabel={(option) => option.districtNameEn}
+                    options={districtList.map((option) => option)}
                     slotProps={{ chip: { variant: 'outlined' } }}
+                    isOptionEqualToValue={(option, value) => option.districtId === value.districtId}
                   />
                 </Grid>
               </Grid>
@@ -253,22 +373,27 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
-                  <Field.Select name="" label="Department *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="departmentId"
+                    label="Department *"
+                    getOptionLabel={(option) => option.departmentNameEn}
+                    options={departmentList.map((option) => option)}
+                    isOptionEqualToValue={(option, value) =>
+                      option.departmentId === value.departmentId
+                    }
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
-                  <Field.Select name="" label="Section *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="sectionId"
+                    label="Section *"
+                    disabled={!selectedDepartmentId}
+                    getOptionLabel={(option) => option.sectionNameEn}
+                    options={sectionList.map((option) => option)}
+                    isOptionEqualToValue={(option, value) => option.sectionId === value.sectionId}
+                  />
                 </Grid>
               </Grid>
             </StyledFormContainerBox>
@@ -282,54 +407,67 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
 
               <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Job Level *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="levelId"
+                    label="Job Level *"
+                    getOptionLabel={(option) => option.levelNameEn}
+                    options={jobLevelList.map((option) => option)}
+                    isOptionEqualToValue={(option, value) => option.levelId === value.levelId}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Degree *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="degreeId"
+                    label="Degree *"
+                    options={degreeList.map((option) => option)}
+                    getOptionLabel={(option) => option.degreeNameEn}
+                    isOptionEqualToValue={(option, value) => option.degreeId === value.degreeId}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Field.Select name="" label="Employee Type *">
-                    {MOCK_OPTION.map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Field.Select>
+                  <Field.Autocomplete
+                    fullWidth
+                    name="employeeTypeId"
+                    label="Employee Type *"
+                    options={employeeTypeList.map((option) => option)}
+                    getOptionLabel={(option) => option.employeeTypeEN}
+                    isOptionEqualToValue={(option, value) =>
+                      option.employeeTypeId === value.employeeTypeId
+                    }
+                  />
                 </Grid>
               </Grid>
             </StyledFormContainerBox>
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="" label="Start Date *" />
+            <Field.DatePicker name="startDate" label="Start Date *" />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="" label="End Date *" />
+            <Field.DatePicker
+              name="endDate"
+              label="End Date *"
+              minDate={dayjs(selectedStartDate)}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="" label="Acknowledge Date *" />
+            <Field.DatePicker
+              name="acknowledgeDate"
+              label="Acknowledge Date *"
+              maxDate={dayjs(selectedEndDate)}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Text name="" label="Owner" disabled />
+            <Field.Text name="ownerUserId" label="Owner" disabled />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               multiple
               fullWidth
-              name=""
+              name="recruiterUserId"
               label="Group Recruiter"
               disableCloseOnSelect
               getOptionLabel={(option) => option.label}
@@ -342,7 +480,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Job Description</Typography>
 
-              <Field.Editor name="" />
+              <Field.Editor name="jobDescription" />
             </Stack>
           </Grid>
 
@@ -350,7 +488,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Job Specification</Typography>
 
-              <Field.Editor name="" />
+              <Field.Editor name="jobSpecification" />
             </Stack>
           </Grid>
 
@@ -358,7 +496,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Benefit</Typography>
 
-              <Field.Editor name="" />
+              <Field.Editor name="jobBenefit" />
             </Stack>
           </Grid>
         </Grid>
@@ -369,7 +507,7 @@ export const CreateJobForm = ({ onSubmit, isEdit }: CreateJobFormProps) => {
               Cancel
             </Button>
           )}
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" loading={isLoading}>
             Post
           </Button>
         </Stack>

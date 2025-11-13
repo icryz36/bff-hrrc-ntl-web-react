@@ -9,3 +9,5 @@ export * from './rhf-autocomplete';
 export * from './rhf-date-picker';
 
 export * from './rhf-editor';
+
+export * from './schema-helper';

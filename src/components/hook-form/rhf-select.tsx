@@ -50,6 +50,11 @@ export function RHFSelect({
             htmlInput: { id: labelId },
             inputLabel: { htmlFor: labelId },
           }}
+          SelectProps={{
+            MenuProps: {
+              slotProps: { paper: { sx: { mt: 0.6 } } },
+            },
+          }}
           {...other}
         >
           {children}
