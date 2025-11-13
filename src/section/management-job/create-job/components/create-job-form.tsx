@@ -13,7 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { GROUP_LOCATION } from 'constant/enum';
+import { GROUP_LOCATION, OPTION_SOURCE_OF_RECRUITMENT, OPTION_VACANCY } from 'constant/enum';
 import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
@@ -85,7 +85,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     defaultValues,
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, setValue } = methods;
 
   const selectedProvince = useWatch<CreateJobSchemaType>({
     control,
@@ -131,6 +131,8 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
   const { data: jobLevelList = [] } = useQuery(useMasterDataQuery.jobLevel());
   const { data: degreeList = [] } = useQuery(useMasterDataQuery.degree());
   const { data: employeeTypeList = [] } = useQuery(useMasterDataQuery.employeeType());
+  const { data: positionList = [] } = useQuery(useMasterDataQuery.position());
+  const { data: usersList = [] } = useQuery(useMasterDataQuery.users());
 
   const { data: districtList = [] } = useQuery({
     ...useMasterDataQuery.district({ provinceId: selectedProvince?.provinceId }),
@@ -141,6 +143,10 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     ...useMasterDataQuery.section({ departmentId: selectedDepartmentId?.departmentId }),
     enabled: !!selectedDepartmentId,
   });
+
+  const filterPostStatusList = postStatusList?.filter(
+    (item) => item.statusId !== '10265555-dc7c-4c12-8e02-e6b5c751e9ae',
+  );
 
   // Hook ---------------------------------------------------------------
 
@@ -167,9 +173,9 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     if (newHeadCount > fieldsPosition.length) {
       const diff = newHeadCount - fieldsPosition.length;
       const newItems: CreateJobSchemaType['position'] = Array.from({ length: diff }, () => ({
-        positionId: undefined,
-        vacancy: '',
-        srcOfRecruitment: '',
+        positionId: null,
+        vacancy: null,
+        srcOfRecruitment: null,
       }));
 
       replacePosition([...fieldsPosition, ...newItems]);
@@ -177,6 +183,15 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
       replacePosition(fieldsPosition.slice(0, newHeadCount));
     }
   }, [debouncedHeadCount, fieldsPosition, replacePosition]);
+
+  useEffect(() => {
+    if (selectedGroupLocation) {
+      setValue('headCount', '1', {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }, [selectedGroupLocation, setValue]);
 
   // ----------------------------------------------------------------------
 
@@ -225,9 +240,9 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Select name="statusId" label="Job Status *">
-              {postStatusList.map((option) => (
+              {filterPostStatusList.map((option) => (
                 <MenuItem key={option.statusId} value={option.statusId}>
-                  {option.statusNameEn}
+                  {option.statusNameTh}
                 </MenuItem>
               ))}
             </Field.Select>
@@ -253,7 +268,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
               fullWidth
               name="regionId"
               label="NTL Regional"
-              getOptionLabel={(option) => option.regionNameEn}
+              getOptionLabel={(option) => option.regionNameTh}
               options={ntlRegionList.map((option) => option)}
               isOptionEqualToValue={(option, value) => option.regionId === value.regionId}
             />
@@ -282,7 +297,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
 
           {/* Position */}
 
-          {!!selectedGroupLocation && !!selectedHeadCount && (
+          {!!selectedGroupLocation && (
             <Grid size={12}>
               <StyledFormContainerBox>
                 <Typography variant="subtitle1_bold">Position</Typography>
@@ -291,37 +306,38 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                   {fieldsPosition.map((field, index) => (
                     <Grid key={field.id} container spacing={2} size={12}>
                       <Grid size={{ xs: 12, md: 4 }}>
-                        <Field.Text
+                        <Field.Autocomplete
+                          fullWidth
                           name={`position.${index}.positionId`}
                           label="Position No. From HRMS"
-                          maxLength={20}
+                          getOptionLabel={(option) => option.positionCode}
+                          options={positionList.map((option) => option)}
+                          isOptionEqualToValue={(option, value) =>
+                            option.positionId === value.positionId
+                          }
                         />
                       </Grid>
 
                       <Grid size={{ xs: 12, md: 4 }}>
-                        <Field.Select
+                        <Field.Autocomplete
+                          fullWidth
                           name={`position.${index}.vacancy`}
                           label="Rationale of Vacancy *"
-                        >
-                          {MOCK_OPTION.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </Field.Select>
+                          getOptionLabel={(option) => option.label}
+                          options={OPTION_VACANCY.map((option) => option)}
+                          isOptionEqualToValue={(option, value) => option.value === value.value}
+                        />
                       </Grid>
 
                       <Grid size={{ xs: 12, md: 4 }}>
-                        <Field.Select
-                          name={`position.${index}.srcOfRecruitment`}
+                        <Field.Autocomplete
+                          fullWidth
                           label="Source of Recruitment *"
-                        >
-                          {MOCK_OPTION.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </Field.Select>
+                          name={`position.${index}.srcOfRecruitment`}
+                          getOptionLabel={(option) => option.label}
+                          options={OPTION_SOURCE_OF_RECRUITMENT.map((option) => option)}
+                          isOptionEqualToValue={(option, value) => option.value === value.value}
+                        />
                       </Grid>
                     </Grid>
                   ))}
@@ -342,7 +358,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     fullWidth
                     name="province"
                     label="Province *"
-                    getOptionLabel={(option) => option.provinceNameEn}
+                    getOptionLabel={(option) => option.provinceNameTh}
                     options={provinceList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.provinceId === value.provinceId}
                   />
@@ -355,7 +371,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     label="District *"
                     disableCloseOnSelect
                     disabled={!selectedProvince}
-                    getOptionLabel={(option) => option.districtNameEn}
+                    getOptionLabel={(option) => option.districtNameTh}
                     options={districtList.map((option) => option)}
                     slotProps={{ chip: { variant: 'outlined' } }}
                     isOptionEqualToValue={(option, value) => option.districtId === value.districtId}
@@ -377,7 +393,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     fullWidth
                     name="departmentId"
                     label="Department *"
-                    getOptionLabel={(option) => option.departmentNameEn}
+                    getOptionLabel={(option) => option.departmentNameTh}
                     options={departmentList.map((option) => option)}
                     isOptionEqualToValue={(option, value) =>
                       option.departmentId === value.departmentId
@@ -390,7 +406,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     name="sectionId"
                     label="Section *"
                     disabled={!selectedDepartmentId}
-                    getOptionLabel={(option) => option.sectionNameEn}
+                    getOptionLabel={(option) => option.sectionNameTh}
                     options={sectionList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.sectionId === value.sectionId}
                   />
@@ -411,7 +427,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     fullWidth
                     name="levelId"
                     label="Job Level *"
-                    getOptionLabel={(option) => option.levelNameEn}
+                    getOptionLabel={(option) => option.levelNameTh}
                     options={jobLevelList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.levelId === value.levelId}
                   />
@@ -422,7 +438,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     name="degreeId"
                     label="Degree *"
                     options={degreeList.map((option) => option)}
-                    getOptionLabel={(option) => option.degreeNameEn}
+                    getOptionLabel={(option) => option.degreeNameTh}
                     isOptionEqualToValue={(option, value) => option.degreeId === value.degreeId}
                   />
                 </Grid>
@@ -432,7 +448,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     name="employeeTypeId"
                     label="Employee Type *"
                     options={employeeTypeList.map((option) => option)}
-                    getOptionLabel={(option) => option.employeeTypeEN}
+                    getOptionLabel={(option) => option.employeeTypeTH}
                     isOptionEqualToValue={(option, value) =>
                       option.employeeTypeId === value.employeeTypeId
                     }
@@ -470,9 +486,10 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
               name="recruiterUserId"
               label="Group Recruiter"
               disableCloseOnSelect
-              getOptionLabel={(option) => option.label}
-              options={MOCK_OPTION.map((option) => option)}
+              options={usersList.map((option) => option)}
               slotProps={{ chip: { variant: 'outlined' } }}
+              getOptionLabel={(option) => `${option.name} ${option.surname}`}
+              isOptionEqualToValue={(option, value) => option.userId === value.userId}
             />
           </Grid>
 
@@ -517,10 +534,3 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     </Container>
   );
 };
-
-const MOCK_OPTION = [
-  { label: 'Option 1', value: 'OPTION_1' },
-  { label: 'Option 2', value: 'OPTION_2' },
-  { label: 'Option 3', value: 'OPTION_3' },
-  { label: 'Option 4', value: 'OPTION_4' },
-];
