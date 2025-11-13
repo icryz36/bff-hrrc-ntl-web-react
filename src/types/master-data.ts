@@ -1,9 +1,4 @@
-// common response
-export type TStatusResponse = {
-  transactionNo: string;
-  timestamp: string;
-  status: boolean;
-};
+import { TStatusResponse } from './common';
 
 // post status --------------------------------------------------------------
 
@@ -131,4 +126,11 @@ export type TEmployeeType = {
   employeeTypeId: string;
   employeeTypeTH: string;
   employeeTypeEN: string;
+};
+
+// group location --------------------------------------------------------------
+
+export type TGroupLocation = {
+  label: string;
+  value: string;
 };

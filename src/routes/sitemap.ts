@@ -1,5 +1,5 @@
 import { SxProps } from '@mui/material';
-import paths, { rootPaths } from './paths';
+import paths from './paths';
 
 export interface SubMenuItem {
   name: string;
@@ -32,7 +32,6 @@ const sitemap: MenuItem[] = [
       {
         name: 'Dashboard HO',
         key: 'Dashboard HO',
-        path: rootPaths.root,
         pathName: 'Dashboard HO',
         icon: 'mdi:graph-box-outline',
         active: true,

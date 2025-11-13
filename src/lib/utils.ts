@@ -348,3 +348,7 @@ export const generatePaletteChannel = <T extends ColorPalette>(
 export const cssVarRgba = (color: string, alpha: number) => {
   return `rgba(${color} / ${alpha})`;
 };
+
+export const toEndOfDay = (isoString: string) => {
+  return dayjs(isoString).hour(23).minute(59).second(0).format('YYYY-MM-DDTHH:mm:ssZ');
+};

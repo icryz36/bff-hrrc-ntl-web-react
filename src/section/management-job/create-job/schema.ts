@@ -1,4 +1,14 @@
+import {
+  TDegree,
+  TDepartment,
+  TEmployeeType,
+  TGroupLocation,
+  TJobLevel,
+  TNtlRegion,
+  TSection,
+} from 'types/master-data';
 import { z } from 'zod';
+import { schemaHelper } from 'components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -13,8 +23,13 @@ export const CreateJobSchema = z.object({
   jobPostId: z.string().optional(),
   statusId: z.string().min(1, { error: REQUIRED_MESSAGE }),
   jobTitle: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
-  groupLocation: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  regionId: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  groupLocation: schemaHelper.objectOrNull<TGroupLocation>({
+    message: { required_error: REQUIRED_MESSAGE },
+  }),
+
+  regionId: schemaHelper.objectOrNull<TNtlRegion>({
+    message: { required_error: REQUIRED_MESSAGE },
+  }),
   headCount: z.string().min(1, { error: REQUIRED_MESSAGE }),
   prNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
 
@@ -22,32 +37,42 @@ export const CreateJobSchema = z.object({
   position: z.array(
     z.object({
       positionId: z.string().trim().optional(),
-      vacancy: z.string().min(1, { error: REQUIRED_MESSAGE }),
-      srcOfRecruitment: z.string().min(1, { error: REQUIRED_MESSAGE }),
+      vacancy: z.string().optional(),
+      srcOfRecruitment: z.string(),
     }),
   ),
 
-  // Province
-  province: z.string().min(1, { error: REQUIRED_MESSAGE }),
-
   // Work Location
-  districtId: z.array(z.any()),
+  province: schemaHelper.objectOrNull({ message: { required_error: REQUIRED_MESSAGE } }),
+  districtId: z
+    .array(
+      z.object({
+        districtId: z.string(),
+        districtNameTh: z.string(),
+        districtNameEn: z.string(),
+      }),
+    )
+    .min(1, { error: REQUIRED_MESSAGE }),
 
   // Department
-  department: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  sectionId: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  departmentId: schemaHelper.objectOrNull<TDepartment>({
+    message: { required_error: REQUIRED_MESSAGE },
+  }),
+  sectionId: schemaHelper.objectOrNull<TSection>({ message: { required_error: REQUIRED_MESSAGE } }),
 
   // Type of Employee
-  levelId: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  degreeId: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  employeeTypeId: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  levelId: schemaHelper.objectOrNull<TJobLevel>({ message: { required_error: REQUIRED_MESSAGE } }),
+  degreeId: schemaHelper.objectOrNull<TDegree>({ message: { required_error: REQUIRED_MESSAGE } }),
+  employeeTypeId: schemaHelper.objectOrNull<TEmployeeType>({
+    message: { required_error: REQUIRED_MESSAGE },
+  }),
 
   // Date
   startDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
   endDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
   acknowledgeDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
 
-  owner: z.string().optional(),
+  ownerUserId: z.string().optional(),
   recruiterUserId: z.array(z.any()),
   jobDescription: z.string().min(1, { error: REQUIRED_MESSAGE }),
   jobSpecification: z.string().min(1, { error: REQUIRED_MESSAGE }),
