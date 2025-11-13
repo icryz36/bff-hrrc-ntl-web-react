@@ -1,14 +1,24 @@
 import { FC } from 'react';
 import { Checkbox, Chip, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
-import IconifyIcon from 'components/base/IconifyIcon.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { useJobpostQuery } from 'services/jobpost/query';
+import { fDate } from 'utils/format-time';
+import IconifyIcon from 'components/base/IconifyIcon';
 
 interface IListJobDetailComponentProps {
   open: boolean;
   onClose: () => void;
+  jobPostId: string | null;
 }
 
-const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClose }) => {
+const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClose, jobPostId }) => {
+  const query = useJobpostQuery.detail({
+    jobPostId: jobPostId ?? '',
+  });
+
+  const { data: jobData } = useQuery(query);
+
   const InfoRow = ({
     label,
     value,
@@ -64,7 +74,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         direction="column"
       >
         <Typography variant="h5" color="text.primary">
-          Job Post Detail : H00001
+          Job Post Detail : {jobData?.jobPostNo}
         </Typography>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -83,30 +93,27 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         </Stack>
 
         <Stack spacing={2} direction="column" px={3} py={0}>
-          <InfoRow
-            label="Job Title"
-            value="Sr/Mgr Risk Mitigation Strategy and Collateral Management"
-          />
+          <InfoRow label="Job Title" value={jobData?.jobTitle} />
           <Grid container spacing={2}>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Group Location" value="HO" />
+              <InfoRow label="Group Location" value={jobData?.groupLocation} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="NTL Regional" value="Head Office" />
+              <InfoRow label="NTL Regional" value={jobData?.regionName} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Headcount" value="5" />
+              <InfoRow label="Headcount" value={jobData?.headCount} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="PR Number" value="HCYYYYMM-000000" />
+              <InfoRow label="PR Number" value={jobData?.prNo} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Job Post ID" value="H00001" />
+              <InfoRow label="Job Post ID" value={jobData?.jobPostId} />
             </Grid>
             <Grid size={{ md: 6 }}>
               <InfoRow
                 label="Job Status"
-                value={<Chip label="Open" color="success" variant="soft" />}
+                value={<Chip label={jobData?.statusName} color="success" variant="soft" />}
               />
             </Grid>
           </Grid>
@@ -114,39 +121,43 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
 
         <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
           <SectionTitle title="Position" />
-          <Grid container spacing={2}>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label={`Position No.\nFrom HRMS`} value="N000001" gap={4} />
+          {jobData?.jobPostPositions?.map((item) => (
+            <Grid container spacing={2} key={item?.positionId}>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label={`Position No.\nFrom HRMS`} value={item?.positionName} gap={4} />
+              </Grid>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label={`Rationale of\nVacancy`} value={item?.vacancy} gap={4} />
+              </Grid>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label={`Source of\nRecruitment`} value={item?.srcOfRecruitment} gap={4} />
+              </Grid>
             </Grid>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label={`Rationale of\nVacancy`} value="Replacement" gap={4} />
-            </Grid>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label={`Source of\nRecruitment`} value="Internal Only" gap={4} />
-            </Grid>
-          </Grid>
+          ))}
         </Stack>
 
         <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
           <SectionTitle title="Work Location" />
-          <Grid container spacing={2}>
-            <Grid size={{ md: 6 }}>
-              <InfoRow label="Province" value="Province" />
+          {jobData?.workLocations?.map((item, index) => (
+            <Grid container spacing={2} key={index}>
+              <Grid size={{ md: 6 }}>
+                <InfoRow label="Province" value={item?.provinceName} />
+              </Grid>
+              <Grid size={{ md: 6 }}>
+                <InfoRow label="District" value={item?.districtName} />
+              </Grid>
             </Grid>
-            <Grid size={{ md: 6 }}>
-              <InfoRow label="District" value="District01, District02" />
-            </Grid>
-          </Grid>
+          ))}
         </Stack>
 
         <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
           <SectionTitle title="Department" />
           <Grid container spacing={2}>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Department" value="เงินติดล้อ" />
+              <InfoRow label="Department" value={jobData?.departmentName} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Section" value="เงินติดล้อ" />
+              <InfoRow label="Section" value={jobData?.sectionName} />
             </Grid>
           </Grid>
         </Stack>
@@ -155,13 +166,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           <SectionTitle title="Type of Employee" />
           <Grid container spacing={2}>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="Job Level" value="Officer/Branch Staff 1" />
+              <InfoRow label="Job Level" value={jobData?.levelName} />
             </Grid>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="Degree" value="ปริญญาตรี" />
+              <InfoRow label="Degree" value={jobData?.degreeName} />
             </Grid>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="Employee Type" value="งานประจำ" />
+              <InfoRow label="Employee Type" value={jobData?.employeeTypeName} />
             </Grid>
           </Grid>
         </Stack>
@@ -169,62 +180,53 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         <Stack px={3} py={2} spacing={2} direction="column">
           <Grid container spacing={2}>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="Start Date" value="01/10/2025" />
+              <InfoRow label="Start Date" value={fDate(jobData?.startDate)} />
             </Grid>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="End Date" value="01/10/2025" />
+              <InfoRow label="End Date" value={fDate(jobData?.endDate)} />
             </Grid>
             <Grid size={{ md: 4 }}>
-              <InfoRow label="Acknowledge Date" value="01/10/2025" />
+              <InfoRow label="Acknowledge Date" value={fDate(jobData?.acknowledgeDate)} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Owner" value="Chaiya Phongthun" />
+              <InfoRow label="Owner" value="-" />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Group Recruiter" value="Somchai Prasert, Niran Chaiyaporn" />
+              <InfoRow label="Group Recruiter" value="-" />
             </Grid>
           </Grid>
         </Stack>
 
         <Stack pt={2} spacing={2} direction="column">
           <SectionTitle title="Job Description" />
-          <Typography variant="subtitle2" color="text.secondary" px={4}>
-            ดูแลการออกนโยบายด้านงานพัฒนาความเสี่ยง...
-          </Typography>
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            px={4}
+            component="div"
+            dangerouslySetInnerHTML={{ __html: jobData?.jobDescription || '' }}
+          />
         </Stack>
 
         <Stack pt={2} spacing={2} direction="column">
           <SectionTitle title="Job Specification" />
-          <Stack>
-            <ul>
-              <li>
-                <Typography variant="subtitle2" color="text.secondary">
-                  มีประสบการณ์ในงานสายอาชีพไม่น้อยกว่า 1 ปี
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="subtitle2" color="text.secondary">
-                  มีทักษะการสื่อสาร และเจรจาต่อรอง
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="subtitle2" color="text.secondary">
-                  สามารถประสานงานหลายฝ่ายได้ดี
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="subtitle2" color="text.secondary">
-                  สามารถทำงานเป็นทีม และทำงานภายใต้แรงกดดันได้
-                </Typography>
-              </li>
-            </ul>
-          </Stack>
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            px={4}
+            component="div"
+            dangerouslySetInnerHTML={{ __html: jobData?.jobSpecification || '' }}
+          />
         </Stack>
         <Stack pt={2} pb={6} spacing={2} direction="column">
           <SectionTitle title="Benefit" />
-          <Typography variant="subtitle2" color="text.secondary" px={4}>
-            -
-          </Typography>
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            px={4}
+            component="div"
+            dangerouslySetInnerHTML={{ __html: jobData?.jobBenefit || '' }}
+          />
         </Stack>
       </Stack>
     </Drawer>

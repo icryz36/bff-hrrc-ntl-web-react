@@ -1,4 +1,4 @@
-import { RefObject, useMemo } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
@@ -46,6 +46,8 @@ const ListJobTableView = ({
 }: ProductsTableProps) => {
   const isOpenConfirmDeleteDialog = useBoolean();
   const isOpenDetailDialog = useBoolean();
+  const [selectedJobPostId, setSelectedJobPostId] = useState<string | null>(null);
+
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
@@ -58,7 +60,16 @@ const ListJobTableView = ({
         minWidth: 148,
         flex: 1,
         renderCell: (params) => {
-          return <Link onClick={isOpenDetailDialog.onTrue}>{params.row.jobPostNo}</Link>;
+          return (
+            <Link
+              onClick={() => {
+                setSelectedJobPostId(params.row.jobPostId);
+                isOpenDetailDialog.onTrue();
+              }}
+            >
+              {params.row.jobPostNo}
+            </Link>
+          );
         },
       },
       {
@@ -234,6 +245,7 @@ const ListJobTableView = ({
       <ListJobDetailComponent
         open={isOpenDetailDialog.value}
         onClose={isOpenDetailDialog.onFalse}
+        jobPostId={selectedJobPostId}
       />
     </>
   );
