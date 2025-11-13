@@ -49,11 +49,12 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
 const convertDefaultValuesForm = (
   data?: TJobPostById,
   masterData?: MasterDataMaps,
+  isDuplicate?: boolean,
 ): CreateJobSchemaType => {
   const getProvinceId = data?.workLocations?.[0].provinceId || '';
 
   return {
-    jobPostId: data?.jobPostNo || '',
+    jobPostId: !isDuplicate ? data?.jobPostNo || '' : '',
     statusId: data?.statusId || '',
     jobTitle: data?.jobTitle || '',
     prNo: data?.prNo || '',

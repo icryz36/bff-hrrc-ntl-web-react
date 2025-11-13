@@ -1,18 +1,18 @@
 import { queryOptions } from '@tanstack/react-query';
 import { endpoint } from 'constant/endpoint';
-import { TGetJobPostByIdPayload, TGetJobPostListPayload } from 'types/jobpost';
-import { fetchJobpostById, fetchJobpostList } from './services';
+import { TGetJobPostByIdPayload } from 'types/jobpost';
+import { fetchJobpostById } from './services';
 
 // ----------------------------------------------------------------------
 
 const useJobpostQuery = {
   keys: () => ['jobpost'] as const,
 
-  list: (payload: TGetJobPostListPayload) =>
-    queryOptions({
-      queryKey: [...useJobpostQuery.keys(), endpoint.jobpost.list, payload],
-      queryFn: () => fetchJobpostList(payload),
-    }),
+  // list: (payload: TGetJobPostListPayload) =>
+  //   queryOptions({
+  //     queryKey: [...useJobpostQuery.keys(), endpoint.jobpost.list, payload],
+  //     queryFn: () => fetchJobpostList(payload),
+  //   }),
 
   detail: (payload: TGetJobPostByIdPayload) =>
     queryOptions({

@@ -10,12 +10,22 @@ const paths = {
   starter: `/${rootPaths.pagesRoot}/starter`,
   createJob: `/${rootPaths.manageRoot}/job/create`,
   editJob: `/${rootPaths.manageRoot}/job/:id/edit`,
+  duplicateJob: `/${rootPaths.manageRoot}/job/:id/duplicate`,
   listJob: `/${rootPaths.manageRoot}/job/list`,
   defaultJwtLogin: `/${rootPaths.pagesRoot}/authentication/jwt/login`,
   defaultAuth0Login: `/${rootPaths.pagesRoot}/authentication/auth0/login`,
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
 
   404: `/${rootPaths.errorRoot}/404`,
+};
+
+export const navigatePaths = {
+  jobPost: {
+    listJob: `/${rootPaths.manageRoot}/job/list`,
+    createJob: `/${rootPaths.manageRoot}/job/create`,
+    editJob: (id: string) => `/${rootPaths.manageRoot}/job/${id}/edit`,
+    duplicateJob: (id: string) => `/${rootPaths.manageRoot}/job/${id}/duplicate`,
+  },
 };
 
 export const apiEndpoints = {

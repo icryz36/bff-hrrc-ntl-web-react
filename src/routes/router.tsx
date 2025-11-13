@@ -12,9 +12,11 @@ import paths, { rootPaths } from './paths';
 
 const WelcomePage = lazy(() => import('pages/Welcome'));
 
+// jobpost
 const CreateJobPage = lazy(() => import('pages/job/CreateJobPage'));
 const EditJobPage = lazy(() => import('pages/job/EditJobPage'));
 const ListJobPage = lazy(() => import('pages/job/ListJobPage'));
+const DuplicateJobPage = lazy(() => import('pages/job/DuplicateJobPage'));
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -64,6 +66,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.editJob,
                     element: <EditJobPage />,
+                  },
+                  {
+                    path: paths.duplicateJob,
+                    element: <DuplicateJobPage />,
                   },
                   {
                     path: paths.listJob,

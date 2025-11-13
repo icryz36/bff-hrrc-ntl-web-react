@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -18,7 +19,7 @@ import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
 import IconifyIcon from 'components/base/IconifyIcon';
-import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
+// import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
 import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
@@ -82,6 +83,7 @@ export const CreateJobForm = ({
   isLoading,
   defaultValuesForm,
 }: CreateJobFormProps) => {
+  const navigate = useNavigate();
   const theme = useTheme();
 
   // form -----------------------------------------------------------------
@@ -517,7 +519,7 @@ export const CreateJobForm = ({
 
         <Stack justifyContent="flex-end" mt={4.6} spacing={1.3}>
           {isEdit && (
-            <Button variant="outlined" color="neutral">
+            <Button variant="outlined" color="neutral" onClick={() => navigate(-1)}>
               Cancel
             </Button>
           )}
@@ -526,7 +528,7 @@ export const CreateJobForm = ({
           </Button>
         </Stack>
 
-        <DirtyFormLeaveGuardDialog />
+        {/* <DirtyFormLeaveGuardDialog /> */}
       </Form>
     </Container>
   );

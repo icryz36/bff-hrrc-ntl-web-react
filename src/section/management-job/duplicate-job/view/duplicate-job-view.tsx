@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { Button, Typography } from '@mui/material';
+import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
 import { navigatePaths } from 'routes/paths';
@@ -11,24 +11,27 @@ import {
   convertDefaultValuesForm,
 } from 'section/management-job/create-job/helper';
 import { CreateJobSchemaType } from 'section/management-job/create-job/schema';
-import { useUpdateJobpostMutation } from 'services/jobpost/mutation';
+import { useCreateJobpostMutation } from 'services/jobpost/mutation';
 import { useJobpostQuery } from 'services/jobpost/query';
 import { useMasterDataQuery } from 'services/master-data/query';
 import { MasterDataMaps } from 'types/master-data';
+import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 
 // ---------------------------------------------------------------------
 
-const EditJobView = () => {
+const DuplicateJobView = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const isOpenEditJobFailedDialog = useBoolean();
+  const [jobNo, setJobNo] = useState<string>('');
   const isOpenLoadDataFailedDialog = useBoolean();
-  const isOpenUpdateJobSuccessDialog = useBoolean();
+  const isOpenDuplicateJobSuccessDialog = useBoolean();
+  const isOpenDuplicateJobFailedDialog = useBoolean();
 
   // api ----------------------------------------------------------------
 
-  const { mutate: updateJobPost, isPending: isLoadingUpdateJobPost } = useUpdateJobpostMutation();
+  const { mutate: createJobPost, isPending: isLoadingCreateJobPost } = useCreateJobpostMutation();
+
   const { data: jobpostDetail, isError: isErrorGetjobDetail } = useQuery(
     useJobpostQuery.detail({ jobPostId: id }),
   );
@@ -88,7 +91,7 @@ const EditJobView = () => {
   );
 
   const defaultValuesForm = useMemo(
-    () => convertDefaultValuesForm(jobpostDetail?.data, masterDataMaps),
+    () => convertDefaultValuesForm(jobpostDetail?.data, masterDataMaps, true),
     [jobpostDetail?.data, masterDataMaps],
   );
 
@@ -97,22 +100,27 @@ const EditJobView = () => {
   const onSubmit = (data: CreateJobSchemaType) => {
     const payload = convertCreateEditJobPostPayload(data);
 
-    updateJobPost(
-      { ...payload, jobPostId: id },
-      {
-        onSuccess: (response) => {
-          if (response.status) {
-            isOpenUpdateJobSuccessDialog.onTrue();
-            return;
-          }
+    createJobPost(payload, {
+      onSuccess: (response) => {
+        if (response.status) {
+          setJobNo(response.data.jobPostNo);
+          isOpenDuplicateJobSuccessDialog.onTrue();
+          return;
+        }
 
-          isOpenEditJobFailedDialog.onTrue();
-        },
-        onError: () => {
-          isOpenEditJobFailedDialog.onTrue();
-        },
+        isOpenDuplicateJobFailedDialog.onTrue();
       },
-    );
+      onError: () => {
+        isOpenDuplicateJobFailedDialog.onTrue();
+      },
+    });
+  };
+
+  const handleCopyJobNo = () => {
+    if (jobNo) {
+      // TODO: show toast
+      navigator.clipboard.writeText(jobNo);
+    }
   };
 
   // hook ---------------------------------------------------------------
@@ -131,7 +139,7 @@ const EditJobView = () => {
       <CreateJobForm
         isEdit
         onSubmit={onSubmit}
-        isLoading={isLoadingUpdateJobPost}
+        isLoading={isLoadingCreateJobPost}
         defaultValuesForm={defaultValuesForm}
       />
 
@@ -139,44 +147,61 @@ const EditJobView = () => {
 
       <CustomConfirmDialog
         title="เกิดข้อผิดพลาด"
-        open={isOpenEditJobFailedDialog.value}
-        onClose={isOpenEditJobFailedDialog.onFalse}
+        open={isOpenDuplicateJobFailedDialog.value}
+        onClose={isOpenDuplicateJobFailedDialog.onFalse}
         description={
           <Typography color="text.secondary" variant="subtitle1">
             ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง
           </Typography>
         }
         action={
-          <Button variant="contained" onClick={isOpenEditJobFailedDialog.onFalse}>
+          <Button variant="contained" onClick={isOpenDuplicateJobFailedDialog.onFalse}>
             Close
           </Button>
         }
       />
 
       <CustomConfirmDialog
-        title="แก้ไขข้อมูลสำเร็จ"
-        open={isOpenUpdateJobSuccessDialog.value}
-        onClose={isOpenUpdateJobSuccessDialog.onFalse}
+        title="สร้าง Job สำเร็จ"
+        open={isOpenDuplicateJobSuccessDialog.value}
+        onClose={isOpenDuplicateJobSuccessDialog.onFalse}
         description={
-          <Typography color="text.secondary" variant="subtitle1">
-            คุณได้ทำการแก้ไขข้อมูลที่ต้องการสำเร็จ
-          </Typography>
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <Typography variant="subtitle1" color="text.secondary">
+              เลข Job No. คือ{' '}
+            </Typography>
+            <Typography variant="subtitle1_bold">{jobNo}</Typography>
+            <IconButton onClick={handleCopyJobNo}>
+              <IconifyIcon
+                icon="material-symbols-light:content-copy-outline"
+                color="text.primary"
+              />
+            </IconButton>
+          </Stack>
         }
         action={
-          <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
-            Go to List Job Post
-          </Button>
+          <Stack spacing={1}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => navigate(navigatePaths.jobPost.createJob)}
+            >
+              Create new Job
+            </Button>
+            <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
+              Go to List Job Post
+            </Button>
+          </Stack>
         }
       />
 
       <CustomConfirmDialog
-        title="โหลดข้อมูลไม่สำเร็จ"
+        title="คัดลอกรายการไม่สำเร็จ"
         open={isOpenLoadDataFailedDialog.value}
         onClose={isOpenLoadDataFailedDialog.onFalse}
         description={
           <Typography color="text.secondary" variant="subtitle1" whiteSpace="pre-wrap">
-            ระบบไม่สามารถแสดงข้อมูลที่คุณเลือกได้ในขณะนี้อาจเกิดจากการเชื่อมต่อหรือข้อมูลไม่พร้อมใช้งาน
-            กรุณาลองใหม่อีกครั้ง
+            เกิดข้อผิดพลาดระหว่างการคัดลอก กรุณาลองใหม่อีกครั้ง
           </Typography>
         }
         action={
@@ -189,4 +214,4 @@ const EditJobView = () => {
   );
 };
 
-export default EditJobView;
+export default DuplicateJobView;
