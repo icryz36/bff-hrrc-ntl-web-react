@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import axiosMasterDataInstance from 'services/axios/axiosInstance';
+import { axiosMasterDataInstance } from 'services/axios/axiosInstance';
 import {
   TGetDegreeResponse,
   TGetDepartmentResponse,
@@ -19,6 +19,7 @@ import {
 // query ---------------------------------------------------------------
 
 export const fetchPostStatus = async (): Promise<TGetPostStatusResponse> => {
+  console.log('axiosMasterDataInstance', axiosMasterDataInstance.defaults.baseURL);
   const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.postStatus,
