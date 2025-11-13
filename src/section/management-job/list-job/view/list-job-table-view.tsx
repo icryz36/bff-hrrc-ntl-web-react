@@ -62,6 +62,7 @@ const ListJobTableView = ({
       {
         onSuccess: (response) => {
           if (response.status) {
+            isOpenConfirmDeleteDialog.onFalse();
             isOpenUpdateJobStatusSuccessDialog.onTrue();
             return;
           }
