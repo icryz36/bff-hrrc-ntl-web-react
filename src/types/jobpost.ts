@@ -40,7 +40,70 @@ export type TGetJobPostListPagination = {
   totalPages: number;
 };
 
-// create jobpost ---------------------------------------------------------------
+// get jobpost by id -----------------------------------------------------------
+
+export type TGetJobPostByIdPayload = {
+  jobPostId: string;
+};
+
+export type TGetJobPostByIdResponse = TStatusResponse & {
+  data: TJobPostById;
+};
+
+export type TJobPostById = {
+  jobPostId: string;
+  jobPostNo: string;
+  prNo: string;
+  jobTitle: string;
+  headCount: number;
+  acknowledgeDate: string;
+  jobDescription: string;
+  jobSpecification: string;
+  jobBenefit: string;
+  statusId: string;
+  statusName: string;
+  departmentId: string;
+  departmentName: string;
+  sectionId: any;
+  sectionName: string;
+  levelId: string;
+  levelName: string;
+  degreeId: string;
+  degreeName: string;
+  employeeTypeId: string;
+  employeeTypeName: string;
+  regionId: string;
+  regionName: string;
+  startDate: string;
+  endDate: string;
+  name: string;
+  surname: string;
+  groupLocation: string;
+  jobPostPositions: TJobPostByIdPosition[];
+  workLocations: TJobPostByIdWorkLocation[];
+  recruiterUserId: string[];
+};
+
+export type TJobPostByIdPosition = {
+  positionId: string;
+  positionName: string;
+  vacancy: string;
+  srcOfRecruitment: string;
+};
+
+export type TJobPostByIdWorkLocation = {
+  provinceId: string;
+  provinceName: string;
+  areaName: string;
+  district: TJobPostByIdWorkLocationDistrict[];
+};
+
+export type TJobPostByIdWorkLocationDistrict = {
+  districtId: string;
+  districtName: string;
+};
+
+// create jobpost -------------------------------------------------------------
 
 export type TCreateJobPostPayload = {
   jobTitle: string;
@@ -63,6 +126,7 @@ export type TCreateJobPostPayload = {
   districtId: string[];
   recruiterUserId: string[];
   departmentId: string;
+  sectionId: string;
 };
 
 export type TCreateJobPostPosition = {
@@ -78,4 +142,15 @@ export type TCreateJobPostResponse = TStatusResponse & {
   };
 };
 
-// ----------------------------------------------------------------------
+// update jobpost -----------------------------------------------------------
+
+export type TUpdateJobPostPayload = TCreateJobPostPayload & {
+  jobPostId: string;
+};
+
+export type TUpdateJobPostResponse = TStatusResponse & {
+  data: {
+    jobPostId: string;
+    jobPostNo: string;
+  };
+};

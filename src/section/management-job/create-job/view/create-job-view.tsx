@@ -7,7 +7,7 @@ import { useJobpostQuery } from 'services/jobpost/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { CreateJobForm } from '../components/create-job-form';
-import { convertCreateJobPostPayload } from '../helper';
+import { convertCreateEditJobPostPayload } from '../helper';
 import { CreateJobSchemaType } from '../schema';
 
 // ---------------------------------------------------------------------
@@ -40,7 +40,7 @@ const CreateJobView = () => {
   // func ---------------------------------------------------------------
 
   const onSubmit = (data: CreateJobSchemaType) => {
-    const payload = convertCreateJobPostPayload(data);
+    const payload = convertCreateEditJobPostPayload(data);
 
     createJobPost(payload, {
       onSuccess: (response) => {

@@ -9,6 +9,8 @@ export const rootPaths = {
 const paths = {
   starter: `/${rootPaths.pagesRoot}/starter`,
   createJob: `/${rootPaths.manageRoot}/job/create`,
+  editJob: `/${rootPaths.manageRoot}/job/:id/edit`,
+
   defaultJwtLogin: `/${rootPaths.pagesRoot}/authentication/jwt/login`,
   defaultAuth0Login: `/${rootPaths.pagesRoot}/authentication/auth0/login`,
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
