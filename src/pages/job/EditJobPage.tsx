@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import EditJobView from 'section/management-job/edit-job/view/Edit-job-view';
+import EditJobView from 'section/management-job/edit-job/view/edit-job-view';
 import PageHeader from 'components/page-header/page-header';
 import PageContent from 'components/sections/common/PageContent';
 
