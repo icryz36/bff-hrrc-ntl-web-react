@@ -12,14 +12,12 @@ const convertCreateJobPostPayload = (data: CreateJobSchemaType): TCreateJobPostP
     headCount: Number(data.headCount),
     prNo: data.prNo,
 
-    //  Position // TODO: waiting api
-    position: [
-      {
-        positionId: 'b1925c49-ac3a-41b8-862e-905e36b31c7a',
-        vacancy: 1,
-        srcOfRecruitment: 'INTERNAL',
-      },
-    ],
+    // position
+    position: data.position.map((item) => ({
+      positionId: item.positionId?.positionId || '',
+      vacancy: item.vacancy?.value || '',
+      srcOfRecruitment: item.srcOfRecruitment?.value || '',
+    })),
 
     // Work Location
     districtId: data.districtId.map((item) => item.districtId),
@@ -38,7 +36,7 @@ const convertCreateJobPostPayload = (data: CreateJobSchemaType): TCreateJobPostP
     acknowledgeDate: data.acknowledgeDate,
 
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b', // TODO: waiting api
-    recruiterUserId: ['e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b'], // TODO: waiting api
+    recruiterUserId: data.recruiterUserId.map((item) => item.userId),
     jobDescription: data.jobDescription,
     jobSpecification: data.jobSpecification,
     jobBenefit: data.jobBenefit,

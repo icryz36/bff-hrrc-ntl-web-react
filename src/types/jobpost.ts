@@ -67,7 +67,7 @@ export type TCreateJobPostPayload = {
 
 export type TCreateJobPostPosition = {
   positionId: string;
-  vacancy: number;
+  vacancy: string;
   srcOfRecruitment: string;
 };
 

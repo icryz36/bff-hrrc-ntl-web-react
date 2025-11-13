@@ -8,11 +8,26 @@ RUN apk update --no-cache
 # Set the working directory inside the container
 WORKDIR /app
 
+# ----- Set environment variable -----
+# NODE_ENV=production ช่วยให้ npm ติดตั้งเฉพาะ production dependencies
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 # Copy package.json and package-lock.json first to leverage Docker's layer caching
 COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
+
+# ✅ Copy environment file (for build-time variables)
+# ✅ Copy environment file ตาม NODE_ENV (เช่น .env.dev → .env)
+# ถ้าไม่มีไฟล์นั้นจะ fallback ใช้ .env
+RUN echo "📦 Using environment file: .env.${NODE_ENV}" && \
+    if [ -f ".env.${NODE_ENV}" ]; then \
+      cp .env.${NODE_ENV} .env; \
+    else \
+      echo "⚠️ .env.${NODE_ENV} not found, using default .env"; \
+    fi
 
 # Copy the rest of the source code
 COPY . .
@@ -30,6 +45,9 @@ RUN apk update --no-cache
 # timezone
 RUN apk add --no-cache tzdata
 RUN cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
+
+# ----- Set environment -----
+ENV NODE_ENV=production
 
 # Expose port 80, the default for Nginx
 EXPOSE 80
