@@ -8,10 +8,10 @@ import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
-import { StyledDataGrid } from '../styles';
+import { StyledDataGrid, StyledTypography2Line } from '../styles';
 
 const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
-  switch (val) {
+  switch (val.toLocaleLowerCase()) {
     case 'open':
       return 'success';
     case 'close':
@@ -31,9 +31,19 @@ interface ProductsTableProps {
   apiRef: RefObject<GridApiCommunity | null>;
   filterButtonEl: HTMLButtonElement | null;
   tableData: TJobPost[];
+  onPageChange: (model: { page: number; pageSize: number }) => void;
+  totalItem: number;
+  currentPage: number;
 }
 
-const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
+const ListJobTableView = ({
+  apiRef,
+  filterButtonEl,
+  tableData,
+  onPageChange,
+  totalItem,
+  currentPage,
+}: ProductsTableProps) => {
   const isOpenConfirmDeleteDialog = useBoolean();
   const isOpenDetailDialog = useBoolean();
   const columns: GridColDef<any>[] = useMemo(
@@ -55,11 +65,21 @@ const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTablePr
         field: 'jobTitle',
         headerName: 'Job Title',
         minWidth: 330,
+        renderCell: (params) => (
+          <StyledTypography2Line variant="subtitle2_semibold">
+            {params.row.jobTitle}
+          </StyledTypography2Line>
+        ),
       },
       {
         field: 'departmentName',
         headerName: 'Department',
         minWidth: 160,
+        renderCell: (params) => (
+          <StyledTypography2Line variant="subtitle2_regular">
+            {params.row.departmentName}
+          </StyledTypography2Line>
+        ),
       },
       {
         field: 'regionName',
@@ -156,8 +176,6 @@ const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTablePr
     [],
   );
 
-  console.log('tableData ==> ', tableData);
-
   return (
     <>
       <Box width={1}>
@@ -168,11 +186,18 @@ const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTablePr
           columns={columns}
           getRowId={(row) => row.jobPostId}
           disableVirtualization
+          rowCount={totalItem}
+          pagination
+          paginationMode="server"
+          onPaginationModelChange={(model) => {
+            onPageChange(model);
+          }}
           pageSizeOptions={[defaultPageSize, 15]}
           initialState={{
             pagination: {
               paginationModel: {
                 pageSize: defaultPageSize,
+                page: currentPage - 1,
               },
             },
           }}

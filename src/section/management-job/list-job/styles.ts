@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -37,4 +38,13 @@ export const StyledDataGrid = styled(DataGrid)(() => ({
   '& .MuiDataGrid-row, .MuiDataGrid-columnHeaders': {
     overflow: 'visible !important',
   },
+}));
+
+export const StyledTypography2Line = styled(Typography)(() => ({
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 2,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'normal',
 }));

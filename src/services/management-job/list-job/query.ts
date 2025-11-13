@@ -8,7 +8,7 @@ const useListJobDataQuery = {
 
   getListJob: (payload: TGetJobPostListPayload) =>
     queryOptions({
-      queryKey: [...useListJobDataQuery.keys(), endpoint.jobpost.list],
+      queryKey: [...useListJobDataQuery.keys(), endpoint.jobpost.list, payload],
       queryFn: () => fetchListJobPost(payload),
       select: (response) => response.data,
     }),

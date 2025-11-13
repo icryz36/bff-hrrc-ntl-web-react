@@ -12,17 +12,22 @@ const ListJobView = () => {
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
   const apiRef = useGridApiRef();
   const isOpenJobFailedDialog = useBoolean();
+  const [pagination, setPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
 
   const query = useListJobDataQuery.getListJob({
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
     recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
-    pageNo: 1,
-    pageSize: 10,
+    pageNo: pagination.pageNo,
+    pageSize: pagination.pageSize,
   });
 
   const { data: listJobData } = useQuery(query);
 
   const tableData = listJobData?.items || [];
+  const tableTotalRecords = listJobData?.pagination?.totalRecords || 0;
 
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;
@@ -35,6 +40,13 @@ const ListJobView = () => {
 
     setFilterButtonEl(clickedEl);
     apiRef.current?.showFilterPanel();
+  };
+
+  const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
+    setPagination({
+      pageNo: page + 1,
+      pageSize,
+    });
   };
 
   return (
@@ -59,7 +71,14 @@ const ListJobView = () => {
           Create Job
         </Button>
       </Stack>
-      <ListJobTableView apiRef={apiRef} filterButtonEl={filterButtonEl} tableData={tableData} />
+      <ListJobTableView
+        apiRef={apiRef}
+        filterButtonEl={filterButtonEl}
+        tableData={tableData}
+        onPageChange={handlePageChange}
+        totalItem={tableTotalRecords}
+        currentPage={pagination.pageNo}
+      />
       <CustomConfirmDialog
         title="เกิดข้อผิดพลาด"
         open={isOpenJobFailedDialog.value}
