@@ -32,6 +32,7 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localhost:8000/api';
+const BASE_URL_MASTERDATA = import.meta.env.VITE_API_URL_MASTERDATA || 'http://localhost:8000/api';
 const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
 
 const setupInterceptors = (instance: any) => {
@@ -66,5 +67,8 @@ setupInterceptors(axiosInstance);
 const axiosJobPostInstance = axios.create({ baseURL: BASE_URL_JOBPOST });
 setupInterceptors(axiosJobPostInstance);
 
+const axiosMasterDataInstance = axios.create({ baseURL: BASE_URL_MASTERDATA });
+setupInterceptors(axiosMasterDataInstance);
+
 export default axiosInstance;
-export { axiosJobPostInstance };
+export { axiosJobPostInstance, axiosMasterDataInstance };

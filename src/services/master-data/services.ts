@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import axiosInstance from 'services/axios/axiosInstance';
+import axiosMasterDataInstance from 'services/axios/axiosInstance';
 import {
   TGetDegreeResponse,
   TGetDepartmentResponse,
@@ -18,7 +18,7 @@ import {
 // query ---------------------------------------------------------------
 
 export const fetchPostStatus = async (): Promise<TGetPostStatusResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.postStatus,
   });
@@ -27,7 +27,7 @@ export const fetchPostStatus = async (): Promise<TGetPostStatusResponse> => {
 };
 
 export const fetchNtlRegion = async (): Promise<TGetNtlRegionResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.ntlRegion,
   });
@@ -36,7 +36,7 @@ export const fetchNtlRegion = async (): Promise<TGetNtlRegionResponse> => {
 };
 
 export const fetchPosition = async (): Promise<TGetPositionResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.position,
   });
@@ -47,7 +47,7 @@ export const fetchPosition = async (): Promise<TGetPositionResponse> => {
 export const fetchDistrict = async (
   payload: TGetDistrictPayload,
 ): Promise<TGetDistrictResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.district,
     data: payload,
@@ -57,7 +57,7 @@ export const fetchDistrict = async (
 };
 
 export const fetchDepartment = async (): Promise<TGetDepartmentResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.department,
   });
@@ -66,7 +66,7 @@ export const fetchDepartment = async (): Promise<TGetDepartmentResponse> => {
 };
 
 export const fetchSection = async (payload: TGetSectionPayload): Promise<TGetSectionResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.section,
     data: payload,
@@ -76,7 +76,7 @@ export const fetchSection = async (payload: TGetSectionPayload): Promise<TGetSec
 };
 
 export const fetchProvince = async (): Promise<TGetProvinceResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.province,
   });
@@ -85,7 +85,7 @@ export const fetchProvince = async (): Promise<TGetProvinceResponse> => {
 };
 
 export const fetchJobLevel = async (): Promise<TGetJobLevelResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.jobLevel,
   });
@@ -94,7 +94,7 @@ export const fetchJobLevel = async (): Promise<TGetJobLevelResponse> => {
 };
 
 export const fetchDegree = async (): Promise<TGetDegreeResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.degree,
   });
@@ -103,7 +103,7 @@ export const fetchDegree = async (): Promise<TGetDegreeResponse> => {
 };
 
 export const fetchEmployeeType = async (): Promise<TGetemployeeTypeResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.employeeType,
   });
