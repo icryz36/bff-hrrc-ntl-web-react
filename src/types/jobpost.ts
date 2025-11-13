@@ -129,11 +129,25 @@ export type TGetJobPostDetailPayload = {
   jobPostId: string;
 };
 
-export type TGetJobPostDetailResponse = {
+export type TGetJobPostDetailResponse = TStatusResponse & {
   transactionNo: string;
   timestamp: string;
   status: boolean;
   data: TJobPostData;
+};
+
+// update status jobpost ---------------------------------------------------------------
+
+export type TUpdateJobPostStatusPayload = {
+  jobPostId: string;
+  statusId: string;
+};
+
+export type TUpdateJobPostStatusResponse = TStatusResponse & {
+  data: {
+    jobPostId: string;
+    statusId: string;
+  };
 };
 
 // ----------------------------------------------------------------------

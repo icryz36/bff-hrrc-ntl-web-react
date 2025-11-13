@@ -7,6 +7,8 @@ import {
   TGetJobPostDetailResponse,
   TGetJobPostListPayload,
   TGetJobPostListResponse,
+  TUpdateJobPostStatusPayload,
+  TUpdateJobPostStatusResponse,
 } from 'types/jobpost';
 
 // query ---------------------------------------------------------------
@@ -43,6 +45,18 @@ export const postCreateJob = async (
   const { data } = await axiosJobPostInstance({
     method: 'POST',
     url: endpoint.jobpost.create,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const updateJobStatus = async (
+  payload: TUpdateJobPostStatusPayload,
+): Promise<TUpdateJobPostStatusResponse> => {
+  const { data } = await axiosJobPostInstance({
+    method: 'POST',
+    url: endpoint.jobpost.updateStatus,
     data: payload,
   });
 
