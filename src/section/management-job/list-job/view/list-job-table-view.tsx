@@ -4,6 +4,7 @@ import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useBoolean } from 'hooks/useBoolean';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
+import { TGetJobPostListResponse } from 'types/list-job';
 import DashboardMenu from 'components/common/DashboardMenu';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
@@ -61,24 +62,25 @@ const defaultPageSize = 10;
 interface ProductsTableProps {
   apiRef: RefObject<GridApiCommunity | null>;
   filterButtonEl: HTMLButtonElement | null;
+  tableData: TGetJobPostListResponse[];
 }
 
-const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
+const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
   const isOpenConfirmDeleteDialog = useBoolean();
   const isOpenDetailDialog = useBoolean();
-  const columns: GridColDef<IListJobData>[] = useMemo(
+  const columns: GridColDef<any>[] = useMemo(
     () => [
       {
         ...GRID_CHECKBOX_SELECTION_COL_DEF,
         width: 64,
       },
       {
-        field: 'jobPostID',
+        field: 'jobPostNo',
         headerName: 'Job Post ID',
         minWidth: 148,
         flex: 1,
         renderCell: (params) => {
-          return <Link onClick={isOpenDetailDialog.onTrue}>{params.row.jobPostID}</Link>;
+          return <Link onClick={isOpenDetailDialog.onTrue}>{params.row.jobPostNo}</Link>;
         },
       },
       {
@@ -87,22 +89,22 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
         minWidth: 330,
       },
       {
-        field: 'department',
+        field: 'departmentName',
         headerName: 'Department',
         minWidth: 160,
       },
       {
-        field: 'regional',
+        field: 'regionName',
         headerName: 'NTL Regional',
         minWidth: 160,
       },
       {
-        field: 'province',
+        field: 'provinceName',
         headerName: 'Province',
         minWidth: 160,
       },
       {
-        field: 'district',
+        field: 'districtName',
         headerName: 'District',
         minWidth: 160,
         filterable: false,
@@ -114,25 +116,25 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
         filterable: false,
       },
       {
-        field: 'activeDay',
+        field: 'totalActiveDays',
         headerName: 'Active Day',
         minWidth: 130,
         filterable: false,
       },
       {
-        field: 'hc',
+        field: 'headcount',
         headerName: 'HC',
         minWidth: 80,
         filterable: false,
       },
       {
-        field: 'owner',
+        field: 'ownerUserName',
         headerName: 'Owner',
         minWidth: 150,
         filterable: false,
       },
       {
-        field: 'jobStatus',
+        field: 'statusName',
         headerName: 'Job Status',
         minWidth: 130,
         headerClassName: 'job-status-header',
@@ -140,9 +142,9 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
         renderCell: (params) => {
           return (
             <Chip
-              label={params.row.jobStatus}
+              label={params.row.statusName}
               variant="soft"
-              color={getStatusBadgeColor(params.row.jobStatus)}
+              color={getStatusBadgeColor(params.row.statusName)}
               sx={{ textTransform: 'capitalize' }}
             />
           );
@@ -186,14 +188,17 @@ const ListJobTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
     [],
   );
 
+  console.log('tableData ==> ', tableData);
+
   return (
     <>
       <Box width={1}>
         <StyledDataGrid
           rowHeight={64}
-          rows={ListJobData}
+          rows={tableData}
           apiRef={apiRef}
           columns={columns}
+          getRowId={(row) => row.jobPostId}
           disableVirtualization
           pageSizeOptions={[defaultPageSize, 15]}
           initialState={{

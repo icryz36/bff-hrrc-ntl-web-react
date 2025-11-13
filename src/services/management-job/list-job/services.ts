@@ -11,7 +11,5 @@ export const fetchListJobPost = async (
     data: payload,
   });
 
-  console.log('data xxx ==> ', data);
-
   return data;
 };

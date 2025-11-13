@@ -12,6 +12,7 @@ const ListJobView = () => {
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
   const apiRef = useGridApiRef();
   const isOpenJobFailedDialog = useBoolean();
+  const [tableData, setTableData] = useState<any[]>([]);
 
   const query = useListJobDataQuery.getListJob({
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
@@ -20,9 +21,11 @@ const ListJobView = () => {
     pageSize: 10,
   });
 
-  const { data } = useQuery(query);
+  console.log('query===> ', query);
 
-  console.log('data ==> ', data);
+  // const { data: jobs } = useQuery(query);
+
+  // console.log('jobs ==> ', jobs);
 
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;
@@ -59,7 +62,7 @@ const ListJobView = () => {
           Create Job
         </Button>
       </Stack>
-      <ListJobTableView apiRef={apiRef} filterButtonEl={filterButtonEl} />
+      <ListJobTableView apiRef={apiRef} filterButtonEl={filterButtonEl} tableData={tableData} />
       <CustomConfirmDialog
         title="เกิดข้อผิดพลาด"
         open={isOpenJobFailedDialog.value}
