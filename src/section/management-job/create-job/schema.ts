@@ -5,7 +5,10 @@ import {
   TGroupLocation,
   TJobLevel,
   TNtlRegion,
+  TPosition,
   TSection,
+  TSourceOfRecruitment,
+  TVacancy,
 } from 'types/master-data';
 import { z } from 'zod';
 import { schemaHelper } from 'components/hook-form';
@@ -36,9 +39,13 @@ export const CreateJobSchema = z.object({
   //  Position
   position: z.array(
     z.object({
-      positionId: z.string().trim().optional(),
-      vacancy: z.string().optional(),
-      srcOfRecruitment: z.string(),
+      positionId: schemaHelper.objectOrNull<TPosition>(),
+      vacancy: schemaHelper.objectOrNull<TVacancy>({
+        message: { required_error: REQUIRED_MESSAGE },
+      }),
+      srcOfRecruitment: schemaHelper.objectOrNull<TSourceOfRecruitment>({
+        message: { required_error: REQUIRED_MESSAGE },
+      }),
     }),
   ),
 
@@ -49,7 +56,7 @@ export const CreateJobSchema = z.object({
       z.object({
         districtId: z.string(),
         districtNameTh: z.string(),
-        districtNameEn: z.string(),
+        districtNameEn: z.string().nullable(),
       }),
     )
     .min(1, { error: REQUIRED_MESSAGE }),
@@ -73,8 +80,9 @@ export const CreateJobSchema = z.object({
   acknowledgeDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
 
   ownerUserId: z.string().optional(),
+
   recruiterUserId: z.array(z.any()),
-  jobDescription: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  jobSpecification: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  jobBenefit: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  jobDescription: z.string(),
+  jobSpecification: z.string(),
+  jobBenefit: z.string(),
 });
