@@ -12,6 +12,7 @@ import {
   TGetProvinceResponse,
   TGetSectionPayload,
   TGetSectionResponse,
+  TGetUserResponse,
   TGetemployeeTypeResponse,
 } from 'types/master-data';
 
@@ -106,6 +107,15 @@ export const fetchEmployeeType = async (): Promise<TGetemployeeTypeResponse> => 
   const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.employeeType,
+  });
+
+  return data;
+};
+
+export const fetchUsers = async (): Promise<TGetUserResponse> => {
+  const { data } = await axiosMasterDataInstance({
+    method: 'POST',
+    url: endpoint.masterData.users,
   });
 
   return data;
