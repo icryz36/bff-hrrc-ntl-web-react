@@ -53,7 +53,7 @@ Thumbs.db
 .env.local
 .env.development.local
 .env.sit
-.env.uat
+!.env.uat
 .env.test.local
 .env.production.local
 

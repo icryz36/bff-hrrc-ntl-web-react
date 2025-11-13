@@ -1,33 +1,3 @@
-// import axios from 'axios';
-// const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-// const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localhost:8000/api';
-// const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
-// const axiosInstance = axios.create({
-//   baseURL: BASE_URL,
-// });
-// axiosInstance.interceptors.request.use(async (config) => {
-//   const authToken = KEY_ACCESS_TOKEN;
-//   if (authToken) {
-//     config.headers['authorization'] = `Bearer ${authToken}`;
-//   }
-//   config.headers['Content-Type'] = 'application/json';
-//   config.headers['sender'] = 'ntlhrrecruit';
-//   config.headers['refer'] = 'ntlhrrecruit';
-//   config.headers['forward'] = '192.168.1.100';
-//   config.headers['sendDate'] = new Date().toISOString().split('T')[0];
-//   config.headers['clientid'] = 'web-app-client';
-//   return config;
-// });
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     return Promise.reject({
-//       status: error.response?.status,
-//       data: error.response?.data || error.message,
-//     });
-//   },
-// );
-// export default axiosInstance;
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
@@ -71,4 +41,4 @@ const axiosMasterDataInstance = axios.create({ baseURL: BASE_URL_MASTERDATA });
 setupInterceptors(axiosMasterDataInstance);
 
 export default axiosInstance;
-export { axiosJobPostInstance, axiosMasterDataInstance };
+export { axiosInstance, axiosJobPostInstance, axiosMasterDataInstance };

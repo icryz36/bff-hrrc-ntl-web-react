@@ -14,6 +14,7 @@ const WelcomePage = lazy(() => import('pages/Welcome'));
 
 const CreateJobPage = lazy(() => import('pages/job/CreateJobPage'));
 const EditJobPage = lazy(() => import('pages/job/EditJobPage'));
+const ListJobPage = lazy(() => import('pages/job/ListJobPage'));
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -63,6 +64,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.editJob,
                     element: <EditJobPage />,
+                  },
+                  {
+                    path: paths.listJob,
+                    element: <ListJobPage />,
                   },
                 ],
               },
