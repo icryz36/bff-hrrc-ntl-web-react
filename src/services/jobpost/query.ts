@@ -12,6 +12,7 @@ const useJobpostQuery = {
     queryOptions({
       queryKey: [...useJobpostQuery.keys(), endpoint.jobpost.list, payload],
       queryFn: () => fetchJobpostList(payload),
+      select: (response) => response.data,
     }),
 };
 
