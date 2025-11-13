@@ -12,7 +12,6 @@ const ListJobView = () => {
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
   const apiRef = useGridApiRef();
   const isOpenJobFailedDialog = useBoolean();
-  const [tableData, setTableData] = useState<any[]>([]);
 
   const query = useListJobDataQuery.getListJob({
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
@@ -21,11 +20,9 @@ const ListJobView = () => {
     pageSize: 10,
   });
 
-  console.log('query===> ', query);
+  const { data: listJobData } = useQuery(query);
 
-  // const { data: jobs } = useQuery(query);
-
-  // console.log('jobs ==> ', jobs);
+  const tableData = listJobData?.items || [];
 
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;

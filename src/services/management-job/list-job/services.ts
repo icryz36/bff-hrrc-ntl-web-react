@@ -1,13 +1,13 @@
 import { endpoint } from 'constant/endpoint';
-import axiosInstance from 'services/axios/axiosInstance';
-import { TGetJobPostListPayload, TGetJobPostListResponse } from 'types/list-job';
+import { axiosJobPostInstance } from 'services/axios/axiosInstance';
+import { TGetJobPostListPayload, TGetJobPostListResponse } from 'types/jobpost';
 
 export const fetchListJobPost = async (
   payload: TGetJobPostListPayload,
 ): Promise<TGetJobPostListResponse> => {
-  const { data } = await axiosInstance({
+  const { data } = await axiosJobPostInstance({
     method: 'POST',
-    url: endpoint.managementJob.listJob,
+    url: endpoint.jobpost.list,
     data: payload,
   });
 

@@ -4,43 +4,11 @@ import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useBoolean } from 'hooks/useBoolean';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
-import { TGetJobPostListResponse } from 'types/list-job';
+import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledDataGrid } from '../styles';
-
-export interface IListJobData {
-  id: number;
-  jobPostID: string;
-  jobTitle: string;
-  department: string;
-  regional: string;
-  province: string;
-  district: string;
-  startDate: string;
-  activeDay: string;
-  hc: string;
-  owner: string;
-  jobStatus: string;
-}
-
-export const ListJobData: IListJobData[] = [
-  {
-    id: 1,
-    jobPostID: 'H0001',
-    jobTitle: 'Treasury cccc',
-    department: 'Finance & Accounting',
-    regional: 'Head Office',
-    province: 'Province 01',
-    district: 'District 01, District 02',
-    startDate: '01/10/2025',
-    activeDay: '9 Day',
-    hc: '1',
-    owner: 'Chaiya Phongthun',
-    jobStatus: 'open',
-  },
-];
 
 const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   switch (val) {
@@ -62,7 +30,7 @@ const defaultPageSize = 10;
 interface ProductsTableProps {
   apiRef: RefObject<GridApiCommunity | null>;
   filterButtonEl: HTMLButtonElement | null;
-  tableData: TGetJobPostListResponse[];
+  tableData: TJobPost[];
 }
 
 const ListJobTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
