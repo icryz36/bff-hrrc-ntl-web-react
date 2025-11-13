@@ -1,3 +1,4 @@
+import { toEndOfDay } from 'lib/utils';
 import { TCreateJobPostPayload } from 'types/jobpost';
 import { CreateJobSchemaType } from './schema';
 
@@ -11,9 +12,8 @@ const convertCreateJobPostPayload = (data: CreateJobSchemaType): TCreateJobPostP
     headCount: Number(data.headCount),
     prNo: data.prNo,
 
-    //  Position
+    //  Position // TODO: waiting api
     position: [
-      // TODO: ทำต่อ
       {
         positionId: 'b1925c49-ac3a-41b8-862e-905e36b31c7a',
         vacancy: 1,
@@ -34,16 +34,38 @@ const convertCreateJobPostPayload = (data: CreateJobSchemaType): TCreateJobPostP
 
     // Date
     startDate: data.startDate,
-    // endDate: toEndOfDay(data.endDate), // TODO: ส่ง format 23:59 ไปไม่ได้
-    endDate: data.endDate,
+    endDate: toEndOfDay(data.endDate),
     acknowledgeDate: data.acknowledgeDate,
 
-    ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b', // TODO: ทำต่อ
-    recruiterUserId: ['e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b'], // TODO: ไม่เจอเส้น master
+    ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b', // TODO: waiting api
+    recruiterUserId: ['e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b'], // TODO: waiting api
     jobDescription: data.jobDescription,
     jobSpecification: data.jobSpecification,
     jobBenefit: data.jobBenefit,
   };
+};
+
+// ----------------------------------------------------------------------
+
+export const handleHeadcountKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const currentValue = (e.target as HTMLInputElement).value;
+
+  if (!/[0-9]/.test(e.key)) {
+    e.preventDefault();
+    return;
+  }
+
+  if (e.key === '0' && currentValue === '') {
+    e.preventDefault();
+  }
+};
+
+export const handleHeadcountPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+  const pastedData = e.clipboardData.getData('text');
+
+  if (!/^[1-9][0-9]*$/.test(pastedData)) {
+    e.preventDefault();
+  }
 };
 
 export { convertCreateJobPostPayload };

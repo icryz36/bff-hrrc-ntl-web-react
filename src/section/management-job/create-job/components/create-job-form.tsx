@@ -1,4 +1,5 @@
-import { useForm, useWatch } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -14,12 +15,13 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
 import dayjs from 'dayjs';
+import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
-// import { useDebounce } from 'hooks/useDebounce';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
+import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
 import { CreateJobSchema, CreateJobSchemaType } from '../schema';
 import { StyledFormContainerBox } from '../styles';
 
@@ -95,10 +97,10 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     name: 'departmentId',
   });
 
-  // const selectedHeadCount = useWatch<CreateJobSchemaType>({
-  //   control,
-  //   name: 'headCount',
-  // });
+  const selectedHeadCount = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'headCount',
+  });
 
   const selectedGroupLocation = useWatch<CreateJobSchemaType>({
     control,
@@ -110,13 +112,15 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     name: 'startDate',
   });
 
-  // const {
-  //   fields: fieldsPosition,
-  //   append: appendPosition,
-  //   remove: removePosition,
-  // } = useFieldArray({ control, name: 'position' });
+  const selectedEndDate = useWatch<CreateJobSchemaType>({
+    control,
+    name: 'endDate',
+  });
 
-  // const debouncedHeadCount = useDebounce(String(headCount), 2000);
+  const { fields: fieldsPosition, replace: replacePosition } = useFieldArray({
+    control,
+    name: 'position',
+  });
 
   // api ----------------------------------------------------------------
 
@@ -138,7 +142,41 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     enabled: !!selectedDepartmentId,
   });
 
-  // ขาดเส้น recruiterUserId , retaion of vacany, source of recruitment
+  // Hook ---------------------------------------------------------------
+
+  const debouncedHeadCount = useDebounce(selectedHeadCount, 300);
+
+  // reset district when province change
+  // useEffect(() => {
+  //   resetField('districtId');
+  // }, [selectedProvince, resetField]);
+
+  // reset sectionId when departmentId change
+  // useEffect(() => {
+  //   resetField('sectionId');
+  // }, [selectedDepartmentId, resetField]);
+
+  // for dynamic field position
+  useEffect(() => {
+    const newHeadCount = Number(debouncedHeadCount) || 0;
+
+    if (newHeadCount < 0) return;
+
+    if (newHeadCount === fieldsPosition.length) return;
+
+    if (newHeadCount > fieldsPosition.length) {
+      const diff = newHeadCount - fieldsPosition.length;
+      const newItems: CreateJobSchemaType['position'] = Array.from({ length: diff }, () => ({
+        positionId: undefined,
+        vacancy: '',
+        srcOfRecruitment: '',
+      }));
+
+      replacePosition([...fieldsPosition, ...newItems]);
+    } else {
+      replacePosition(fieldsPosition.slice(0, newHeadCount));
+    }
+  }, [debouncedHeadCount, fieldsPosition, replacePosition]);
 
   // ----------------------------------------------------------------------
 
@@ -206,6 +244,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
               label="Group Location *"
               getOptionLabel={(option) => option.label}
               options={GROUP_LOCATION.map((option) => option)}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
             />
           </Grid>
 
@@ -221,7 +260,20 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Text name="headCount" label="Headcount *" />
+            <Field.Text
+              name="headCount"
+              label="Headcount *"
+              slotProps={{
+                input: {
+                  inputProps: {
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    onKeyPress: handleHeadcountKeyPress,
+                    onPaste: handleHeadcountPaste,
+                  },
+                },
+              }}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
@@ -230,33 +282,49 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
 
           {/* Position */}
 
-          {!!selectedGroupLocation && (
+          {!!selectedGroupLocation && !!selectedHeadCount && (
             <Grid size={12}>
               <StyledFormContainerBox>
                 <Typography variant="subtitle1_bold">Position</Typography>
 
                 <Grid container spacing={2} mt={2}>
-                  <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text name="" label="Position No. From HRMS" maxLength={20} />
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Select name="" label="Rationale of Vacancy *">
-                      {MOCK_OPTION.map((option) => (
-                        <MenuItem key={option.value} value={option.label}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Field.Select>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Select name="" label="Source of Recruitment *">
-                      {MOCK_OPTION.map((option) => (
-                        <MenuItem key={option.value} value={option.label}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Field.Select>
-                  </Grid>
+                  {fieldsPosition.map((field, index) => (
+                    <Grid key={field.id} container spacing={2} size={12}>
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Text
+                          name={`position.${index}.positionId`}
+                          label="Position No. From HRMS"
+                          maxLength={20}
+                        />
+                      </Grid>
+
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Select
+                          name={`position.${index}.vacancy`}
+                          label="Rationale of Vacancy *"
+                        >
+                          {MOCK_OPTION.map((option) => (
+                            <MenuItem key={option.value} value={option.label}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </Field.Select>
+                      </Grid>
+
+                      <Grid size={{ xs: 12, md: 4 }}>
+                        <Field.Select
+                          name={`position.${index}.srcOfRecruitment`}
+                          label="Source of Recruitment *"
+                        >
+                          {MOCK_OPTION.map((option) => (
+                            <MenuItem key={option.value} value={option.label}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </Field.Select>
+                      </Grid>
+                    </Grid>
+                  ))}
                 </Grid>
               </StyledFormContainerBox>
             </Grid>
@@ -276,6 +344,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     label="Province *"
                     getOptionLabel={(option) => option.provinceNameEn}
                     options={provinceList.map((option) => option)}
+                    isOptionEqualToValue={(option, value) => option.provinceId === value.provinceId}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -285,9 +354,11 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     name="districtId"
                     label="District *"
                     disableCloseOnSelect
+                    disabled={!selectedProvince}
                     getOptionLabel={(option) => option.districtNameEn}
                     options={districtList.map((option) => option)}
                     slotProps={{ chip: { variant: 'outlined' } }}
+                    isOptionEqualToValue={(option, value) => option.districtId === value.districtId}
                   />
                 </Grid>
               </Grid>
@@ -318,6 +389,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
                     fullWidth
                     name="sectionId"
                     label="Section *"
+                    disabled={!selectedDepartmentId}
                     getOptionLabel={(option) => option.sectionNameEn}
                     options={sectionList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.sectionId === value.sectionId}
@@ -381,7 +453,11 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="acknowledgeDate" label="Acknowledge Date *" />
+            <Field.DatePicker
+              name="acknowledgeDate"
+              label="Acknowledge Date *"
+              maxDate={dayjs(selectedEndDate)}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>

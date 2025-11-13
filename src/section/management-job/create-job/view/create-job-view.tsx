@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
 import { useCreateJobpostMutation } from 'services/jobpost/mutation';
+import { useJobpostQuery } from 'services/jobpost/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { CreateJobForm } from '../components/create-job-form';
@@ -20,6 +22,20 @@ const CreateJobView = () => {
   // api ----------------------------------------------------------------
 
   const { mutate: createJobPost, isPending: isLoadingCreateJobPost } = useCreateJobpostMutation();
+
+  // ตัวอย่างเรียกข้อมูลแบบ  GET ✅   -----------------------------------------
+
+  const { data: jobList } = useQuery(
+    useJobpostQuery.list({
+      // payload ตาม filter...
+      pageNo: 1,
+      pageSize: 10,
+      ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
+      recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
+    }),
+  );
+
+  console.log('jobList', jobList);
 
   // func ---------------------------------------------------------------
 
@@ -44,7 +60,7 @@ const CreateJobView = () => {
 
   const handleCopyJobNo = () => {
     if (jobNo) {
-      // TODO: เด้ง toast
+      // TODO: show toast
       navigator.clipboard.writeText(jobNo);
     }
   };

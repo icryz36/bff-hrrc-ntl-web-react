@@ -31,14 +31,14 @@ export const CreateJobSchema = z.object({
     message: { required_error: REQUIRED_MESSAGE },
   }),
   headCount: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  prNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }), // TODO:  api มีดัก ว่า PR-xxxx-xxxxxx
+  prNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
 
   //  Position
   position: z.array(
     z.object({
       positionId: z.string().trim().optional(),
-      vacancy: z.string().min(1, { error: REQUIRED_MESSAGE }),
-      srcOfRecruitment: z.string().min(1, { error: REQUIRED_MESSAGE }),
+      vacancy: z.string().optional(),
+      srcOfRecruitment: z.string(),
     }),
   ),
 

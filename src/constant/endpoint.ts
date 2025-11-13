@@ -12,6 +12,7 @@ const endpoint = {
     employeeType: `get-employeetype-master-xapi`,
   },
   jobpost: {
+    list: `get-jobpost-list-xapi`,
     create: `create-jobpost-xapi`,
   },
 };
