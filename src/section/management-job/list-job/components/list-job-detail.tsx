@@ -18,10 +18,12 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     jobPostId: jobPostId ?? '',
   });
 
-  const { data: jobData } = useQuery({
+  const { data } = useQuery({
     ...query,
     enabled: !!jobPostId,
   });
+
+  const jobData = data?.data;
 
   const InfoRow = ({
     label,
@@ -154,7 +156,26 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
                 <InfoRow label="Province" value={item?.provinceName} />
               </Grid>
               <Grid size={{ md: 6 }}>
-                <InfoRow label="District" value={item?.districtName} />
+                <Stack direction="row" gap={1}>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.primary"
+                    sx={{ whiteSpace: 'pre-line' }}
+                  >
+                    District :{' '}
+                  </Typography>
+                  {item?.district.map((dist, distIndex) => (
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ whiteSpace: 'pre-line' }}
+                      key={distIndex}
+                    >
+                      {dist.districtName}
+                      {distIndex !== item.district.length - 1 && ' /'}
+                    </Typography>
+                  ))}
+                </Stack>
               </Grid>
             </Grid>
           ))}
