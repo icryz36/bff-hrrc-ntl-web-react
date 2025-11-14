@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { endpoint } from 'constant/endpoint';
-import { TGetJobPostDetailPayload, TGetJobPostListPayload } from 'types/jobpost';
-import { fetchJobpostDetail, fetchJobpostList } from './services';
+import { TGetJobPostByIdPayload, TGetJobPostListPayload } from 'types/jobpost';
+import { fetchJobpostById, fetchJobpostList } from './services';
 
 // ----------------------------------------------------------------------
 
@@ -14,11 +14,11 @@ const useJobpostQuery = {
       queryFn: () => fetchJobpostList(payload),
       select: (response) => response.data,
     }),
-  detail: (payload: TGetJobPostDetailPayload) =>
+
+  detail: (payload: TGetJobPostByIdPayload) =>
     queryOptions({
       queryKey: [...useJobpostQuery.keys(), endpoint.jobpost.detail, payload],
-      queryFn: () => fetchJobpostDetail(payload),
-      select: (response) => response.data,
+      queryFn: () => fetchJobpostById(payload),
     }),
 };
 

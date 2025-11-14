@@ -17,6 +17,7 @@ const endpoint = {
     create: `create-jobpost-xapi`,
     detail: `get-jobpost-xapi`,
     updateStatus: `update-jobpost-status-xapi`,
+    update: `update-jobpost-xapi`,
   },
 };
 

@@ -1,9 +1,11 @@
 import { RefObject, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
+import { navigatePaths } from 'routes/paths';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
@@ -46,6 +48,7 @@ const ListJobTableView = ({
   totalItem,
   currentPage,
 }: ProductsTableProps) => {
+  const navigate = useNavigate();
   const isOpenConfirmDeleteDialog = useBoolean();
   const isOpenDetailDialog = useBoolean();
   const isOpenUpdateJobStatusSuccessDialog = useBoolean();
@@ -200,12 +203,16 @@ const ListJobTableView = ({
               {
                 label: 'Edit',
                 icon: 'mdi-light:pencil',
-                onClick: () => {},
+                onClick: () => {
+                  navigate(navigatePaths.jobPost.editJob(params.row.jobPostId));
+                },
               },
               {
                 label: 'Duplicate',
                 icon: 'material-symbols-light:file-copy-outline',
-                onClick: () => {},
+                onClick: () => {
+                  navigate(navigatePaths.jobPost.duplicateJob(params.row.jobPostId));
+                },
               },
               {
                 label: 'Delete',

@@ -29,7 +29,6 @@ export const CreateJobSchema = z.object({
   groupLocation: schemaHelper.objectOrNull<TGroupLocation>({
     message: { required_error: REQUIRED_MESSAGE },
   }),
-
   regionId: schemaHelper.objectOrNull<TNtlRegion>({
     message: { required_error: REQUIRED_MESSAGE },
   }),
@@ -39,7 +38,7 @@ export const CreateJobSchema = z.object({
   //  Position
   position: z.array(
     z.object({
-      positionId: schemaHelper.objectOrNull<TPosition>(),
+      positionId: schemaHelper.objectOrNull<TPosition>().optional().nullable(),
       vacancy: schemaHelper.objectOrNull<TVacancy>({
         message: { required_error: REQUIRED_MESSAGE },
       }),
@@ -51,15 +50,8 @@ export const CreateJobSchema = z.object({
 
   // Work Location
   province: schemaHelper.objectOrNull({ message: { required_error: REQUIRED_MESSAGE } }),
-  districtId: z
-    .array(
-      z.object({
-        districtId: z.string(),
-        districtNameTh: z.string(),
-        districtNameEn: z.string().nullable(),
-      }),
-    )
-    .min(1, { error: REQUIRED_MESSAGE }),
+
+  districtId: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
 
   // Department
   departmentId: schemaHelper.objectOrNull<TDepartment>({
@@ -78,9 +70,7 @@ export const CreateJobSchema = z.object({
   startDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
   endDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
   acknowledgeDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
-
   ownerUserId: z.string().optional(),
-
   recruiterUserId: z.array(z.any()),
   jobDescription: z.string(),
   jobSpecification: z.string(),
