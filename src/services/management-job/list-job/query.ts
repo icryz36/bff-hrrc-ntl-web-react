@@ -4,7 +4,7 @@ import { TGetJobPostListPayload } from 'types/jobpost';
 import { fetchListJobPost } from './services';
 
 const useListJobDataQuery = {
-  keys: () => ['list-job'] as const,
+  keys: () => ['jobpost'] as const,
 
   getListJob: (payload: TGetJobPostListPayload) =>
     queryOptions({

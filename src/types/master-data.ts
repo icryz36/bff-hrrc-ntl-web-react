@@ -152,11 +152,27 @@ export type TSourceOfRecruitment = {
 // users -----------------------------------------------------------------------
 
 export type TGetUserResponse = TStatusResponse & {
-  data: TPostStatus[];
+  data: TUser[];
 };
 
 export type TUser = {
   userId: string;
   name: string;
   surname: string;
+};
+
+// MAP master data --------------------------------------------------------------
+
+export type MasterDataMaps = {
+  postStatusMap: Map<TPostStatus['statusId'], TPostStatus>;
+  regionMap: Map<TNtlRegion['regionId'], TNtlRegion>;
+  provinceMap: Map<TProvince['provinceId'], TProvince>;
+  departmentMap: Map<TDepartment['departmentId'], TDepartment>;
+  jobLevelMap: Map<TJobLevel['levelId'], TJobLevel>;
+  degreeMap: Map<TDegree['degreeId'], TDegree>;
+  employeeTypeMap: Map<TEmployeeType['employeeTypeId'], TEmployeeType>;
+  positionMap: Map<TPosition['positionId'], TPosition>;
+  usersMap: Map<TUser['userId'], TUser>;
+  districtMap: Map<TDistrict['districtId'], TDistrict>;
+  sectionMap: Map<TSection['sectionId'], TSection>;
 };

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -18,7 +19,7 @@ import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
 import IconifyIcon from 'components/base/IconifyIcon';
-import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
+// import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
 import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
@@ -30,6 +31,7 @@ import { StyledFormContainerBox } from '../styles';
 type CreateJobFormProps = {
   isEdit?: boolean;
   isLoading?: boolean;
+  defaultValuesForm?: CreateJobSchemaType;
   onSubmit: (data: CreateJobSchemaType) => void;
 };
 
@@ -75,7 +77,13 @@ const defaultValues: CreateJobSchemaType = {
 
 // ----------------------------------------------------------------------
 
-export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProps) => {
+export const CreateJobForm = ({
+  onSubmit,
+  isEdit,
+  isLoading,
+  defaultValuesForm,
+}: CreateJobFormProps) => {
+  const navigate = useNavigate();
   const theme = useTheme();
 
   // form -----------------------------------------------------------------
@@ -85,37 +93,15 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     defaultValues,
   });
 
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset, formState } = methods;
+  const { isDirty } = formState;
 
-  const selectedProvince = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'province',
-  });
-
-  const selectedDepartmentId = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'departmentId',
-  });
-
-  const selectedHeadCount = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'headCount',
-  });
-
-  const selectedGroupLocation = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'groupLocation',
-  });
-
-  const selectedStartDate = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'startDate',
-  });
-
-  const selectedEndDate = useWatch<CreateJobSchemaType>({
-    control,
-    name: 'endDate',
-  });
+  const selectedProvince = useWatch<CreateJobSchemaType>({ control, name: 'province' });
+  const selectedDepartmentId = useWatch<CreateJobSchemaType>({ control, name: 'departmentId' });
+  const selectedHeadCount = useWatch<CreateJobSchemaType>({ control, name: 'headCount' });
+  const selectedGroupLocation = useWatch<CreateJobSchemaType>({ control, name: 'groupLocation' });
+  const selectedStartDate = useWatch<CreateJobSchemaType>({ control, name: 'startDate' });
+  const selectedEndDate = useWatch<CreateJobSchemaType>({ control, name: 'endDate' });
 
   const { fields: fieldsPosition, replace: replacePosition } = useFieldArray({
     control,
@@ -164,6 +150,8 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
 
   // for dynamic field position
   useEffect(() => {
+    if (isEdit && !isDirty) return; // case edit prevent auto replace !
+
     const newHeadCount = Number(debouncedHeadCount) || 0;
 
     if (newHeadCount < 0) return;
@@ -182,16 +170,27 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
     } else {
       replacePosition(fieldsPosition.slice(0, newHeadCount));
     }
-  }, [debouncedHeadCount, fieldsPosition, replacePosition]);
+  }, [debouncedHeadCount, fieldsPosition, replacePosition, isEdit, isDirty]);
 
   useEffect(() => {
-    if (selectedGroupLocation) {
-      setValue('headCount', '1', {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-    }
+    if (isEdit) return;
+    if (!selectedGroupLocation) return;
+    if (selectedHeadCount) return;
+
+    // if (selectedGroupLocation) {
+    setValue('headCount', '1', {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    // }
   }, [selectedGroupLocation, setValue]);
+
+  // NOTE: set default form value
+  useEffect(() => {
+    if (defaultValuesForm) {
+      reset(defaultValuesForm);
+    }
+  }, [defaultValuesForm, reset]);
 
   // ----------------------------------------------------------------------
 
@@ -488,7 +487,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
               disableCloseOnSelect
               options={usersList.map((option) => option)}
               slotProps={{ chip: { variant: 'outlined' } }}
-              getOptionLabel={(option) => `${option.name} ${option.surname}`}
+              getOptionLabel={(option) => `${option?.name} ${option?.surname}`}
               isOptionEqualToValue={(option, value) => option.userId === value.userId}
             />
           </Grid>
@@ -520,7 +519,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
 
         <Stack justifyContent="flex-end" mt={4.6} spacing={1.3}>
           {isEdit && (
-            <Button variant="outlined" color="neutral">
+            <Button variant="outlined" color="neutral" onClick={() => navigate(-1)}>
               Cancel
             </Button>
           )}
@@ -529,7 +528,7 @@ export const CreateJobForm = ({ onSubmit, isEdit, isLoading }: CreateJobFormProp
           </Button>
         </Stack>
 
-        <DirtyFormLeaveGuardDialog />
+        {/* <DirtyFormLeaveGuardDialog /> */}
       </Form>
     </Container>
   );

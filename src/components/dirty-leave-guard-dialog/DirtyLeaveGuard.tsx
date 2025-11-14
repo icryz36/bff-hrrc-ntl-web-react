@@ -11,10 +11,22 @@ export const DirtyFormLeaveGuardDialog = () => {
 
   const { control } = useFormContext<CreateJobSchemaType>();
 
-  const { isDirty } = useFormState({ control });
+  const { isDirty, isSubmitSuccessful, isSubmitting, isSubmitted } = useFormState({ control });
+
+  // const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+  //   return isDirty && currentLocation.pathname !== nextLocation.pathname;
+  // });
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-    return isDirty && currentLocation.pathname !== nextLocation.pathname;
+    if (!isDirty) return false;
+
+    if (isSubmitting) return false;
+
+    if (isSubmitSuccessful) return false;
+
+    if (isSubmitted) return false;
+
+    return currentLocation.pathname !== nextLocation.pathname;
   });
 
   // --------------------------------------------------------------------

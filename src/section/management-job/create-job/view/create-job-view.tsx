@@ -1,21 +1,21 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
+import { navigatePaths } from 'routes/paths';
 import { useCreateJobpostMutation } from 'services/jobpost/mutation';
-import { useJobpostQuery } from 'services/jobpost/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { CreateJobForm } from '../components/create-job-form';
-import { convertCreateJobPostPayload } from '../helper';
+import { convertCreateEditJobPostPayload } from '../helper';
 import { CreateJobSchemaType } from '../schema';
 
 // ---------------------------------------------------------------------
 
 const CreateJobView = () => {
+  const navigate = useNavigate();
   const [jobNo, setJobNo] = useState<string>('');
   const [formKey, setFormKey] = useState<number>(0);
-
   const isOpenCreateJobFailedDialog = useBoolean();
   const isOpenCreateJobSuccessDialog = useBoolean();
 
@@ -23,24 +23,10 @@ const CreateJobView = () => {
 
   const { mutate: createJobPost, isPending: isLoadingCreateJobPost } = useCreateJobpostMutation();
 
-  // ตัวอย่างเรียกข้อมูลแบบ  GET ✅   -----------------------------------------
-
-  const { data: jobList } = useQuery(
-    useJobpostQuery.list({
-      // payload ตาม filter...
-      pageNo: 1,
-      pageSize: 10,
-      ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
-      recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
-    }),
-  );
-
-  console.log('jobList', jobList);
-
   // func ---------------------------------------------------------------
 
   const onSubmit = (data: CreateJobSchemaType) => {
-    const payload = convertCreateJobPostPayload(data);
+    const payload = convertCreateEditJobPostPayload(data);
 
     createJobPost(payload, {
       onSuccess: (response) => {
@@ -118,7 +104,9 @@ const CreateJobView = () => {
             <Button variant="outlined" color="neutral" onClick={handleCreateNewJob}>
               Create new Job
             </Button>
-            <Button variant="contained">Go to List Job Post</Button>
+            <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
+              Go to List Job Post
+            </Button>
           </Stack>
         }
       />
