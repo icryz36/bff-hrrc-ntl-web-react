@@ -10,6 +10,7 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "build": "vite build",
+    "build:uat": "vite build --mode uat",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "pretty": "prettier --write .",

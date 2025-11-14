@@ -38,6 +38,7 @@ interface ProductsTableProps {
   onPageChange: (model: { page: number; pageSize: number }) => void;
   totalItem: number;
   currentPage: number;
+  loading: boolean;
 }
 
 const ListJobTableView = ({
@@ -47,6 +48,7 @@ const ListJobTableView = ({
   onPageChange,
   totalItem,
   currentPage,
+  loading,
 }: ProductsTableProps) => {
   const navigate = useNavigate();
   const isOpenConfirmDeleteDialog = useBoolean();
@@ -54,13 +56,14 @@ const ListJobTableView = ({
   const isOpenUpdateJobStatusSuccessDialog = useBoolean();
   const isOpenUpdateJobFailedDialog = useBoolean();
   const [selectedJobPostId, setSelectedJobPostId] = useState<string | null>(null);
+  const [selectedDeleteJobPostId, setSelectedDeleteJobPostId] = useState<string | null>(null);
 
   const { mutate: updateJobPostStatus } = useUpdateJobpostStatusMutation();
 
   const onDelete = () => {
     updateJobPostStatus(
       {
-        jobPostId: selectedJobPostId ?? '',
+        jobPostId: selectedDeleteJobPostId ?? '',
         statusId: '10265555-dc7c-4c12-8e02-e6b5c751e9ae',
       },
       {
@@ -219,7 +222,7 @@ const ListJobTableView = ({
                 icon: 'material-symbols-light:delete-outline-sharp',
                 onClick: () => {
                   isOpenConfirmDeleteDialog.onTrue();
-                  setSelectedJobPostId(params.row.jobPostId);
+                  setSelectedDeleteJobPostId(params.row.jobPostId);
                 },
               },
             ]}
@@ -234,6 +237,7 @@ const ListJobTableView = ({
     <>
       <Box width={1}>
         <StyledDataGrid
+          loading={loading}
           rowHeight={64}
           rows={tableData}
           apiRef={apiRef}
@@ -282,7 +286,7 @@ const ListJobTableView = ({
             </Button>
             <Button
               variant="contained"
-              sx={{ backgroundColor: '#E31837' }}
+              sx={{ backgroundColor: 'error.main' }}
               onClick={() => onDelete()}
             >
               Delete

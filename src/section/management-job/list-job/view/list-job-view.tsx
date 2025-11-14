@@ -24,7 +24,7 @@ const ListJobView = () => {
     pageSize: pagination.pageSize,
   });
 
-  const { data: listJobData } = useQuery(query);
+  const { data: listJobData, isLoading } = useQuery(query);
 
   const tableData = listJobData?.items || [];
   const tableTotalRecords = listJobData?.pagination?.totalRecords || 0;
@@ -78,6 +78,7 @@ const ListJobView = () => {
         onPageChange={handlePageChange}
         totalItem={tableTotalRecords}
         currentPage={pagination.pageNo}
+        loading={isLoading}
       />
       <CustomConfirmDialog
         title="เกิดข้อผิดพลาด"

@@ -29,9 +29,10 @@ const EditJobView = () => {
   // api ----------------------------------------------------------------
 
   const { mutate: updateJobPost, isPending: isLoadingUpdateJobPost } = useUpdateJobpostMutation();
-  const { data: jobpostDetail, isError: isErrorGetjobDetail } = useQuery(
-    useJobpostQuery.detail({ jobPostId: id }),
-  );
+  const { data: jobpostDetail, isError: isErrorGetjobDetail } = useQuery({
+    ...useJobpostQuery.detail({ jobPostId: id }),
+    enabled: !!id,
+  });
 
   const getDepartmentId = jobpostDetail?.data?.departmentId || '';
   const getProvinceId = jobpostDetail?.data?.workLocations[0]?.provinceId || '';

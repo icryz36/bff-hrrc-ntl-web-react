@@ -33,7 +33,7 @@ RUN echo "📦 Using environment file: .env.${NODE_ENV}" && \
 COPY . .
 
 # Build the React application (static files will be generated in /app/build)
-RUN npm run build
+RUN npm run build:uat
 
 # ------------------------------------
 # Stage 2: Run Stage (Uses Nginx to Serve Static Files)
