@@ -200,34 +200,35 @@ const ListJobTableView = ({
         headerAlign: 'right',
         headerClassName: 'action-header',
         cellClassName: 'action-cell',
-        renderCell: (params) => (
-          <DashboardMenu
-            menuItems={[
-              {
-                label: 'Edit',
-                icon: 'mdi-light:pencil',
-                onClick: () => {
-                  navigate(navigatePaths.jobPost.editJob(params.row.jobPostId));
-                },
+        renderCell: (params) => {
+          const { statusName, jobPostId } = params.row;
+
+          const menuItems = [
+            {
+              label: 'Edit',
+              icon: 'mdi-light:pencil',
+              onClick: () => navigate(navigatePaths.jobPost.editJob(jobPostId)),
+            },
+            {
+              label: 'Duplicate',
+              icon: 'material-symbols-light:file-copy-outline',
+              onClick: () => navigate(navigatePaths.jobPost.duplicateJob(jobPostId)),
+            },
+            {
+              label: 'Delete',
+              icon: 'material-symbols-light:delete-outline-sharp',
+              onClick: () => {
+                isOpenConfirmDeleteDialog.onTrue();
+                setSelectedDeleteJobPostId(jobPostId);
               },
-              {
-                label: 'Duplicate',
-                icon: 'material-symbols-light:file-copy-outline',
-                onClick: () => {
-                  navigate(navigatePaths.jobPost.duplicateJob(params.row.jobPostId));
-                },
-              },
-              {
-                label: 'Delete',
-                icon: 'material-symbols-light:delete-outline-sharp',
-                onClick: () => {
-                  isOpenConfirmDeleteDialog.onTrue();
-                  setSelectedDeleteJobPostId(params.row.jobPostId);
-                },
-              },
-            ]}
-          />
-        ),
+            },
+          ];
+
+          const filteredMenu =
+            statusName === 'Closed' ? menuItems.filter((m) => m.label !== 'Edit') : menuItems;
+
+          return <DashboardMenu menuItems={filteredMenu} />;
+        },
       },
     ],
     [],
