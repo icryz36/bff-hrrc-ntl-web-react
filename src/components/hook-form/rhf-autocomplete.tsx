@@ -56,6 +56,7 @@ export function RHFAutocomplete({
               placeholder={placeholder}
               error={!!error}
               helperText={error?.message ?? helperText}
+              autoComplete="off"
               slotProps={{
                 ...textField?.slotProps,
                 htmlInput: {

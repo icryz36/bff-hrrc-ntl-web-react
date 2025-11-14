@@ -43,6 +43,7 @@ export function RHFSelect({
           {...field}
           select
           fullWidth
+          autoComplete="off"
           error={!!error}
           helperText={error?.message ?? helperText}
           slotProps={{

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
   Container,
@@ -148,11 +149,20 @@ export const CreateJobForm = ({
   //   resetField('sectionId');
   // }, [selectedDepartmentId, resetField]);
 
+  const isBranch = selectedGroupLocation?.value === 'BRANCH';
+  const isHO = selectedGroupLocation?.value === 'HO';
+
   // for dynamic field position
   useEffect(() => {
     if (isEdit && !isDirty) return; // case edit prevent auto replace !
 
-    const newHeadCount = Number(debouncedHeadCount) || 0;
+    let newHeadCount = Number(debouncedHeadCount) || 0;
+
+    // ถ้าเป็น Branch ให้บังคับ headCount = 1 เสมอ
+
+    if (isBranch) {
+      newHeadCount = 1;
+    }
 
     if (newHeadCount < 0) return;
 
@@ -170,7 +180,16 @@ export const CreateJobForm = ({
     } else {
       replacePosition(fieldsPosition.slice(0, newHeadCount));
     }
-  }, [debouncedHeadCount, fieldsPosition, replacePosition, isEdit, isDirty]);
+  }, [
+    debouncedHeadCount,
+    fieldsPosition,
+    replacePosition,
+    isEdit,
+    isDirty,
+    selectedGroupLocation,
+    selectedHeadCount,
+    setValue,
+  ]);
 
   useEffect(() => {
     if (isEdit) return;
@@ -284,6 +303,8 @@ export const CreateJobForm = ({
                     pattern: '[0-9]*',
                     onKeyPress: handleHeadcountKeyPress,
                     onPaste: handleHeadcountPaste,
+                    maxLength: 3,
+                    max: 2,
                   },
                 },
               }}
@@ -308,12 +329,13 @@ export const CreateJobForm = ({
                         <Field.Autocomplete
                           fullWidth
                           name={`position.${index}.positionId`}
-                          label="Position No. From HRMS"
+                          label={`Position No. From HRMS `}
                           getOptionLabel={(option) => option.positionCode}
                           options={positionList.map((option) => option)}
                           isOptionEqualToValue={(option, value) =>
                             option.positionId === value.positionId
                           }
+                          disabled={isBranch}
                         />
                       </Grid>
 
@@ -321,21 +343,23 @@ export const CreateJobForm = ({
                         <Field.Autocomplete
                           fullWidth
                           name={`position.${index}.vacancy`}
-                          label="Rationale of Vacancy *"
+                          label={`Rationale of Vacancy ${isHO ? '*' : ''}`}
                           getOptionLabel={(option) => option.label}
                           options={OPTION_VACANCY.map((option) => option)}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
+                          disabled={isBranch}
                         />
                       </Grid>
 
                       <Grid size={{ xs: 12, md: 4 }}>
                         <Field.Autocomplete
                           fullWidth
-                          label="Source of Recruitment *"
+                          label={`Source of Recruitment ${isHO ? '*' : ''}`}
                           name={`position.${index}.srcOfRecruitment`}
                           getOptionLabel={(option) => option.label}
                           options={OPTION_SOURCE_OF_RECRUITMENT.map((option) => option)}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
+                          disabled={isBranch}
                         />
                       </Grid>
                     </Grid>
@@ -458,13 +482,14 @@ export const CreateJobForm = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="startDate" label="Start Date *" />
+            <Field.DatePicker name="startDate" label="Start Date *" format="DD/MM/YYYY" />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Field.DatePicker
               name="endDate"
               label="End Date *"
               minDate={dayjs(selectedStartDate)}
+              format="DD/MM/YYYY"
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -472,6 +497,7 @@ export const CreateJobForm = ({
               name="acknowledgeDate"
               label="Acknowledge Date *"
               maxDate={dayjs(selectedEndDate)}
+              format="DD/MM/YYYY"
             />
           </Grid>
 
@@ -523,9 +549,9 @@ export const CreateJobForm = ({
               Cancel
             </Button>
           )}
-          <Button variant="contained" type="submit" loading={isLoading}>
+          <LoadingButton variant="contained" type="submit" loading={isLoading}>
             Post
-          </Button>
+          </LoadingButton>
         </Stack>
 
         {/* <DirtyFormLeaveGuardDialog /> */}

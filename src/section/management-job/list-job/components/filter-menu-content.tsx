@@ -112,7 +112,7 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
           <MenuItem value="User01">User01</MenuItem>
         </TextField>
 
-        <DatePicker label="Start Date" />
+        <DatePicker label="Start Date" format="DD/MM/YYYY" />
 
         <TextField label="Active Day" select value={filters.activeDay}>
           <MenuItem value="7">Last 7 days</MenuItem>
