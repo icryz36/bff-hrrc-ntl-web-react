@@ -15,13 +15,19 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
     prNo: data.prNo,
 
     // position
-    position: data.position.map((item) => ({
-      positionId: item.positionId?.positionId || '',
-      vacancy: item.vacancy?.value || '',
-      srcOfRecruitment: item.srcOfRecruitment?.value || '',
-    })),
-
-    // Work Location
+    position:
+      data?.groupLocation?.value === 'BRANCH'
+        ? []
+        : data.position
+            .map((item) => {
+              const cleaned: any = {};
+              if (item.positionId?.positionId) cleaned.positionId = item.positionId.positionId;
+              if (item.vacancy?.value) cleaned.vacancy = item.vacancy.value;
+              if (item.srcOfRecruitment?.value)
+                cleaned.srcOfRecruitment = item.srcOfRecruitment.value;
+              return cleaned;
+            })
+            .filter((item) => Object.keys(item).length > 0),
     districtId: data.districtId.map((item) => item.districtId),
 
     // Department
