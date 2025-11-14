@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
 import FilterSection from 'section/management-job/list-job/components/filter-section';
 import ListJobTableView from 'section/management-job/list-job/view/list-job-table-view';
-import { useListJobDataQuery } from 'services/management-job/list-job/query';
+import { useJobpostQuery } from 'services/jobpost/query';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 
 const ListJobView = () => {
@@ -17,7 +17,7 @@ const ListJobView = () => {
     pageSize: 10,
   });
 
-  const query = useListJobDataQuery.getListJob({
+  const query = useJobpostQuery.list({
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
     recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
     pageNo: pagination.pageNo,

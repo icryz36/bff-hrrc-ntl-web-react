@@ -1,8 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from 'services/client';
-import { TCreateJobPostPayload, TUpdateJobPostPayload } from 'types/jobpost';
+import {
+  TCreateJobPostPayload,
+  TUpdateJobPostPayload,
+  TUpdateJobPostStatusPayload,
+} from 'types/jobpost';
 import { useJobpostQuery } from './query';
-import { postCreateJob, postUpdateJob } from './services';
+import { postCreateJob, postUpdateJob, updateJobStatus } from './services';
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +18,13 @@ export const useCreateJobpostMutation = () =>
     },
   });
 
+export const useUpdateJobpostStatusMutation = () =>
+  useMutation({
+    mutationFn: (payload: TUpdateJobPostStatusPayload) => updateJobStatus(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: useJobpostQuery.keys() });
+    },
+  });
 export const useUpdateJobpostMutation = () =>
   useMutation({
     mutationFn: (payload: TUpdateJobPostPayload) => postUpdateJob(payload),

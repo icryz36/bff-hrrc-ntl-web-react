@@ -1,4 +1,4 @@
-import { RefObject, useMemo } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
@@ -7,14 +7,15 @@ import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
 import { navigatePaths } from 'routes/paths';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
+import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledDataGrid, StyledTypography2Line } from '../styles';
 
-const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
-  switch (val.toLocaleLowerCase()) {
+export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+  switch (val?.toLocaleLowerCase()) {
     case 'open':
       return 'success';
     case 'close':
@@ -50,6 +51,35 @@ const ListJobTableView = ({
   const navigate = useNavigate();
   const isOpenConfirmDeleteDialog = useBoolean();
   const isOpenDetailDialog = useBoolean();
+  const isOpenUpdateJobStatusSuccessDialog = useBoolean();
+  const isOpenUpdateJobFailedDialog = useBoolean();
+  const [selectedJobPostId, setSelectedJobPostId] = useState<string | null>(null);
+
+  const { mutate: updateJobPostStatus } = useUpdateJobpostStatusMutation();
+
+  const onDelete = () => {
+    updateJobPostStatus(
+      {
+        jobPostId: selectedJobPostId ?? '',
+        statusId: '10265555-dc7c-4c12-8e02-e6b5c751e9ae',
+      },
+      {
+        onSuccess: (response) => {
+          if (response.status) {
+            isOpenConfirmDeleteDialog.onFalse();
+            isOpenUpdateJobStatusSuccessDialog.onTrue();
+            return;
+          }
+
+          isOpenUpdateJobFailedDialog.onTrue();
+        },
+        onError: () => {
+          isOpenUpdateJobFailedDialog.onTrue();
+        },
+      },
+    );
+  };
+
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
@@ -59,7 +89,16 @@ const ListJobTableView = ({
         sortable: false,
         minWidth: 148,
         renderCell: (params) => {
-          return <Link onClick={isOpenDetailDialog.onTrue}>{params.row.jobPostNo}</Link>;
+          return (
+            <Link
+              onClick={() => {
+                setSelectedJobPostId(params.row.jobPostId);
+                isOpenDetailDialog.onTrue();
+              }}
+            >
+              {params.row.jobPostNo}
+            </Link>
+          );
         },
       },
       {
@@ -180,6 +219,7 @@ const ListJobTableView = ({
                 icon: 'material-symbols-light:delete-outline-sharp',
                 onClick: () => {
                   isOpenConfirmDeleteDialog.onTrue();
+                  setSelectedJobPostId(params.row.jobPostId);
                 },
               },
             ]}
@@ -240,15 +280,36 @@ const ListJobTableView = ({
             <Button variant="outlined" color="neutral" onClick={isOpenConfirmDeleteDialog.onFalse}>
               Cancel
             </Button>
-            <Button variant="contained" sx={{ backgroundColor: '#E31837' }}>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: '#E31837' }}
+              onClick={() => onDelete()}
+            >
               Delete
             </Button>
           </Stack>
         }
       />
+      <CustomConfirmDialog
+        title="ลบข้อมูลไม่สำเร็จ"
+        open={isOpenUpdateJobFailedDialog.value}
+        onClose={isOpenUpdateJobFailedDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1">
+            ไม่สามารถลบรายการนี้ได้ เนื่องจากยังมีผู้สมัครอยู่ในรายการนี้
+          </Typography>
+        }
+        action={
+          <Button variant="contained" onClick={isOpenUpdateJobFailedDialog.onFalse}>
+            Close
+          </Button>
+        }
+      />
+
       <ListJobDetailComponent
         open={isOpenDetailDialog.value}
         onClose={isOpenDetailDialog.onFalse}
+        jobPostId={selectedJobPostId}
       />
     </>
   );
