@@ -126,7 +126,7 @@ export type TCreateJobPostPayload = {
   districtId: string[];
   recruiterUserId: string[];
   departmentId: string;
-  sectionId: string;
+  sectionId: string | null;
 };
 
 export type TCreateJobPostPosition = {

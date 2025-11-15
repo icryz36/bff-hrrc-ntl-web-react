@@ -21,6 +21,7 @@ export type RHFAutocompleteProps = AutocompleteBaseProps & {
   name: string;
   label?: string;
   placeholder?: string;
+  required?: boolean;
   helperText?: React.ReactNode;
   slotProps?: AutocompleteBaseProps['slotProps'] & {
     textField?: Partial<TextFieldProps>;
@@ -33,6 +34,7 @@ export function RHFAutocomplete({
   slotProps,
   helperText,
   placeholder,
+  required,
   ...other
 }: RHFAutocompleteProps) {
   const { control, setValue } = useFormContext();
@@ -55,6 +57,7 @@ export function RHFAutocomplete({
               label={label}
               placeholder={placeholder}
               error={!!error}
+              required={required}
               helperText={error?.message ?? helperText}
               autoComplete="off"
               slotProps={{

@@ -135,6 +135,11 @@ export const CreateJobForm = ({
     (item) => item.statusId !== '10265555-dc7c-4c12-8e02-e6b5c751e9ae',
   );
 
+  // value --------------------------------------------------------------
+
+  const isHO = selectedGroupLocation?.value === 'HO';
+  const isBranch = selectedGroupLocation?.value === 'BRANCH';
+
   // Hook ---------------------------------------------------------------
 
   const debouncedHeadCount = useDebounce(selectedHeadCount, 300);
@@ -148,9 +153,6 @@ export const CreateJobForm = ({
   // useEffect(() => {
   //   resetField('sectionId');
   // }, [selectedDepartmentId, resetField]);
-
-  const isBranch = selectedGroupLocation?.value === 'BRANCH';
-  const isHO = selectedGroupLocation?.value === 'HO';
 
   // for dynamic field position
   useEffect(() => {
@@ -196,12 +198,10 @@ export const CreateJobForm = ({
     if (!selectedGroupLocation) return;
     if (selectedHeadCount) return;
 
-    // if (selectedGroupLocation) {
     setValue('headCount', '1', {
       shouldValidate: true,
       shouldDirty: true,
     });
-    // }
   }, [selectedGroupLocation, setValue]);
 
   // NOTE: set default form value
@@ -427,7 +427,8 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="sectionId"
-                    label="Section *"
+                    label="Section"
+                    required={isHO}
                     disabled={!selectedDepartmentId}
                     getOptionLabel={(option) => option.sectionNameTh}
                     options={sectionList.map((option) => option)}

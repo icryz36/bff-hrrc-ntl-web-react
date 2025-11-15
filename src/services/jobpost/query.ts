@@ -5,23 +5,23 @@ import { fetchJobpostById, fetchJobpostList } from './services';
 // ----------------------------------------------------------------------
 
 const useJobpostQuery = {
-  keys: {
-    root: ['jobpost'] as const,
-    list: ['jobpost', 'list'] as const,
-    detail: ['jobpost', 'detail'] as const,
-  },
+  keys: () => ['jobpost'] as const,
+  keysList: () => [...useJobpostQuery.keys(), 'list'] as const,
+  keysDetail: () => [...useJobpostQuery.keys(), 'detail'] as const,
 
   list: (payload: TGetJobPostListPayload) =>
     queryOptions({
-      queryKey: [...useJobpostQuery.keys.list, payload],
+      queryKey: [...useJobpostQuery.keysList(), payload],
       queryFn: () => fetchJobpostList(payload),
       select: (response) => response.data,
     }),
 
   detail: (payload: TGetJobPostByIdPayload) =>
     queryOptions({
-      queryKey: [...useJobpostQuery.keys.detail, payload],
+      queryKey: [...useJobpostQuery.keysDetail(), payload],
       queryFn: () => fetchJobpostById(payload),
+      gcTime: 0,
+      staleTime: 0,
     }),
 };
 export { useJobpostQuery };

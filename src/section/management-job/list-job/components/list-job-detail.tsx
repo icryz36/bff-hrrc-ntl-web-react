@@ -3,6 +3,7 @@ import { Checkbox, Chip, FormControlLabel, Grid, Paper, Stack, Typography } from
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import { useQuery } from '@tanstack/react-query';
 import { useJobpostQuery } from 'services/jobpost/query';
+import { useMasterDataQuery } from 'services/master-data/query';
 import { fDate } from 'utils/format-time';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { getStatusBadgeColor } from '../view/list-job-table-view';
@@ -14,16 +15,26 @@ interface IListJobDetailComponentProps {
 }
 
 const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClose, jobPostId }) => {
+  // api ---------------------------------------------------------------
+
   const query = useJobpostQuery.detail({
     jobPostId: jobPostId ?? '',
   });
 
-  const { data } = useQuery({
-    ...query,
-    enabled: !!jobPostId,
-  });
+  const { data } = useQuery({ ...query, enabled: !!jobPostId });
+
+  const { data: usersList = [] } = useQuery(useMasterDataQuery.users());
 
   const jobData = data?.data;
+
+  // value ---------------------------------------------------------------
+
+  const recruiterNames = usersList
+    ?.filter((user) => jobData?.recruiterUserId?.includes(user?.userId))
+    ?.map((user) => `${user?.name} ${user?.surname}`)
+    ?.join(', ');
+
+  // ---------------------------------------------------------------------
 
   const InfoRow = ({
     label,
@@ -231,7 +242,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
               <InfoRow label="Owner" value="-" />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Group Recruiter" value="-" />
+              <InfoRow label="Group Recruiter" value={recruiterNames} />
             </Grid>
           </Grid>
         </Stack>

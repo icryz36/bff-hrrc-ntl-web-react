@@ -32,6 +32,7 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
 
     // Department
     departmentId: data?.departmentId?.departmentId || '',
+    sectionId: data.sectionId?.sectionId || null,
 
     // Type of Employee
     levelId: data?.levelId?.levelId || '',
@@ -48,7 +49,6 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
     jobDescription: data.jobDescription,
     jobSpecification: data.jobSpecification,
     jobBenefit: data.jobBenefit,
-    sectionId: data.sectionId?.sectionId || '',
   };
 };
 
