@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Checkbox, Chip, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
+import { Checkbox, Chip, FormControlLabel, Grid, Paper, Stack, Typography } from '@mui/material';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import { useQuery } from '@tanstack/react-query';
 import { useJobpostQuery } from 'services/jobpost/query';
@@ -35,17 +35,21 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     gap?: number;
   }) => (
     <Stack direction="row" gap={gap}>
-      <Typography variant="subtitle2" color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
-        {label} :{' '}
+      <Typography variant="subtitle2_bold" color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
+        {label} :
       </Typography>
-      <Typography variant="subtitle2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+      <Typography
+        variant="subtitle2_regular"
+        color="text.secondary"
+        sx={{ whiteSpace: 'pre-line' }}
+      >
         {value}
       </Typography>
     </Stack>
   );
 
   const SectionTitle = ({ title }: { title: string }) => (
-    <Typography variant="subtitle1">{title}</Typography>
+    <Typography variant="subtitle1_bold">{title}</Typography>
   );
 
   return (
@@ -55,16 +59,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
       onClose={onClose}
       sx={{
         [`& .${drawerClasses.paper}`]: {
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
           height: '100vh',
         },
       }}
     >
       <IconifyIcon
         icon="material-symbols-light:close-rounded"
-        fontSize="32px"
-        color="text.secondary"
+        fontSize="25px"
         sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}
         onClick={onClose}
       />
@@ -84,12 +85,12 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         </Typography>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="subtitle1" color="text.primary">
+          <Typography variant="subtitle1_bold" color="text.primary">
             Job Detail
           </Typography>
 
           <FormControlLabel
-            control={<Checkbox name="checked" color="primary" size="small" />}
+            control={<Checkbox disabled name="checked" color="primary" size="small" />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
@@ -130,84 +131,91 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             </Grid>
           </Grid>
         </Stack>
-
-        <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
-          <SectionTitle title="Position" />
-          {jobData?.jobPostPositions?.map((item) => (
-            <Grid container spacing={2} key={item?.positionId}>
-              <Grid size={{ md: 4 }}>
-                <InfoRow label={`Position No.\nFrom HRMS`} value={item?.positionName} gap={4} />
+        <Paper elevation={0} background={1} variant="elevation">
+          <Stack px={3} py={2} spacing={2} direction="column">
+            <SectionTitle title="Position" />
+            {jobData?.jobPostPositions?.map((item) => (
+              <Grid container spacing={2} key={item?.positionId}>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Position No.\nFrom HRMS`} value={item?.positionName} gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Rationale of\nVacancy`} value={item?.vacancy} gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow
+                    label={`Source of\nRecruitment`}
+                    value={item?.srcOfRecruitment}
+                    gap={4}
+                  />
+                </Grid>
               </Grid>
-              <Grid size={{ md: 4 }}>
-                <InfoRow label={`Rationale of\nVacancy`} value={item?.vacancy} gap={4} />
-              </Grid>
-              <Grid size={{ md: 4 }}>
-                <InfoRow label={`Source of\nRecruitment`} value={item?.srcOfRecruitment} gap={4} />
-              </Grid>
-            </Grid>
-          ))}
-        </Stack>
-
-        <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
-          <SectionTitle title="Work Location" />
-          {jobData?.workLocations?.map((item, index) => (
-            <Grid container spacing={2} key={index}>
-              <Grid size={{ md: 6 }}>
-                <InfoRow label="Province" value={item?.provinceName} />
-              </Grid>
-              <Grid size={{ md: 6 }}>
-                <Stack direction="row" gap={1}>
-                  <Typography
-                    variant="subtitle2"
-                    color="text.primary"
-                    sx={{ whiteSpace: 'pre-line' }}
-                  >
-                    District :{' '}
-                  </Typography>
-                  {item?.district.map((dist, distIndex) => (
+            ))}
+          </Stack>
+        </Paper>
+        <Paper elevation={0} background={1} variant="elevation">
+          <Stack px={3} py={2} spacing={2} direction="column">
+            <SectionTitle title="Work Location" />
+            {jobData?.workLocations?.map((item, index) => (
+              <Grid container spacing={2} key={index}>
+                <Grid size={{ md: 6 }}>
+                  <InfoRow label="Province" value={item?.provinceName} />
+                </Grid>
+                <Grid size={{ md: 6 }}>
+                  <Stack direction="row" gap={1}>
                     <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
+                      variant="subtitle2_bold"
+                      color="text.primary"
                       sx={{ whiteSpace: 'pre-line' }}
-                      key={distIndex}
                     >
-                      {dist.districtName}
-                      {distIndex !== item.district.length - 1 && ' /'}
+                      District :{' '}
                     </Typography>
-                  ))}
-                </Stack>
+                    {item?.district.map((dist, distIndex) => (
+                      <Typography
+                        variant="subtitle2"
+                        color="text.secondary"
+                        sx={{ whiteSpace: 'pre-line' }}
+                        key={distIndex}
+                      >
+                        {dist.districtName}
+                        {distIndex !== item.district.length - 1 && ' /'}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </Grid>
+              </Grid>
+            ))}
+          </Stack>
+        </Paper>
+        <Paper elevation={0} background={1} variant="elevation">
+          <Stack px={3} py={2} spacing={2} direction="column">
+            <SectionTitle title="Department" />
+            <Grid container spacing={2}>
+              <Grid size={{ md: 6 }}>
+                <InfoRow label="Department" value={jobData?.departmentName} />
+              </Grid>
+              <Grid size={{ md: 6 }}>
+                <InfoRow label="Section" value={jobData?.sectionName} />
               </Grid>
             </Grid>
-          ))}
-        </Stack>
-
-        <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
-          <SectionTitle title="Department" />
-          <Grid container spacing={2}>
-            <Grid size={{ md: 6 }}>
-              <InfoRow label="Department" value={jobData?.departmentName} />
+          </Stack>
+        </Paper>
+        <Paper elevation={0} background={1} variant="elevation">
+          <Stack px={3} py={2} spacing={2} direction="column">
+            <SectionTitle title="Type of Employee" />
+            <Grid container spacing={2}>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label="Job Level" value={jobData?.levelName} />
+              </Grid>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label="Degree" value={jobData?.degreeName} />
+              </Grid>
+              <Grid size={{ md: 4 }}>
+                <InfoRow label="Employee Type" value={jobData?.employeeTypeName} />
+              </Grid>
             </Grid>
-            <Grid size={{ md: 6 }}>
-              <InfoRow label="Section" value={jobData?.sectionName} />
-            </Grid>
-          </Grid>
-        </Stack>
-
-        <Stack px={3} py={2} bgcolor={'#F7FAFC'} spacing={2} direction="column">
-          <SectionTitle title="Type of Employee" />
-          <Grid container spacing={2}>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label="Job Level" value={jobData?.levelName} />
-            </Grid>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label="Degree" value={jobData?.degreeName} />
-            </Grid>
-            <Grid size={{ md: 4 }}>
-              <InfoRow label="Employee Type" value={jobData?.employeeTypeName} />
-            </Grid>
-          </Grid>
-        </Stack>
-
+          </Stack>
+        </Paper>
         <Stack px={3} py={2} spacing={2} direction="column">
           <Grid container spacing={2}>
             <Grid size={{ md: 4 }}>
