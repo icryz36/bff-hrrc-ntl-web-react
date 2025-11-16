@@ -110,8 +110,6 @@ describe('ListJobView', () => {
 
     fireEvent.click(screen.getByTestId('goto-page-2'));
 
-    // ไม่มี state ให้ตรวจตรง ๆ ใน DOM แต่สามารถดูได้ว่า component ไม่พัง
-    // หรือ mock function ถ้าอยากตรวจการเรียก onPageChange ก็ทำได้ที่ ListJobTableView mock
     expect(screen.getByText('Create Job')).toBeInTheDocument();
   });
 
