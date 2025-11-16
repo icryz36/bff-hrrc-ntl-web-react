@@ -82,6 +82,8 @@ export type TJobPostById = {
   jobPostPositions: TJobPostByIdPosition[];
   workLocations: TJobPostByIdWorkLocation[];
   recruiterUserId: string[];
+  ownerUserId: string;
+  ownerName: string;
 };
 
 export type TJobPostByIdPosition = {

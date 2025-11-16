@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { SyntheticEvent, useCallback, useEffect } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +19,7 @@ import { GROUP_LOCATION, OPTION_SOURCE_OF_RECRUITMENT, OPTION_VACANCY } from 'co
 import dayjs from 'dayjs';
 import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
+import { TDepartment, TDistrict } from 'types/master-data';
 import IconifyIcon from 'components/base/IconifyIcon';
 // import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
@@ -140,19 +141,27 @@ export const CreateJobForm = ({
   const isHO = selectedGroupLocation?.value === 'HO';
   const isBranch = selectedGroupLocation?.value === 'BRANCH';
 
+  // func ---------------------------------------------------------------
+
+  const handleProvinceChange = useCallback(
+    (_: SyntheticEvent<Element, Event>, value: TDistrict) => {
+      setValue('province', value, { shouldValidate: true, shouldDirty: true });
+      setValue('districtId', [], { shouldDirty: true });
+    },
+    [setValue],
+  );
+
+  const handleDepartmentChange = useCallback(
+    (_: SyntheticEvent<Element, Event>, value: TDepartment) => {
+      setValue('departmentId', value, { shouldValidate: true, shouldDirty: true });
+      setValue('sectionId', null, { shouldDirty: true });
+    },
+    [setValue],
+  );
+
   // Hook ---------------------------------------------------------------
 
   const debouncedHeadCount = useDebounce(selectedHeadCount, 300);
-
-  // reset district when province change
-  // useEffect(() => {
-  //   resetField('districtId');
-  // }, [selectedProvince, resetField]);
-
-  // reset sectionId when departmentId change
-  // useEffect(() => {
-  //   resetField('sectionId');
-  // }, [selectedDepartmentId, resetField]);
 
   // for dynamic field position
   useEffect(() => {
@@ -381,8 +390,9 @@ export const CreateJobForm = ({
                     fullWidth
                     name="province"
                     label="Province *"
-                    getOptionLabel={(option) => option.provinceNameTh}
+                    onChange={handleProvinceChange}
                     options={provinceList.map((option) => option)}
+                    getOptionLabel={(option) => option.provinceNameTh}
                     isOptionEqualToValue={(option, value) => option.provinceId === value.provinceId}
                   />
                 </Grid>
@@ -416,6 +426,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="departmentId"
                     label="Department *"
+                    onChange={handleDepartmentChange}
                     getOptionLabel={(option) => option.departmentNameTh}
                     options={departmentList.map((option) => option)}
                     isOptionEqualToValue={(option, value) =>

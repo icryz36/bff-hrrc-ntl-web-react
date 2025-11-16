@@ -239,7 +239,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
               <InfoRow label="Acknowledge Date" value={fDate(jobData?.acknowledgeDate)} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Owner" value="-" />
+              <InfoRow label="Owner" value={jobData?.ownerName} />
             </Grid>
             <Grid size={{ md: 6 }}>
               <InfoRow label="Group Recruiter" value={recruiterNames} />
