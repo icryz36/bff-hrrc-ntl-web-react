@@ -12,7 +12,7 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
     groupLocation: data?.groupLocation?.value || '',
     regionId: data?.regionId?.regionId || '',
     headCount: Number(data.headCount),
-    prNo: data.prNo,
+    prNo: data.prNo || '',
 
     // position
     position:
