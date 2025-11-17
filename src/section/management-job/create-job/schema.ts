@@ -63,9 +63,7 @@ export const CreateJobSchema = z
     departmentId: schemaHelper.objectOrNull<TDepartment>({
       message: { required_error: REQUIRED_MESSAGE },
     }),
-    sectionId: schemaHelper.objectOrNull<TSection>({
-      message: { required_error: REQUIRED_MESSAGE },
-    }),
+    sectionId: schemaHelper.objectOrNull<TSection>().nullable().optional(),
 
     // Type of Employee
     levelId: schemaHelper.objectOrNull<TJobLevel>({
@@ -94,18 +92,27 @@ export const CreateJobSchema = z
       data.position.forEach((pos, index) => {
         if (!pos.vacancy) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             path: ['position', index, 'vacancy'],
             message: REQUIRED_MESSAGE,
           });
         }
         if (!pos.srcOfRecruitment) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             path: ['position', index, 'srcOfRecruitment'],
             message: REQUIRED_MESSAGE,
           });
         }
       });
+
+      // ถ้า groupLocation เป็น HO แล้ว sectionId value = null จะ required!
+      if (!data.sectionId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['sectionId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
     }
   });

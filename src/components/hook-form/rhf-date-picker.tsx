@@ -61,6 +61,18 @@ export function RHFDatePicker({ name, slotProps, ...other }: PickerProps<DatePic
               error: !!error,
               helperText: error?.message ?? slotProps?.textField?.helperText,
               fullWidth: true,
+              onClick: (e) => {
+                e.currentTarget.querySelector('button')?.click();
+              },
+              InputProps: {
+                readOnly: true,
+                ...slotProps?.textField?.InputProps,
+              },
+              sx: {
+                cursor: 'pointer',
+                '& input': { cursor: 'pointer' },
+                ...slotProps?.textField?.sx,
+              },
             },
           }}
           {...other}
