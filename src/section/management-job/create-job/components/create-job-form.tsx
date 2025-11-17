@@ -211,6 +211,11 @@ export const CreateJobForm = ({
       shouldValidate: true,
       shouldDirty: true,
     });
+    setValue('regionId', {
+      regionId: '628205f6-5f15-4e07-ba98-cff214433237',
+      regionNameTh: 'สำนักงานใหญ่',
+      regionNameEn: 'Head Office',
+    });
   }, [selectedGroupLocation, setValue]);
 
   // NOTE: set default form value
@@ -221,7 +226,7 @@ export const CreateJobForm = ({
   }, [defaultValuesForm, reset]);
 
   // ----------------------------------------------------------------------
-
+  console.log('ntlRegionList', ntlRegionList);
   return (
     <Container maxWidth="md">
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>

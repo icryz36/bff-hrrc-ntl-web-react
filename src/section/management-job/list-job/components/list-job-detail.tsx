@@ -126,7 +126,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
               <InfoRow label="PR Number" value={jobData?.prNo} />
             </Grid>
             <Grid size={{ md: 6 }}>
-              <InfoRow label="Job Post ID" value={jobData?.jobPostId} />
+              <InfoRow label="Job Post ID" value={jobData?.jobPostNo} />
             </Grid>
             <Grid size={{ md: 6 }}>
               <InfoRow
