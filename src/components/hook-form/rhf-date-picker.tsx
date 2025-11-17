@@ -29,11 +29,23 @@ type PickerProps<T extends DatePickerProps | TimePickerProps | DateTimePickerPro
   };
 };
 
+type RHFDatePickerProps = PickerProps<DatePickerProps> & {
+  required?: boolean;
+};
+
+type RHFTimePickerProps = PickerProps<TimePickerProps> & {
+  required?: boolean;
+};
+
+type RHFDateTimePickerProps = PickerProps<DateTimePickerProps> & {
+  required?: boolean;
+};
+
 // function DatePickerIcon() {
 //   return <img src="/assets/icon/ic-c.svg" alt="Date picker opening icon" width={32} />;
 // }
 
-export function RHFDatePicker({ name, slotProps, ...other }: PickerProps<DatePickerProps>) {
+export function RHFDatePicker({ name, slotProps, required, ...other }: RHFDatePickerProps) {
   const { control } = useFormContext();
 
   return (
@@ -58,9 +70,22 @@ export function RHFDatePicker({ name, slotProps, ...other }: PickerProps<DatePic
             ...slotProps,
             textField: {
               ...slotProps?.textField,
+              required,
               error: !!error,
               helperText: error?.message ?? slotProps?.textField?.helperText,
               fullWidth: true,
+              onClick: (e) => {
+                e.currentTarget.querySelector('button')?.click();
+              },
+              InputProps: {
+                readOnly: true,
+                ...slotProps?.textField?.InputProps,
+              },
+              sx: {
+                cursor: 'pointer',
+                '& input': { cursor: 'pointer' },
+                ...slotProps?.textField?.sx,
+              },
             },
           }}
           {...other}
@@ -72,7 +97,7 @@ export function RHFDatePicker({ name, slotProps, ...other }: PickerProps<DatePic
 
 // ----------------------------------------------------------------------
 
-export function RHFTimePicker({ name, slotProps, ...other }: PickerProps<TimePickerProps>) {
+export function RHFTimePicker({ name, slotProps, required, ...other }: RHFTimePickerProps) {
   const { control } = useFormContext();
 
   return (
@@ -96,6 +121,7 @@ export function RHFTimePicker({ name, slotProps, ...other }: PickerProps<TimePic
             ...slotProps,
             textField: {
               ...slotProps?.textField,
+              required,
               error: !!error,
               helperText: error?.message ?? slotProps?.textField?.helperText,
             },
@@ -109,7 +135,7 @@ export function RHFTimePicker({ name, slotProps, ...other }: PickerProps<TimePic
 
 // ----------------------------------------------------------------------
 
-export function RHFDateTimePicker({ name, slotProps, ...other }: PickerProps<DateTimePickerProps>) {
+export function RHFDateTimePicker({ name, slotProps, required, ...other }: RHFDateTimePickerProps) {
   const { control } = useFormContext();
 
   return (
@@ -133,6 +159,7 @@ export function RHFDateTimePicker({ name, slotProps, ...other }: PickerProps<Dat
             ...slotProps,
             textField: {
               ...slotProps?.textField,
+              required,
               error: !!error,
               helperText: error?.message ?? slotProps?.textField?.helperText,
             },

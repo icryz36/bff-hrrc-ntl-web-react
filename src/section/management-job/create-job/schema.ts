@@ -34,7 +34,7 @@ export const CreateJobSchema = z
       message: { required_error: REQUIRED_MESSAGE },
     }),
     headCount: z.string().min(1, { error: REQUIRED_MESSAGE }),
-    prNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
+    prNo: z.string().trim().optional(),
 
     //  Position
     position: z.array(
@@ -63,9 +63,7 @@ export const CreateJobSchema = z
     departmentId: schemaHelper.objectOrNull<TDepartment>({
       message: { required_error: REQUIRED_MESSAGE },
     }),
-    sectionId: schemaHelper.objectOrNull<TSection>({
-      message: { required_error: REQUIRED_MESSAGE },
-    }),
+    sectionId: schemaHelper.objectOrNull<TSection>().nullable().optional(),
 
     // Type of Employee
     levelId: schemaHelper.objectOrNull<TJobLevel>({
@@ -87,25 +85,41 @@ export const CreateJobSchema = z
     jobBenefit: z.string(),
   })
   .superRefine((data, ctx) => {
-    // ถ้า groupLocation ไม่ใช่ Branch ให้บังคับ vacancy และ srcOfRecruitment ว่าต้องมีค่า
     const isBranch = data.groupLocation?.value === 'BRANCH';
+    const isHO = data.groupLocation?.value === 'HO';
+    const isGroupLocationEmpty = !data.groupLocation?.value;
 
+    if (!isGroupLocationEmpty && !isHO && (!data.prNo || data.prNo.trim() === '')) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['prNo'],
+        message: REQUIRED_MESSAGE,
+      });
+    }
     if (!isBranch) {
       data.position.forEach((pos, index) => {
         if (!pos.vacancy) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             path: ['position', index, 'vacancy'],
             message: REQUIRED_MESSAGE,
           });
         }
         if (!pos.srcOfRecruitment) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: 'custom',
             path: ['position', index, 'srcOfRecruitment'],
             message: REQUIRED_MESSAGE,
           });
         }
       });
+
+      if (!isGroupLocationEmpty && !data.sectionId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['sectionId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
     }
   });

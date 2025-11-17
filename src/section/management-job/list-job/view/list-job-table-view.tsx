@@ -127,7 +127,7 @@ const ListJobTableView = ({
       {
         field: 'regionName',
         headerName: 'NTL Regional',
-        minWidth: 140,
+        minWidth: 240,
       },
       {
         field: 'provinceName',

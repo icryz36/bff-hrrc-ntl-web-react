@@ -15,6 +15,8 @@ const paths = {
   defaultJwtLogin: `/${rootPaths.pagesRoot}/authentication/jwt/login`,
   defaultAuth0Login: `/${rootPaths.pagesRoot}/authentication/auth0/login`,
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
+  importCandidates: `/${rootPaths.manageRoot}/candidates/import`,
+  listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };

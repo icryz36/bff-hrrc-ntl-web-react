@@ -15,7 +15,7 @@ export const useCreateJobpostMutation = () =>
     mutationFn: (payload: TCreateJobPostPayload) => postCreateJob(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: useJobpostQuery.keys.list,
+        queryKey: useJobpostQuery.keysList(),
       });
     },
   });
@@ -25,7 +25,7 @@ export const useUpdateJobpostStatusMutation = () =>
     mutationFn: (payload: TUpdateJobPostStatusPayload) => updateJobStatus(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: useJobpostQuery.keys.list,
+        queryKey: useJobpostQuery.keysList(),
       });
     },
   });
@@ -34,7 +34,7 @@ export const useUpdateJobpostMutation = () =>
     mutationFn: (payload: TUpdateJobPostPayload) => postUpdateJob(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: useJobpostQuery.keys.list,
+        queryKey: useJobpostQuery.keysList(),
       });
     },
   });
