@@ -4,14 +4,12 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import FilterSection from '../filter-section';
 
-// ---- Mock useBreakpoints ----- //
 vi.mock('providers/BreakpointsProvider', () => ({
   useBreakpoints: () => ({
-    up: () => true, // simulate desktop screen
+    up: () => true,
   }),
 }));
 
-// ---- Mock FilterMenuContent ----- //
 vi.mock('section/management-job/list-job/components/filter-menu-content', () => ({
   default: ({ onClose }: { onClose: () => void }) => (
     <div data-testid="filter-menu-content">
@@ -42,16 +40,13 @@ describe('<FilterSection />', () => {
   it('closes popover when onClose is called', () => {
     render(<FilterSection apiRef={apiRef} handleToggleFilterPanel={vi.fn()} />);
 
-    // Open popover
     fireEvent.click(screen.getByText('Filters'));
 
     const menu = screen.getByTestId('filter-menu-content');
-    expect(menu).toBeVisible(); // ตรวจสอบเปิด
+    expect(menu).toBeVisible();
 
-    // Close popover
     fireEvent.click(screen.getByText('Close'));
 
-    // ตรวจสอบว่าไม่ visible
     expect(menu).not.toBeVisible();
   });
 });

@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import ListJobDetailComponent from '../list-job-detail';
 
-// ---- Mock useJobpostQuery.detail ---- //
 const mockJobData = {
   jobPostNo: 'JP-001',
   jobTitle: 'Software Engineer',
@@ -47,7 +46,6 @@ vi.mock('@tanstack/react-query', async () => {
   };
 });
 
-// ---- Mock IconifyIcon ---- //
 vi.mock('components/base/IconifyIcon', () => ({
   default: (props: any) => <div data-testid="iconify-icon" {...props} />,
 }));
@@ -62,22 +60,17 @@ describe('<ListJobDetailComponent />', () => {
   it('renders Drawer and job post details', () => {
     render(<ListJobDetailComponent open={true} onClose={onClose} jobPostId="1" />);
 
-    // Drawer title
     expect(screen.getByText(/Job Post Detail : JP-001/)).toBeInTheDocument();
 
-    // Job title info
     expect(screen.getByText('Job Title :')).toBeInTheDocument();
     expect(screen.getByText('Software Engineer')).toBeInTheDocument();
 
-    // Department
     expect(screen.getByText('Department :')).toBeInTheDocument();
     expect(screen.getByText('IT')).toBeInTheDocument();
 
-    // Position section
     expect(screen.getByText('Position')).toBeInTheDocument();
     expect(screen.getByText('Dev')).toBeInTheDocument();
 
-    // Job Description
     expect(screen.getByText('Job Desc')).toBeInTheDocument();
   });
 
