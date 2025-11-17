@@ -85,12 +85,20 @@ const sitemap: MenuItem[] = [
     icon: 'material-symbols:view-quilt-outline',
     items: [
       {
+        name: 'Import Candidate',
+        key: 'Import Candidate',
+        pathName: 'Import Candidate',
+        active: true,
+        icon: 'uil:import',
+        path: paths.importCandidates,
+      },
+      {
         name: 'List Candidate',
         key: 'List Candidate',
         pathName: 'List Candidate',
         active: true,
         icon: 'material-symbols:list-alt-outline-rounded',
-        path: paths[404],
+        path: paths.listCandidates,
       },
       {
         name: 'Calendar',
