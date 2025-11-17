@@ -211,11 +211,19 @@ export const CreateJobForm = ({
       shouldValidate: true,
       shouldDirty: true,
     });
-    setValue('regionId', {
-      regionId: '628205f6-5f15-4e07-ba98-cff214433237',
-      regionNameTh: 'สำนักงานใหญ่',
-      regionNameEn: 'Head Office',
-    });
+    if (selectedGroupLocation?.value === 'HO') {
+      setValue('regionId', {
+        regionId: '628205f6-5f15-4e07-ba98-cff214433237',
+        regionNameTh: 'สำนักงานใหญ่',
+        regionNameEn: 'Head Office',
+      });
+    } else {
+      setValue('regionId', {
+        regionId: '',
+        regionNameTh: '',
+        regionNameEn: '',
+      });
+    }
   }, [selectedGroupLocation, setValue]);
 
   // NOTE: set default form value
@@ -298,6 +306,7 @@ export const CreateJobForm = ({
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               fullWidth
+              disabled={selectedGroupLocation?.value == 'HO'}
               name="regionId"
               label="NTL Regional"
               getOptionLabel={(option) => option.regionNameTh}
