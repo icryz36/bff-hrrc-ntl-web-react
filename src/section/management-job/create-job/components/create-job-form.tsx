@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useEffect } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,14 +21,11 @@ import { useDebounce } from 'hooks/useDebounce';
 import { useMasterDataQuery } from 'services/master-data/query';
 import { TDepartment, TDistrict } from 'types/master-data';
 import IconifyIcon from 'components/base/IconifyIcon';
-// import { DirtyFormLeaveGuardDialog } from 'components/dirty-leave-guard-dialog/DirtyLeaveGuard';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
 import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
 import { CreateJobSchema, CreateJobSchemaType } from '../schema';
 import { StyledFormContainerBox } from '../styles';
-
-// ----------------------------------------------------------------------
 
 type CreateJobFormProps = {
   isEdit?: boolean;
@@ -37,10 +34,7 @@ type CreateJobFormProps = {
   onSubmit: (data: CreateJobSchemaType) => void;
 };
 
-// ----------------------------------------------------------------------
-
 const defaultValues: CreateJobSchemaType = {
-  // Job Detail
   jobPostId: '',
   statusId: '',
   jobTitle: '',
@@ -48,36 +42,23 @@ const defaultValues: CreateJobSchemaType = {
   regionId: null,
   headCount: '',
   prNo: '',
-
-  // Position
   position: [],
-
-  // Work Location
   province: null,
   districtId: [],
-
-  // Department
   departmentId: null,
   sectionId: null,
-
-  // Type of Employee
   levelId: null,
   degreeId: null,
   employeeTypeId: null,
-
-  // Date
   startDate: '',
   endDate: '',
   acknowledgeDate: '',
-
   ownerUserId: '',
   recruiterUserId: [],
   jobDescription: '',
   jobSpecification: '',
   jobBenefit: '',
 };
-
-// ----------------------------------------------------------------------
 
 export const CreateJobForm = ({
   onSubmit,
@@ -87,8 +68,6 @@ export const CreateJobForm = ({
 }: CreateJobFormProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
-
-  // form -----------------------------------------------------------------
 
   const methods = useForm<CreateJobSchemaType>({
     resolver: zodResolver(CreateJobSchema),
@@ -110,8 +89,6 @@ export const CreateJobForm = ({
     name: 'position',
   });
 
-  // api ----------------------------------------------------------------
-
   const { data: postStatusList = [] } = useQuery(useMasterDataQuery.postStatus());
   const { data: ntlRegionList = [] } = useQuery(useMasterDataQuery.ntlRegion());
   const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
@@ -132,16 +109,13 @@ export const CreateJobForm = ({
     enabled: !!selectedDepartmentId,
   });
 
-  const filterPostStatusList = postStatusList?.filter(
-    (item) => item.statusId !== '10265555-dc7c-4c12-8e02-e6b5c751e9ae',
+  const filterPostStatusList = useMemo(
+    () => postStatusList.filter((item) => item.statusId !== '10265555-dc7c-4c12-8e02-e6b5c751e9ae'),
+    [postStatusList],
   );
-
-  // value --------------------------------------------------------------
 
   const isHO = selectedGroupLocation?.value === 'HO';
   const isBranch = selectedGroupLocation?.value === 'BRANCH';
-
-  // func ---------------------------------------------------------------
 
   const handleProvinceChange = useCallback(
     (_: SyntheticEvent<Element, Event>, value: TDistrict) => {
@@ -159,28 +133,44 @@ export const CreateJobForm = ({
     [setValue],
   );
 
-  // Hook ---------------------------------------------------------------
-
   const debouncedHeadCount = useDebounce(selectedHeadCount, 300);
 
-  // for dynamic field position
   useEffect(() => {
-    if (isEdit && !isDirty) return; // case edit prevent auto replace !
+    if (isEdit && !isDirty) return;
 
     let newHeadCount = Number(debouncedHeadCount) || 0;
 
-    // ถ้าเป็น Branch ให้บังคับ headCount = 1 เสมอ
-
-    if (isBranch) {
-      newHeadCount = 1;
+    if (isHO && newHeadCount > 10) {
+      newHeadCount = 10;
+      if (selectedHeadCount !== '10') {
+        setValue('headCount', '10', {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+    } else if (isBranch && newHeadCount > 100) {
+      newHeadCount = 100;
+      if (selectedHeadCount !== '100') {
+        setValue('headCount', '100', {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
     }
 
-    if (newHeadCount < 0) return;
+    if (newHeadCount < 1) {
+      if (fieldsPosition.length !== 0) {
+        replacePosition([]);
+      }
+      return;
+    }
 
-    if (newHeadCount === fieldsPosition.length) return;
+    const targetCount = isBranch ? 1 : newHeadCount;
 
-    if (newHeadCount > fieldsPosition.length) {
-      const diff = newHeadCount - fieldsPosition.length;
+    if (targetCount === fieldsPosition.length) return;
+
+    if (targetCount > fieldsPosition.length) {
+      const diff = targetCount - fieldsPosition.length;
       const newItems: CreateJobSchemaType['position'] = Array.from({ length: diff }, () => ({
         positionId: null,
         vacancy: null,
@@ -189,7 +179,7 @@ export const CreateJobForm = ({
 
       replacePosition([...fieldsPosition, ...newItems]);
     } else {
-      replacePosition(fieldsPosition.slice(0, newHeadCount));
+      replacePosition(fieldsPosition.slice(0, targetCount));
     }
   }, [
     debouncedHeadCount,
@@ -197,7 +187,8 @@ export const CreateJobForm = ({
     replacePosition,
     isEdit,
     isDirty,
-    selectedGroupLocation,
+    isHO,
+    isBranch,
     selectedHeadCount,
     setValue,
   ]);
@@ -205,13 +196,13 @@ export const CreateJobForm = ({
   useEffect(() => {
     if (isEdit) return;
     if (!selectedGroupLocation) return;
-    if (selectedHeadCount) return;
-
+    if (isDirty) return;
+    if (selectedHeadCount && selectedHeadCount !== '') return;
     setValue('headCount', '1', {
       shouldValidate: true,
       shouldDirty: true,
     });
-    if (selectedGroupLocation?.value === 'HO') {
+    if (selectedGroupLocation.value === 'HO') {
       setValue('regionId', {
         regionId: '628205f6-5f15-4e07-ba98-cff214433237',
         regionNameTh: 'สำนักงานใหญ่',
@@ -224,17 +215,14 @@ export const CreateJobForm = ({
         regionNameEn: '',
       });
     }
-  }, [selectedGroupLocation, setValue]);
+  }, [selectedGroupLocation, isEdit, selectedHeadCount, setValue]);
 
-  // NOTE: set default form value
   useEffect(() => {
     if (defaultValuesForm) {
       reset(defaultValuesForm);
     }
   }, [defaultValuesForm, reset]);
 
-  // ----------------------------------------------------------------------
-  console.log('ntlRegionList', ntlRegionList);
   return (
     <Container maxWidth="md">
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -279,7 +267,7 @@ export const CreateJobForm = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Select name="statusId" label="Job Status *">
+            <Field.Select name="statusId" label="Job Status" required={true}>
               {filterPostStatusList.map((option) => (
                 <MenuItem key={option.statusId} value={option.statusId}>
                   {option.statusNameTh}
@@ -289,16 +277,17 @@ export const CreateJobForm = ({
           </Grid>
 
           <Grid size={12}>
-            <Field.Text name="jobTitle" label="Job Title *" />
+            <Field.Text name="jobTitle" maxLength={250} label="Job Title" required={true} />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               fullWidth
               name="groupLocation"
-              label="Group Location *"
+              label="Group Location"
+              required={true}
               getOptionLabel={(option) => option.label}
-              options={GROUP_LOCATION.map((option) => option)}
+              options={GROUP_LOCATION}
               isOptionEqualToValue={(option, value) => option.value === value.value}
             />
           </Grid>
@@ -306,19 +295,31 @@ export const CreateJobForm = ({
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               fullWidth
-              disabled={selectedGroupLocation?.value == 'HO'}
+              disabled={selectedGroupLocation?.value === 'HO'}
               name="regionId"
               label="NTL Regional"
               getOptionLabel={(option) => option.regionNameTh}
-              options={ntlRegionList.map((option) => option)}
+              options={ntlRegionList}
               isOptionEqualToValue={(option, value) => option.regionId === value.regionId}
+              required={selectedGroupLocation?.value === 'BRANCH'}
             />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Text
               name="headCount"
-              label="Headcount *"
+              label="Headcount"
+              required={true}
+              onChange={(e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                const numeric = Number(value);
+                if (isHO && numeric > 10) {
+                  value = '10';
+                } else if (isBranch && numeric > 100) {
+                  value = '100';
+                }
+                setValue('headCount', value, { shouldDirty: true, shouldValidate: true });
+              }}
               slotProps={{
                 input: {
                   inputProps: {
@@ -326,8 +327,7 @@ export const CreateJobForm = ({
                     pattern: '[0-9]*',
                     onKeyPress: handleHeadcountKeyPress,
                     onPaste: handleHeadcountPaste,
-                    maxLength: 3,
-                    max: 2,
+                    maxLength: isHO ? 2 : 3,
                   },
                 },
               }}
@@ -335,10 +335,13 @@ export const CreateJobForm = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <Field.Text name="prNo" label="PR Number" />
+            <Field.Text
+              name="prNo"
+              label="PR Number"
+              required={selectedGroupLocation?.value === 'BRANCH'}
+              maxLength={20}
+            />
           </Grid>
-
-          {/* Position */}
 
           {!!selectedGroupLocation && (
             <Grid size={12}>
@@ -352,9 +355,9 @@ export const CreateJobForm = ({
                         <Field.Autocomplete
                           fullWidth
                           name={`position.${index}.positionId`}
-                          label={`Position No. From HRMS `}
+                          label="Position No. From HRMS"
                           getOptionLabel={(option) => option.positionCode}
-                          options={positionList.map((option) => option)}
+                          options={positionList}
                           isOptionEqualToValue={(option, value) =>
                             option.positionId === value.positionId
                           }
@@ -368,7 +371,7 @@ export const CreateJobForm = ({
                           name={`position.${index}.vacancy`}
                           label={`Rationale of Vacancy ${isHO ? '*' : ''}`}
                           getOptionLabel={(option) => option.label}
-                          options={OPTION_VACANCY.map((option) => option)}
+                          options={OPTION_VACANCY}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
                         />
@@ -380,7 +383,7 @@ export const CreateJobForm = ({
                           label={`Source of Recruitment ${isHO ? '*' : ''}`}
                           name={`position.${index}.srcOfRecruitment`}
                           getOptionLabel={(option) => option.label}
-                          options={OPTION_SOURCE_OF_RECRUITMENT.map((option) => option)}
+                          options={OPTION_SOURCE_OF_RECRUITMENT}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
                         />
@@ -392,8 +395,6 @@ export const CreateJobForm = ({
             </Grid>
           )}
 
-          {/* Work Location */}
-
           <Grid size={12}>
             <StyledFormContainerBox>
               <Typography variant="subtitle1_bold">Work Location</Typography>
@@ -403,9 +404,10 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="province"
-                    label="Province *"
+                    label="Province"
+                    required={true}
                     onChange={handleProvinceChange}
-                    options={provinceList.map((option) => option)}
+                    options={provinceList}
                     getOptionLabel={(option) => option.provinceNameTh}
                     isOptionEqualToValue={(option, value) => option.provinceId === value.provinceId}
                   />
@@ -415,11 +417,12 @@ export const CreateJobForm = ({
                     multiple
                     fullWidth
                     name="districtId"
-                    label="District *"
+                    label="District"
+                    required={true}
                     disableCloseOnSelect
                     disabled={!selectedProvince}
+                    options={districtList}
                     getOptionLabel={(option) => option.districtNameTh}
-                    options={districtList.map((option) => option)}
                     slotProps={{ chip: { variant: 'outlined' } }}
                     isOptionEqualToValue={(option, value) => option.districtId === value.districtId}
                   />
@@ -427,8 +430,6 @@ export const CreateJobForm = ({
               </Grid>
             </StyledFormContainerBox>
           </Grid>
-
-          {/* Department */}
 
           <Grid size={12}>
             <StyledFormContainerBox>
@@ -439,10 +440,11 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="departmentId"
-                    label="Department *"
+                    label="Department"
+                    required={true}
                     onChange={handleDepartmentChange}
+                    options={departmentList}
                     getOptionLabel={(option) => option.departmentNameTh}
-                    options={departmentList.map((option) => option)}
                     isOptionEqualToValue={(option, value) =>
                       option.departmentId === value.departmentId
                     }
@@ -455,16 +457,14 @@ export const CreateJobForm = ({
                     label="Section"
                     required={isHO}
                     disabled={!selectedDepartmentId}
+                    options={sectionList}
                     getOptionLabel={(option) => option.sectionNameTh}
-                    options={sectionList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.sectionId === value.sectionId}
                   />
                 </Grid>
               </Grid>
             </StyledFormContainerBox>
           </Grid>
-
-          {/* Type of Employee */}
 
           <Grid size={12}>
             <StyledFormContainerBox>
@@ -475,9 +475,10 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="levelId"
-                    label="Job Level *"
+                    label="Job Level"
+                    required={true}
+                    options={jobLevelList}
                     getOptionLabel={(option) => option.levelNameTh}
-                    options={jobLevelList.map((option) => option)}
                     isOptionEqualToValue={(option, value) => option.levelId === value.levelId}
                   />
                 </Grid>
@@ -485,8 +486,9 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="degreeId"
-                    label="Degree *"
-                    options={degreeList.map((option) => option)}
+                    label="Degree"
+                    required={true}
+                    options={degreeList}
                     getOptionLabel={(option) => option.degreeNameTh}
                     isOptionEqualToValue={(option, value) => option.degreeId === value.degreeId}
                   />
@@ -495,8 +497,9 @@ export const CreateJobForm = ({
                   <Field.Autocomplete
                     fullWidth
                     name="employeeTypeId"
-                    label="Employee Type *"
-                    options={employeeTypeList.map((option) => option)}
+                    label="Employee Type"
+                    required={true}
+                    options={employeeTypeList}
                     getOptionLabel={(option) => option.employeeTypeTH}
                     isOptionEqualToValue={(option, value) =>
                       option.employeeTypeId === value.employeeTypeId
@@ -508,22 +511,29 @@ export const CreateJobForm = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Field.DatePicker name="startDate" label="Start Date *" format="DD/MM/YYYY" />
+            <Field.DatePicker
+              name="startDate"
+              label="Start Date"
+              format="DD/MM/YYYY"
+              required={true}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Field.DatePicker
               name="endDate"
-              label="End Date *"
+              label="End Date"
               minDate={dayjs(selectedStartDate)}
               format="DD/MM/YYYY"
+              required={true}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Field.DatePicker
               name="acknowledgeDate"
-              label="Acknowledge Date *"
+              label="Acknowledge Date"
               maxDate={dayjs(selectedEndDate)}
               format="DD/MM/YYYY"
+              required={true}
             />
           </Grid>
 
@@ -537,7 +547,7 @@ export const CreateJobForm = ({
               name="recruiterUserId"
               label="Group Recruiter"
               disableCloseOnSelect
-              options={usersList.map((option) => option)}
+              options={usersList}
               slotProps={{ chip: { variant: 'outlined' } }}
               getOptionLabel={(option) => `${option?.name} ${option?.surname}`}
               isOptionEqualToValue={(option, value) => option.userId === value.userId}
@@ -547,7 +557,6 @@ export const CreateJobForm = ({
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Job Description</Typography>
-
               <Field.Editor name="jobDescription" />
             </Stack>
           </Grid>
@@ -555,7 +564,6 @@ export const CreateJobForm = ({
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Job Specification</Typography>
-
               <Field.Editor name="jobSpecification" />
             </Stack>
           </Grid>
@@ -563,7 +571,6 @@ export const CreateJobForm = ({
           <Grid size={12} mt={3}>
             <Stack direction="column" spacing={2.6}>
               <Typography variant="subtitle1_bold">Benefit</Typography>
-
               <Field.Editor name="jobBenefit" />
             </Stack>
           </Grid>
@@ -579,8 +586,6 @@ export const CreateJobForm = ({
             Post
           </LoadingButton>
         </Stack>
-
-        {/* <DirtyFormLeaveGuardDialog /> */}
       </Form>
     </Container>
   );
