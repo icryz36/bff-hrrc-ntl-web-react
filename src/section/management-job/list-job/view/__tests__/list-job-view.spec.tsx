@@ -6,9 +6,6 @@ import { useJobpostQuery } from 'services/jobpost/query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ListJobView from '../list-job-view';
 
-// ---------------------------
-// MOCKS
-// ---------------------------
 vi.mock('@tanstack/react-query', async () => {
   const actual = await vi.importActual('@tanstack/react-query');
   return {
@@ -53,12 +50,8 @@ vi.mock('components/custom-confirm-dialog/CustomDialog', () => ({
   default: ({ open }: any) => (open ? <div data-testid="dialog">Dialog Open</div> : null),
 }));
 
-// ---------------------------
-// TESTS
-// ---------------------------
 describe('ListJobView', () => {
   beforeEach(() => {
-    // default mock apiRef
     (useGridApiRef as any).mockReturnValue({
       current: {
         showFilterPanel: vi.fn(),
@@ -66,20 +59,17 @@ describe('ListJobView', () => {
       },
     });
 
-    // default mock boolean hook
     (useBoolean as any).mockReturnValue({
       value: false,
       onFalse: vi.fn(),
       onTrue: vi.fn(),
     });
 
-    // default mock list query
     (useJobpostQuery.list as any).mockReturnValue({
       queryKey: ['test-list'],
       queryFn: vi.fn(),
     });
 
-    // default mock useQuery return
     (useQuery as any).mockReturnValue({
       data: {
         items: [{ id: 1, title: 'Job A' }],
