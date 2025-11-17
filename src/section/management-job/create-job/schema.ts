@@ -87,8 +87,9 @@ export const CreateJobSchema = z
   .superRefine((data, ctx) => {
     const isBranch = data.groupLocation?.value === 'BRANCH';
     const isHO = data.groupLocation?.value === 'HO';
+    const isGroupLocationEmpty = !data.groupLocation?.value;
 
-    if (!isHO && (!data.prNo || data.prNo.trim() === '')) {
+    if (!isGroupLocationEmpty && !isHO && (!data.prNo || data.prNo.trim() === '')) {
       ctx.addIssue({
         code: 'custom',
         path: ['prNo'],
@@ -113,7 +114,7 @@ export const CreateJobSchema = z
         }
       });
 
-      if (!data.sectionId) {
+      if (!isGroupLocationEmpty && !data.sectionId) {
         ctx.addIssue({
           code: 'custom',
           path: ['sectionId'],
