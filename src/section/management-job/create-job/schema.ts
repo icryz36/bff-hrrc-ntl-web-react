@@ -57,23 +57,17 @@ export const CreateJobSchema = z
     ),
 
     // Work Location
-    province: schemaHelper.objectOrNull({ message: { required_error: REQUIRED_MESSAGE } }),
-    districtId: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
+    province: schemaHelper.objectOrNull().nullable().optional(),
+    districtId: z.array(z.any()),
 
     // Department
-    departmentId: schemaHelper.objectOrNull<TDepartment>({
-      message: { required_error: REQUIRED_MESSAGE },
-    }),
+    departmentId: schemaHelper.objectOrNull<TDepartment>().nullable().optional(),
     sectionId: schemaHelper.objectOrNull<TSection>().nullable().optional(),
 
     // Type of Employee
-    levelId: schemaHelper.objectOrNull<TJobLevel>({
-      message: { required_error: REQUIRED_MESSAGE },
-    }),
-    degreeId: schemaHelper.objectOrNull<TDegree>({ message: { required_error: REQUIRED_MESSAGE } }),
-    employeeTypeId: schemaHelper.objectOrNull<TEmployeeType>({
-      message: { required_error: REQUIRED_MESSAGE },
-    }),
+    levelId: schemaHelper.objectOrNull<TJobLevel>().nullable().optional(),
+    degreeId: schemaHelper.objectOrNull<TDegree>().nullable().optional(),
+    employeeTypeId: schemaHelper.objectOrNull<TEmployeeType>().nullable().optional(),
 
     // Date
     startDate: z.string().min(1, { error: REQUIRED_MESSAGE }),
@@ -89,6 +83,7 @@ export const CreateJobSchema = z
     const isBranch = data.groupLocation?.value === 'BRANCH';
     const isHO = data.groupLocation?.value === 'HO';
     const isGroupLocationEmpty = !data.groupLocation?.value;
+    const isBigEvent = data.isBigEvent;
 
     if (!isGroupLocationEmpty && !isHO && (!data.prNo || data.prNo.trim() === '')) {
       ctx.addIssue({
@@ -119,6 +114,55 @@ export const CreateJobSchema = z
         ctx.addIssue({
           code: 'custom',
           path: ['sectionId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+    }
+    if (!isBigEvent) {
+      if (!data.province) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['province'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+
+      if (!data.districtId || data.districtId.length === 0) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['districtId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+
+      if (!data.departmentId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['departmentId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+
+      if (!data.levelId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['levelId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+
+      if (!data.degreeId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['degreeId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+
+      if (!data.employeeTypeId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['employeeTypeId'],
           message: REQUIRED_MESSAGE,
         });
       }

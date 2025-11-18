@@ -6,9 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
-  Checkbox,
   Container,
-  FormControlLabel,
   Grid,
   InputAdornment,
   MenuItem,
@@ -202,8 +200,9 @@ export const CreateJobForm = ({
     if (!selectedGroupLocation) return;
     const newHeadCount = String(debouncedHeadCount) || '1';
     setValue('headCount', newHeadCount);
-    setValue('prNo', '');
-    setValue('regionId', null);
+    if (ntlRegionList.length === 0) {
+      setValue('regionId', null);
+    }
 
     if (selectedGroupLocation.value === 'HO') {
       setValue('regionId', {
@@ -228,23 +227,24 @@ export const CreateJobForm = ({
           <Controller
             name="isBigEvent"
             control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...field}
-                    checked={!!field.value}
-                    disabled={true}
-                    color="primary"
-                    size="small"
-                  />
-                }
-                label={
-                  <Typography variant="subtitle2" color="text.secondary">
-                    Big Event
-                  </Typography>
-                }
-              />
+            render={() => (
+              <></>
+              // <FormControlLabel
+              //   control={
+              //     <Checkbox
+              //       {...field}
+              //       checked={!!field.value}
+              //       disabled={isEdit || isDuplicate}
+              //       color="primary"
+              //       size="small"
+              //     />
+              //   }
+              //   label={
+              //     <Typography variant="subtitle2" color="text.secondary">
+              //       Big Event
+              //     </Typography>
+              //   }
+              // />
             )}
           />
         </Stack>
@@ -395,7 +395,7 @@ export const CreateJobForm = ({
                           options={OPTION_VACANCY}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
-                          required={!selectedBigEvent}
+                          required={!selectedBigEvent && isHO}
                         />
                       </Grid>
 
@@ -408,7 +408,7 @@ export const CreateJobForm = ({
                           options={OPTION_SOURCE_OF_RECRUITMENT}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
-                          required={!selectedBigEvent}
+                          required={!selectedBigEvent && isHO}
                         />
                       </Grid>
                     </Grid>
