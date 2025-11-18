@@ -197,14 +197,11 @@ export const CreateJobForm = ({
     if (isEdit) return;
     if (!selectedGroupLocation) return;
 
-    setValue('headCount', '');
+    setValue('headCount', '1');
     setValue('prNo', '');
     setValue('regionId', null);
+
     if (selectedGroupLocation.value === 'HO') {
-      setValue('headCount', '1', {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
       setValue('regionId', {
         regionId: '628205f6-5f15-4e07-ba98-cff214433237',
         regionNameTh: 'สำนักงานใหญ่',
