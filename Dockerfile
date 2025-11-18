@@ -50,7 +50,7 @@ RUN cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 ENV NODE_ENV=production
 
 # Expose port 80, the default for Nginx
-EXPOSE 80
+EXPOSE 8001
 
 RUN mkdir -p /data/nginx/cache
 
