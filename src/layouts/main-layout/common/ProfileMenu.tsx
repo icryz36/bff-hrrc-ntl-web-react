@@ -9,7 +9,6 @@ import {
   MenuItem,
   MenuItemProps,
   Stack,
-  Switch,
   SxProps,
   Typography,
   listClasses,
@@ -17,7 +16,6 @@ import {
   paperClasses,
 } from '@mui/material';
 import Menu from '@mui/material/Menu';
-import { useThemeMode } from 'hooks/useThemeMode';
 import { useAuth } from 'providers/AuthProvider';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import { useSettingsContext } from 'providers/SettingsProvider';
@@ -43,8 +41,6 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
   const {
     config: { textDirection },
   } = useSettingsContext();
-
-  const { isDark, setThemeMode } = useThemeMode();
 
   const { sessionUser, signout } = useAuth();
 
@@ -154,65 +150,19 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
               <Typography
                 variant="subtitle2"
                 sx={{
-                  color: 'warning.main',
+                  color: 'primary.main',
                 }}
               >
                 {user.designation}
-                <IconifyIcon
-                  icon="material-symbols:diamond-rounded"
-                  color="warning.main"
-                  sx={{ verticalAlign: 'text-bottom', ml: 0.5 }}
-                />
               </Typography>
             )}
           </Box>
         </Stack>
         <Divider />
         <Box sx={{ py: 1 }}>
-          <ProfileMenuItem icon="material-symbols:accessible-forward-rounded" onClick={handleClose}>
-            Accessibility
+          <ProfileMenuItem onClick={handleSignout} icon="material-symbols:logout-rounded">
+            Sign Out
           </ProfileMenuItem>
-
-          <ProfileMenuItem icon="material-symbols:settings-outline-rounded" onClick={handleClose}>
-            Preferences
-          </ProfileMenuItem>
-
-          <ProfileMenuItem
-            onClick={() => setThemeMode()}
-            icon="material-symbols:dark-mode-outline-rounded"
-          >
-            Dark mode
-            <Switch checked={isDark} onChange={() => setThemeMode()} sx={{ ml: 'auto' }} />
-          </ProfileMenuItem>
-        </Box>
-        <Divider />
-        <Box sx={{ py: 1 }}>
-          <ProfileMenuItem
-            icon="material-symbols:manage-accounts-outline-rounded"
-            onClick={handleClose}
-            href="#!"
-          >
-            Account Settings
-          </ProfileMenuItem>
-          <ProfileMenuItem
-            icon="material-symbols:question-mark-rounded"
-            onClick={handleClose}
-            href="#!"
-          >
-            Help Center
-          </ProfileMenuItem>
-        </Box>
-        <Divider />
-        <Box sx={{ py: 1 }}>
-          {sessionUser ? (
-            <ProfileMenuItem onClick={handleSignout} icon="material-symbols:logout-rounded">
-              Sign Out
-            </ProfileMenuItem>
-          ) : (
-            <ProfileMenuItem href={'#'} icon="material-symbols:login-rounded">
-              Sign In
-            </ProfileMenuItem>
-          )}
         </Box>
       </Menu>
     </>

@@ -5,7 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
+  Checkbox,
   Container,
+  FormControlLabel,
   Grid,
   InputAdornment,
   MenuItem,
@@ -219,8 +221,16 @@ export const CreateJobForm = ({
   return (
     <Container maxWidth="md">
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack mb={3}>
+        <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="subtitle2_bold">Job Detail</Typography>
+          <FormControlLabel
+            control={<Checkbox disabled={isEdit} name="checked" color="primary" size="small" />}
+            label={
+              <Typography variant="subtitle2" color="text.secondary">
+                Big Event
+              </Typography>
+            }
+          />
         </Stack>
 
         <Grid container spacing={2}>
@@ -282,13 +292,14 @@ export const CreateJobForm = ({
               getOptionLabel={(option) => option.label}
               options={GROUP_LOCATION}
               isOptionEqualToValue={(option, value) => option.value === value.value}
+              disabled={isEdit}
             />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               fullWidth
-              disabled={selectedGroupLocation?.value === 'HO'}
+              disabled={selectedGroupLocation?.value === 'HO' || isEdit}
               name="regionId"
               label="NTL Regional"
               getOptionLabel={(option) => option.regionNameTh}
@@ -303,6 +314,7 @@ export const CreateJobForm = ({
               name="headCount"
               label="Headcount"
               required={true}
+              disabled={isEdit}
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, '');
                 const numeric = Number(value);

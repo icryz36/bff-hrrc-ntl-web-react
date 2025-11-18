@@ -32,14 +32,9 @@ const FilterSection = ({ apiRef }: FilterSectionProps) => {
           color="neutral"
           shape={upSm ? undefined : 'square'}
           onClick={handleOpenMenu}
+          disabled
         >
-          {upSm && (
-            <IconifyIcon
-              icon="material-symbols:filter-list-rounded"
-              fontSize="20px"
-              color={'#111417'}
-            />
-          )}
+          {upSm && <IconifyIcon icon="material-symbols:filter-list-rounded" fontSize="20px" />}
           {upSm && <Box component="span">Filters</Box>}
         </Button>
 

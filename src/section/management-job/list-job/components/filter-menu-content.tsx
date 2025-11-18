@@ -63,11 +63,7 @@ const FilterMenuContent = ({ apiRef, onClose }: FilterMenuContentProps) => {
       <Stack justifyContent="space-between" alignItems="center">
         <Typography variant="h6">Filter</Typography>
         <IconButton aria-label="close" onClick={onClose} sx={{ p: 0 }}>
-          <IconifyIcon
-            icon="material-symbols-light:close-rounded"
-            fontSize="20px"
-            color={'#111417'}
-          />
+          <IconifyIcon icon="material-symbols-light:close-rounded" fontSize="20px" />
         </IconButton>
       </Stack>
       <Typography variant="body2" sx={{ my: 2 }}>
