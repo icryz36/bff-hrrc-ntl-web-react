@@ -58,7 +58,21 @@ const convertDefaultValuesForm = (
   isDuplicate?: boolean,
 ): CreateJobSchemaType => {
   const getProvinceId = data?.workLocations?.[0].provinceId || '';
-
+  const isBranch = data?.groupLocation === 'BRANCH';
+  const defaultBranchPosition = [
+    {
+      positionId: null,
+      vacancy: null,
+      srcOfRecruitment: null,
+    },
+  ];
+  const normalPositions =
+    data?.jobPostPositions.map((item) => ({
+      positionId: masterData?.positionMap.get(item.positionId) || null,
+      vacancy: OPTION_VACANCY.find((vc) => vc.value === item.vacancy) || null,
+      srcOfRecruitment:
+        OPTION_SOURCE_OF_RECRUITMENT.find((sor) => sor.value === item.srcOfRecruitment) || null,
+    })) ?? [];
   return {
     jobPostId: !isDuplicate ? data?.jobPostNo || '' : '',
     statusId: data?.statusId || '',
@@ -68,13 +82,7 @@ const convertDefaultValuesForm = (
     groupLocation: GROUP_LOCATION.find((item) => item.value === data?.groupLocation) || null,
     headCount: String(data?.headCount || ''),
 
-    position:
-      data?.jobPostPositions.map((item) => ({
-        positionId: masterData?.positionMap.get(item.positionId) || null,
-        vacancy: OPTION_VACANCY.find((vc) => vc.value === item.vacancy) || null,
-        srcOfRecruitment:
-          OPTION_SOURCE_OF_RECRUITMENT.find((sor) => sor.value === item.srcOfRecruitment) || null,
-      })) ?? [],
+    position: isBranch ? defaultBranchPosition : normalPositions,
 
     // Work Location
     province: masterData?.provinceMap.get(getProvinceId) || null,
@@ -101,6 +109,7 @@ const convertDefaultValuesForm = (
     jobDescription: data?.jobDescription || '',
     jobBenefit: data?.jobBenefit || '',
     jobSpecification: data?.jobSpecification || '',
+    isBigEvent: data?.isBigEvent || false,
   };
 };
 

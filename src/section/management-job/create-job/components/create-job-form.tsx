@@ -234,7 +234,7 @@ export const CreateJobForm = ({
                   <Checkbox
                     {...field}
                     checked={!!field.value}
-                    disabled={true}
+                    disabled={isEdit || isDuplicate}
                     color="primary"
                     size="small"
                   />
@@ -395,7 +395,7 @@ export const CreateJobForm = ({
                           options={OPTION_VACANCY}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
-                          required={!selectedBigEvent}
+                          required={!selectedBigEvent && isHO}
                         />
                       </Grid>
 
@@ -408,7 +408,7 @@ export const CreateJobForm = ({
                           options={OPTION_SOURCE_OF_RECRUITMENT}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
-                          required={!selectedBigEvent}
+                          required={!selectedBigEvent && isHO}
                         />
                       </Grid>
                     </Grid>

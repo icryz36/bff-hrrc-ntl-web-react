@@ -36,6 +36,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
 
   // ---------------------------------------------------------------------
 
+  console.log('jobData', jobData?.isBigEvent);
   const InfoRow = ({
     label,
     value,
@@ -101,15 +102,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           </Typography>
 
           <FormControlLabel
-            control={
-              <Checkbox
-                disabled
-                name="checked"
-                checked={jobData?.isBigEvent}
-                color="primary"
-                size="small"
-              />
-            }
+            control={<Checkbox name="checked" checked={true} color="default" />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
