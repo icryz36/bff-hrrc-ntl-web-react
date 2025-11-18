@@ -13,7 +13,7 @@ const convertCreateEditJobPostPayload = (data: CreateJobSchemaType): TCreateJobP
     regionId: data?.regionId?.regionId || '',
     headCount: Number(data.headCount),
     prNo: data.prNo || '',
-
+    isBigEvent: data.isBigEvent || false,
     // position
     position:
       data?.groupLocation?.value === 'BRANCH'

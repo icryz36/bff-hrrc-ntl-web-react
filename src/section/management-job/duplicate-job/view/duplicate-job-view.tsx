@@ -137,6 +137,7 @@ const DuplicateJobView = () => {
   return (
     <>
       <CreateJobForm
+        isDuplicate
         isEdit
         onSubmit={onSubmit}
         isLoading={isLoadingCreateJobPost}

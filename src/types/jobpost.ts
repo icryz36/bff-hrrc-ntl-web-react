@@ -84,6 +84,7 @@ export type TJobPostById = {
   recruiterUserId: string[];
   ownerUserId: string;
   ownerName: string;
+  isBigEvent: boolean;
 };
 
 export type TJobPostByIdPosition = {
@@ -129,6 +130,7 @@ export type TCreateJobPostPayload = {
   recruiterUserId: string[];
   departmentId: string;
   sectionId: string | null;
+  isBigEvent: boolean;
 };
 
 export type TCreateJobPostPosition = {

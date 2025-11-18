@@ -1,5 +1,6 @@
 import { SyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -30,6 +31,7 @@ import { CreateJobSchema, CreateJobSchemaType } from '../schema';
 import { StyledFormContainerBox } from '../styles';
 
 type CreateJobFormProps = {
+  isDuplicate?: boolean;
   isEdit?: boolean;
   isLoading?: boolean;
   defaultValuesForm?: CreateJobSchemaType;
@@ -60,10 +62,12 @@ const defaultValues: CreateJobSchemaType = {
   jobDescription: '',
   jobSpecification: '',
   jobBenefit: '',
+  isBigEvent: false,
 };
 
 export const CreateJobForm = ({
   onSubmit,
+  isDuplicate,
   isEdit,
   isLoading,
   defaultValuesForm,
@@ -85,7 +89,7 @@ export const CreateJobForm = ({
   const selectedGroupLocation = useWatch<CreateJobSchemaType>({ control, name: 'groupLocation' });
   const selectedStartDate = useWatch<CreateJobSchemaType>({ control, name: 'startDate' });
   const selectedEndDate = useWatch<CreateJobSchemaType>({ control, name: 'endDate' });
-
+  const selectedBigEvent = useWatch<CreateJobSchemaType>({ control, name: 'isBigEvent' });
   const { fields: fieldsPosition, replace: replacePosition } = useFieldArray({
     control,
     name: 'position',
@@ -139,9 +143,7 @@ export const CreateJobForm = ({
 
   useEffect(() => {
     if (isEdit && !isDirty) return;
-
     let newHeadCount = Number(debouncedHeadCount) || 0;
-
     if (isHO && newHeadCount > 10) {
       newHeadCount = 10;
       if (selectedHeadCount !== '10') {
@@ -160,12 +162,12 @@ export const CreateJobForm = ({
       }
     }
 
-    if (newHeadCount < 1) {
-      if (fieldsPosition.length !== 0) {
-        replacePosition([]);
-      }
-      return;
-    }
+    // if (newHeadCount < 1) {
+    //   if (fieldsPosition.length !== 0) {
+    //     replacePosition([]);
+    //   }
+    //   return;
+    // }
 
     const targetCount = isBranch ? 1 : newHeadCount;
 
@@ -198,8 +200,8 @@ export const CreateJobForm = ({
   useEffect(() => {
     if (isEdit) return;
     if (!selectedGroupLocation) return;
-
-    setValue('headCount', '1');
+    const newHeadCount = String(debouncedHeadCount) || '1';
+    setValue('headCount', newHeadCount);
     setValue('prNo', '');
     setValue('regionId', null);
 
@@ -223,13 +225,27 @@ export const CreateJobForm = ({
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="subtitle2_bold">Job Detail</Typography>
-          <FormControlLabel
-            control={<Checkbox disabled={isEdit} name="checked" color="primary" size="small" />}
-            label={
-              <Typography variant="subtitle2" color="text.secondary">
-                Big Event
-              </Typography>
-            }
+          <Controller
+            name="isBigEvent"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={!!field.value}
+                    disabled={true}
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Big Event
+                  </Typography>
+                }
+              />
+            )}
           />
         </Stack>
 
@@ -292,14 +308,14 @@ export const CreateJobForm = ({
               getOptionLabel={(option) => option.label}
               options={GROUP_LOCATION}
               isOptionEqualToValue={(option, value) => option.value === value.value}
-              disabled={isEdit}
+              disabled={isEdit && !isDuplicate}
             />
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Field.Autocomplete
               fullWidth
-              disabled={selectedGroupLocation?.value === 'HO' || isEdit}
+              disabled={selectedGroupLocation?.value === 'HO' || (isEdit && !isDuplicate)}
               name="regionId"
               label="NTL Regional"
               getOptionLabel={(option) => option.regionNameTh}
@@ -314,7 +330,7 @@ export const CreateJobForm = ({
               name="headCount"
               label="Headcount"
               required={true}
-              disabled={isEdit}
+              disabled={isEdit && !isDuplicate}
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, '');
                 const numeric = Number(value);
@@ -343,7 +359,7 @@ export const CreateJobForm = ({
             <Field.Text
               name="prNo"
               label="PR Number"
-              required={selectedGroupLocation?.value === 'BRANCH'}
+              required={selectedGroupLocation?.value === 'BRANCH' && !selectedBigEvent}
               maxLength={20}
             />
           </Grid>
@@ -374,23 +390,25 @@ export const CreateJobForm = ({
                         <Field.Autocomplete
                           fullWidth
                           name={`position.${index}.vacancy`}
-                          label={`Rationale of Vacancy ${isHO ? '*' : ''}`}
+                          label={`Rationale of Vacancy`}
                           getOptionLabel={(option) => option.label}
                           options={OPTION_VACANCY}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
+                          required={!selectedBigEvent}
                         />
                       </Grid>
 
                       <Grid size={{ xs: 12, md: 4 }}>
                         <Field.Autocomplete
                           fullWidth
-                          label={`Source of Recruitment ${isHO ? '*' : ''}`}
+                          label={`Source of Recruitment`}
                           name={`position.${index}.srcOfRecruitment`}
                           getOptionLabel={(option) => option.label}
                           options={OPTION_SOURCE_OF_RECRUITMENT}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
                           disabled={isBranch}
+                          required={!selectedBigEvent}
                         />
                       </Grid>
                     </Grid>
@@ -410,7 +428,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="province"
                     label="Province"
-                    required={true}
+                    required={!selectedBigEvent}
                     onChange={handleProvinceChange}
                     options={provinceList}
                     getOptionLabel={(option) => option.provinceNameTh}
@@ -423,7 +441,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="districtId"
                     label="District"
-                    required={true}
+                    required={!selectedBigEvent}
                     disableCloseOnSelect
                     disabled={!selectedProvince}
                     options={districtList}
@@ -446,7 +464,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="departmentId"
                     label="Department"
-                    required={true}
+                    required={!selectedBigEvent}
                     onChange={handleDepartmentChange}
                     options={departmentList}
                     getOptionLabel={(option) => option.departmentNameTh}
@@ -460,7 +478,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="sectionId"
                     label="Section"
-                    required={isHO}
+                    required={isHO && !selectedBigEvent}
                     disabled={!selectedDepartmentId}
                     options={sectionList}
                     getOptionLabel={(option) => option.sectionNameTh}
@@ -481,7 +499,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="levelId"
                     label="Job Level"
-                    required={true}
+                    required={!selectedBigEvent}
                     options={jobLevelList}
                     getOptionLabel={(option) => option.levelNameTh}
                     isOptionEqualToValue={(option, value) => option.levelId === value.levelId}
@@ -492,7 +510,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="degreeId"
                     label="Degree"
-                    required={true}
+                    required={!selectedBigEvent}
                     options={degreeList}
                     getOptionLabel={(option) => option.degreeNameTh}
                     isOptionEqualToValue={(option, value) => option.degreeId === value.degreeId}
@@ -503,7 +521,7 @@ export const CreateJobForm = ({
                     fullWidth
                     name="employeeTypeId"
                     label="Employee Type"
-                    required={true}
+                    required={!selectedBigEvent}
                     options={employeeTypeList}
                     getOptionLabel={(option) => option.employeeTypeTH}
                     isOptionEqualToValue={(option, value) =>

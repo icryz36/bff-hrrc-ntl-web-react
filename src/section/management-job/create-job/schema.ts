@@ -35,6 +35,7 @@ export const CreateJobSchema = z
     }),
     headCount: z.string().min(1, { error: REQUIRED_MESSAGE }),
     prNo: z.string().trim().optional(),
+    isBigEvent: z.boolean().default(false).optional(),
 
     //  Position
     position: z.array(

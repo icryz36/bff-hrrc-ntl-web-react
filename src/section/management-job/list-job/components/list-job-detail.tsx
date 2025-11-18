@@ -101,7 +101,15 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           </Typography>
 
           <FormControlLabel
-            control={<Checkbox disabled name="checked" color="primary" size="small" />}
+            control={
+              <Checkbox
+                disabled
+                name="checked"
+                checked={jobData?.isBigEvent}
+                color="primary"
+                size="small"
+              />
+            }
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
