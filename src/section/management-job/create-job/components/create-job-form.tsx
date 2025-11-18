@@ -202,8 +202,9 @@ export const CreateJobForm = ({
     if (!selectedGroupLocation) return;
     const newHeadCount = String(debouncedHeadCount) || '1';
     setValue('headCount', newHeadCount);
-    setValue('prNo', '');
-    setValue('regionId', null);
+    if (ntlRegionList.length === 0) {
+      setValue('regionId', null);
+    }
 
     if (selectedGroupLocation.value === 'HO') {
       setValue('regionId', {

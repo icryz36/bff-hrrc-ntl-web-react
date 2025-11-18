@@ -36,7 +36,6 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
 
   // ---------------------------------------------------------------------
 
-  console.log('jobData', jobData?.isBigEvent);
   const InfoRow = ({
     label,
     value,
