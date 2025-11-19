@@ -57,7 +57,7 @@ const convertDefaultValuesForm = (
   masterData?: MasterDataMaps,
   isDuplicate?: boolean,
 ): CreateJobSchemaType => {
-  const getProvinceId = data?.workLocations?.[0].provinceId || '';
+  const getProvinceId = data?.workLocations?.[0]?.provinceId || '';
   const isBranch = data?.groupLocation === 'BRANCH';
   const defaultBranchPosition = [
     {
@@ -82,7 +82,7 @@ const convertDefaultValuesForm = (
     groupLocation: GROUP_LOCATION.find((item) => item.value === data?.groupLocation) || null,
     headCount: String(data?.headCount || ''),
 
-    position: isBranch ? defaultBranchPosition : normalPositions,
+    position: isBranch || !getProvinceId ? defaultBranchPosition : normalPositions,
 
     // Work Location
     province: masterData?.provinceMap.get(getProvinceId) || null,

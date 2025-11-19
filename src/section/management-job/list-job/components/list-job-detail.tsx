@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Checkbox, Chip, FormControlLabel, Grid, Paper, Stack, Typography } from '@mui/material';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import { useQuery } from '@tanstack/react-query';
@@ -16,6 +16,7 @@ interface IListJobDetailComponentProps {
 
 const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClose, jobPostId }) => {
   // api ---------------------------------------------------------------
+  const [isBigEvent, setIsBigEvent] = useState(false);
 
   const query = useJobpostQuery.detail({
     jobPostId: jobPostId ?? '',
@@ -33,6 +34,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     ?.filter((user) => jobData?.recruiterUserId?.includes(user?.userId))
     ?.map((user) => `${user?.name} ${user?.surname}`)
     ?.join(', ');
+
+  useEffect(() => {
+    if (jobData?.isBigEvent !== undefined) {
+      console.log('jobData.isBigEvent', jobData.isBigEvent);
+      setIsBigEvent(jobData.isBigEvent);
+    }
+  }, [jobData]);
 
   // ---------------------------------------------------------------------
 
@@ -101,7 +109,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           </Typography>
 
           <FormControlLabel
-            control={<Checkbox name="checked" checked={jobData?.isBigEvent} color="default" />}
+            control={<Checkbox name="checked" checked={isBigEvent} color="default" />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
