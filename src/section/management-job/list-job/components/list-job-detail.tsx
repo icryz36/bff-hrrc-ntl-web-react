@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Checkbox, Chip, FormControlLabel, Grid, Paper, Stack, Typography } from '@mui/material';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import { useQuery } from '@tanstack/react-query';
 import { useJobpostQuery } from 'services/jobpost/query';
@@ -100,14 +100,14 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             Job Detail
           </Typography>
 
-          {/* <FormControlLabel
-            control={<Checkbox name="checked" checked={true} color="default" />}
+          <FormControlLabel
+            control={<Checkbox name="checked" checked={jobData?.isBigEvent} color="default" />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
               </Typography>
             }
-          /> */}
+          />
         </Stack>
 
         <Stack spacing={2} direction="column" px={3} py={0}>

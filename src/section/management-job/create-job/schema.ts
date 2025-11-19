@@ -85,14 +85,14 @@ export const CreateJobSchema = z
     const isGroupLocationEmpty = !data.groupLocation?.value;
     const isBigEvent = data.isBigEvent;
 
-    if (!isGroupLocationEmpty && !isHO && (!data.prNo || data.prNo.trim() === '')) {
+    if (!isGroupLocationEmpty && !isHO && !isBigEvent && (!data.prNo || data.prNo.trim() === '')) {
       ctx.addIssue({
         code: 'custom',
         path: ['prNo'],
         message: REQUIRED_MESSAGE,
       });
     }
-    if (!isBranch) {
+    if (!isBranch && !isBigEvent) {
       data.position.forEach((pos, index) => {
         if (!pos.vacancy) {
           ctx.addIssue({
@@ -163,6 +163,13 @@ export const CreateJobSchema = z
         ctx.addIssue({
           code: 'custom',
           path: ['employeeTypeId'],
+          message: REQUIRED_MESSAGE,
+        });
+      }
+      if (!isGroupLocationEmpty && !data.sectionId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['sectionId'],
           message: REQUIRED_MESSAGE,
         });
       }

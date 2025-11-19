@@ -6,7 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
+  Checkbox,
   Container,
+  FormControlLabel,
   Grid,
   InputAdornment,
   MenuItem,
@@ -231,24 +233,23 @@ export const CreateJobForm = ({
           <Controller
             name="isBigEvent"
             control={control}
-            render={() => (
-              <></>
-              // <FormControlLabel
-              //   control={
-              //     <Checkbox
-              //       {...field}
-              //       checked={!!field.value}
-              //       disabled={isEdit || isDuplicate}
-              //       color="primary"
-              //       size="small"
-              //     />
-              //   }
-              //   label={
-              //     <Typography variant="subtitle2" color="text.secondary">
-              //       Big Event
-              //     </Typography>
-              //   }
-              // />
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={!!field.value}
+                    disabled={isEdit || isDuplicate}
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Big Event
+                  </Typography>
+                }
+              />
             )}
           />
         </Stack>
