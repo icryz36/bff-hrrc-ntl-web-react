@@ -85,7 +85,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
       <IconifyIcon
         icon="material-symbols-light:close-rounded"
         fontSize="25px"
-        sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}
+        sx={{
+          position: 'fixed',
+          top: 20,
+          right: 20,
+          zIndex: 9999,
+          cursor: 'pointer',
+        }}
         onClick={onClose}
       />
       <Stack
@@ -270,7 +276,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobDescription || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobDescription || '-' }}
           />
         </Stack>
 
@@ -281,17 +287,18 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobSpecification || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobSpecification || '-' }}
           />
         </Stack>
         <Stack pt={2} pb={6} spacing={2} direction="column">
           <SectionTitle title="Benefit" />
+
           <Typography
             variant="subtitle2"
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobBenefit || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobBenefit || '-' }}
           />
         </Stack>
       </Stack>
