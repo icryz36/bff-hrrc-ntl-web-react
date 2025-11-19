@@ -19,6 +19,9 @@ const endpoint = {
     updateStatus: `update-jobpost-status-xapi`,
     update: `update-jobpost-xapi`,
   },
+  user: {
+    list: `get-users-xapi`,
+  },
 };
 
 export { endpoint };
