@@ -17,6 +17,7 @@ const paths = {
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
   importCandidates: `/${rootPaths.manageRoot}/candidates/import`,
   listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
+  editCandidates: `/${rootPaths.manageRoot}/candidates/:id/edit`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };
