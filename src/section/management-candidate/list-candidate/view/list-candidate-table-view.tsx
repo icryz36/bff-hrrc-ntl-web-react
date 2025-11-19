@@ -1,10 +1,21 @@
 import { RefObject, useMemo } from 'react';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
 import DashboardMenu from 'components/common/DashboardMenu';
 import DataGridPagination from 'components/pagination/DataGridPagination';
+
+export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+  switch (val?.toLocaleLowerCase()) {
+    case 'active':
+      return 'success';
+    case 'inactive':
+      return 'neutral';
+    default:
+      return 'neutral';
+  }
+};
 
 const defaultPageSize = 10;
 
@@ -15,7 +26,7 @@ interface ProductsTableProps {
 
 const tableData = [
   {
-    id: '1',
+    id: '0001',
     blacklist: 'blacklist',
     title: 'Mr',
     name: 'Akkharaphon',
@@ -25,6 +36,18 @@ const tableData = [
     updateDate: '10/11/2025',
     appliedJobs: '3',
     statusName: 'Active',
+  },
+  {
+    id: '0002',
+    blacklist: null,
+    title: 'Mr',
+    name: 'Akkharaphon',
+    surename: 'Sahastrabudhhe',
+    email: 'Exampleemail@gmail.com',
+    mobileNumber: '000-000-0000',
+    updateDate: '10/11/2025',
+    appliedJobs: '3',
+    statusName: 'Inactive',
   },
 ];
 
@@ -39,13 +62,26 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         field: 'id',
         headerName: 'Candidate ID',
         width: 146,
+        renderCell: (params) => {
+          return <Link onClick={() => {}}>{params.row.id}</Link>;
+        },
       },
       {
         field: 'blacklist',
         headerName: 'Blacklist',
         width: 110,
         renderCell: (params) => {
-          return <Chip label={params.row.blacklist} variant="soft" color="neutral" />;
+          return (
+            <>
+              {params.row.blacklist ? (
+                <Chip label={params.row.blacklist} variant="soft" color="error" />
+              ) : (
+                <Typography color="text.secondary" variant="subtitle2">
+                  -
+                </Typography>
+              )}
+            </>
+          );
         },
       },
       {
@@ -89,6 +125,15 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         width: 90,
         headerClassName: 'job-status-header',
         cellClassName: 'job-status-cell',
+        renderCell: (params) => {
+          return (
+            <Chip
+              label={params.row.statusName}
+              variant="soft"
+              color={getStatusBadgeColor(params.row.statusName)}
+            />
+          );
+        },
       },
       {
         field: 'action',
