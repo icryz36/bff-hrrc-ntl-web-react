@@ -199,17 +199,21 @@ export const CreateJobForm = ({
     if (isEdit) return;
     if (!selectedGroupLocation) return;
     const newHeadCount = String(debouncedHeadCount) || '1';
-    setValue('headCount', newHeadCount);
+    setValue('headCount', newHeadCount, { shouldValidate: true });
     if (ntlRegionList.length === 0) {
-      setValue('regionId', null);
+      setValue('regionId', null, { shouldValidate: true });
     }
 
     if (selectedGroupLocation.value === 'HO') {
-      setValue('regionId', {
-        regionId: '628205f6-5f15-4e07-ba98-cff214433237',
-        regionNameTh: 'สำนักงานใหญ่',
-        regionNameEn: 'Head Office',
-      });
+      setValue(
+        'regionId',
+        {
+          regionId: '628205f6-5f15-4e07-ba98-cff214433237',
+          regionNameTh: 'สำนักงานใหญ่',
+          regionNameEn: 'Head Office',
+        },
+        { shouldValidate: true },
+      );
     }
   }, [selectedGroupLocation, isEdit, setValue]);
 
