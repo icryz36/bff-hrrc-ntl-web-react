@@ -88,7 +88,7 @@ const CreateJobView = () => {
         description={
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Typography variant="subtitle1" color="text.secondary">
-              เลข Job No. คือ{' '}
+              เลข Job ID. คือ{' '}
             </Typography>
             <Typography variant="subtitle1_bold">{jobNo}</Typography>
             <IconButton onClick={handleCopyJobNo}>
