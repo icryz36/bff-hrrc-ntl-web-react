@@ -6,7 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
+  Checkbox,
   Container,
+  FormControlLabel,
   Grid,
   InputAdornment,
   MenuItem,
@@ -199,17 +201,21 @@ export const CreateJobForm = ({
     if (isEdit) return;
     if (!selectedGroupLocation) return;
     const newHeadCount = String(debouncedHeadCount) || '1';
-    setValue('headCount', newHeadCount);
+    setValue('headCount', newHeadCount, { shouldValidate: true });
     if (ntlRegionList.length === 0) {
-      setValue('regionId', null);
+      setValue('regionId', null, { shouldValidate: true });
     }
 
     if (selectedGroupLocation.value === 'HO') {
-      setValue('regionId', {
-        regionId: '628205f6-5f15-4e07-ba98-cff214433237',
-        regionNameTh: 'สำนักงานใหญ่',
-        regionNameEn: 'Head Office',
-      });
+      setValue(
+        'regionId',
+        {
+          regionId: '628205f6-5f15-4e07-ba98-cff214433237',
+          regionNameTh: 'สำนักงานใหญ่',
+          regionNameEn: 'Head Office',
+        },
+        { shouldValidate: true },
+      );
     }
   }, [selectedGroupLocation, isEdit, setValue]);
 
@@ -227,24 +233,23 @@ export const CreateJobForm = ({
           <Controller
             name="isBigEvent"
             control={control}
-            render={() => (
-              <></>
-              // <FormControlLabel
-              //   control={
-              //     <Checkbox
-              //       {...field}
-              //       checked={!!field.value}
-              //       disabled={isEdit || isDuplicate}
-              //       color="primary"
-              //       size="small"
-              //     />
-              //   }
-              //   label={
-              //     <Typography variant="subtitle2" color="text.secondary">
-              //       Big Event
-              //     </Typography>
-              //   }
-              // />
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={!!field.value}
+                    disabled={isEdit || isDuplicate}
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Big Event
+                  </Typography>
+                }
+              />
             )}
           />
         </Stack>

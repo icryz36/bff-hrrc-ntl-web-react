@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import { axiosMasterDataInstance } from 'services/axios/axiosInstance';
+import { axiosMasterDataInstance, axiosUserInstance } from 'services/axios/axiosInstance';
 import {
   TGetDegreeResponse,
   TGetDepartmentResponse,
@@ -114,9 +114,9 @@ export const fetchEmployeeType = async (): Promise<TGetemployeeTypeResponse> => 
 };
 
 export const fetchUsers = async (): Promise<TGetUserResponse> => {
-  const { data } = await axiosMasterDataInstance({
+  const { data } = await axiosUserInstance({
     method: 'POST',
-    url: endpoint.masterData.users,
+    url: endpoint.user.list,
   });
 
   return data;
