@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'App';
 import MainLayout from 'layouts/main-layout';
+import CandidateDatailPage from 'pages/candidate/CandidateDetailPage';
 import Page404 from 'pages/errors/Page404';
 import PageLoader from 'components/loading/PageLoader';
 import paths, { rootPaths } from './paths';
@@ -84,6 +85,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.listCandidates,
                     element: <ListCandidatesPage />,
+                  },
+                  {
+                    path: paths.candidateDetail,
+                    element: <CandidateDatailPage />,
                   },
                 ],
               },
