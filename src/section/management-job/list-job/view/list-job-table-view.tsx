@@ -10,6 +10,7 @@ import ListJobDetailComponent from 'section/management-job/list-job/components/l
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledDataGrid, StyledTypography2Line } from '../styles';
@@ -262,6 +263,7 @@ const ListJobTableView = ({
             },
           }}
           slots={{
+            loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}
           slotProps={{
