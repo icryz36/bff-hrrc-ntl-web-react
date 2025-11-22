@@ -51,7 +51,11 @@ const AppliedJobTable = () => {
         headerName: 'Job Title',
         width: 380,
         renderCell: (params) => {
-          return <StyledTypographyLine line={1}>{params.row.jobTitle}</StyledTypographyLine>;
+          return (
+            <StyledTypographyLine variant="subtitle2_regular" line={1}>
+              {params.row.jobTitle}
+            </StyledTypographyLine>
+          );
         },
       },
       {
