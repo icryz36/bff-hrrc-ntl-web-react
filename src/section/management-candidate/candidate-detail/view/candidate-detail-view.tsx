@@ -1,6 +1,8 @@
 import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import AccordionCustom from 'components/common/AccordionCustom';
 import AppliedJobTable from '../components/applied-job-table';
+import InformationBox from '../components/information-box';
+import NoteBox from '../components/note-box';
 
 const CandidateDetailView = () => {
   const accordionData = [
@@ -12,7 +14,26 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:account-outline',
       title: 'Basic information',
-      children: '',
+      children: (
+        <InformationBox
+          rows={[
+            { label: 'Gender', value: 'Male' },
+            { label: 'Age', value: '28' },
+            { label: 'Contact No.', value: '089-765-4321' },
+            { label: 'Email', value: 'viru@example.com' },
+            { label: 'Desired Location', value: 'Head Office' },
+            { label: 'Desired Province', value: 'Bangkok' },
+            { label: 'Highest Education', value: 'Master', fullWidth: true },
+            {
+              label: 'Work Experience',
+              value: `Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
+              fullWidth: true,
+            },
+            { label: 'Motorcycle Driving', value: 'ไม่ได้', fullWidth: true },
+            { label: 'Car Driving', value: 'ได้ มีใบขับขี่', fullWidth: true },
+          ]}
+        />
+      ),
     },
     {
       icon: 'mdi:note-text-outline',
@@ -22,12 +43,16 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Link Reference',
-      children: '',
+      children: (
+        <Typography variant="subtitle2_regular" color="secondary">
+          www.canva.com/Presentation
+        </Typography>
+      ),
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Note (Optional)',
-      children: '',
+      children: <NoteBox />,
     },
     {
       icon: 'mdi:account-outline',
