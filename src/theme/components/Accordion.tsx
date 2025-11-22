@@ -18,10 +18,6 @@ const Accordion: Components<Omit<Theme, 'components'>>['MuiAccordion'] = {
       padding: 0,
       outline: 'none',
       borderRadius: '1.5rem !important',
-
-      '&:hover': {
-        backgroundColor: theme.vars.palette.background.elevation1,
-      },
       '&:before': {
         display: 'none',
       },

@@ -1,12 +1,13 @@
 import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import AccordionCustom from 'components/common/AccordionCustom';
+import AppliedJobTable from '../components/applied-job-table';
 
 const CandidateDetailView = () => {
   const accordionData = [
     {
       icon: 'mdi:account-outline',
       title: 'Applied Job',
-      children: '',
+      children: <AppliedJobTable />,
     },
     {
       icon: 'mdi:account-outline',
@@ -94,7 +95,7 @@ const CandidateDetailView = () => {
       <Box mt={2}>
         {accordionData.map((item, index) => (
           <AccordionCustom icon={item.icon} title={item.title} panelId={index}>
-            <div>5555</div>
+            {item.children ? item.children : <div>6666</div>}
           </AccordionCustom>
         ))}
       </Box>
