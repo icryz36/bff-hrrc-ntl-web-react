@@ -62,7 +62,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         color="text.secondary"
         sx={{ whiteSpace: 'pre-line' }}
       >
-        {value}
+        {value ? value : '-'}
       </Typography>
     </Stack>
   );
@@ -85,7 +85,13 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
       <IconifyIcon
         icon="material-symbols-light:close-rounded"
         fontSize="25px"
-        sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}
+        sx={{
+          position: 'fixed',
+          top: 20,
+          right: 20,
+          zIndex: 9999,
+          cursor: 'pointer',
+        }}
         onClick={onClose}
       />
       <Stack
@@ -153,57 +159,65 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
         <Paper elevation={0} background={1} variant="elevation">
           <Stack px={3} py={2} spacing={2} direction="column">
             <SectionTitle title="Position" />
-            {jobData?.jobPostPositions?.map((item) => (
-              <Grid container spacing={2} key={item?.positionId}>
-                <Grid size={{ md: 4 }}>
-                  <InfoRow label={`Position No.\nFrom HRMS`} value={item?.positionName} gap={4} />
+            {jobData?.jobPostPositions?.length ? (
+              jobData.jobPostPositions.map((item) => (
+                <Grid container spacing={2} key={item?.positionId}>
+                  <Grid size={{ md: 4 }}>
+                    <InfoRow label={`Position No.\nFrom HRMS`} value={item?.positionName} gap={4} />
+                  </Grid>
+                  <Grid size={{ md: 4 }}>
+                    <InfoRow label={`Rationale of\nVacancy`} value={item?.vacancy} gap={4} />
+                  </Grid>
+                  <Grid size={{ md: 4 }}>
+                    <InfoRow
+                      label={`Source of\nRecruitment`}
+                      value={item?.srcOfRecruitment}
+                      gap={4}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid size={{ md: 4 }}>
-                  <InfoRow label={`Rationale of\nVacancy`} value={item?.vacancy} gap={4} />
-                </Grid>
-                <Grid size={{ md: 4 }}>
-                  <InfoRow
-                    label={`Source of\nRecruitment`}
-                    value={item?.srcOfRecruitment}
-                    gap={4}
-                  />
-                </Grid>
-              </Grid>
-            ))}
+              ))
+            ) : (
+              <Typography variant="subtitle2_bold" color="text.primary">
+                -
+              </Typography>
+            )}
           </Stack>
         </Paper>
         <Paper elevation={0} background={1} variant="elevation">
           <Stack px={3} py={2} spacing={2} direction="column">
             <SectionTitle title="Work Location" />
-            {jobData?.workLocations?.map((item, index) => (
-              <Grid container spacing={2} key={index}>
-                <Grid size={{ md: 6 }}>
-                  <InfoRow label="Province" value={item?.provinceName} />
-                </Grid>
-                <Grid size={{ md: 6 }}>
-                  <Stack direction="row" gap={1}>
-                    <Typography
-                      variant="subtitle2_bold"
-                      color="text.primary"
-                      sx={{ whiteSpace: 'pre-line' }}
-                    >
-                      District :{' '}
-                    </Typography>
-                    {item?.district.map((dist, distIndex) => (
+            {jobData?.workLocations?.length ? (
+              jobData.workLocations.map((item, index) => (
+                <Grid container spacing={2} key={index}>
+                  <Grid size={{ md: 6 }}>
+                    <InfoRow label="Province" value={item?.provinceName} />
+                  </Grid>
+                  <Grid size={{ md: 6 }}>
+                    <Stack direction="row" gap={1}>
+                      <Typography
+                        variant="subtitle2_bold"
+                        color="text.primary"
+                        sx={{ whiteSpace: 'pre-line' }}
+                      >
+                        District :{' '}
+                      </Typography>
                       <Typography
                         variant="subtitle2"
                         color="text.secondary"
                         sx={{ whiteSpace: 'pre-line' }}
-                        key={distIndex}
                       >
-                        {dist.districtName}
-                        {distIndex !== item.district.length - 1 && ' /'}
+                        {item.district.map((d) => d.districtName).join('\n')}
                       </Typography>
-                    ))}
-                  </Stack>
+                    </Stack>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ))}
+              ))
+            ) : (
+              <Typography variant="subtitle2_bold" color="text.primary">
+                -
+              </Typography>
+            )}
           </Stack>
         </Paper>
         <Paper elevation={0} background={1} variant="elevation">
@@ -262,7 +276,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobDescription || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobDescription || '-' }}
           />
         </Stack>
 
@@ -273,17 +287,18 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobSpecification || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobSpecification || '-' }}
           />
         </Stack>
         <Stack pt={2} pb={6} spacing={2} direction="column">
           <SectionTitle title="Benefit" />
+
           <Typography
             variant="subtitle2"
             color="text.secondary"
             px={4}
             component="div"
-            dangerouslySetInnerHTML={{ __html: jobData?.jobBenefit || '' }}
+            dangerouslySetInnerHTML={{ __html: jobData?.jobBenefit || '-' }}
           />
         </Stack>
       </Stack>
