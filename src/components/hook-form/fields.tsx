@@ -1,4 +1,5 @@
 import { RHFAutocomplete } from './rhf-autocomplete';
+import { RHFCheckbox, RHFMultiCheckbox } from './rhf-checkbox';
 import { RHFDatePicker, RHFDateTimePicker, RHFTimePicker } from './rhf-date-picker';
 import { RHFEditor } from './rhf-editor';
 import { RHFRadioGroup } from './rhf-radio-group';
@@ -21,4 +22,6 @@ export const Field = {
   UploadAvatar: RHFUploadAvatar,
   Autocomplete: RHFAutocomplete,
   DateTimePicker: RHFDateTimePicker,
+  Checkbox: RHFCheckbox,
+  MultiCheckbox: RHFMultiCheckbox,
 };

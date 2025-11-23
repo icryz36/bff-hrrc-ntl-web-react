@@ -4,7 +4,7 @@ import { schemaHelper } from 'components/hook-form';
 
 // ----------------------------------------------------------------------
 
-type TEditCandidateSchema = z.infer<typeof EditCandidateSchema>;
+type TEditCandidate = z.infer<typeof EditCandidateSchema>;
 
 // info -----------------------------------------------------------------
 
@@ -56,16 +56,166 @@ export const CandidateNoteSchema = z.object({
   note: z.string().trim().optional(),
 });
 
-// -------------------------------------------------------------------------
+// personal data -----------------------------------------------------------
+
+export const PersonalDataSchema = z.object({
+  address: z.string().trim().optional(),
+  lineId: z.string().trim().optional(),
+  dateOfBirth: z.string().optional(),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  nationality: z.string().optional(),
+  religion: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  placeofBirthId: z.string().optional(),
+  idNo: z.string().optional(),
+  cardissuedProvinceId: schemaHelper.objectOrNull().nullable().optional(),
+  cardissuedDate: z.string().optional(),
+  cardexpiredDate: z.string().optional(),
+  militaryStatus: z.string().optional(),
+  maritalStatus: z.string().optional(),
+  familys: z.array(
+    z.object({
+      relationship: z.string().optional(),
+      name: z.string().optional(),
+      age: z.number().optional(),
+      mobileNo: z.string().optional(),
+      occupation: z.string().optional(),
+      workplace: z.string().optional(),
+    }),
+  ),
+  emergency: z.array(
+    z.object({
+      relationship: z.string().optional(),
+      name: z.string().optional(),
+      mobileNo: z.string().optional(),
+    }),
+  ),
+});
+
+// personal references -----------------------------------------------------
+
+export const PersonalReferencesSchema = z.object({
+  referencePersons: z.array(
+    z.object({
+      name: z.string().optional(),
+      position: z.string().optional(),
+      relation: z.string().optional(),
+      workplace: z.string().optional(),
+      mobileNo: z.string().optional(),
+    }),
+  ),
+});
+
+// educations ---------------------------------------------------------------
+
+export const EducationSchema = z.object({
+  educations: z.array(
+    z.object({
+      degreeId: z.string().optional(),
+      institutionName: z.string().optional(),
+      startYear: z.string().optional(),
+      endYear: z.string().optional(),
+      degreeConferred: z.string().optional(),
+      major: z.string().optional(),
+      gpa: z.string().optional(),
+    }),
+  ),
+});
+
+// language -----------------------------------------------------------------
+
+export const LanguageSchema = z.object({
+  languages: z.array(
+    z.object({
+      language: schemaHelper.objectOrNull().nullable().optional(),
+      speaking: z.string().optional(),
+      reading: z.string().optional(),
+      writing: z.string().optional(),
+    }),
+  ),
+});
+
+// office skill & special ability -------------------------------------------
+
+export const SkillSchema = z.object({
+  skills: z
+    .array(
+      z.object({
+        skillId: z.string().optional(),
+        skillText: z.string().optional(),
+        selectedOptionId: z.union([z.string(), z.array(z.string())]).optional(),
+      }),
+    )
+    .optional(),
+
+  hasNlInsBrokerLicenseNo: z.string().optional(),
+  nlInsBrokerLicenseNo: z.string().optional(),
+
+  hasNlInsAgentLicenseNo: z.string().optional(),
+  nlInsAgentLicenseNo: z.string().optional(),
+
+  hasLInsBrokerLicenseNo: z.string().optional(),
+  lInsBrokerLicenseNo: z.string().optional(),
+
+  hasLInsAgentLicenseNo: z.string().optional(),
+  lInsAgentLicenseNo: z.string().optional(),
+
+  transmissionTypeCar: z.array(z.string()).optional(),
+  ownCar: z.string().optional(),
+
+  transmissionTypeMotorcycle: z.array(z.string()).optional(),
+  ownMotorcycle: z.string().optional(),
+});
+
+// employment history -------------------------------------------------------
+
+export const EmploymentHistorySchema = z.object({
+  isWorkedBefore: z.string().optional(),
+  workHistorys: z
+    .array(
+      z.object({
+        companyName: z.string().optional(),
+        officePhoneNo: z.string().optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+        businessType: z.string().optional(),
+        lastPosition: z.string().optional(),
+        responsibilities: z.string().optional(),
+        salary: z.string().optional(),
+        otherIncome: z.string().optional(),
+        leavingReason: z.string().optional(),
+      }),
+    )
+    .optional(),
+
+  isAnyoneRecommend: z.string().optional(),
+  recommender: z
+    .object({
+      name: z.string().optional(),
+      relation: z.string().optional(),
+      position: z.string().optional(),
+      mobileNo: z.string().optional(),
+    })
+    .optional(),
+});
+
+// --------------------------------------------------------------------------
 
 const EditCandidateSchema = CandidateInfoSchema.extend({
   ...CandidateBasicInformationSchema.shape,
   ...CandidateApplicationDocumentsSchema.shape,
   ...CandidateLinkReferenceSchema.shape,
   ...CandidateNoteSchema.shape,
+  ...PersonalDataSchema.shape,
+  ...PersonalReferencesSchema.shape,
+  ...EducationSchema.shape,
+  ...LanguageSchema.shape,
+  ...SkillSchema.shape,
+  ...EmploymentHistorySchema.shape,
 });
 
 // --------------------------------------------------------------------------
 
 export { EditCandidateSchema };
-export type { TEditCandidateSchema };
+export type { TEditCandidate };

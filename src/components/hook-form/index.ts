@@ -15,3 +15,5 @@ export * from './schema-helper';
 export * from './rhf-radio-group';
 
 export * from './rhf-upload';
+
+export * from './rhf-checkbox';

@@ -161,6 +161,28 @@ export type TUser = {
   surname: string;
 };
 
+// skill ------------------------------------------------------------------------
+
+export type TGetSkillResponse = TStatusResponse & {
+  data: TSkill[];
+};
+
+export type TSkill = {
+  skillId: string;
+  skillNameTh: string;
+  skillNameEn: string;
+  skillCategory: string;
+  skillOptionType: 'Dropdown' | 'Checkbox' | 'Radio';
+  isSkillFreeText: boolean;
+  skillOptions: TSkillOptions[];
+};
+
+export type TSkillOptions = {
+  skillOptionId: string;
+  skillTextTh: string;
+  skillTextEn: string;
+};
+
 // MAP master data --------------------------------------------------------------
 
 export type MasterDataMaps = {

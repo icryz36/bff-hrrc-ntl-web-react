@@ -11,6 +11,7 @@ const endpoint = {
     degree: `get-degree-master-xapi`,
     employeeType: `get-employeetype-master-xapi`,
     users: `get-users-xapi`,
+    skill: `get-skill-master-xapi`,
   },
   jobpost: {
     list: `get-jobpost-list-xapi`,

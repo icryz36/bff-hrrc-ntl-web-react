@@ -12,6 +12,7 @@ import {
   TGetProvinceResponse,
   TGetSectionPayload,
   TGetSectionResponse,
+  TGetSkillResponse,
   TGetUserResponse,
   TGetemployeeTypeResponse,
 } from 'types/master-data';
@@ -19,7 +20,6 @@ import {
 // query ---------------------------------------------------------------
 
 export const fetchPostStatus = async (): Promise<TGetPostStatusResponse> => {
-  console.log('axiosMasterDataInstance', axiosMasterDataInstance.defaults.baseURL);
   const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.postStatus,
@@ -117,6 +117,15 @@ export const fetchUsers = async (): Promise<TGetUserResponse> => {
   const { data } = await axiosUserInstance({
     method: 'POST',
     url: endpoint.user.list,
+  });
+
+  return data;
+};
+
+export const fetchSkill = async (): Promise<TGetSkillResponse> => {
+  const { data } = await axiosMasterDataInstance({
+    method: 'POST',
+    url: endpoint.masterData.skill,
   });
 
   return data;
