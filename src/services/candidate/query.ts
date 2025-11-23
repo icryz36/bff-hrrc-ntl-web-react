@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
-import { TGetCandidateListPayload } from 'types/candidate';
-import { fetchCandidateList } from './services';
+import { TGetCandidateByIdPayload, TGetCandidateListPayload } from 'types/candidate';
+import { fetchCandidateById, fetchCandidateList } from './services';
 
 // ----------------------------------------------------------------------
 
@@ -15,10 +15,10 @@ const useCandidateQuery = {
       queryFn: () => fetchCandidateList(payload),
       select: (response) => response.data,
     }),
-  detail: (payload: TGetCandidateListPayload) =>
+  detail: (payload: TGetCandidateByIdPayload) =>
     queryOptions({
       queryKey: [...useCandidateQuery.keysDetail(), payload],
-      queryFn: () => fetchCandidateList(payload),
+      queryFn: () => fetchCandidateById(payload),
       select: (response) => response.data,
     }),
 };

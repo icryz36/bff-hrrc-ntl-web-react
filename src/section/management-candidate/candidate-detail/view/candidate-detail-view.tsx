@@ -1,10 +1,29 @@
+import { useEffect } from 'react';
+import { useParams } from 'react-router';
 import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { useCandidateQuery } from 'services/candidate/query';
 import AccordionCustom from 'components/common/AccordionCustom';
 import AppliedJobTable from '../components/applied-job-table';
 import InformationBox from '../components/information-box';
 import NoteBox from '../components/note-box';
 
 const CandidateDetailView = () => {
+  const { id = '' } = useParams();
+
+  const { data: candidateDetail, isError: isErrorGetDetail } = useQuery({
+    ...useCandidateQuery.detail({ candidateId: id }),
+    enabled: !!id,
+  });
+
+  console.log('candidateDetail ==> ', candidateDetail);
+
+  useEffect(() => {
+    if (isErrorGetDetail) {
+      console.log('isErrorGetDetail ==> ', isErrorGetDetail);
+    }
+  }, [isErrorGetDetail]);
+
   const accordionData = [
     {
       icon: 'mdi:account-outline',
@@ -137,8 +156,13 @@ const CandidateDetailView = () => {
           }}
         />
         <Stack direction={'column'} gap={1}>
-          <Typography variant="h5">Mr. Viru Sahastrabudhhe (Ake)</Typography>
-          <Typography variant="subtitle2">Candidate Id : 000001 </Typography>
+          <Typography variant="h5">
+            {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}
+            {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
+          </Typography>
+          <Typography variant="subtitle2">
+            Candidate Id : {candidateDetail?.candidate?.idNo}{' '}
+          </Typography>
         </Stack>
       </Stack>
       <Box mt={2}>
