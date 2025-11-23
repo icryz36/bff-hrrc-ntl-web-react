@@ -1,5 +1,11 @@
 import { CANDIDATES } from 'data/candidate';
-import { TGetCandidateListPayload, TGetCandidateListResponse } from 'types/candidate';
+import { CANDIDATE_DETIAL } from 'data/candidate-detail';
+import {
+  TGetCandidateByIdPayload,
+  TGetCandidateByIdResponse,
+  TGetCandidateListPayload,
+  TGetCandidateListResponse,
+} from 'types/candidate';
 
 export const fetchCandidateList = async (
   payload: TGetCandidateListPayload,
@@ -22,6 +28,27 @@ export const fetchCandidateList = async (
         totalPages: 2,
       },
     },
+    transactionNo: 'string',
+    timestamp: 'string',
+    status: true,
+  };
+
+  return data;
+};
+
+export const fetchCandidateById = async (
+  payload: TGetCandidateByIdPayload,
+): Promise<TGetCandidateByIdResponse> => {
+  //   const { data } = await axiosJobPostInstance({
+  //     method: 'POST',
+  //     url: endpoint.jobpost.list,
+  //     data: payload,
+  //   });
+
+  console.log('payload ==> ', payload);
+
+  const data = {
+    data: CANDIDATE_DETIAL,
     transactionNo: 'string',
     timestamp: 'string',
     status: true,
