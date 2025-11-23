@@ -17,7 +17,7 @@ const paths = {
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
   importCandidates: `/${rootPaths.manageRoot}/candidates/import`,
   listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
-  candidateDetail: `/${rootPaths.manageRoot}/candidates/detail`,
+  candidateDetail: `/${rootPaths.manageRoot}/candidates/:id/detail`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };
@@ -28,6 +28,9 @@ export const navigatePaths = {
     createJob: `/${rootPaths.manageRoot}/job/create`,
     editJob: (id: string) => `/${rootPaths.manageRoot}/job/${id}/edit`,
     duplicateJob: (id: string) => `/${rootPaths.manageRoot}/job/${id}/duplicate`,
+  },
+  candidate: {
+    detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
   },
 };
 

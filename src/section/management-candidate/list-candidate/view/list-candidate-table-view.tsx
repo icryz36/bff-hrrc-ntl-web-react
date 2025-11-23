@@ -1,7 +1,9 @@
 import { RefObject, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
 import { TCandidateListItems } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
@@ -31,6 +33,8 @@ interface ProductsTableProps {
 }
 
 const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
+  const navigate = useNavigate();
+
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
@@ -42,7 +46,17 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         headerName: 'Candidate ID',
         width: 146,
         renderCell: (params) => {
-          return <Link onClick={() => {}}>{params.row.candidateId}</Link>;
+          const { candidateId } = params.row;
+
+          return (
+            <Link
+              onClick={() => {
+                navigate(navigatePaths.candidate.detail(candidateId));
+              }}
+            >
+              {params.row.candidateId}
+            </Link>
+          );
         },
       },
       {
