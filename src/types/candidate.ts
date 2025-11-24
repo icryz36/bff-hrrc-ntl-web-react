@@ -221,3 +221,17 @@ export type TCandidateData = {
 export type TGetCandidateByIdResponse = TStatusResponse & {
   data: TCandidateData;
 };
+
+export type TCandidateTableRow = {
+  candidateId: string;
+  isBlacklist: boolean;
+  titleNameTh: string;
+  nameTh: string;
+  surnameTh: string;
+  email: string;
+  mobileNo: string;
+  updatedDate: string | Date;
+  startDate: string | Date;
+  countJobApplication: number;
+  status: 'Active' | 'Inactive' | 'Blacklist' | string;
+};

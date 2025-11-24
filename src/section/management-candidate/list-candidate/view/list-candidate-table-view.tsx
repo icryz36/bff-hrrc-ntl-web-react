@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import dayjs from 'dayjs';
 import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
-import { TCandidateListItems } from 'types/candidate';
+import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
@@ -22,7 +23,7 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
 
 const defaultPageSize = 10;
 
-interface ProductsTableProps {
+type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
   filterButtonEl: HTMLButtonElement | null;
   tableData: TCandidateListItems[];
@@ -30,12 +31,12 @@ interface ProductsTableProps {
   totalItem: number;
   currentPage: number;
   loading: boolean;
-}
+};
 
 const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
   const navigate = useNavigate();
 
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<TCandidateTableRow>[] = useMemo(
     () => [
       {
         ...GRID_CHECKBOX_SELECTION_COL_DEF,
@@ -106,6 +107,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         field: 'updatedDate',
         headerName: 'Update Date',
         width: 130,
+        renderCell: (params) => {
+          return dayjs(params.row.startDate).format('DD/MM/YYYY');
+        },
       },
       {
         field: 'countJobApplication',
@@ -167,8 +171,6 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
     ],
     [],
   );
-
-  console.log('tableData ==> ', tableData);
 
   return (
     <Box sx={{ width: 1 }}>
