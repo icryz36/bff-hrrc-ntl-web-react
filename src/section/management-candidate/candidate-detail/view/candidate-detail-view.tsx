@@ -159,7 +159,7 @@ const CandidateDetailView = () => {
       <Box mt={2}>
         {accordionData.map((item, index) => (
           <AccordionCustom icon={item.icon} title={item.title} panelId={index}>
-            {item.children ? item.children : <div>6666</div>}
+            {item.children ? item.children : <Typography>-</Typography>}
           </AccordionCustom>
         ))}
       </Box>
