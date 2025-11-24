@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
@@ -11,18 +10,10 @@ import NoteBox from '../components/note-box';
 const CandidateDetailView = () => {
   const { id = '' } = useParams();
 
-  const { data: candidateDetail, isError: isErrorGetDetail } = useQuery({
+  const { data: candidateDetail } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
-
-  console.log('candidateDetail ==> ', candidateDetail);
-
-  useEffect(() => {
-    if (isErrorGetDetail) {
-      console.log('isErrorGetDetail ==> ', isErrorGetDetail);
-    }
-  }, [isErrorGetDetail]);
 
   const accordionData = [
     {

@@ -1,10 +1,10 @@
 import { Grid, Paper, Typography } from '@mui/material';
 
-interface InfoRow {
+type InfoRow = {
   label: string;
   value: string;
   fullWidth?: boolean;
-}
+};
 
 interface InformationBoxProps {
   rows: InfoRow[];
