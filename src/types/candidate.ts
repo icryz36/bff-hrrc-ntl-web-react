@@ -235,3 +235,22 @@ export type TCandidateTableRow = {
   countJobApplication: number;
   status: 'Active' | 'Inactive' | 'Blacklist' | string;
 };
+
+export type TCandidateUpdateStatusPayload = {
+  candidatId: string;
+  status: 'Active' | 'Inactive';
+};
+
+export type TCandidateUpdateStatusResponse = TStatusResponse & {
+  data: { candidatId: string };
+};
+
+export type TCandidateBlacklistPayload = {
+  candidatId: string;
+  isBlacklist: boolean;
+  blcklistReason: string;
+};
+
+export type TCandidateBlacklistResponse = TStatusResponse & {
+  data: { candidatId: string };
+};
