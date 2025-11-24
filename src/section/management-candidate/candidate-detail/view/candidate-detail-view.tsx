@@ -5,7 +5,6 @@ import { useCandidateQuery } from 'services/candidate/query';
 import AccordionCustom from 'components/common/AccordionCustom';
 import AppliedJobTable from '../components/applied-job-table';
 import InformationBox from '../components/information-box';
-import NoteBox from '../components/note-box';
 
 const CandidateDetailView = () => {
   const { id = '' } = useParams();
@@ -63,35 +62,12 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Note (Optional)',
-      children: <NoteBox />,
+      children: '',
     },
     {
       icon: 'mdi:account-outline',
       title: 'Personal Data',
-      children: (
-        <>
-          <InformationBox
-            rows={[
-              {
-                label: 'Present Address',
-                value: '45/89 Soi Ratchadaphisek 14, Dindaeng, Bangkok 10400',
-                fullWidth: true,
-              },
-              { label: 'Line ID', value: '@NTL1234' },
-              { label: 'Date of Birth', value: '12 July 1997' },
-              { label: 'Height (cm.)', value: '162' },
-              { label: 'Weight (kg.)', value: '50' },
-              { label: 'Blood Group', value: 'A' },
-              { label: 'Place of Birth', value: 'Bangkok, Thailand' },
-              { label: 'ID Card No.', value: '1 2345 67890 01 2' },
-              { label: 'Issued by Province', value: 'Bangkok' },
-              { label: 'Issued Date', value: '10 March 2018' },
-              { label: 'Expired Date', value: '10 March 2028' },
-              { label: 'Military Service', value: 'Exempted', fullWidth: true },
-            ]}
-          />
-        </>
-      ),
+      children: '',
     },
     {
       icon: 'mdi:account-box-outline',
