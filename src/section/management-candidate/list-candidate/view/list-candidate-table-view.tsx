@@ -6,6 +6,10 @@ import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
+import {
+  useCandidateUpdateBlacklistMutation,
+  useCandidateUpdateStatusMutation,
+} from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
 import DataGridPagination from 'components/pagination/DataGridPagination';
@@ -35,6 +39,29 @@ type ProductsTableProps = {
 
 const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
   const navigate = useNavigate();
+
+  const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
+  const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
+
+  const handleUpdateStatus = (candidatId: string, status: 'Active' | 'Inactive') => {
+    updateCandidateStatus(
+      { candidatId, status },
+      {
+        onSuccess: () => {},
+        onError: () => {},
+      },
+    );
+  };
+
+  const handleUpdateBlacklist = (candidatId: string, isBlacklist: boolean) => {
+    updateCandidateBlacklist(
+      { candidatId, isBlacklist, blcklistReason: '' },
+      {
+        onSuccess: () => {},
+        onError: () => {},
+      },
+    );
+  };
 
   const columns: GridColDef<TCandidateTableRow>[] = useMemo(
     () => [
@@ -143,15 +170,23 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         headerClassName: 'action-header',
         cellClassName: 'action-cell',
         renderCell: (params) => {
+          const { candidateId, status, isBlacklist } = params.row;
+
           let statusItem = {
             label: 'Active',
             icon: 'mdi:check-circle-outline',
+            onClick: () => {
+              handleUpdateStatus(candidateId, 'Active');
+            },
           };
 
-          if (params.row.status === 'Active') {
+          if (status === 'Active') {
             statusItem = {
               label: 'Inactive',
               icon: 'mdi:minus-circle-outline',
+              onClick: () => {
+                handleUpdateStatus(candidateId, 'Inactive');
+              },
             };
           }
           const menuItems = [
@@ -163,6 +198,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
             {
               label: 'Black List',
               icon: 'mdi:close-octagon-outline',
+              onClick: () => {
+                handleUpdateBlacklist(candidateId, !isBlacklist);
+              },
             },
           ];
           return <DashboardMenu menuItems={menuItems} />;
