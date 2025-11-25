@@ -11,6 +11,9 @@ export type TCandidateListItems = {
   titleNameTh: string;
   nameTh: string;
   surnameTh: string;
+  titleNameEn: string;
+  nameEn: string;
+  surnameEn: string;
   email: string;
   mobileNo: string;
   status: string;

@@ -72,7 +72,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
       {
         field: 'candidateId',
         headerName: 'Candidate ID',
-        width: 146,
+        width: 300,
         renderCell: (params) => {
           const { candidateId } = params.row;
 
@@ -106,17 +106,17 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         },
       },
       {
-        field: 'titleNameTh',
+        field: 'titleNameEn',
         headerName: 'Title',
         width: 120,
       },
       {
-        field: 'nameTh',
+        field: 'nameEn',
         headerName: 'Name',
         width: 160,
       },
       {
-        field: 'surnameTh',
+        field: 'surnameEn',
         headerName: 'Surename',
         width: 200,
       },
