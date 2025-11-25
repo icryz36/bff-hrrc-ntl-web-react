@@ -15,6 +15,7 @@ export const CANDIDATE_DETIAL = {
     gender: 'M',
     age: 23,
     email: 'somchai@example.com',
+    mobileNo: '089-456-6789',
     desiredProvinces: [
       {
         provinceId: '1',

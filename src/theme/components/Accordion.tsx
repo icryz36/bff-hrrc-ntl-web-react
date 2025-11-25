@@ -80,11 +80,6 @@ export const AccordionDetails: Components<Omit<Theme, 'components'>>['MuiAccordi
     root: ({ theme }) => ({
       padding: theme.spacing(0, 3, 3, 7),
       color: theme.vars.palette.text.secondary,
-
-      [`& .${typographyClasses.root}`]: {
-        fontWeight: 500,
-        color: theme.vars.palette.text.secondary,
-      },
     }),
   },
 };

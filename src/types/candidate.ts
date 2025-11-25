@@ -50,6 +50,7 @@ export type TCandidate = {
   nameEn: string;
   surnameTh: string;
   surnameEn: string;
+  mobileNo: string;
   nickname: string;
   gender: string;
   age: number;
