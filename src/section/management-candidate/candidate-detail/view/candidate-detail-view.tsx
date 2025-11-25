@@ -5,6 +5,7 @@ import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
 import AccordionCustom from 'components/common/AccordionCustom';
 import AppliedJobTable from '../components/applied-job-table';
+import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
 
 const CandidateDetailView = () => {
@@ -17,7 +18,7 @@ const CandidateDetailView = () => {
 
   console.log('candidateDetail > ', candidateDetail);
 
-  const { jobApplications, candidate } = candidateDetail || ({} as TCandidateData);
+  const { jobApplications, candidate, ducuments } = candidateDetail || ({} as TCandidateData);
 
   const accordionData = [
     {
@@ -60,7 +61,7 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Application Documents',
-      children: '',
+      children: <FileDownloadBox data={ducuments} />,
     },
     {
       icon: 'mdi:note-text-outline',
