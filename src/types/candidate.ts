@@ -205,9 +205,23 @@ export type TAnswerOption = {
   optionScore: string;
 };
 
+export type TJobApplications = {
+  jobAppId: string;
+  jobTitle: string;
+  ownerName: string;
+  jobStatus: {
+    jobAppStatusMasterId: string;
+    statusNameTh: string;
+    statusNameEn: string;
+  };
+  applicationDate: string;
+  updatedDate: string;
+};
+
 export type TCandidateData = {
   candidate: TCandidate;
   ducuments: TDocumentItem[];
+  jobApplications: TJobApplications[];
   familys: TFamily[];
   educations: TEducation[];
   referencePersons: TReferencePerson[];

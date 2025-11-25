@@ -14,11 +14,13 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
+  console.log('candidateDetail > ', candidateDetail);
+
   const accordionData = [
     {
       icon: 'mdi:account-outline',
       title: 'Applied Job',
-      children: <AppliedJobTable />,
+      children: <AppliedJobTable tableData={candidateDetail?.jobApplications ?? []} />,
     },
     {
       icon: 'mdi:account-outline',

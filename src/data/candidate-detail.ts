@@ -25,6 +25,7 @@ export const CANDIDATE_DETIAL = {
         provinceName: 'เชียงใหม่',
       },
     ],
+
     desiredLocation: 'ใกล้ BTS',
     maritalStatus: 'Single',
     militaryStatus: 'Exempted',
@@ -58,7 +59,33 @@ export const CANDIDATE_DETIAL = {
     highestdegreeId: 'deg001',
     isRead: 'true',
   },
-
+  jobApplications: [
+    {
+      jobAppId: 'H0001',
+      jobTitle:
+        'เจ้าหน้าที่บริหารงานขายสาขา ปฏิบัติงาน สาขาสุขสวัสดิ์ 76 สาขาสุขสวัสดิ์ 84 สาขาตลาดพระประแดง สาขาซอยพุทธบูชา 44 สาขาประชาอุทิศ 90 สาขาพระประแดง xxxxxxxxxxx',
+      ownerName: 'สมปอง มั่นทำดี',
+      jobStatus: {
+        jobAppStatusMasterId: '1',
+        statusNameTh: 'New',
+        statusNameEn: 'New',
+      },
+      applicationDate: '10/11/2025',
+      updatedDate: '10/11/2025',
+    },
+    {
+      jobAppId: 'H00002',
+      jobTitle: 'เจ้าหน้าที่บริหารงานขายสาขา',
+      ownerName: 'สมปอง มั่นทำดี',
+      jobStatus: {
+        jobAppStatusMasterId: '2',
+        statusNameTh: 'Interview',
+        statusNameEn: 'Interview',
+      },
+      applicationDate: '10/11/2025',
+      updatedDate: '10/11/2025',
+    },
+  ],
   ducuments: [
     {
       ducumentId: 'doc001',
