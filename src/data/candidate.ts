@@ -8,7 +8,7 @@ export const CANDIDATES = [
     mobileNo: '0912345001',
     status: 'Active',
     updatedDate: '2025-01-12T09:45:00Z',
-    isBlacklist: false,
+    isBlacklist: true,
     countJobApplication: 4,
   },
   {
