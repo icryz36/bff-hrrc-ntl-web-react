@@ -13,7 +13,8 @@ import DashboardMenu from 'components/common/DashboardMenu';
 import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
-import { StyledDataGrid, StyledTypography2Line } from '../styles';
+import { StyledTypographyLine } from 'components/styled/StyledFontLine';
+import { StyledDataGrid } from '../styles';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   switch (val?.toLocaleLowerCase()) {
@@ -110,9 +111,9 @@ const ListJobTableView = ({
         headerName: 'Job Title',
         minWidth: 330,
         renderCell: (params) => (
-          <StyledTypography2Line variant="subtitle2_semibold">
+          <StyledTypographyLine line={2} variant="subtitle2_semibold">
             {params.row.jobTitle}
-          </StyledTypography2Line>
+          </StyledTypographyLine>
         ),
       },
       {
@@ -120,9 +121,9 @@ const ListJobTableView = ({
         headerName: 'Department',
         minWidth: 160,
         renderCell: (params) => (
-          <StyledTypography2Line variant="subtitle2_regular">
+          <StyledTypographyLine line={2} variant="subtitle2_regular">
             {params.row.departmentName}
-          </StyledTypography2Line>
+          </StyledTypographyLine>
         ),
       },
       {

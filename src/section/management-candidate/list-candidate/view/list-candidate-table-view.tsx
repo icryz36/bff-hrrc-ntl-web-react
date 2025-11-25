@@ -1,8 +1,16 @@
 import { RefObject, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import dayjs from 'dayjs';
+import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
+import {
+  useCandidateUpdateBlacklistMutation,
+  useCandidateUpdateStatusMutation,
+} from 'services/candidate/mutation';
+import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
@@ -19,62 +27,75 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
 
 const defaultPageSize = 10;
 
-interface ProductsTableProps {
+type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
   filterButtonEl: HTMLButtonElement | null;
-}
+  tableData: TCandidateListItems[];
+  onPageChange: (model: { page: number; pageSize: number }) => void;
+  totalItem: number;
+  currentPage: number;
+  loading: boolean;
+};
 
-const tableData = [
-  {
-    id: '0001',
-    blacklist: 'blacklist',
-    title: 'Mr',
-    name: 'Akkharaphon',
-    surename: 'Sahastrabudhhe',
-    email: 'Exampleemail@gmail.com',
-    mobileNumber: '000-000-0000',
-    updateDate: '10/11/2025',
-    appliedJobs: '3',
-    statusName: 'Active',
-  },
-  {
-    id: '0002',
-    blacklist: null,
-    title: 'Mr',
-    name: 'Akkharaphon',
-    surename: 'Sahastrabudhhe',
-    email: 'Exampleemail@gmail.com',
-    mobileNumber: '000-000-0000',
-    updateDate: '10/11/2025',
-    appliedJobs: '3',
-    statusName: 'Inactive',
-  },
-];
+const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
+  const navigate = useNavigate();
 
-const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) => {
-  const columns: GridColDef<any>[] = useMemo(
+  const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
+  const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
+
+  const handleUpdateStatus = (candidatId: string, status: 'Active' | 'Inactive') => {
+    updateCandidateStatus(
+      { candidatId, status },
+      {
+        onSuccess: () => {},
+        onError: () => {},
+      },
+    );
+  };
+
+  const handleUpdateBlacklist = (candidatId: string, isBlacklist: boolean) => {
+    updateCandidateBlacklist(
+      { candidatId, isBlacklist, blcklistReason: '' },
+      {
+        onSuccess: () => {},
+        onError: () => {},
+      },
+    );
+  };
+
+  const columns: GridColDef<TCandidateTableRow>[] = useMemo(
     () => [
       {
         ...GRID_CHECKBOX_SELECTION_COL_DEF,
         width: 64,
       },
       {
-        field: 'id',
+        field: 'candidateId',
         headerName: 'Candidate ID',
-        width: 146,
+        width: 300,
         renderCell: (params) => {
-          return <Link onClick={() => {}}>{params.row.id}</Link>;
+          const { candidateId } = params.row;
+
+          return (
+            <Link
+              onClick={() => {
+                navigate(navigatePaths.candidate.detail(candidateId));
+              }}
+            >
+              {params.row.candidateId}
+            </Link>
+          );
         },
       },
       {
-        field: 'blacklist',
+        field: 'isBlacklist',
         headerName: 'Blacklist',
         width: 110,
         renderCell: (params) => {
           return (
             <>
-              {params.row.blacklist ? (
-                <Chip label={params.row.blacklist} variant="soft" color="error" />
+              {params.row.isBlacklist ? (
+                <Chip label="Blacklist" variant="soft" color="error" />
               ) : (
                 <Typography color="text.secondary" variant="subtitle2">
                   -
@@ -85,17 +106,17 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         },
       },
       {
-        field: 'title',
+        field: 'titleNameEn',
         headerName: 'Title',
         width: 120,
       },
       {
-        field: 'name',
+        field: 'nameEn',
         headerName: 'Name',
         width: 160,
       },
       {
-        field: 'surename',
+        field: 'surnameEn',
         headerName: 'Surename',
         width: 200,
       },
@@ -105,22 +126,25 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         width: 200,
       },
       {
-        field: 'mobileNumber',
+        field: 'mobileNo',
         headerName: 'Mobile Number',
         width: 180,
       },
       {
-        field: 'updateDate',
+        field: 'updatedDate',
         headerName: 'Update Date',
         width: 130,
+        renderCell: (params) => {
+          return dayjs(params.row.startDate).format('DD/MM/YYYY');
+        },
       },
       {
-        field: 'appliedJobs',
+        field: 'countJobApplication',
         headerName: 'Applied Jobs',
         width: 130,
       },
       {
-        field: 'statusName',
+        field: 'status',
         headerName: 'Job Status',
         width: 90,
         headerClassName: 'job-status-header',
@@ -128,9 +152,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         renderCell: (params) => {
           return (
             <Chip
-              label={params.row.statusName}
+              label={params.row.status}
               variant="soft"
-              color={getStatusBadgeColor(params.row.statusName)}
+              color={getStatusBadgeColor(params.row.status)}
             />
           );
         },
@@ -145,23 +169,38 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         headerAlign: 'right',
         headerClassName: 'action-header',
         cellClassName: 'action-cell',
-        renderCell: () => {
+        renderCell: (params) => {
+          const { candidateId, status, isBlacklist } = params.row;
+
+          let statusItem = {
+            label: 'Active',
+            icon: 'mdi:check-circle-outline',
+            onClick: () => {
+              handleUpdateStatus(candidateId, 'Active');
+            },
+          };
+
+          if (status === 'Active') {
+            statusItem = {
+              label: 'Inactive',
+              icon: 'mdi:minus-circle-outline',
+              onClick: () => {
+                handleUpdateStatus(candidateId, 'Inactive');
+              },
+            };
+          }
           const menuItems = [
             {
               label: 'Edit',
               icon: 'mdi:edit-outline',
             },
-            {
-              label: 'Inactive',
-              icon: 'mdi:minus-circle-outline',
-            },
-            {
-              label: 'Active',
-              icon: 'mdi:check-circle-outline',
-            },
+            statusItem,
             {
               label: 'Black List',
               icon: 'mdi:close-octagon-outline',
+              onClick: () => {
+                handleUpdateBlacklist(candidateId, !isBlacklist);
+              },
             },
           ];
           return <DashboardMenu menuItems={menuItems} />;
@@ -170,6 +209,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
     ],
     [],
   );
+
   return (
     <Box sx={{ width: 1 }}>
       <StyledDataGrid
@@ -177,6 +217,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl }: ProductsTableProps) 
         rows={tableData}
         apiRef={apiRef}
         columns={columns}
+        getRowId={(row) => row.candidateId}
         pageSizeOptions={[defaultPageSize, 15]}
         disableVirtualization
         initialState={{
