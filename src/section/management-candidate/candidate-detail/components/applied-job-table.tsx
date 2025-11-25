@@ -18,10 +18,22 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   }
 };
 
+type JobStatus = {
+  statusNameEn: string;
+};
+
+type AppliedJobRow = {
+  jobAppId: string;
+  jobTitle: string;
+  ownerName: string;
+  startDate: string | Date;
+  jobStatus: JobStatus;
+};
+
 const AppliedJobTable = ({ tableData }: { tableData: TJobApplications[] }) => {
   const apiRef = useGridApiRef();
 
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<AppliedJobRow>[] = useMemo(
     () => [
       {
         field: 'jobAppId',
@@ -91,6 +103,9 @@ const AppliedJobTable = ({ tableData }: { tableData: TJobApplications[] }) => {
         pageSizeOptions={[defaultPageSize, 15]}
         disableVirtualization
         hideFooter
+        getRowClassName={(params) =>
+          params.row.jobStatus.statusNameEn.toLowerCase() === 'new' ? 'row-disabled' : ''
+        }
       />
     </Box>
   );
