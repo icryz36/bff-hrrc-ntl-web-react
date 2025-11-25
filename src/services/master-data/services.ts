@@ -5,6 +5,7 @@ import {
   TGetDepartmentResponse,
   TGetDistrictPayload,
   TGetDistrictResponse,
+  TGetDocumentTypeResponse,
   TGetJobLevelResponse,
   TGetNtlRegionResponse,
   TGetPositionResponse,
@@ -13,6 +14,7 @@ import {
   TGetSectionPayload,
   TGetSectionResponse,
   TGetSkillResponse,
+  TGetTitleNameResponse,
   TGetUserResponse,
   TGetemployeeTypeResponse,
 } from 'types/master-data';
@@ -126,6 +128,24 @@ export const fetchSkill = async (): Promise<TGetSkillResponse> => {
   const { data } = await axiosMasterDataInstance({
     method: 'POST',
     url: endpoint.masterData.skill,
+  });
+
+  return data;
+};
+
+export const fetchTitleName = async (): Promise<TGetTitleNameResponse> => {
+  const { data } = await axiosMasterDataInstance({
+    method: 'POST',
+    url: endpoint.masterData.titleName,
+  });
+
+  return data;
+};
+
+export const fetchDocumentType = async (): Promise<TGetDocumentTypeResponse> => {
+  const { data } = await axiosMasterDataInstance({
+    method: 'POST',
+    url: endpoint.masterData.documentType,
   });
 
   return data;

@@ -18,9 +18,7 @@ export function RHFUploadAvatar({ name, ...other }: RHFUploadAvatarProps) {
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange }, formState: { errors } }) => {
-        console.log('sdsd', errors);
-
+      render={({ field: { value, onChange } }) => {
         return (
           <AvatarDropBox
             defaultFile={value}

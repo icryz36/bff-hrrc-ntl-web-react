@@ -9,7 +9,7 @@ const ImportCandidateView = () => {
         onDrop={(acceptedFiles) => {
           console.log({ acceptedFiles });
         }}
-        description="รองรับไฟล์ .xlxs, .xls and .csv, ขนาดไฟล์ไม่เกิน is 50 MB"
+        // description="รองรับไฟล์ .xlxs, .xls and .csv, ขนาดไฟล์ไม่เกิน is 50 MB"
         accept={{
           'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
           'application/pdf': ['.pdf'],

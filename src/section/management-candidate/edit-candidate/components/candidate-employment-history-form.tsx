@@ -61,6 +61,7 @@ export const CandidateEmploymentHistoryForm = () => {
           <Grid size={12}>
             <Field.RadioGroup
               row
+              disabled
               sx={{ gap: 1 }}
               name="isWorkedBefore"
               options={OPTION_HAS_EXPERIENCE.map((option) => option)}
@@ -79,60 +80,70 @@ export const CandidateEmploymentHistoryForm = () => {
                         <Grid container spacing={2}>
                           <Grid size={12}>
                             <Field.Text
+                              disabled
                               label="Company Name/Address"
                               name={`workHistorys[${index}].companyName`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.Text
+                              disabled
                               label="Phone Number"
                               name={`workHistorys[${index}].officePhoneNo`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.DatePicker
+                              disabled
                               label="Employment Period Start"
                               name={`workHistorys[${index}].startDate`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.DatePicker
+                              disabled
                               label="Employment Period End"
                               name={`workHistorys[${index}].endDate`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 6 }}>
                             <Field.Text
+                              disabled
                               label="Type of Business"
                               name={`workHistorys[${index}].businessType`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 6 }}>
                             <Field.Text
+                              disabled
                               label="Job Title"
                               name={`workHistorys[${index}].lastPosition`}
                             />
                           </Grid>
                           <Grid size={12}>
                             <Field.Text
+                              disabled
                               label="Job Responsibilities"
                               name={`workHistorys[${index}].responsibilities`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.Text
+                              disabled
                               label="Basic Salary (Baht)"
                               name={`workHistorys[${index}].salary`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.Text
+                              disabled
                               label="Other Income (Baht)"
                               name={`workHistorys[${index}].otherIncome`}
                             />
                           </Grid>
                           <Grid size={{ xs: 12, md: 4 }}>
                             <Field.Text
+                              disabled
                               label="Reason for Leaving"
                               name={`workHistorys[${index}].leavingReason`}
                             />
@@ -158,6 +169,7 @@ export const CandidateEmploymentHistoryForm = () => {
               ))}
 
               <Button
+                disabled
                 color="primary"
                 variant="outlined"
                 onClick={handleAddNewField}
@@ -177,6 +189,7 @@ export const CandidateEmploymentHistoryForm = () => {
 
         <Field.RadioGroup
           row
+          disabled
           sx={{ gap: 1 }}
           name="isAnyoneRecommend"
           options={OPTION_CONFIRM.map((option) => option)}
@@ -186,16 +199,16 @@ export const CandidateEmploymentHistoryForm = () => {
           <StyledBackgroundForm>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, md: 6 }}>
-                <Field.Text label="Name" name="recommender.name" />
+                <Field.Text label="Name" name="recommender.name" disabled />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <Field.Text label="Relation" name="recommender.relation" />
+                <Field.Text label="Relation" name="recommender.relation" disabled />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <Field.Text label="Position" name="recommender.position" />
+                <Field.Text label="Position" name="recommender.position" disabled />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <Field.Text label="Phone Number" name="recommender.mobileNo" />
+                <Field.Text label="Phone Number" name="recommender.mobileNo" disabled />
               </Grid>
             </Grid>
           </StyledBackgroundForm>

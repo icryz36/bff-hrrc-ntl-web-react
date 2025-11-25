@@ -1,10 +1,15 @@
 import { Grid, MenuItem, Stack } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { TITLES } from 'data/title';
+import { useMasterDataQuery } from 'services/master-data/query';
 import { Field } from 'components/hook-form/fields';
 
 // ----------------------------------------------------------------------
 
 export const CandidateInfoForm = () => {
+  const { data: titleNameList } = useQuery(useMasterDataQuery.titleName());
+  console.log('titleNameList', titleNameList);
+
   return (
     <Stack spacing={2}>
       <Stack sx={{ width: 72 }}>

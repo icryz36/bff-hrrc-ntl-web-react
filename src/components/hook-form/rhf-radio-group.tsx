@@ -18,6 +18,7 @@ export type RHFRadioGroupProps = RadioGroupProps & {
   label?: string;
   options: { label: string; value: string }[];
   helperText?: React.ReactNode;
+  disabled?: boolean;
   slotProps?: {
     wrapper?: FormControlProps;
     radio?: RadioProps;
@@ -33,6 +34,7 @@ export function RHFRadioGroup({
   options,
   helperText,
   slotProps,
+  disabled,
   ...other
 }: RHFRadioGroupProps) {
   const { control } = useFormContext();
@@ -44,7 +46,7 @@ export function RHFRadioGroup({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl component="fieldset" {...slotProps?.wrapper}>
+        <FormControl component="fieldset" {...slotProps?.wrapper} disabled={disabled}>
           {label && (
             <FormLabel
               id={labelledby}

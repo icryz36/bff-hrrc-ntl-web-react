@@ -5,6 +5,7 @@ import { RHFEditor } from './rhf-editor';
 import { RHFRadioGroup } from './rhf-radio-group';
 import { RHFMultiSelect, RHFSelect } from './rhf-select';
 import { RHFTextField } from './rhf-text-field';
+import { RHFUpload } from './rhf-upload';
 import { RHFUploadAvatar } from './rhf-upload-avatar';
 
 // ----------------------------------------------------------------------
@@ -22,4 +23,5 @@ export const Field = {
   DateTimePicker: RHFDateTimePicker,
   Checkbox: RHFCheckbox,
   MultiCheckbox: RHFMultiCheckbox,
+  Upload: RHFUpload,
 };

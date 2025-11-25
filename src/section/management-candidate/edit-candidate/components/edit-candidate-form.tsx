@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Container, Stack } from '@mui/material';
 import { Form } from 'components/hook-form';
+import { defaultValues } from '../default-values-form';
 import { EditCandidateSchema, TEditCandidate } from '../schema';
 import { CandidateApplicationDocumentsForm } from './candidate-application-documents-form';
 import { CandidateAppliedJobForm } from './candidate-applied-job-form';
@@ -16,129 +17,92 @@ import { CandidatePersonalDataForm } from './candidate-personal-data-form';
 import { CandidatePersonalReferencesForm } from './candidate-personal-references-form';
 import { CandidateSkillSpecialAbilityForm } from './candidate-skill-special-ability-form';
 import { CondidateEducationForm } from './condidate-education-form';
+import { OtherInformationForm } from './other-information-form';
 
 // ----------------------------------------------------------------------
 
-const defaultValues: TEditCandidate = {
-  // info
-  title: '',
-  name: '',
-  surName: '',
-  nickName: '',
-  candidateId: '',
-  profile: null,
-
-  // basic information
-  gender: '',
-  age: '',
-  contactNo: '',
-  email: '',
-  desiredLocation: '',
-  desiredProvince: null,
-  highestEducation: null,
-  workExperience: '',
-  motorcycleDriving: '',
-  carDriving: '',
-
-  // application documents
-  documents: '',
-  files: [],
-
-  // link reference
-  link: '',
-
-  // note
-  note: '',
-
-  // personal data
-  address: '',
-  lineId: '',
-  dateOfBirth: '',
-  height: '',
-  weight: '',
-  nationality: '',
-  religion: '',
-  bloodGroup: '',
-  placeofBirthId: '',
-  idNo: '',
-  cardissuedProvinceId: null,
-  cardissuedDate: '',
-  cardexpiredDate: '',
-  militaryStatus: '',
-  maritalStatus: '',
-  familys: [{ name: '', age: 0, mobileNo: '', occupation: '', workplace: '' }],
-  emergency: [{ relationship: '', name: '', mobileNo: '' }],
-
-  // personal references
-  referencePersons: [{ name: '', position: '', relation: '', workplace: '', mobileNo: '' }],
-
-  // education
-  educations: [
-    {
-      degreeId: '',
-      institutionName: '',
-      startYear: '',
-      endYear: '',
-      degreeConferred: '',
-      major: '',
-      gpa: '',
-    },
-  ],
-
-  // language
-  languages: [{ language: null, speaking: '', reading: '', writing: '' }],
-
-  // skill
-  skills: [],
-  hasNlInsBrokerLicenseNo: '',
-  nlInsBrokerLicenseNo: '',
-  hasNlInsAgentLicenseNo: '',
-  nlInsAgentLicenseNo: '',
-  hasLInsBrokerLicenseNo: '',
-  lInsBrokerLicenseNo: '',
-  hasLInsAgentLicenseNo: '',
-  lInsAgentLicenseNo: '',
-  transmissionTypeCar: [],
-  ownCar: '',
-  transmissionTypeMotorcycle: [],
-  ownMotorcycle: '',
-
-  // employment history
-  isWorkedBefore: 'YES',
-  workHistorys: [
-    {
-      companyName: '',
-      officePhoneNo: '',
-      startDate: '',
-      endDate: '',
-      businessType: '',
-      lastPosition: '',
-      responsibilities: '',
-      salary: '',
-      otherIncome: '',
-      leavingReason: '',
-    },
-  ],
-  isAnyoneRecommend: 'YES',
-  recommender: {
-    name: '',
-    relation: '',
-    position: '',
-    mobileNo: '',
-  },
-};
+// const FORM_LIST = [
+//   {
+//     icon: 'mdi:account-outline',
+//     title: 'Applied Job',
+//     children: <CandidateAppliedJobForm />,
+//   },
+//   {
+//     icon: 'mdi:account-outline',
+//     title: 'Basic information',
+//     children: <CandidateBasicInformationForm />,
+//   },
+//   {
+//     icon: 'mdi:note-text-outline',
+//     title: 'Application Documents',
+//     children: <CandidateApplicationDocumentsForm />,
+//   },
+//   {
+//     icon: 'mdi:note-text-outline',
+//     title: 'Link Reference',
+//     children: <CandidateLinkReferenceForm />,
+//   },
+//   {
+//     icon: 'mdi:note-text-outline',
+//     title: 'Note (Optional)',
+//     children: <CandidateNoteForm />,
+//   },
+//   {
+//     icon: 'mdi:account-outline',
+//     title: 'Personal Data',
+//     children: <CandidatePersonalDataForm />,
+//   },
+//   {
+//     icon: 'mdi:account-box-outline',
+//     title: 'Personal References',
+//     children: <CandidatePersonalReferencesForm />,
+//   },
+//   {
+//     icon: 'mdi:education-outline',
+//     title: 'Education',
+//     children: <CondidateEducationForm />,
+//   },
+//   {
+//     icon: 'material-symbols:language',
+//     title: 'Language',
+//     children: <CandidateLanguageForm />,
+//   },
+//   {
+//     icon: 'mdi:folder-outline',
+//     title: 'Office Skill & Special Ability',
+//     children: <CandidateSkillSpecialAbilityForm />,
+//   },
+//   {
+//     icon: 'line-md:briefcase',
+//     title: 'Employment History',
+//     children: <CandidateEmploymentHistoryForm />,
+//   },
+//   {
+//     icon: 'mdi:shape-outline',
+//     title: 'Hobby And Interest',
+//     children: <CandidateHobbyAndInterestForm />,
+//   },
+//   {
+//     icon: 'mdi:list-box-outline',
+//     title: 'Other Information',
+//     children: <OtherInformationForm />,
+//   },
+// ];
 
 // ----------------------------------------------------------------------
 
 export const EditCandidateForm = () => {
-  // form ---------------------------------------------------------------
-
   const methods = useForm<TEditCandidate>({
     resolver: zodResolver(EditCandidateSchema),
     defaultValues,
   });
 
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  console.log('errors', errors);
 
   // func ---------------------------------------------------------------
 
@@ -154,34 +118,38 @@ export const EditCandidateForm = () => {
         <Stack direction="column" spacing={4}>
           <CandidateInfoForm />
 
-          {/* TODO: ทำต่อ */}
+          {/* <Box mt={2}>
+            {FORM_LIST.map((item, index) => (
+              <AccordionCustom
+                icon={item.icon}
+                key={item.title}
+                title={item.title}
+                panelId={index}
+                defaultExpanded
+              >
+                {item.children}
+              </AccordionCustom>
+            ))}
+          </Box> */}
+
           <CandidateAppliedJobForm />
-
           <CandidateBasicInformationForm />
-
-          {/* TODO: ทำต่อ */}
           <CandidateApplicationDocumentsForm />
-
           <CandidateLinkReferenceForm />
-
           <CandidateNoteForm />
-
           <CandidatePersonalDataForm />
-
           <CandidatePersonalReferencesForm />
-
           <CondidateEducationForm />
-
           <CandidateLanguageForm />
-
           <CandidateSkillSpecialAbilityForm />
-
           <CandidateEmploymentHistoryForm />
-
           <CandidateHobbyAndInterestForm />
+          <OtherInformationForm />
         </Stack>
 
-        <Button variant="contained">Confirm</Button>
+        <Button variant="contained" type="submit">
+          Confirm
+        </Button>
       </Form>
     </Container>
   );

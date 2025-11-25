@@ -49,19 +49,35 @@ export const CandidatePersonalReferencesForm = () => {
               <Grid size={11}>
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text name={`referencePersons[${index}].name`} label="Name" />
+                    <Field.Text name={`referencePersons[${index}].name`} label="Name" disabled />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text name={`referencePersons[${index}].position`} label="Position" />
+                    <Field.Text
+                      name={`referencePersons[${index}].position`}
+                      label="Position"
+                      disabled
+                    />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text name={`referencePersons[${index}].relation`} label="Relation" />
+                    <Field.Text
+                      name={`referencePersons[${index}].relation`}
+                      label="Relation"
+                      disabled
+                    />
                   </Grid>
                   <Grid size={{ xs: 12, md: 8 }}>
-                    <Field.Text name={`referencePersons[${index}].workplace`} label="Workplace" />
+                    <Field.Text
+                      name={`referencePersons[${index}].workplace`}
+                      label="Workplace"
+                      disabled
+                    />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text name={`referencePersons[${index}].mobileNo`} label="Phone Number" />
+                    <Field.Text
+                      name={`referencePersons[${index}].mobileNo`}
+                      label="Phone Number"
+                      disabled
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -84,6 +100,7 @@ export const CandidatePersonalReferencesForm = () => {
       ))}
 
       <Button
+        disabled
         color="primary"
         variant="outlined"
         onClick={handleAddNewField}

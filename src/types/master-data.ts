@@ -183,6 +183,31 @@ export type TSkillOptions = {
   skillTextEn: string;
 };
 
+// title name ------------------------------------------------------------------
+
+export type TGetTitleNameResponse = TStatusResponse & {
+  data: TitleName[];
+};
+
+export type TitleName = {
+  titleId: string;
+  titleNameTh: string;
+  titleNameEn: string;
+};
+
+// document type ----------------------------------------------------------------
+
+export type TGetDocumentTypeResponse = TStatusResponse & {
+  data: TDocumentType;
+};
+
+export type TDocumentType = {
+  documentTypeId: string;
+  documentTypeNameTh: string;
+  documentTypeNameEn: string;
+  documentTypeKey: string;
+};
+
 // MAP master data --------------------------------------------------------------
 
 export type MasterDataMaps = {

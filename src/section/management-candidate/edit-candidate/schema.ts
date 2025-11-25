@@ -9,7 +9,7 @@ type TEditCandidate = z.infer<typeof EditCandidateSchema>;
 // info -----------------------------------------------------------------
 
 export const CandidateInfoSchema = z.object({
-  profile: schemaHelper.file().optional(),
+  profile: z.custom<File | string | null>().optional(),
   title: z.string().min(1, { error: REQUIRED_MESSAGE }),
   name: z.string().min(1, { error: REQUIRED_MESSAGE }),
   surName: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
@@ -39,8 +39,8 @@ export const CandidateBasicInformationSchema = z.object({
 // application documents --------------------------------------------------
 
 export const CandidateApplicationDocumentsSchema = z.object({
-  documents: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  files: schemaHelper.files(),
+  documents: z.record(z.string(), z.array(z.custom<File>()).optional()).optional(),
+  files: z.custom<File | string | null>().optional(),
 });
 
 // link reference ----------------------------------------------------------
@@ -143,7 +143,7 @@ export const SkillSchema = z.object({
       z.object({
         skillId: z.string().optional(),
         skillText: z.string().optional(),
-        selectedOptionId: z.union([z.string(), z.array(z.string())]).optional(),
+        selectedOptionId: z.union([z.string(), z.array(z.string())]),
       }),
     )
     .optional(),
@@ -199,6 +199,20 @@ export const EmploymentHistorySchema = z.object({
     .optional(),
 });
 
+// other information --------------------------------------------------------
+
+export const OtherInformationSchema = z.object({
+  questions: z
+    .array(
+      z.object({
+        questionId: z.string().optional(),
+        answerText: z.string().optional(),
+        answerOptionId: z.string().optional(),
+      }),
+    )
+    .optional(),
+});
+
 // --------------------------------------------------------------------------
 
 const EditCandidateSchema = CandidateInfoSchema.extend({
@@ -212,6 +226,7 @@ const EditCandidateSchema = CandidateInfoSchema.extend({
   ...LanguageSchema.shape,
   ...SkillSchema.shape,
   ...EmploymentHistorySchema.shape,
+  ...OtherInformationSchema.shape,
 });
 
 // --------------------------------------------------------------------------

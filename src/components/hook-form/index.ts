@@ -17,3 +17,5 @@ export * from './rhf-radio-group';
 export * from './rhf-checkbox';
 
 export * from './rhf-upload-avatar';
+
+export * from './rhf-upload';

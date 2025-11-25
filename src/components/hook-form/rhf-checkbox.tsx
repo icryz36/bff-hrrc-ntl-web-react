@@ -69,6 +69,7 @@ type RHFMultiCheckboxProps = FormGroupProps & {
   name: string;
   label?: string;
   helperText?: React.ReactNode;
+  disabled?: boolean;
   slotProps?: {
     wrap?: SxProps<Theme>;
     checkbox?: CheckboxProps;
@@ -87,6 +88,7 @@ export function RHFMultiCheckbox({
   options,
   slotProps,
   helperText,
+  disabled,
   ...other
 }: RHFMultiCheckboxProps) {
   const { control } = useFormContext();
@@ -104,7 +106,7 @@ export function RHFMultiCheckbox({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl component="fieldset" sx={slotProps?.wrap}>
+        <FormControl component="fieldset" sx={slotProps?.wrap} disabled={disabled}>
           {label && (
             <FormLabel
               component="legend"

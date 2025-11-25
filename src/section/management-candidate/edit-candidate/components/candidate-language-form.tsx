@@ -44,6 +44,7 @@ export const CandidateLanguageForm = () => {
                   <Grid size={12}>
                     <Field.Autocomplete
                       fullWidth
+                      disabled
                       label="Language"
                       options={MOCK_OPTION}
                       name={`languages[${index}].language`}
@@ -58,6 +59,7 @@ export const CandidateLanguageForm = () => {
                       </Typography>
                       <Field.RadioGroup
                         row
+                        disabled
                         sx={{ gap: 1 }}
                         name={`languages[${index}].speaking`}
                         options={[
@@ -76,6 +78,7 @@ export const CandidateLanguageForm = () => {
                       </Typography>
                       <Field.RadioGroup
                         row
+                        disabled
                         sx={{ gap: 1 }}
                         name={`languages[${index}].reading`}
                         options={[
@@ -94,6 +97,7 @@ export const CandidateLanguageForm = () => {
                       </Typography>
                       <Field.RadioGroup
                         row
+                        disabled
                         sx={{ gap: 1 }}
                         name={`languages[${index}].writing`}
                         options={[
@@ -126,6 +130,7 @@ export const CandidateLanguageForm = () => {
       ))}
 
       <Button
+        disabled
         color="primary"
         variant="outlined"
         onClick={handleAddNewField}

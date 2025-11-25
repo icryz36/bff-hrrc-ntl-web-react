@@ -70,28 +70,28 @@ export const CandidatePersonalDataForm = () => {
     <>
       <Grid container spacing={2}>
         <Grid size={12}>
-          <Field.Text name="address" label="Present Address" />
+          <Field.Text name="address" label="Present Address" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.Text name="lineId" label="Line ID" />
+          <Field.Text name="lineId" label="Line ID" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="dateOfBirth" label="Date of Birth" />
+          <Field.DatePicker name="dateOfBirth" label="Date of Birth" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.Text name="height" label="Height (cm.)" />
+          <Field.Text name="height" label="Height (cm.)" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.Text name="weight" label="Weight (kg.)" />
+          <Field.Text name="weight" label="Weight (kg.)" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.Text name="nationality" label="Nationality" />
+          <Field.Text name="nationality" label="Nationality" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="religion" label="Religion" />
+          <Field.DatePicker name="religion" label="Religion" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.Select name="bloodGroup" label="Blood Group">
+          <Field.Select name="bloodGroup" label="Blood Group" disabled>
             {MOCK_OPTION.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -100,13 +100,14 @@ export const CandidatePersonalDataForm = () => {
           </Field.Select>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="placeofBirthId" label="Place of Birth" />
+          <Field.DatePicker name="placeofBirthId" label="Place of Birth" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="idNo" label="ID Card No." />
+          <Field.DatePicker name="idNo" label="ID Card No." disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Field.Autocomplete
+            disabled
             fullWidth
             options={provinceList}
             label="Issued by Province"
@@ -116,10 +117,10 @@ export const CandidatePersonalDataForm = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="cardissuedDate" label="Issued Date" />
+          <Field.DatePicker name="cardissuedDate" label="Issued Date" disabled />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Field.DatePicker name="cardexpiredDate" label="Expired Date" />
+          <Field.DatePicker name="cardexpiredDate" label="Expired Date" disabled />
         </Grid>
         <Grid size={{ xs: 12 }}>
           <Stack spacing={1.5} direction="column">
@@ -127,6 +128,7 @@ export const CandidatePersonalDataForm = () => {
             <Field.RadioGroup
               row
               sx={{ gap: 1 }}
+              disabled
               name="militaryStatus"
               options={[
                 { label: 'เกณฑ์แล้ว', value: 'radio-1' },
@@ -151,6 +153,7 @@ export const CandidatePersonalDataForm = () => {
             <Field.RadioGroup
               row
               sx={{ gap: 1 }}
+              disabled
               name="maritalStatus"
               options={[
                 { label: 'โสด', value: 'radio-1' },
@@ -172,7 +175,11 @@ export const CandidatePersonalDataForm = () => {
                 <Grid size={11}>
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Select name={`familys[${index}].relationship`} label="Relation">
+                      <Field.Select
+                        name={`familys[${index}].relationship`}
+                        label="Relation"
+                        disabled
+                      >
                         {MOCK_OPTION.map((option) => (
                           <MenuItem key={option.value} value={option.value}>
                             {option.label}
@@ -181,19 +188,32 @@ export const CandidatePersonalDataForm = () => {
                       </Field.Select>
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`familys[${index}].name`} label="Name" />
+                      <Field.Text name={`familys[${index}].name`} label="Name" disabled />
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`familys[${index}].age`} label="Age" type="number" />
+                      <Field.Text
+                        name={`familys[${index}].age`}
+                        label="Age"
+                        type="number"
+                        disabled
+                      />
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`familys[${index}].mobileNo`} label="Phone Number" />
+                      <Field.Text
+                        name={`familys[${index}].mobileNo`}
+                        label="Phone Number"
+                        disabled
+                      />
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`familys[${index}].occupation`} label="Occupation" />
+                      <Field.Text
+                        name={`familys[${index}].occupation`}
+                        label="Occupation"
+                        disabled
+                      />
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`familys[${index}].workplace`} label="Workplace" />
+                      <Field.Text name={`familys[${index}].workplace`} label="Workplace" disabled />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -216,6 +236,7 @@ export const CandidatePersonalDataForm = () => {
         ))}
 
         <Button
+          disabled
           color="primary"
           variant="outlined"
           onClick={handleAddFamilys}
@@ -239,7 +260,11 @@ export const CandidatePersonalDataForm = () => {
                 <Grid size={11}>
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Select name={`emergency[${index}].relationship`} label="Relation">
+                      <Field.Select
+                        name={`emergency[${index}].relationship`}
+                        label="Relation"
+                        disabled
+                      >
                         {MOCK_OPTION.map((option) => (
                           <MenuItem key={option.value} value={option.value}>
                             {option.label}
@@ -248,10 +273,14 @@ export const CandidatePersonalDataForm = () => {
                       </Field.Select>
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`emergency[${index}].name`} label="Name" />
+                      <Field.Text name={`emergency[${index}].name`} label="Name" disabled />
                     </Grid>
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Field.Text name={`emergency[${index}].mobileNo`} label="Phone Number" />
+                      <Field.Text
+                        name={`emergency[${index}].mobileNo`}
+                        label="Phone Number"
+                        disabled
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -274,6 +303,7 @@ export const CandidatePersonalDataForm = () => {
         ))}
 
         <Button
+          disabled
           color="primary"
           variant="outlined"
           onClick={handleAddEmergency}

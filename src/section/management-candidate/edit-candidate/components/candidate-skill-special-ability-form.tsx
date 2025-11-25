@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { MenuItem, Stack, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { OPTION_TRANSMISSION_TYPE, OPTION_YES_NO } from 'constant/enum';
 import { SKILLS } from 'data/skills';
-import { useMasterDataQuery } from 'services/master-data/query';
 import { Field } from 'components/hook-form/fields';
 import { TEditCandidate } from '../schema';
 import { StyledBackgroundForm } from '../styles';
@@ -14,8 +12,7 @@ import { StyledBackgroundForm } from '../styles';
 export const CandidateSkillSpecialAbilityForm = () => {
   // api ----------------------------------------------------------------
 
-  const { data: skillList } = useQuery(useMasterDataQuery.skill());
-  console.log('skillList', skillList);
+  // const { data: skillList } = useQuery(useMasterDataQuery.skill());
 
   // form context -------------------------------------------------------
 
@@ -53,8 +50,8 @@ export const CandidateSkillSpecialAbilityForm = () => {
     if (SKILLS && SKILLS?.length > 0 && fields?.length === 0) {
       const defaultSkills = SKILLS?.map((skill) => ({
         skillText: '',
-        selectedOptionId: [],
         skillId: skill.skillId,
+        selectedOptionId: '',
       }));
 
       replace(defaultSkills);
@@ -81,6 +78,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
                   {skill.skillOptionType === 'Checkbox' && (
                     <Field.MultiCheckbox
                       row
+                      disabled
                       name={`skills.${index}.selectedOptionId`}
                       options={skill.skillOptions?.map((option) => ({
                         label: option.skillTextTh,
@@ -91,7 +89,8 @@ export const CandidateSkillSpecialAbilityForm = () => {
 
                   {skill.skillOptionType === 'Dropdown' && (
                     <Field.Select
-                      name={`skills.${index}.selectedOptionId.0`}
+                      disabled
+                      name={`skills.${index}.selectedOptionId`}
                       label={skill.skillNameTh}
                     >
                       {skill.skillOptions?.map((option) => (
@@ -105,8 +104,9 @@ export const CandidateSkillSpecialAbilityForm = () => {
                   {skill.skillOptionType === 'Radio' && (
                     <Field.RadioGroup
                       row
+                      disabled
                       sx={{ gap: 1 }}
-                      name={`skills.${index}.selectedOptionId.0`}
+                      name={`skills.${index}.selectedOptionId`}
                       options={skill.skillOptions?.map((option) => ({
                         value: option.skillOptionId,
                         label: option.skillTextTh,
@@ -115,7 +115,11 @@ export const CandidateSkillSpecialAbilityForm = () => {
                   )}
 
                   {skill.isSkillFreeText && (
-                    <Field.Text name={`skills.${index}.skillText`} label="อื่นๆ โปรดระบุ *" />
+                    <Field.Text
+                      name={`skills.${index}.skillText`}
+                      label="อื่นๆ โปรดระบุ *"
+                      disabled
+                    />
                   )}
                 </Stack>
               );
@@ -135,6 +139,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Non-Life Insurance Broker License:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 sx={{ gap: 1 }}
                 name="hasNlInsBrokerLicenseNo"
                 options={OPTION_YES_NO.map((option) => ({
@@ -144,7 +149,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               />
 
               {hasNlInsBrokerLicenseNo === 'YES' && (
-                <Field.Text name="nlInsBrokerLicenseNo" label="License No." />
+                <Field.Text name="nlInsBrokerLicenseNo" label="License No." disabled />
               )}
             </Stack>
 
@@ -152,6 +157,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Non-Life Insurance Agent License:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 sx={{ gap: 1 }}
                 name="hasNlInsAgentLicenseNo"
                 options={OPTION_YES_NO.map((option) => ({
@@ -161,7 +167,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               />
 
               {hasNlInsAgentLicenseNo === 'YES' && (
-                <Field.Text name="nlInsAgentLicenseNo" label="License No." />
+                <Field.Text name="nlInsAgentLicenseNo" label="License No." disabled />
               )}
             </Stack>
 
@@ -169,6 +175,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Life Insurance Broker License:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 sx={{ gap: 1 }}
                 name="hasLInsBrokerLicenseNo"
                 options={OPTION_YES_NO.map((option) => ({
@@ -178,7 +185,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               />
 
               {hasLInsBrokerLicenseNo === 'YES' && (
-                <Field.Text name="lInsBrokerLicenseNo" label="License No." />
+                <Field.Text name="lInsBrokerLicenseNo" label="License No." disabled />
               )}
             </Stack>
 
@@ -186,6 +193,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Life Insurance Agent License:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 sx={{ gap: 1 }}
                 name="hasLInsAgentLicenseNo"
                 options={OPTION_YES_NO.map((option) => ({
@@ -195,7 +203,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               />
 
               {hasLInsAgentLicenseNo === 'YES' && (
-                <Field.Text name="lInsAgentLicenseNo" label="License No." />
+                <Field.Text name="lInsAgentLicenseNo" label="License No." disabled />
               )}
             </Stack>
           </Stack>
@@ -213,6 +221,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Transmission Type:</Typography>
               <Field.MultiCheckbox
                 row
+                disabled
                 name="transmissionTypeCar"
                 options={OPTION_TRANSMISSION_TYPE.map((option) => option)}
               />
@@ -221,6 +230,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Own Car:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 name="ownCar"
                 sx={{ gap: 1 }}
                 options={OPTION_YES_NO.map((option) => option)}
@@ -241,6 +251,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Transmission Type:</Typography>
               <Field.MultiCheckbox
                 row
+                disabled
                 name="transmissionTypeMotorcycle"
                 options={OPTION_TRANSMISSION_TYPE.map((option) => option)}
               />
@@ -249,6 +260,7 @@ export const CandidateSkillSpecialAbilityForm = () => {
               <Typography variant="subtitle2_bold">Own Motorcycle:</Typography>
               <Field.RadioGroup
                 row
+                disabled
                 sx={{ gap: 1 }}
                 name="ownMotorcycle"
                 options={OPTION_YES_NO.map((option) => option)}

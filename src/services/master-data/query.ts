@@ -5,6 +5,7 @@ import {
   fetchDegree,
   fetchDepartment,
   fetchDistrict,
+  fetchDocumentType,
   fetchEmployeeType,
   fetchJobLevel,
   fetchNtlRegion,
@@ -13,6 +14,7 @@ import {
   fetchProvince,
   fetchSection,
   fetchSkill,
+  fetchTitleName,
   fetchUsers,
 } from './services';
 
@@ -102,6 +104,20 @@ const useMasterDataQuery = {
     queryOptions({
       queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.skill],
       queryFn: () => fetchSkill(),
+      select: (response) => response.data,
+    }),
+
+  titleName: () =>
+    queryOptions({
+      queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.titleName],
+      queryFn: () => fetchTitleName(),
+      select: (response) => response.data,
+    }),
+
+  documentType: () =>
+    queryOptions({
+      queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.documentType],
+      queryFn: () => fetchDocumentType(),
       select: (response) => response.data,
     }),
 };

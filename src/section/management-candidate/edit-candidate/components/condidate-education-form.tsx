@@ -49,7 +49,11 @@ export const CondidateEducationForm = () => {
               <Grid size={11}>
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Select name={`educations[${index}].degreeId`} label="Education level">
+                    <Field.Select
+                      name={`educations[${index}].degreeId`}
+                      label="Education level"
+                      disabled
+                    >
                       {MOCK_OPTION.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
@@ -59,30 +63,41 @@ export const CondidateEducationForm = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
                     <Field.Text
+                      disabled
                       label="Name Of Institute"
                       name={`educations[${index}].institutionName`}
                     />
                   </Grid>
                   <Grid size={{ xs: 12, md: 2 }}>
                     <Field.DatePicker
+                      disabled
                       label="Started Year"
                       name={`educations[${index}].startYear`}
                     />
                   </Grid>
                   <Grid size={{ xs: 12, md: 2 }}>
-                    <Field.DatePicker name={`educations[${index}].endYear`} label="Ended Year" />
+                    <Field.DatePicker
+                      name={`educations[${index}].endYear`}
+                      label="Ended Year"
+                      disabled
+                    />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
                     <Field.Text
+                      disabled
                       label="Degree Conferred"
                       name={`educations[${index}].degreeConferred`}
                     />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text label="Major Subject" name={`educations[${index}].major`} />
+                    <Field.Text
+                      label="Major Subject"
+                      name={`educations[${index}].major`}
+                      disabled
+                    />
                   </Grid>
                   <Grid size={{ xs: 12, md: 4 }}>
-                    <Field.Text label="GPA" name={`educations[${index}].gpa`} />
+                    <Field.Text label="GPA" name={`educations[${index}].gpa`} disabled />
                   </Grid>
                 </Grid>
               </Grid>
@@ -105,6 +120,7 @@ export const CondidateEducationForm = () => {
       ))}
 
       <Button
+        disabled
         color="primary"
         variant="outlined"
         onClick={handleAddNewField}
