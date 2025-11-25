@@ -16,8 +16,6 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
-  console.log('candidateDetail > ', candidateDetail);
-
   const { jobApplications, candidate, ducuments } = candidateDetail || ({} as TCandidateData);
 
   const accordionData = [
@@ -25,6 +23,7 @@ const CandidateDetailView = () => {
       icon: 'mdi:account-outline',
       title: 'Applied Job',
       children: <AppliedJobTable tableData={jobApplications ?? []} />,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-outline',
@@ -57,26 +56,53 @@ const CandidateDetailView = () => {
           ]}
         />
       ),
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Application Documents',
       children: <FileDownloadBox data={ducuments} />,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Link Reference',
       children: <Typography variant="subtitle2_regular">{candidate?.linkReference}</Typography>,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Note (Optional)',
       children: '',
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-outline',
       title: 'Personal Data',
-      children: '',
+      children: (
+        <InformationBox
+          rows={[
+            { label: 'Present Address', value: '', fullWidth: true },
+            { label: 'Line ID', value: '' },
+            { label: 'Date of Birth', value: '' },
+            { label: 'Height (cm.)', value: '' },
+            { label: 'Weight (kg.)', value: '' },
+            { label: 'Nationality', value: '' },
+            { label: 'Blood Group', value: '' },
+            { label: 'Religion', value: '' },
+            { label: 'Place of Birth', value: '' },
+            { label: 'ID Card No.', value: '' },
+            { label: 'Issued by Province', value: '' },
+            { label: 'Issued Date', value: '' },
+            { label: 'Expired Date', value: '' },
+            { label: 'Military Service', value: '', fullWidth: true },
+            { label: 'Family Details', value: '', fullWidth: true },
+            { label: 'Marital Detail', value: '', fullWidth: true },
+            { label: 'Contact in case emergency', value: '', fullWidth: true },
+          ]}
+        />
+      ),
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-box-outline',
@@ -143,7 +169,12 @@ const CandidateDetailView = () => {
       </Stack>
       <Box mt={2}>
         {accordionData.map((item, index) => (
-          <AccordionCustom icon={item.icon} title={item.title} panelId={index}>
+          <AccordionCustom
+            icon={item.icon}
+            title={item.title}
+            panelId={index}
+            defaultExpanded={item.defaultExpanded}
+          >
             {item.children ? item.children : <Typography>-</Typography>}
           </AccordionCustom>
         ))}

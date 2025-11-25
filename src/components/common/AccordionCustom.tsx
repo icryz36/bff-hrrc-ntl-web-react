@@ -7,11 +7,18 @@ interface AccordionCustomProps {
   title: string;
   children: React.ReactNode;
   panelId: string | number;
+  defaultExpanded?: boolean;
 }
 
-const AccordionCustom: React.FC<AccordionCustomProps> = ({ icon, title, children, panelId }) => {
+const AccordionCustom: React.FC<AccordionCustomProps> = ({
+  icon,
+  title,
+  children,
+  panelId,
+  defaultExpanded = false,
+}) => {
   return (
-    <Accordion>
+    <Accordion defaultExpanded={defaultExpanded}>
       <AccordionSummary
         aria-controls={`${panelId}-content`}
         id={`${panelId}-header`}
