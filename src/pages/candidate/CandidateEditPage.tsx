@@ -7,7 +7,7 @@ const CandidateEditPage = () => {
   return (
     <Grid container>
       <Grid size={12}>
-        <PageHeader title="Candidate Detail" />
+        <PageHeader title="Edit Candidate Detail" />
       </Grid>
       <Grid size={12}>
         <PageContent>

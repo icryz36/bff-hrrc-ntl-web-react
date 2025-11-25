@@ -29,15 +29,7 @@ export const CandidateBasicInformationForm = () => {
       </Grid>
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <Field.Autocomplete
-          fullWidth
-          required
-          name="desiredLocation"
-          label="Desired Location"
-          options={MOCK_OPTION}
-          getOptionLabel={(option) => option.label}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
-        />
+        <Field.Text name="desiredLocation" label="Desired Location" required />
       </Grid>
 
       <Grid size={{ xs: 12, md: 6 }}>

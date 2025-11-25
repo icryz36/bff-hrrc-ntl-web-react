@@ -5,7 +5,7 @@ import { RHFEditor } from './rhf-editor';
 import { RHFRadioGroup } from './rhf-radio-group';
 import { RHFMultiSelect, RHFSelect } from './rhf-select';
 import { RHFTextField } from './rhf-text-field';
-import { RHFUpload, RHFUploadAvatar, RHFUploadBox } from './rhf-upload';
+import { RHFUploadAvatar } from './rhf-upload-avatar';
 
 // ----------------------------------------------------------------------
 
@@ -13,8 +13,6 @@ export const Field = {
   Text: RHFTextField,
   Select: RHFSelect,
   Editor: RHFEditor,
-  Upload: RHFUpload,
-  UploadBox: RHFUploadBox,
   RadioGroup: RHFRadioGroup,
   DatePicker: RHFDatePicker,
   TimePicker: RHFTimePicker,

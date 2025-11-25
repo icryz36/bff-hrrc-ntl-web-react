@@ -1,12 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Container, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 import { Form } from 'components/hook-form';
 import { EditCandidateSchema, TEditCandidate } from '../schema';
 import { CandidateApplicationDocumentsForm } from './candidate-application-documents-form';
 import { CandidateAppliedJobForm } from './candidate-applied-job-form';
 import { CandidateBasicInformationForm } from './candidate-basic-information-form';
 import { CandidateEmploymentHistoryForm } from './candidate-employment-history-form';
+import { CandidateHobbyAndInterestForm } from './candidate-hobby-and-Interest-form';
 import { CandidateInfoForm } from './candidate-info-form';
 import { CandidateLanguageForm } from './candidate-language-form';
 import { CandidateLinkReferenceForm } from './candidate-link-reference-form';
@@ -25,13 +26,14 @@ const defaultValues: TEditCandidate = {
   surName: '',
   nickName: '',
   candidateId: '',
+  profile: null,
 
   // basic information
   gender: '',
   age: '',
   contactNo: '',
   email: '',
-  desiredLocation: null,
+  desiredLocation: '',
   desiredProvince: null,
   highestEducation: null,
   workExperience: '',
@@ -175,7 +177,11 @@ export const EditCandidateForm = () => {
           <CandidateSkillSpecialAbilityForm />
 
           <CandidateEmploymentHistoryForm />
+
+          <CandidateHobbyAndInterestForm />
         </Stack>
+
+        <Button variant="contained">Confirm</Button>
       </Form>
     </Container>
   );

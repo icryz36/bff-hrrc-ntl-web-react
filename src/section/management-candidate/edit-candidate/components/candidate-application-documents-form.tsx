@@ -1,4 +1,5 @@
 import { Grid, MenuItem, Typography } from '@mui/material';
+import { DOCUMENT_TYPES } from 'data/document';
 import { Field } from 'components/hook-form/fields';
 
 // ----------------------------------------------------------------------
@@ -13,9 +14,9 @@ export const CandidateApplicationDocumentsForm = () => {
       </Grid>
       <Grid size={{ xs: 12 }}>
         <Field.Select name="documents" label="Documents" required>
-          {MOCK_OPTION.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {DOCUMENT_TYPES.map((option) => (
+            <MenuItem key={option.documentTypeId} value={option.documentTypeId}>
+              {option.documentTypeNameTh}
             </MenuItem>
           ))}
         </Field.Select>
@@ -26,8 +27,3 @@ export const CandidateApplicationDocumentsForm = () => {
     </Grid>
   );
 };
-
-const MOCK_OPTION = [
-  { label: 'option 1', value: 'option1' },
-  { label: 'option 2', value: 'option2' },
-];

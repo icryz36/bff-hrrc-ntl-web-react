@@ -9,6 +9,7 @@ type TEditCandidate = z.infer<typeof EditCandidateSchema>;
 // info -----------------------------------------------------------------
 
 export const CandidateInfoSchema = z.object({
+  profile: schemaHelper.file().optional(),
   title: z.string().min(1, { error: REQUIRED_MESSAGE }),
   name: z.string().min(1, { error: REQUIRED_MESSAGE }),
   surName: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
@@ -23,9 +24,7 @@ export const CandidateBasicInformationSchema = z.object({
   age: z.string().min(1, { error: REQUIRED_MESSAGE }),
   contactNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   email: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
-  desiredLocation: schemaHelper.objectOrNull({
-    message: { required_error: REQUIRED_MESSAGE },
-  }),
+  desiredLocation: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredProvince: schemaHelper.objectOrNull({
     message: { required_error: REQUIRED_MESSAGE },
   }),
