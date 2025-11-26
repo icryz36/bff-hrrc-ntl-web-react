@@ -25,8 +25,8 @@ const endpoint = {
   candidate: {
     list: `get-candidates-list-xapi`,
     detail: `get-candidate-xapi`,
-    updateStatus: `update-candidate-status-sapi`,
-    updateBlacklist: `update-candidate-blacklist-sapi`,
+    updateStatus: `update-candidate-status-xapi`,
+    updateBlacklist: `update-candidate-blacklist-xapi`,
   },
 };
 
