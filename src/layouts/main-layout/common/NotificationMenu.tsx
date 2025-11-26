@@ -59,6 +59,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         shape="circle"
         size={type === 'slim' ? 'small' : 'medium'}
         onClick={handleClick}
+        disabled
       >
         <OutlinedBadge
           variant="dot"
