@@ -43,9 +43,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
   const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
 
-  const handleUpdateStatus = (candidatId: string, status: 'Active' | 'Inactive') => {
+  const handleUpdateStatus = (candidateId: string, status: 'Active' | 'Inactive') => {
     updateCandidateStatus(
-      { candidatId, status },
+      { candidateId, status },
       {
         onSuccess: () => {},
         onError: () => {},

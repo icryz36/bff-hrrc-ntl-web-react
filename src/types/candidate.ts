@@ -292,7 +292,7 @@ export type TCandidateTableRow = {
 };
 
 export type TCandidateUpdateStatusPayload = {
-  candidatId: string;
+  candidateId: string;
   status: 'Active' | 'Inactive';
 };
 
