@@ -54,7 +54,11 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     gap?: number;
   }) => (
     <Stack direction="row" gap={gap}>
-      <Typography variant="subtitle2_bold" color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
+      <Typography
+        variant="subtitle2_bold"
+        color="text.primary"
+        sx={{ whiteSpace: 'pre-line', minWidth: '65px' }}
+      >
         {label} :
       </Typography>
       <Typography
@@ -115,7 +119,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           </Typography>
 
           <FormControlLabel
-            control={<Checkbox name="checked" checked={isBigEvent} color="default" />}
+            control={<Checkbox name="checked" checked={isBigEvent} color="default" disabled />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event

@@ -1,6 +1,6 @@
 import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, ChipOwnProps, Link, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
@@ -111,9 +111,11 @@ const ListJobTableView = ({
         headerName: 'Job Title',
         minWidth: 330,
         renderCell: (params) => (
-          <StyledTypographyLine line={2} variant="subtitle2_semibold">
-            {params.row.jobTitle}
-          </StyledTypographyLine>
+          <Tooltip title={params.row.jobTitle} placement="bottom">
+            <StyledTypographyLine line={2} variant="subtitle2_semibold">
+              {params.row.jobTitle}
+            </StyledTypographyLine>
+          </Tooltip>
         ),
       },
       {
