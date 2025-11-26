@@ -12,6 +12,7 @@ import {
 } from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
@@ -274,6 +275,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         }}
         checkboxSelection
         slots={{
+          loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}
         slotProps={{

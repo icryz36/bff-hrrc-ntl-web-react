@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
 import AccordionCustom from 'components/common/AccordionCustom';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import AppliedJobTable from '../components/applied-job-table';
 import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
@@ -11,7 +12,7 @@ import InformationBox from '../components/information-box';
 const CandidateDetailView = () => {
   const { id = '' } = useParams();
 
-  const { data: candidateDetail } = useQuery({
+  const { data: candidateDetail, isLoading } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
@@ -145,6 +146,10 @@ const CandidateDetailView = () => {
       children: '',
     },
   ];
+
+  if (isLoading) {
+    return <DataGridSkeleton />;
+  }
 
   return (
     <Container maxWidth="md">
