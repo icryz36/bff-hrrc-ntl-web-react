@@ -159,8 +159,8 @@ const CandidateDetailView = () => {
         />
         <Stack direction={'column'} gap={1}>
           <Typography variant="h5">
-            {candidateDetail?.candidate?.title?.titleNameEn} {candidateDetail?.candidate?.nameEn}{' '}
-            {candidateDetail?.candidate?.surnameEn} ({candidateDetail?.candidate?.nickname})
+            {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}
+            {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
           </Typography>
           <Typography variant="subtitle2">
             Candidate Id : {candidateDetail?.candidate?.idNo}{' '}
