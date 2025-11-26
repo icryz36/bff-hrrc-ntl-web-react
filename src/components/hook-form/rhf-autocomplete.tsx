@@ -65,7 +65,7 @@ export function RHFAutocomplete({
                 htmlInput: {
                   ...params.inputProps,
                   ...textField?.slotProps?.htmlInput,
-                  autoComplete: 'new-password', // Disable autocomplete and autofill
+                  autoComplete: 'off',
                 },
               }}
             />

@@ -5,6 +5,7 @@ import { useThemeMode } from 'hooks/useThemeMode';
 import AuthProvider from 'providers/AuthProvider';
 import { useSettingsContext } from 'providers/SettingsProvider';
 import { REFRESH } from 'reducers/SettingsReducer';
+import { NetworkModal } from 'components/common/NetworkModal';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -22,6 +23,7 @@ const App = () => {
 
   return (
     <AuthProvider>
+      <NetworkModal />
       <Outlet />
     </AuthProvider>
   );
