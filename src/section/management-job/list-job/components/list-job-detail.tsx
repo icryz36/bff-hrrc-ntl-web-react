@@ -178,9 +178,17 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
                 </Grid>
               ))
             ) : (
-              <Typography variant="subtitle2_bold" color="text.primary">
-                -
-              </Typography>
+              <Grid container spacing={2}>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Position No.\nFrom HRMS`} value="-" gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Rationale of\nVacancy`} value="-" gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Source of\nRecruitment`} value="-" gap={4} />
+                </Grid>
+              </Grid>
             )}
           </Stack>
         </Paper>
