@@ -123,9 +123,11 @@ const ListJobTableView = ({
         headerName: 'Department',
         minWidth: 160,
         renderCell: (params) => (
-          <StyledTypographyLine line={2} variant="subtitle2_regular">
-            {params.row.departmentName}
-          </StyledTypographyLine>
+          <Tooltip title={params.row.departmentName} placement="bottom">
+            <StyledTypographyLine line={2} variant="subtitle2_regular">
+              {params.row.departmentName}
+            </StyledTypographyLine>
+          </Tooltip>
         ),
       },
       {
@@ -264,6 +266,9 @@ const ListJobTableView = ({
                 page: currentPage - 1,
               },
             },
+          }}
+          localeText={{
+            noRowsLabel: 'No List Job Post',
           }}
           slots={{
             loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
