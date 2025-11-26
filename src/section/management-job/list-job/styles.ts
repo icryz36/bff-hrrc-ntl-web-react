@@ -44,4 +44,9 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     outline: 'none',
     boxShadow: 'none',
   },
+  '& .row-disabled': {
+    opacity: 0.6,
+    background: theme.palette.grey[200],
+    pointerEvents: 'none',
+  },
 }));

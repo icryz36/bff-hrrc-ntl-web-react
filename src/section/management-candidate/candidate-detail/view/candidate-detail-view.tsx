@@ -2,8 +2,10 @@ import { useParams } from 'react-router';
 import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
+import { TCandidateData } from 'types/candidate';
 import AccordionCustom from 'components/common/AccordionCustom';
 import AppliedJobTable from '../components/applied-job-table';
+import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
 
 const CandidateDetailView = () => {
@@ -14,11 +16,14 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
+  const { jobApplications, candidate, ducuments } = candidateDetail || ({} as TCandidateData);
+
   const accordionData = [
     {
       icon: 'mdi:account-outline',
       title: 'Applied Job',
-      children: <AppliedJobTable />,
+      children: <AppliedJobTable tableData={jobApplications ?? []} />,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-outline',
@@ -27,47 +32,77 @@ const CandidateDetailView = () => {
         <InformationBox
           background
           rows={[
-            { label: 'Gender', value: 'Male' },
-            { label: 'Age', value: '28' },
-            { label: 'Contact No.', value: '089-765-4321' },
-            { label: 'Email', value: 'viru@example.com' },
-            { label: 'Desired Location', value: 'Head Office' },
-            { label: 'Desired Province', value: 'Bangkok' },
-            { label: 'Highest Education', value: 'Master', fullWidth: true },
+            { label: 'Gender', value: candidate?.gender },
+            { label: 'Age', value: candidate?.age },
+            { label: 'Contact No.', value: candidate?.mobileNo },
+            { label: 'Email', value: candidate?.email },
+            { label: 'Desired Location', value: candidate?.desiredLocation },
+            {
+              label: 'Desired Province',
+              value: candidate?.desiredProvinces.map((i) => i.provinceName).join('\n'),
+            },
+            { label: 'Highest Education', value: '', fullWidth: true },
             {
               label: 'Work Experience',
-              value: `Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
+              value: '-',
               fullWidth: true,
             },
-            { label: 'Motorcycle Driving', value: 'ไม่ได้', fullWidth: true },
-            { label: 'Car Driving', value: 'ได้ มีใบขับขี่', fullWidth: true },
+            {
+              label: 'Motorcycle Driving',
+              value: candidate?.hasmotorcycleLicense,
+              fullWidth: true,
+            },
+            { label: 'Car Driving', value: candidate?.hascarLicense, fullWidth: true },
           ]}
         />
       ),
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Application Documents',
-      children: '',
+      children: <FileDownloadBox data={ducuments} />,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Link Reference',
-      children: (
-        <Typography variant="subtitle2_regular" color="secondary">
-          www.canva.com/Presentation
-        </Typography>
-      ),
+      children: <Typography variant="subtitle2_regular">{candidate?.linkReference}</Typography>,
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:note-text-outline',
       title: 'Note (Optional)',
       children: '',
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-outline',
       title: 'Personal Data',
-      children: '',
+      children: (
+        <InformationBox
+          rows={[
+            { label: 'Present Address', value: '', fullWidth: true },
+            { label: 'Line ID', value: '' },
+            { label: 'Date of Birth', value: '' },
+            { label: 'Height (cm.)', value: '' },
+            { label: 'Weight (kg.)', value: '' },
+            { label: 'Nationality', value: '' },
+            { label: 'Blood Group', value: '' },
+            { label: 'Religion', value: '' },
+            { label: 'Place of Birth', value: '' },
+            { label: 'ID Card No.', value: '' },
+            { label: 'Issued by Province', value: '' },
+            { label: 'Issued Date', value: '' },
+            { label: 'Expired Date', value: '' },
+            { label: 'Military Service', value: '', fullWidth: true },
+            { label: 'Family Details', value: '', fullWidth: true },
+            { label: 'Marital Detail', value: '', fullWidth: true },
+            { label: 'Contact in case emergency', value: '', fullWidth: true },
+          ]}
+        />
+      ),
+      defaultExpanded: true,
     },
     {
       icon: 'mdi:account-box-outline',
@@ -124,8 +159,8 @@ const CandidateDetailView = () => {
         />
         <Stack direction={'column'} gap={1}>
           <Typography variant="h5">
-            {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}
-            {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
+            {candidateDetail?.candidate?.title?.titleNameEn} {candidateDetail?.candidate?.nameEn}{' '}
+            {candidateDetail?.candidate?.surnameEn} ({candidateDetail?.candidate?.nickname})
           </Typography>
           <Typography variant="subtitle2">
             Candidate Id : {candidateDetail?.candidate?.idNo}{' '}
@@ -134,7 +169,12 @@ const CandidateDetailView = () => {
       </Stack>
       <Box mt={2}>
         {accordionData.map((item, index) => (
-          <AccordionCustom icon={item.icon} title={item.title} panelId={index}>
+          <AccordionCustom
+            icon={item.icon}
+            title={item.title}
+            panelId={index}
+            defaultExpanded={item.defaultExpanded}
+          >
             {item.children ? item.children : <Typography>-</Typography>}
           </AccordionCustom>
         ))}

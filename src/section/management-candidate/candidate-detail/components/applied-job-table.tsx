@@ -2,7 +2,9 @@ import { useMemo } from 'react';
 import { Box, Chip, ChipOwnProps } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useGridApiRef } from '@mui/x-data-grid';
+import dayjs from 'dayjs';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
+import { TJobApplications } from 'types/candidate';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
 const defaultPageSize = 10;
@@ -16,33 +18,25 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   }
 };
 
-const AppliedJobTable = () => {
+type JobStatus = {
+  statusNameEn: string;
+};
+
+type AppliedJobRow = {
+  jobAppId: string;
+  jobTitle: string;
+  ownerName: string;
+  startDate: string | Date;
+  jobStatus: JobStatus;
+};
+
+const AppliedJobTable = ({ tableData }: { tableData: TJobApplications[] }) => {
   const apiRef = useGridApiRef();
 
-  const tableData: any[] = [
-    {
-      jobPostId: 'H00001',
-      jobTitle:
-        'เจ้าหน้าที่บริหารงานขายสาขา ปฏิบัติงาน สาขาสุขสวัสดิ์ 76 สาขาสุขสวัสดิ์ 84 สาขาตลาดพระประแดง สาขาซอยพุทธบูชา 44 สาขาประชาอุทิศ 90 สาขาพระประแดง',
-      owner: 'NameOwner',
-      applyDate: '01/11/2025',
-      lastUpdate: '06/11/2025',
-      status: 'New',
-    },
-    {
-      jobPostId: 'H00002',
-      jobTitle: 'เจ้าหน้าที่บริหารงานขายสาขา',
-      owner: 'NameOwner',
-      applyDate: '02/11/2025',
-      lastUpdate: '06/11/2025',
-      status: 'Interview',
-    },
-  ];
-
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<AppliedJobRow>[] = useMemo(
     () => [
       {
-        field: 'jobPostId',
+        field: 'jobAppId',
         headerName: 'Job Post ID',
         width: 104,
       },
@@ -59,30 +53,36 @@ const AppliedJobTable = () => {
         },
       },
       {
-        field: 'owner',
+        field: 'ownerName',
         headerName: 'Owner',
         width: 136,
       },
       {
-        field: 'applyDate',
+        field: 'applicationDate',
         headerName: 'Apply Date',
         width: 136,
+        renderCell: (params) => {
+          return dayjs(params.row.startDate).format('DD/MM/YYYY');
+        },
       },
       {
-        field: 'lastUpdate',
+        field: 'updatedDate',
         headerName: 'Last Update',
         width: 136,
+        renderCell: (params) => {
+          return dayjs(params.row.startDate).format('DD/MM/YYYY');
+        },
       },
       {
-        field: 'status',
+        field: 'jobStatus',
         headerName: 'Status',
         width: 136,
         renderCell: (params) => {
           return (
             <Chip
-              label={params.row.status}
+              label={params.row.jobStatus.statusNameEn}
               variant="soft"
-              color={getStatusBadgeColor(params.row.status)}
+              color={getStatusBadgeColor(params.row.jobStatus.statusNameEn)}
               sx={{ textTransform: 'capitalize' }}
             />
           );
@@ -98,11 +98,14 @@ const AppliedJobTable = () => {
         rowHeight={64}
         rows={tableData}
         apiRef={apiRef}
-        getRowId={(row) => row.jobPostId}
+        getRowId={(row) => row.jobAppId}
         columns={columns}
         pageSizeOptions={[defaultPageSize, 15]}
         disableVirtualization
         hideFooter
+        getRowClassName={(params) =>
+          params.row.jobStatus.statusNameEn.toLowerCase() === 'new' ? 'row-disabled' : ''
+        }
       />
     </Box>
   );
