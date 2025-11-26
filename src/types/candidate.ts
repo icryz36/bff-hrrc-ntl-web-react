@@ -81,6 +81,7 @@ export type TCandidate = {
   blacklistReason: string;
   highestdegreeId: string;
   isRead: string;
+  mobileNo: string;
 };
 
 export type TTitle = {

@@ -34,6 +34,11 @@ const OPTION_CONFIRM = [
   { label: 'ไม่ใช่', value: 'NO' },
 ] as const;
 
+const OPTION_GENDER = [
+  { label: 'ชาย', value: 'M' },
+  { label: 'หญืง', value: 'F' },
+] as const;
+
 export {
   GROUP_LOCATION,
   OPTION_VACANCY,
@@ -42,4 +47,5 @@ export {
   OPTION_TRANSMISSION_TYPE,
   OPTION_HAS_EXPERIENCE,
   OPTION_CONFIRM,
+  OPTION_GENDER,
 };

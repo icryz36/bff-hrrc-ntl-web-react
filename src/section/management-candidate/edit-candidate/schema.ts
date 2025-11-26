@@ -21,13 +21,11 @@ export const CandidateInfoSchema = z.object({
 
 export const CandidateBasicInformationSchema = z.object({
   gender: z.string().min(1, { error: REQUIRED_MESSAGE }),
-  age: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  age: z.number().min(1, { error: REQUIRED_MESSAGE }),
   contactNo: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   email: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredLocation: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
-  desiredProvince: schemaHelper.objectOrNull({
-    message: { required_error: REQUIRED_MESSAGE },
-  }),
+  desiredProvince: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
   highestEducation: schemaHelper.objectOrNull({
     message: { required_error: REQUIRED_MESSAGE },
   }),

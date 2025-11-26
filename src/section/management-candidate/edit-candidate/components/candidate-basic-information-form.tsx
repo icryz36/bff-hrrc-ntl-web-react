@@ -1,14 +1,28 @@
 import { Grid, MenuItem, Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { OPTION_GENDER } from 'constant/enum';
+import { useMasterDataQuery } from 'services/master-data/query';
 import { Field } from 'components/hook-form/fields';
 
 // ----------------------------------------------------------------------
 
 export const CandidateBasicInformationForm = () => {
+  const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
+
+  // value ---------------------------------------------------------------
+
+  const optionProvince = provinceList?.map((item) => ({
+    provinceId: item.provinceId || '',
+    provinceName: item.provinceNameTh || '',
+  }));
+
+  // ----------------------------------------------------------------------
+
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Field.Select name="gender" label="Gender" required>
-          {MOCK_OPTION.map((option) => (
+          {OPTION_GENDER.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
@@ -36,11 +50,13 @@ export const CandidateBasicInformationForm = () => {
         <Field.Autocomplete
           fullWidth
           required
+          multiple
+          disableCloseOnSelect
           name="desiredProvince"
           label="Desired Province"
-          options={MOCK_OPTION}
-          getOptionLabel={(option) => option.label}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
+          options={optionProvince}
+          getOptionLabel={(option) => option?.provinceName}
+          isOptionEqualToValue={(option, value) => option?.provinceId === value?.provinceId}
         />
       </Grid>
 

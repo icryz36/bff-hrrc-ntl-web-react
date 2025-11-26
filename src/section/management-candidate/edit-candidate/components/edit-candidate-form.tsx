@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Container, Stack } from '@mui/material';
@@ -91,7 +92,11 @@ import { OtherInformationForm } from './other-information-form';
 
 // ----------------------------------------------------------------------
 
-export const EditCandidateForm = () => {
+type EditCandidateFormPropd = {
+  defaultValuesForm: TEditCandidate;
+};
+
+export const EditCandidateForm = ({ defaultValuesForm }: EditCandidateFormPropd) => {
   const methods = useForm<TEditCandidate>({
     resolver: zodResolver(EditCandidateSchema),
     defaultValues,
@@ -100,6 +105,7 @@ export const EditCandidateForm = () => {
   const {
     handleSubmit,
     formState: { errors },
+    reset,
   } = methods;
 
   console.log('errors', errors);
@@ -111,6 +117,14 @@ export const EditCandidateForm = () => {
   };
 
   // ---------------------------------------------------------------------
+
+  useEffect(() => {
+    if (defaultValuesForm) {
+      reset(defaultValuesForm);
+    }
+  }, [defaultValuesForm, reset]);
+
+  // ----------------------------------------------------------------------
 
   return (
     <Container maxWidth="md">
