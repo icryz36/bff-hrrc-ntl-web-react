@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import { axiosCandidateInstance } from 'services/axios/axiosInstance';
+import { axiosCandidateInstance, axiosCandidateSystemInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
   TCandidateBlacklistResponse,
@@ -38,22 +38,11 @@ export const fetchCandidateById = async (
 export const updateCandidateStatus = async (
   payload: TCandidateUpdateStatusPayload,
 ): Promise<TCandidateUpdateStatusResponse> => {
-  //   const { data } = await axiosJobPostInstance({
-  //     method: 'POST',
-  //     url: endpoint.jobpost.list,
-  //     data: payload,
-  //   });
-
-  console.log('payload ==> ', payload);
-
-  const data = {
-    data: {
-      candidatId: 'xxxx',
-    },
-    transactionNo: 'string',
-    timestamp: 'string',
-    status: true,
-  };
+  const { data } = await axiosCandidateSystemInstance({
+    method: 'POST',
+    url: endpoint.candidate.updateStatus,
+    data: payload,
+  });
 
   return data;
 };
@@ -61,22 +50,11 @@ export const updateCandidateStatus = async (
 export const updateCandidateBlacklist = async (
   payload: TCandidateBlacklistPayload,
 ): Promise<TCandidateBlacklistResponse> => {
-  //   const { data } = await axiosJobPostInstance({
-  //     method: 'POST',
-  //     url: endpoint.jobpost.list,
-  //     data: payload,
-  //   });
-
-  console.log('payload ==> ', payload);
-
-  const data = {
-    data: {
-      candidatId: 'xxxx',
-    },
-    transactionNo: 'string',
-    timestamp: 'string',
-    status: true,
-  };
+  const { data } = await axiosCandidateSystemInstance({
+    method: 'POST',
+    url: endpoint.candidate.updateBlacklist,
+    data: payload,
+  });
 
   return data;
 };

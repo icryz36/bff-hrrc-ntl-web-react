@@ -5,6 +5,8 @@ const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localho
 const BASE_URL_MASTERDATA = import.meta.env.VITE_API_URL_MASTERDATA || 'http://localhost:8000/api';
 const BASE_URL_USER = import.meta.env.VITE_API_URL_USER || 'http://localhost:8000/api';
 const BASE_URL_CANDIDATE = import.meta.env.VITE_API_URL_CANDIDATE || 'http://localhost:8000/api';
+const BASE_URL_CANDIDATE_SYSTEM =
+  import.meta.env.VITE_API_URL_CANDIDATE_SYSTEM || 'http://localhost:8000/api';
 const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
 
 const setupInterceptors = (instance: any) => {
@@ -42,6 +44,9 @@ setupInterceptors(axiosJobPostInstance);
 const axiosCandidateInstance = axios.create({ baseURL: BASE_URL_CANDIDATE });
 setupInterceptors(axiosCandidateInstance);
 
+const axiosCandidateSystemInstance = axios.create({ baseURL: BASE_URL_CANDIDATE_SYSTEM });
+setupInterceptors(axiosCandidateSystemInstance);
+
 const axiosMasterDataInstance = axios.create({ baseURL: BASE_URL_MASTERDATA });
 setupInterceptors(axiosMasterDataInstance);
 
@@ -55,4 +60,5 @@ export {
   axiosMasterDataInstance,
   axiosUserInstance,
   axiosCandidateInstance,
+  axiosCandidateSystemInstance,
 };
