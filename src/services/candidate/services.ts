@@ -1,5 +1,4 @@
 import { endpoint } from 'constant/endpoint';
-import { CANDIDATE_DETIAL } from 'data/candidate-detail';
 import { axiosCandidateInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
@@ -27,20 +26,11 @@ export const fetchCandidateList = async (
 export const fetchCandidateById = async (
   payload: TGetCandidateByIdPayload,
 ): Promise<TGetCandidateByIdResponse> => {
-  //   const { data } = await axiosJobPostInstance({
-  //     method: 'POST',
-  //     url: endpoint.jobpost.list,
-  //     data: payload,
-  //   });
-
-  console.log('payload ==> ', payload);
-
-  const data = {
-    data: CANDIDATE_DETIAL,
-    transactionNo: 'string',
-    timestamp: 'string',
-    status: true,
-  };
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    url: endpoint.candidate.detail,
+    data: payload,
+  });
 
   return data;
 };

@@ -24,6 +24,7 @@ const endpoint = {
   },
   candidate: {
     list: `get-candidates-list-xapi`,
+    detail: `get-candidate-xapi`,
   },
 };
 
