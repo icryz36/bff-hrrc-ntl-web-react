@@ -109,14 +109,6 @@ export const CreateJobSchema = z
           });
         }
       });
-
-      if (!isGroupLocationEmpty && !data.sectionId) {
-        ctx.addIssue({
-          code: 'custom',
-          path: ['sectionId'],
-          message: REQUIRED_MESSAGE,
-        });
-      }
     }
     if (!isBigEvent) {
       if (!data.province) {
@@ -166,7 +158,7 @@ export const CreateJobSchema = z
           message: REQUIRED_MESSAGE,
         });
       }
-      if (!isGroupLocationEmpty && !data.sectionId) {
+      if (!isGroupLocationEmpty && !isBranch && !data.sectionId) {
         ctx.addIssue({
           code: 'custom',
           path: ['sectionId'],

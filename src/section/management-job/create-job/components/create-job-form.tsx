@@ -80,7 +80,7 @@ export const CreateJobForm = ({
     defaultValues,
   });
 
-  const { handleSubmit, control, setValue, reset, formState } = methods;
+  const { handleSubmit, control, setValue, reset, formState, clearErrors } = methods;
   const { isDirty } = formState;
 
   const selectedProvince = useWatch<CreateJobSchemaType>({ control, name: 'province' });
@@ -144,15 +144,7 @@ export const CreateJobForm = ({
   useEffect(() => {
     if (isEdit && !isDirty) return;
     let newHeadCount = Number(debouncedHeadCount) || 0;
-    if (isHO && newHeadCount > 10) {
-      newHeadCount = 10;
-      if (selectedHeadCount !== '10') {
-        setValue('headCount', '10', {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-      }
-    } else if (isBranch && newHeadCount > 100) {
+    if ((isBranch || (isHO && selectedBigEvent)) && newHeadCount > 100) {
       newHeadCount = 100;
       if (selectedHeadCount !== '100') {
         setValue('headCount', '100', {
@@ -160,31 +152,28 @@ export const CreateJobForm = ({
           shouldDirty: true,
         });
       }
+    } else if (isHO && !selectedBigEvent) {
+      newHeadCount = 10;
+      if (selectedHeadCount !== '10') {
+        setValue('headCount', '10', {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
     }
 
-    // if (newHeadCount < 1) {
-    //   if (fieldsPosition.length !== 0) {
-    //     replacePosition([]);
-    //   }
-    //   return;
-    // }
-
-    const targetCount = isBranch ? 1 : newHeadCount;
+    const targetCount = isBranch || selectedBigEvent ? 1 : newHeadCount;
 
     if (targetCount === fieldsPosition.length) return;
 
-    if (targetCount > fieldsPosition.length) {
-      const diff = targetCount - fieldsPosition.length;
-      const newItems: CreateJobSchemaType['position'] = Array.from({ length: diff }, () => ({
-        positionId: null,
-        vacancy: null,
-        srcOfRecruitment: null,
-      }));
+    const newItems: CreateJobSchemaType['position'] = Array.from({ length: targetCount }, () => ({
+      positionId: null,
+      vacancy: null,
+      srcOfRecruitment: null,
+    }));
 
-      replacePosition([...fieldsPosition, ...newItems]);
-    } else {
-      replacePosition(fieldsPosition.slice(0, targetCount));
-    }
+    replacePosition(newItems);
+    clearErrors();
   }, [
     debouncedHeadCount,
     fieldsPosition,
@@ -194,8 +183,15 @@ export const CreateJobForm = ({
     isHO,
     isBranch,
     selectedHeadCount,
+    selectedBigEvent,
+    selectedGroupLocation,
     setValue,
   ]);
+
+  useEffect(() => {
+    if (!selectedStartDate) return;
+    setValue('endDate', '');
+  }, [selectedStartDate, setValue]);
 
   useEffect(() => {
     if (isEdit) return;
@@ -314,6 +310,7 @@ export const CreateJobForm = ({
               options={GROUP_LOCATION}
               isOptionEqualToValue={(option, value) => option.value === value.value}
               disabled={isEdit && !isDuplicate}
+              // onChange={handleGroupLocationChange}
             />
           </Grid>
 
@@ -339,7 +336,7 @@ export const CreateJobForm = ({
               onChange={(e) => {
                 let value = e.target.value.replace(/\D/g, '');
                 const numeric = Number(value);
-                if (isHO && numeric > 10) {
+                if (isHO && !selectedBigEvent && numeric > 10) {
                   value = '10';
                 } else if (isBranch && numeric > 100) {
                   value = '100';
@@ -353,7 +350,7 @@ export const CreateJobForm = ({
                     pattern: '[0-9]*',
                     onKeyPress: handleHeadcountKeyPress,
                     onPaste: handleHeadcountPaste,
-                    maxLength: isHO ? 2 : 3,
+                    maxLength: isHO && !selectedBigEvent ? 2 : 3,
                   },
                 },
               }}
@@ -387,7 +384,7 @@ export const CreateJobForm = ({
                           isOptionEqualToValue={(option, value) =>
                             option.positionId === value.positionId
                           }
-                          disabled={isBranch}
+                          disabled={isBranch || selectedBigEvent}
                         />
                       </Grid>
 
@@ -399,7 +396,7 @@ export const CreateJobForm = ({
                           getOptionLabel={(option) => option.label}
                           options={OPTION_VACANCY}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
-                          disabled={isBranch}
+                          disabled={isBranch || selectedBigEvent}
                           required={!selectedBigEvent && isHO}
                         />
                       </Grid>
@@ -412,7 +409,7 @@ export const CreateJobForm = ({
                           getOptionLabel={(option) => option.label}
                           options={OPTION_SOURCE_OF_RECRUITMENT}
                           isOptionEqualToValue={(option, value) => option.value === value.value}
-                          disabled={isBranch}
+                          disabled={isBranch || selectedBigEvent}
                           required={!selectedBigEvent && isHO}
                         />
                       </Grid>
