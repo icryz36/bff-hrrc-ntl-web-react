@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Link, Popover, Stack, badgeClasses, paperClasses } from '@mui/material';
+import { Box, Button, Link, Popover, Stack, paperClasses } from '@mui/material';
 import { notifications as notificationsData } from 'data/notifications';
 import dayjs from 'dayjs';
 import { useSettingsContext } from 'providers/SettingsProvider';
@@ -7,7 +7,6 @@ import { DatewiseNotification } from 'types/notification';
 import IconifyIcon from 'components/base/IconifyIcon';
 import SimpleBar from 'components/base/SimpleBar';
 import NotificationList from 'components/sections/notification/NotificationList';
-import OutlinedBadge from 'components/styled/OutlinedBadge';
 
 interface NotificationMenuProps {
   type?: 'default' | 'slim';
@@ -61,28 +60,14 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         onClick={handleClick}
         disabled
       >
-        <OutlinedBadge
-          variant="dot"
-          color="error"
-          sx={{
-            [`& .${badgeClasses.badge}`]: {
-              height: 10,
-              width: 10,
-              top: -2,
-              right: -2,
-              borderRadius: '50%',
-            },
-          }}
-        >
-          <IconifyIcon
-            icon={
-              type === 'slim'
-                ? 'material-symbols:notifications-outline-rounded'
-                : 'material-symbols-light:notifications-outline-rounded'
-            }
-            sx={{ fontSize: type === 'slim' ? 18 : 22 }}
-          />
-        </OutlinedBadge>
+        <IconifyIcon
+          icon={
+            type === 'slim'
+              ? 'material-symbols:notifications-outline-rounded'
+              : 'material-symbols-light:notifications-outline-rounded'
+          }
+          sx={{ fontSize: type === 'slim' ? 18 : 22 }}
+        />
       </Button>
       <Popover
         anchorEl={anchorEl}
