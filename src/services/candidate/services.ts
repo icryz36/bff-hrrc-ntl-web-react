@@ -1,5 +1,6 @@
-import { CANDIDATES } from 'data/candidate';
+import { endpoint } from 'constant/endpoint';
 import { CANDIDATE_DETIAL } from 'data/candidate-detail';
+import { axiosCandidateInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
   TCandidateBlacklistResponse,
@@ -14,28 +15,11 @@ import {
 export const fetchCandidateList = async (
   payload: TGetCandidateListPayload,
 ): Promise<TGetCandidateListResponse> => {
-  //   const { data } = await axiosJobPostInstance({
-  //     method: 'POST',
-  //     url: endpoint.jobpost.list,
-  //     data: payload,
-  //   });
-
-  console.log('payload ==> ', payload);
-
-  const data = {
-    data: {
-      items: CANDIDATES,
-      pagination: {
-        pageNo: 1,
-        pageSize: 10,
-        totalRecords: 12,
-        totalPages: 2,
-      },
-    },
-    transactionNo: 'string',
-    timestamp: 'string',
-    status: true,
-  };
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    url: endpoint.candidate.list,
+    data: payload,
+  });
 
   return data;
 };

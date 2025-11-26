@@ -22,6 +22,9 @@ const endpoint = {
   user: {
     list: `get-users-xapi`,
   },
+  candidate: {
+    list: `get-candidates-list-xapi`,
+  },
 };
 
 export { endpoint };
