@@ -24,7 +24,7 @@ export const CandidateApplicationDocumentsForm = () => {
               <Field.Upload
                 sx={{ height: 82 }}
                 hideInputIfHaveValue
-                name={`documents.${item.documentTypeKey}`}
+                name={`documents[${item.documentTypeKey}]`}
               />
             </Stack>
           </Grid>

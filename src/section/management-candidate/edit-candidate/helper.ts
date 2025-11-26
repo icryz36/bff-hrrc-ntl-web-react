@@ -1,4 +1,4 @@
-import { TCandidateData } from 'types/candidate';
+import { TCandidateData, TCandidateDocumentsItem, TCreateCandidatePayload } from 'types/candidate';
 import { TEditCandidate } from './schema';
 
 const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
@@ -24,5 +24,69 @@ const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
     link: data?.candidate.linkReference || '',
   };
 };
+const convertCreateEditCandidatePostPayload = (data: TEditCandidate): TCreateCandidatePayload => {
+  const docs = data.documents ?? {};
 
-export { convertDefaultValuesForm };
+  const candidateDocuments: Array<TCandidateDocumentsItem> = [];
+  const dynamicFiles: Record<string, File> = {};
+
+  Object.entries(docs).forEach(([docTypeKey, files]) => {
+    if (!files || files.length === 0) return;
+
+    files.forEach((file) => {
+      candidateDocuments.push({
+        documentId: '',
+        operation: 'CREATE',
+        fileName: file.name,
+        docTypeKey,
+      });
+      if (!dynamicFiles[docTypeKey]) {
+        dynamicFiles[docTypeKey] = file;
+      }
+    });
+  });
+
+  return {
+    payload: {
+      candidateId: data.candidateId || '',
+      idNo: data.idNo || '',
+      titleId: data.title,
+      nameTh: data.name,
+      surnameTh: data.surName,
+      nickname: data.nickName,
+      gender: data.gender,
+      age: data.age,
+      email: data.email,
+      desiredProvinces: data.desiredProvince.map((p) => ({ provinceId: p.provinceId })),
+      desiredLocation: data.desiredLocation,
+      mobileNo: data.contactNo,
+      canDriveCar: data.carDriving,
+      canDriveMotorcycle: data.motorcycleDriving,
+      linkReference: data.link,
+      note: data.note || '',
+      candidateDocuments,
+    },
+    ...dynamicFiles,
+  };
+};
+const buildCreateCandidateFormData = (payload: TCreateCandidatePayload) => {
+  const formData = new FormData();
+
+  // ใส่ payload JSON
+  formData.append('payload', JSON.stringify(payload.payload));
+
+  // วนทุก key ที่เหลือ (ไฟล์)
+  Object.entries(payload).forEach(([key, value]) => {
+    if (key === 'payload') return; // ข้าม payload
+    if (value instanceof File) {
+      formData.append(key, value); // ใส่ไฟล์ตาม docTypeKey
+    }
+  });
+
+  return formData;
+};
+export {
+  convertDefaultValuesForm,
+  convertCreateEditCandidatePostPayload,
+  buildCreateCandidateFormData,
+};

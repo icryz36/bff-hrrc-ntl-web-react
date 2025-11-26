@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Container, Stack } from '@mui/material';
 import { Form } from 'components/hook-form';
 import { defaultValues } from '../default-values-form';
+import { buildCreateCandidateFormData, convertCreateEditCandidatePostPayload } from '../helper';
 import { EditCandidateSchema, TEditCandidate } from '../schema';
 import { CandidateApplicationDocumentsForm } from './candidate-application-documents-form';
 import { CandidateAppliedJobForm } from './candidate-applied-job-form';
@@ -113,7 +114,12 @@ export const EditCandidateForm = ({ defaultValuesForm }: EditCandidateFormPropd)
   // func ---------------------------------------------------------------
 
   const onSubmit = (data: TEditCandidate) => {
+    const payload = convertCreateEditCandidatePostPayload(data);
+    const formData = buildCreateCandidateFormData(payload);
     console.log('data', data);
+    console.log('data form', formData);
+    //const formData = buildCreateCandidateFormData(payload);
+    console.log('data payload', payload);
   };
 
   // ---------------------------------------------------------------------

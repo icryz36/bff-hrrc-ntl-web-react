@@ -41,7 +41,44 @@ export type TGetCandidateListPagination = {
 export type TGetCandidateByIdPayload = {
   candidateId: string;
 };
-
+export type TCandidateDocumentsItem = {
+  documentId: string | '';
+  operation: string;
+  fileName: string;
+  docTypeKey: string;
+};
+export type TFileFields = {
+  [key: string]: File | null;
+};
+export type TCreateCandidatePayload = {
+  payload: {
+    candidateId: string;
+    idNo: string;
+    titleId: string;
+    nameTh: string;
+    surnameTh: string;
+    nickname: string;
+    gender: string;
+    age: number;
+    email: string;
+    desiredLocation: string;
+    mobileNo: string;
+    maritalStatus?: string;
+    militaryStatus?: string;
+    canDriveCar: string;
+    hasCarLicense?: string;
+    canDriveMotorcycle: string;
+    hasMotorcycleLicense?: string;
+    desiredProvinces: Array<{
+      provinceId: string;
+    }>;
+    linkReference: string;
+    note: string;
+    candidateDocuments?: Array<TCandidateDocumentsItem> | [];
+  };
+} & {
+  [key: string]: File | any;
+};
 export type TCandidate = {
   candidateId: string;
   idNo: string;
@@ -82,7 +119,6 @@ export type TCandidate = {
   blacklistReason: string;
   highestdegreeId: string;
   isRead: string;
-  mobileNo: string;
 };
 
 export type TTitle = {

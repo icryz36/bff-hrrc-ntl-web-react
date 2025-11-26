@@ -141,7 +141,7 @@ export const SkillSchema = z.object({
       z.object({
         skillId: z.string().optional(),
         skillText: z.string().optional(),
-        selectedOptionId: z.union([z.string(), z.array(z.string())]),
+        selectedOptionId: z.union([z.string(), z.array(z.string())]).optional(),
       }),
     )
     .optional(),
