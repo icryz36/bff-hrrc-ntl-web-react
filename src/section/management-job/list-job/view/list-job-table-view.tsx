@@ -154,6 +154,7 @@ const ListJobTableView = ({
         headerName: 'Start Date',
         minWidth: 140,
         filterable: false,
+        sortable: false,
         renderCell: (params) => {
           return dayjs(params.row.startDate).format('DD/MM/YYYY');
         },
@@ -163,6 +164,7 @@ const ListJobTableView = ({
         headerName: 'Active Day',
         minWidth: 130,
         filterable: false,
+        sortable: false,
         renderCell: (params) => {
           return `${params.row.totalActiveDays} Days`;
         },
@@ -172,17 +174,20 @@ const ListJobTableView = ({
         headerName: 'HC',
         minWidth: 74,
         filterable: false,
+        sortable: false,
       },
       {
         field: 'ownerUserName',
         headerName: 'Owner',
         minWidth: 200,
         filterable: false,
+        sortable: false,
       },
       {
         field: 'statusName',
         headerName: 'Job Status',
         minWidth: 90,
+        sortable: false,
         headerClassName: 'job-status-header',
         cellClassName: 'job-status-cell',
         renderCell: (params) => {
