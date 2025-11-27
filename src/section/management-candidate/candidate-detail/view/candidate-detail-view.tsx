@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
 import AccordionCustom from 'components/common/AccordionCustom';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import AppliedJobTable from '../components/applied-job-table';
 import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
@@ -11,7 +12,7 @@ import InformationBox from '../components/information-box';
 const CandidateDetailView = () => {
   const { id = '' } = useParams();
 
-  const { data: candidateDetail } = useQuery({
+  const { data: candidateDetail, isLoading } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
@@ -146,6 +147,10 @@ const CandidateDetailView = () => {
     },
   ];
 
+  if (isLoading) {
+    return <DataGridSkeleton />;
+  }
+
   return (
     <Container maxWidth="md">
       <Stack gap={2} alignItems={'center'} py={1}>
@@ -159,8 +164,8 @@ const CandidateDetailView = () => {
         />
         <Stack direction={'column'} gap={1}>
           <Typography variant="h5">
-            {candidateDetail?.candidate?.title?.titleNameEn} {candidateDetail?.candidate?.nameEn}{' '}
-            {candidateDetail?.candidate?.surnameEn} ({candidateDetail?.candidate?.nickname})
+            {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}
+            {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
           </Typography>
           <Typography variant="subtitle2">
             Candidate Id : {candidateDetail?.candidate?.idNo}{' '}

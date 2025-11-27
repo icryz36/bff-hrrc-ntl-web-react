@@ -54,7 +54,11 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
     gap?: number;
   }) => (
     <Stack direction="row" gap={gap}>
-      <Typography variant="subtitle2_bold" color="text.primary" sx={{ whiteSpace: 'pre-line' }}>
+      <Typography
+        variant="subtitle2_bold"
+        color="text.primary"
+        sx={{ whiteSpace: 'pre-line', minWidth: '65px' }}
+      >
         {label} :
       </Typography>
       <Typography
@@ -115,7 +119,7 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
           </Typography>
 
           <FormControlLabel
-            control={<Checkbox name="checked" checked={isBigEvent} color="default" />}
+            control={<Checkbox name="checked" checked={isBigEvent} color="default" disabled />}
             label={
               <Typography variant="subtitle2" color="text.secondary">
                 Big Event
@@ -178,9 +182,17 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
                 </Grid>
               ))
             ) : (
-              <Typography variant="subtitle2_bold" color="text.primary">
-                -
-              </Typography>
+              <Grid container spacing={2}>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Position No.\nFrom HRMS`} value="-" gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Rationale of\nVacancy`} value="-" gap={4} />
+                </Grid>
+                <Grid size={{ md: 4 }}>
+                  <InfoRow label={`Source of\nRecruitment`} value="-" gap={4} />
+                </Grid>
+              </Grid>
             )}
           </Stack>
         </Paper>

@@ -12,6 +12,7 @@ import {
 } from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
@@ -97,7 +98,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
               {params.row.isBlacklist ? (
                 <Chip label="Blacklist" variant="soft" color="error" />
               ) : (
-                <Typography color="text.secondary" variant="subtitle2">
+                <Typography color="text.secondary" variant="subtitle1_regular">
                   -
                 </Typography>
               )}
@@ -106,19 +107,64 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         },
       },
       {
-        field: 'titleNameEn',
+        field: 'titleNameTh',
         headerName: 'Title',
         width: 120,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.titleNameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.titleNameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
-        field: 'nameEn',
+        field: 'nameTh',
         headerName: 'Name',
         width: 160,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.nameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.nameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
-        field: 'surnameEn',
+        field: 'surnameTh',
         headerName: 'Surename',
         width: 200,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.surnameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.surnameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
         field: 'email',
@@ -229,6 +275,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         }}
         checkboxSelection
         slots={{
+          loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}
         slotProps={{
