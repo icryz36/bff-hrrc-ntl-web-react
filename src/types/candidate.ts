@@ -75,6 +75,7 @@ export type TUpdateCandidatePayload = {
     }>;
     linkReference: string;
     note: string;
+    workExperience: string;
     candidateDocuments?: Array<TCandidateDocumentsItem> | [];
   };
 } & {
@@ -137,6 +138,7 @@ export type TProvince = {
 
 export type TDocumentItem = {
   documentId: string;
+  fileName: string;
   filePath: string;
   documentType: TDocumentType;
 };

@@ -29,12 +29,6 @@ const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
   };
 };
 
-const extractFileNameFromUrl = (url: string) => {
-  const path = url.split('?')[0];
-  const parts = path.split('/');
-  return parts[parts.length - 1] || 'document';
-};
-
 const mapDocumentsToForm = (documents: TDocumentItem[]) => {
   const result: Record<string, UploadFile[]> = {};
 
@@ -44,7 +38,7 @@ const mapDocumentsToForm = (documents: TDocumentItem[]) => {
     const remoteFile: RemoteFile = {
       id: doc.documentId,
       url: doc.filePath,
-      name: extractFileNameFromUrl(doc.filePath),
+      name: doc.fileName,
       fromServer: true,
     };
 
@@ -75,12 +69,12 @@ const processDeletedDocumentTypes = (
   const operations: TCandidateDocumentsItem[] = [];
 
   Object.entries(originalByKey).forEach(([docTypeKey, originals]) => {
-    if (!docs[docTypeKey] || docs[docTypeKey]?.length === 0) {
+    if (docs[docTypeKey] === undefined) {
       originals.forEach((ori) => {
         operations.push({
           documentId: ori.documentId,
           operation: 'delete',
-          fileName: ori.filePath.split('/').pop() ?? '',
+          fileName: ori.fileName,
           docTypeKey,
         });
       });
@@ -104,7 +98,7 @@ const getDeletedDocuments = (
     .map((ori) => ({
       documentId: ori.documentId,
       operation: 'delete' as const,
-      fileName: ori.filePath.split('/').pop() ?? '',
+      fileName: ori.fileName,
       docTypeKey,
     }));
 };
@@ -190,6 +184,7 @@ const buildCandidatePayload = (
     provinceId: item.provinceId,
     desiredLocation: item.provinceName,
   })),
+  workExperience: data.workExperience,
 });
 
 const convertCreateEditCandidatePostPayload = (

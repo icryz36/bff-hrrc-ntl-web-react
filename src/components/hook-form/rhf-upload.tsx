@@ -29,7 +29,7 @@ export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploa
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange }, formState: { errors } }) => {
+      render={({ field: { value, onChange }, fieldState: { error } }) => {
         const filesValue = (value ?? []) as UploadFile[];
 
         return (
@@ -37,7 +37,7 @@ export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploa
             sx={sx}
             {...other}
             defaultFiles={filesValue}
-            error={errors.root?.message}
+            error={error?.message || undefined}
             // onDrop={(acceptedFiles) => {
             //   onChange(acceptedFiles);
             // }}

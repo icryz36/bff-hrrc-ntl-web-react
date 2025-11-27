@@ -4,6 +4,10 @@ import { schemaHelper } from 'components/hook-form';
 
 // ----------------------------------------------------------------------
 
+const MAX_FILE_SIZE = 1 * 1024 * 1024;
+
+// ----------------------------------------------------------------------
+
 type TEditCandidate = z.infer<typeof EditCandidateSchema>;
 
 // info -----------------------------------------------------------------
@@ -26,7 +30,7 @@ export const CandidateBasicInformationSchema = z.object({
   email: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredLocation: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredProvince: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
-  highestEducation: z.string().min(1, { error: REQUIRED_MESSAGE }),
+  highestEducation: z.string().optional(),
   workExperience: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   motorcycleDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
   carDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
@@ -45,7 +49,6 @@ export const CandidateApplicationDocumentsSchema = z.object({
   documents: z
     .record(z.string(), z.array(z.union([z.custom<File>(), RemoteFileSchema])).optional())
     .optional(),
-
   files: z.custom<File | string | null>().optional(),
 });
 
@@ -243,6 +246,22 @@ const EditCandidateSchema = CandidateInfoSchema.extend({
   ...SkillSchema.shape,
   ...EmploymentHistorySchema.shape,
   ...OtherInformationSchema.shape,
+}).superRefine((data, ctx) => {
+  if (!data.documents) return;
+
+  for (const [key, files] of Object.entries(data.documents)) {
+    if (!files) continue;
+
+    files.forEach((file) => {
+      if (file instanceof File && file.size > MAX_FILE_SIZE) {
+        ctx.addIssue({
+          code: 'custom',
+          message: `ไฟล์มีขนาดใหญ่เกินไป (สูงสุด ${MAX_FILE_SIZE / 1024 / 1024}MB)`,
+          path: ['documents', key],
+        });
+      }
+    });
+  }
 });
 
 // --------------------------------------------------------------------------

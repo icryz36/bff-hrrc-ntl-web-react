@@ -34,8 +34,11 @@ const EditCandidateView = () => {
       onSuccess: (response) => {
         if (response.status) {
           isOpenUpdateSuccessDialog.onToggle();
+
           return;
         }
+
+        isOpenUpdateFailedDialog.onToggle();
       },
       onError: () => {
         isOpenUpdateFailedDialog.onToggle();
