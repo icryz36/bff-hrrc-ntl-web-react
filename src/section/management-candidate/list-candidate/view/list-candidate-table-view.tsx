@@ -1,9 +1,10 @@
-import { RefObject, useMemo } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
+import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
+import { useBoolean } from 'hooks/useBoolean';
 import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
 import {
@@ -12,6 +13,7 @@ import {
 } from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
+import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
@@ -44,9 +46,18 @@ const ListCandidateTableView = ({
   loading,
 }: ProductsTableProps) => {
   const navigate = useNavigate();
+  const isOpenConfirmActiveStatusDialog = useBoolean();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
   const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
+
+  const [updateStatus, setUpdateStatus] = useState<{
+    candidateId: string;
+    status: 'Active' | 'Inactive';
+  }>({
+    candidateId: '',
+    status: 'Active',
+  });
 
   const handleUpdateStatus = (candidateId: string, status: 'Active' | 'Inactive') => {
     updateCandidateStatus(
@@ -228,7 +239,11 @@ const ListCandidateTableView = ({
             label: 'Active',
             icon: 'mdi:check-circle-outline',
             onClick: () => {
-              handleUpdateStatus(candidateId, 'Active');
+              isOpenConfirmActiveStatusDialog.onTrue();
+              setUpdateStatus({
+                candidateId,
+                status: 'Active',
+              });
             },
           };
 
@@ -237,7 +252,11 @@ const ListCandidateTableView = ({
               label: 'Inactive',
               icon: 'mdi:minus-circle-outline',
               onClick: () => {
-                handleUpdateStatus(candidateId, 'Inactive');
+                isOpenConfirmActiveStatusDialog.onTrue();
+                setUpdateStatus({
+                  candidateId,
+                  status: 'Inactive',
+                });
               },
             };
           }
@@ -263,34 +282,64 @@ const ListCandidateTableView = ({
   );
 
   return (
-    <Box sx={{ width: 1 }}>
-      <StyledDataGrid
-        rowHeight={64}
-        rows={tableData}
-        loading={loading}
-        apiRef={apiRef}
-        columns={columns}
-        getRowId={(row) => row.candidateId}
-        pageSizeOptions={[defaultPageSize, 15]}
-        disableVirtualization
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: defaultPageSize,
+    <>
+      <Box sx={{ width: 1 }}>
+        <StyledDataGrid
+          rowHeight={64}
+          rows={tableData}
+          loading={loading}
+          apiRef={apiRef}
+          columns={columns}
+          getRowId={(row) => row.candidateId}
+          pageSizeOptions={[defaultPageSize, 15]}
+          disableVirtualization
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: defaultPageSize,
+              },
             },
-          },
-        }}
-        checkboxSelection
-        slots={{
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
-        }}
-        slotProps={{
-          panel: {
-            target: filterButtonEl,
-          },
-        }}
+          }}
+          checkboxSelection
+          slots={{
+            basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+          }}
+          slotProps={{
+            panel: {
+              target: filterButtonEl,
+            },
+          }}
+        />
+      </Box>
+      <CustomConfirmDialog
+        title="ยืนยันการเปลี่ยนสถานะ"
+        open={isOpenConfirmActiveStatusDialog.value}
+        onClose={isOpenConfirmActiveStatusDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1" whiteSpace="pre-wrap">
+            {`คุณต้องการเปลี่ยนสถานะผู้สมัครเป็น ${updateStatus.status} หรือไม่`}
+          </Typography>
+        }
+        action={
+          <Stack spacing={1}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={isOpenConfirmActiveStatusDialog.onFalse}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: 'primary' }}
+              onClick={() => handleUpdateStatus(updateStatus.candidateId, updateStatus.status)}
+            >
+              Comfirm
+            </Button>
+          </Stack>
+        }
       />
-    </Box>
+    </>
   );
 };
 
