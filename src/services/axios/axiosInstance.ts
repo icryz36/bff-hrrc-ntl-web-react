@@ -29,8 +29,8 @@ const setupInterceptors = (instance: any) => {
   instance.interceptors.response.use(
     (response: any) => response,
     (error: any) => {
-      if (error.message === 'Network Error' || error.message === 'No internet connection') {
-        window.dispatchEvent(new CustomEvent('network-offline'));
+      if (error.response?.status >= 500) {
+        window.dispatchEvent(new CustomEvent('network-error'));
       }
       return Promise.reject({
         status: error.response?.status,

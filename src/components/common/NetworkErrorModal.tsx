@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Modal, Paper, Stack, Typography } from '@mui/material';
 
-export function NetworkModal() {
+export function NetworkErrorModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export function NetworkModal() {
     };
 
     // Listen to custom event from axios
-    window.addEventListener('network-offline', handleOffline);
+    window.addEventListener('network-error', handleOffline);
 
     // Listen to native browser events
     window.addEventListener('offline', handleOffline);
     window.addEventListener('online', handleOnline);
 
     return () => {
-      window.removeEventListener('network-offline', handleOffline);
+      window.removeEventListener('network-error', handleOffline);
       window.removeEventListener('offline', handleOffline);
       window.removeEventListener('online', handleOnline);
     };
@@ -32,7 +32,7 @@ export function NetworkModal() {
     <Modal
       open={isOpen}
       onClose={() => setIsOpen(false)}
-      aria-labelledby="modal-modal-title"
+      aria-labelledby="modal-modal-title-error"
       aria-describedby="modal-modal-description"
     >
       <Paper
@@ -46,15 +46,12 @@ export function NetworkModal() {
           p: 4,
         }}
       >
-        <Typography id="modal-modal-title" variant="h6">
-          การเชื่อมต่ออินเตอร์เน็ตขัดข้อง
+        <Typography id="modal-modal-title-error" variant="h6">
+          เกิดข้อผิดพลาด
         </Typography>
         <Stack direction={'column'}>
-          <Typography sx={{ pt: 3 }} variant="body2_light">
-            ไม่สามารถเชื่อมต่ออินเตอร์เน็ตได้ในขณะนี้
-          </Typography>
-          <Typography sx={{ pb: 2 }} variant="body2_light">
-            กรุณาตรวจสอบการเชื่อมต่อและลองใหม่อีกครั้ง
+          <Typography sx={{ pl: 3 }} variant="body2_light">
+            ไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง
           </Typography>
         </Stack>
         <Stack justifyContent="flex-end">
