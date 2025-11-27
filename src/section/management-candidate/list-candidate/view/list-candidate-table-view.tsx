@@ -1,4 +1,4 @@
-import { RefObject, useMemo } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
@@ -24,6 +24,10 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
       return 'neutral';
   }
 };
+type SelectionType = {
+  type: 'include';
+  ids: string[];
+};
 
 const defaultPageSize = 10;
 
@@ -43,6 +47,7 @@ const ListCandidateTableView = ({
   tableData,
   loading,
 }: ProductsTableProps) => {
+  const [selectedCandidateIds, setSelectedCandidateIds] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
@@ -66,6 +71,12 @@ const ListCandidateTableView = ({
         onError: () => {},
       },
     );
+  };
+
+  console.log('selectedCandidateIds', selectedCandidateIds);
+  const handleSelectionChange = (newSelection: SelectionType) => {
+    const myArray = Array.from(newSelection.ids);
+    setSelectedCandidateIds(myArray);
   };
 
   const columns: GridColDef<TCandidateTableRow>[] = useMemo(
@@ -281,6 +292,9 @@ const ListCandidateTableView = ({
           },
         }}
         checkboxSelection
+        onRowSelectionModelChange={(newSelection) => {
+          handleSelectionChange(newSelection as any);
+        }}
         slots={{
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}

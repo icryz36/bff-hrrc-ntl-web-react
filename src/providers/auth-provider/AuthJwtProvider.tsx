@@ -5,13 +5,12 @@ import {
   createContext,
   use,
   useCallback,
-  useEffect,
   useState,
 } from 'react';
 import avatar14 from 'assets/images/avatar/avatar_14.webp';
 import { removeItemFromStore } from 'lib/utils';
 import { firebaseAuth } from 'services/firebase/firebase';
-import { User, useGetCurrentUser } from 'services/swr/api-hooks/useAuthApi';
+import { User } from 'services/swr/api-hooks/useAuthApi';
 
 interface SessionUser extends User {
   provider?: string;
@@ -29,7 +28,7 @@ export const AuthJwtContext = createContext({} as AuthJwtContextInterface);
 const AuthJwtProvider = ({ children }: PropsWithChildren) => {
   const [sessionUser, setSessionUser] = useState<SessionUser | null>(null);
 
-  const { data } = useGetCurrentUser();
+  //const { data } = useGetCurrentUser();
 
   const setSession = useCallback(
     (user: User | null, token?: string) => {
@@ -50,11 +49,11 @@ const AuthJwtProvider = ({ children }: PropsWithChildren) => {
     }
   }, [setSessionUser, sessionUser]);
 
-  useEffect(() => {
-    if (data) {
-      setSession(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setSession(data);
+  //   }
+  // }, [data]);
 
   return (
     <AuthJwtContext value={{ sessionUser, setSessionUser, setSession, signout }}>
