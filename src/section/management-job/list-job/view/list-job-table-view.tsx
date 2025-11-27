@@ -19,7 +19,7 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   switch (val?.toLocaleLowerCase()) {
     case 'open':
       return 'success';
-    case 'close':
+    case 'closed':
       return 'neutral';
     case 'hold':
       return 'warning';

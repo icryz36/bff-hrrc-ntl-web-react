@@ -1,9 +1,10 @@
 import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
+import { Box, Button, Chip, ChipOwnProps, Link, Stack, TextField, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
+import { useBoolean } from 'hooks/useBoolean';
 import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
 import {
@@ -12,6 +13,7 @@ import {
 } from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
+import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
@@ -49,25 +51,58 @@ const ListCandidateTableView = ({
 }: ProductsTableProps) => {
   const [selectedCandidateIds, setSelectedCandidateIds] = useState<string[]>([]);
   const navigate = useNavigate();
+  const isOpenConfirmActiveStatusDialog = useBoolean();
+  const isOpenActiveStatusDialog = useBoolean();
+  const isOpenConfirmBlacklistDialog = useBoolean();
+  const isOpenBlacklistDialog = useBoolean();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
   const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
+
+  const [updateStatus, setUpdateStatus] = useState<{
+    candidateId: string;
+    status: 'Active' | 'Inactive';
+  }>({
+    candidateId: '',
+    status: 'Active',
+  });
+
+  const [updateBlacklist, setUpdateBlacklist] = useState<{
+    candidateId: string;
+    isBlacklist: boolean;
+  }>({
+    candidateId: '',
+    isBlacklist: true,
+  });
+
+  const [blcklistReason, setBlcklistReason] = useState<string>('');
 
   const handleUpdateStatus = (candidateId: string, status: 'Active' | 'Inactive') => {
     updateCandidateStatus(
       { candidateId, status },
       {
-        onSuccess: () => {},
+        onSuccess: () => {
+          isOpenConfirmActiveStatusDialog.onFalse();
+          isOpenActiveStatusDialog.onTrue();
+        },
         onError: () => {},
       },
     );
   };
 
-  const handleUpdateBlacklist = (candidatId: string, isBlacklist: boolean) => {
+  const handleUpdateBlacklist = () => {
     updateCandidateBlacklist(
-      { candidatId, isBlacklist, blcklistReason: '' },
       {
-        onSuccess: () => {},
+        candidatId: updateBlacklist.candidateId,
+        isBlacklist: updateBlacklist.isBlacklist,
+        blcklistReason,
+      },
+      {
+        onSuccess: () => {
+          isOpenConfirmBlacklistDialog.onFalse();
+          isOpenBlacklistDialog.onTrue();
+          setBlcklistReason('');
+        },
         onError: () => {},
       },
     );
@@ -232,7 +267,11 @@ const ListCandidateTableView = ({
             label: 'Active',
             icon: 'mdi:check-circle-outline',
             onClick: () => {
-              handleUpdateStatus(candidateId, 'Active');
+              isOpenConfirmActiveStatusDialog.onTrue();
+              setUpdateStatus({
+                candidateId,
+                status: 'Active',
+              });
             },
           };
 
@@ -241,7 +280,11 @@ const ListCandidateTableView = ({
               label: 'Inactive',
               icon: 'mdi:minus-circle-outline',
               onClick: () => {
-                handleUpdateStatus(candidateId, 'Inactive');
+                isOpenConfirmActiveStatusDialog.onTrue();
+                setUpdateStatus({
+                  candidateId,
+                  status: 'Inactive',
+                });
               },
             };
           }
@@ -258,11 +301,20 @@ const ListCandidateTableView = ({
               label: 'Black List',
               icon: 'mdi:close-octagon-outline',
               onClick: () => {
-                handleUpdateBlacklist(candidateId, !isBlacklist);
+                setUpdateBlacklist({
+                  candidateId,
+                  isBlacklist: true,
+                });
+                isOpenConfirmBlacklistDialog.onTrue();
               },
             },
           ];
-          return <DashboardMenu menuItems={menuItems} />;
+
+          const filteredMenuItems = menuItems.filter(
+            (item) => !(isBlacklist && item.label === 'Black List'),
+          );
+
+          return <DashboardMenu menuItems={filteredMenuItems} />;
         },
       },
     ],
@@ -270,37 +322,143 @@ const ListCandidateTableView = ({
   );
 
   return (
-    <Box sx={{ width: 1 }}>
-      <StyledDataGrid
-        rowHeight={64}
-        rows={tableData}
-        loading={loading}
-        apiRef={apiRef}
-        columns={columns}
-        getRowId={(row) => row.candidateId}
-        pageSizeOptions={[defaultPageSize, 15]}
-        disableVirtualization
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: defaultPageSize,
+    <>
+      <Box sx={{ width: 1 }}>
+        <StyledDataGrid
+          rowHeight={64}
+          rows={tableData}
+          loading={loading}
+          apiRef={apiRef}
+          columns={columns}
+          getRowId={(row) => row.candidateId}
+          pageSizeOptions={[defaultPageSize, 15]}
+          disableVirtualization
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: defaultPageSize,
+              },
             },
-          },
-        }}
-        checkboxSelection
-        onRowSelectionModelChange={(newSelection) => {
-          handleSelectionChange(newSelection as any);
-        }}
-        slots={{
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
-        }}
-        slotProps={{
-          panel: {
-            target: filterButtonEl,
-          },
-        }}
+          }}
+          checkboxSelection
+          slots={{
+            basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+          }}
+          onRowSelectionModelChange={(newSelection) => {
+            handleSelectionChange(newSelection as any);
+          }}
+          slotProps={{
+            panel: {
+              target: filterButtonEl,
+            },
+          }}
+        />
+      </Box>
+      <CustomConfirmDialog
+        title="ยืนยันการเปลี่ยนสถานะ"
+        open={isOpenConfirmActiveStatusDialog.value}
+        onClose={isOpenConfirmActiveStatusDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1" whiteSpace="pre-wrap">
+            {`คุณต้องการเปลี่ยนสถานะผู้สมัครเป็น ${updateStatus.status} หรือไม่`}
+          </Typography>
+        }
+        action={
+          <Stack spacing={1}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={isOpenConfirmActiveStatusDialog.onFalse}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: 'primary' }}
+              onClick={() => handleUpdateStatus(updateStatus.candidateId, updateStatus.status)}
+            >
+              Comfirm
+            </Button>
+          </Stack>
+        }
       />
-    </Box>
+
+      <CustomConfirmDialog
+        title="Blacklist*"
+        open={isOpenConfirmBlacklistDialog.value}
+        onClose={isOpenConfirmBlacklistDialog.onFalse}
+        description={
+          <Box>
+            <Typography variant="subtitle1_regular">
+              Provide a reason for blacklisting. The candidate will be blocked from future
+              applications.
+            </Typography>
+            <TextField
+              label="write a Note"
+              multiline
+              rows={4}
+              fullWidth
+              sx={{ mt: 2 }}
+              value={blcklistReason}
+              onChange={(e) => setBlcklistReason(e.target.value)}
+            />
+          </Box>
+        }
+        action={
+          <Stack spacing={1}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => {
+                isOpenConfirmBlacklistDialog.onFalse();
+                setBlcklistReason('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: 'primary' }}
+              onClick={() => handleUpdateBlacklist()}
+            >
+              Comfirm
+            </Button>
+          </Stack>
+        }
+      />
+
+      <CustomConfirmDialog
+        title="เปลี่ยนสถานะสำเร็จ"
+        open={isOpenActiveStatusDialog.value}
+        onClose={isOpenActiveStatusDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1">
+            ดำเนินการเปลี่ยนสถานะผู้สมัครเรียบร้อยแล้ว
+          </Typography>
+        }
+        action={
+          <Button variant="contained" onClick={isOpenActiveStatusDialog.onFalse}>
+            Close
+          </Button>
+        }
+      />
+
+      <CustomConfirmDialog
+        title="แบนผู้สมัครสำเร็จ"
+        open={isOpenBlacklistDialog.value}
+        onClose={isOpenBlacklistDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1">
+            ระบบได้บันทึกการแบนผู้สมัครเรียบร้อยแล้ว
+          </Typography>
+        }
+        action={
+          <Button variant="contained" onClick={isOpenBlacklistDialog.onFalse}>
+            Close
+          </Button>
+        }
+      />
+    </>
   );
 };
 
