@@ -17,7 +17,7 @@ const setupInterceptors = (instance: any) => {
       window.dispatchEvent(new CustomEvent('network-offline'));
       return Promise.reject(new Error('No internet connection'));
     }
-    config.headers['Content-Type'] = 'application/json';
+    // config.headers['Content-Type'] = 'application/json';
     config.headers['sender'] = 'ntlhrrecruit';
     config.headers['refer'] = 'ntlhrrecruit';
     config.headers['forward'] = '192.168.1.100';

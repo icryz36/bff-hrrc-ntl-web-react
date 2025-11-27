@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import ts, { transpile } from 'typescript';
+import { UploadFile } from 'components/hook-form';
 
 export const parseRoutePath = (path: string) => path.split('/').pop() || '/';
 
@@ -206,12 +207,32 @@ export const isImageFile = (file: File) => {
   return imageMimeTypes.includes(file.type);
 };
 
-export const convertFileToAttachment = (file: File) => ({
-  name: file.name,
-  size: `${(file.size / 1024).toFixed(2)} KB`,
-  format: getFileExtension(file.name),
-  preview: isImageFile(file) ? URL.createObjectURL(file) : undefined,
-});
+// export const convertFileToAttachment = (file: File) => ({
+//   name: file.name,
+//   size: `${(file.size / 1024).toFixed(2)} KB`,
+//   format: getFileExtension(file.name),
+//   preview: isImageFile(file) ? URL.createObjectURL(file) : undefined,
+// });
+
+export const convertFileToAttachment = (file: UploadFile) => {
+  if (file instanceof File) {
+    return {
+      name: file.name,
+      size: `${(file.size / 1024).toFixed(2)} KB`,
+      format: getFileExtension(file.name),
+      preview: isImageFile(file) ? URL.createObjectURL(file) : undefined,
+    };
+  }
+
+  // remote file
+  return {
+    size: '',
+    name: file.name,
+    preview: file.url,
+    format: getFileExtension(file.name),
+  };
+};
+
 export const maskCardNumber = (cardNumber: string): string =>
   cardNumber
     .split(' ')

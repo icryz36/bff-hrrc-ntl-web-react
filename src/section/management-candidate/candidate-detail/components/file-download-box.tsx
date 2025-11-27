@@ -13,9 +13,9 @@ const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
   return (
     <Grid container spacing={2}>
       {data?.map((item) => (
-        <Grid key={item.ducumentId} size={{ md: 6 }}>
+        <Grid key={item.documentId} size={{ md: 6 }}>
           <Stack flexDirection="column" spacing={2} width="100%">
-            <Typography>{item.ducumentType.docTypeNameEn}</Typography>
+            <Typography>{item.documentType.documentTypeNameEn}</Typography>
             <Paper
               elevation={0}
               background={1}
@@ -38,7 +38,9 @@ const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
                   icon="material-symbols:download"
                   fontSize="20px"
                   color="primary"
-                  onClick={() => handleDownload(item.filePath, item.ducumentType.docTypeNameEn)}
+                  onClick={() =>
+                    handleDownload(item.filePath, item.documentType.documentTypeNameEn)
+                  }
                   style={{ cursor: 'pointer' }}
                 />
               </Stack>

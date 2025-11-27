@@ -17,14 +17,15 @@ import { convertFileToAttachment } from 'lib/utils';
 import { FileAttachment } from 'types/common';
 import IconifyIcon from 'components/base/IconifyIcon';
 import FilePreview from 'components/common/FilePreview';
+import { UploadFile } from 'components/hook-form';
 
 interface FileDropZoneProps extends DropzoneOptions {
   error?: string;
   onRemove?: (index: number) => void;
-  defaultFiles?: File[];
+  defaultFiles?: UploadFile[];
   previewType?: 'list' | 'thumbnail';
+  hideInputIfHaveValue?: boolean;
   sx?: BoxProps['sx'];
-  description?: string;
 }
 
 const FileDropZone = ({
@@ -33,11 +34,11 @@ const FileDropZone = ({
   onRemove,
   defaultFiles,
   previewType = 'list',
+  hideInputIfHaveValue,
   sx,
-  description,
   ...rest
 }: FileDropZoneProps) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<UploadFile[]>([]);
   const [previews, setPreviews] = useState<FileAttachment[]>([]);
 
   const handleRemoveFile = (index: number) => {
@@ -77,48 +78,74 @@ const FileDropZone = ({
 
   return (
     <Stack direction="column" sx={{ rowGap: 3 }}>
-      <Box
-        {...getRootProps()}
-        sx={{
-          p: 2,
-          py: 10,
-          bgcolor: error ? 'error.lighter' : 'background.elevation2',
-          height: 100,
-          borderRadius: 2,
-          borderWidth: 1,
-          borderColor: error ? 'error.main' : 'divider',
-          borderStyle: 'dashed',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          transition: ({ transitions }) =>
-            transitions.create(['background-color'], {
-              duration: transitions.duration.enteringScreen,
-              easing: transitions.easing.easeInOut,
-            }),
-          '&:hover': {
-            bgcolor: 'background.elevation3',
-          },
-          ...sx,
-        }}
-      >
-        <input {...getInputProps()} />
-        <Stack direction="column" spacing={1} justifyContent="center" alignItems="center">
-          <IconifyIcon
-            icon="uil:export"
+      {!(hideInputIfHaveValue && files?.length > 0) && (
+        <Box
+          {...getRootProps()}
+          sx={{
+            p: 2,
+            bgcolor: error ? 'error.lighter' : 'background.elevation2',
+            height: 100,
+            borderRadius: 2,
+            borderWidth: 1,
+            borderColor: error ? 'error.main' : 'divider',
+            borderStyle: 'dashed',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            transition: ({ transitions }) =>
+              transitions.create(['background-color'], {
+                duration: transitions.duration.enteringScreen,
+                easing: transitions.easing.easeInOut,
+              }),
+            '&:hover': {
+              bgcolor: 'background.elevation3',
+            },
+            ...sx,
+          }}
+        >
+          <input {...getInputProps()} />
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            flexWrap="wrap"
             sx={{
-              fontSize: 40,
-              color: 'primary.main',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 1,
             }}
-          />
-          <Typography variant="body1_regular" color="primary.main">
-            browse from device
-          </Typography>
-          {description && <Typography variant="caption">{description}</Typography>}
-        </Stack>
-      </Box>
+          >
+            <IconifyIcon
+              icon="material-symbols:add-photo-alternate-outline-rounded"
+              sx={{
+                fontSize: { xs: 40, sm: 20 },
+                color: 'text.primary',
+              }}
+            />
+            <Typography variant="caption" component="p" sx={{ alignSelf: 'center' }}>
+              Drag & Drop files here{' '}
+              <Box
+                component="span"
+                sx={{
+                  color: 'text.disabled',
+                  mx: 1,
+                }}
+              >
+                or
+              </Box>
+              <Box
+                component="span"
+                sx={{
+                  color: 'primary.main',
+                }}
+              >
+                browse from device
+              </Box>
+            </Typography>
+          </Stack>
+        </Box>
+      )}
+
       {error && <FormHelperText>{error}</FormHelperText>}
 
       {previews.length > 0 && previewType === 'list' && (
@@ -155,6 +182,7 @@ const FileDropZone = ({
                   <FilePreview preview={preview} />
                 </ListItemAvatar>
                 <ListItemText
+                  disableTypography
                   primary={
                     <Box
                       sx={{
@@ -164,7 +192,7 @@ const FileDropZone = ({
                       }}
                     >
                       <Typography
-                        variant="body2"
+                        variant="subtitle2_regular"
                         sx={{
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',
@@ -174,12 +202,12 @@ const FileDropZone = ({
                       >
                         {name}
                       </Typography>
-                      <Typography variant="body2" sx={{ flexShrink: 0 }}>
+                      <Typography variant="subtitle2_regular" sx={{ flexShrink: 0 }}>
                         {ext}
                       </Typography>
                     </Box>
                   }
-                  secondary={preview.size}
+                  // secondary={preview.size}
                   slotProps={{
                     primary: {
                       variant: 'body2',

@@ -11,3 +11,11 @@ export * from './rhf-date-picker';
 export * from './rhf-editor';
 
 export * from './schema-helper';
+
+export * from './rhf-radio-group';
+
+export * from './rhf-checkbox';
+
+export * from './rhf-upload-avatar';
+
+export * from './rhf-upload';

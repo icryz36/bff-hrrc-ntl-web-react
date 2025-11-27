@@ -41,7 +41,45 @@ export type TGetCandidateListPagination = {
 export type TGetCandidateByIdPayload = {
   candidateId: string;
 };
+export type TCandidateDocumentsItem = {
+  documentId?: string | null;
+  operation: 'insert' | 'update' | 'delete';
+  fileName: string;
+  docTypeKey: string;
+};
 
+// ----------------------------------------------------------------------
+
+export type TUpdateCandidatePayload = {
+  payload: {
+    candidateId: string;
+    idNo: string;
+    titleId: string;
+    nameTh: string;
+    surnameTh: string;
+    nickname: string;
+    gender: string;
+    age: number;
+    email: string;
+    desiredLocation: string;
+    mobileNo: string;
+    maritalStatus?: string;
+    militaryStatus?: string;
+    canDriveCar: string;
+    hasCarLicense?: string;
+    canDriveMotorcycle: string;
+    hasMotorcycleLicense?: string;
+    desiredProvinces: Array<{
+      provinceId: string;
+      desiredLocation: string;
+    }>;
+    linkReference: string;
+    note: string;
+    candidateDocuments?: Array<TCandidateDocumentsItem> | [];
+  };
+} & {
+  [key: string]: File | any;
+};
 export type TCandidate = {
   candidateId: string;
   idNo: string;
@@ -82,6 +120,8 @@ export type TCandidate = {
   blacklistReason: string;
   highestdegreeId: string;
   isRead: string;
+  canDriveMotorcycle: string;
+  canDriveCar: string;
 };
 
 export type TTitle = {
@@ -96,15 +136,16 @@ export type TProvince = {
 };
 
 export type TDocumentItem = {
-  ducumentId: string;
+  documentId: string;
   filePath: string;
-  ducumentType: TDocumentType;
+  documentType: TDocumentType;
 };
 
 export type TDocumentType = {
   documentTypeId: string;
-  docTypeNameTh: string;
-  docTypeNameEn: string;
+  documentTypeNameTh: string;
+  documentTypeNameEn: string;
+  documentTypeKey: string;
 };
 
 export type TFamily = {
@@ -221,7 +262,7 @@ export type TJobApplications = {
 
 export type TCandidateData = {
   candidate: TCandidate;
-  ducuments: TDocumentItem[];
+  documents: TDocumentItem[];
   jobApplications: TJobApplications[];
   familys: TFamily[];
   educations: TEducation[];
@@ -235,6 +276,12 @@ export type TCandidateData = {
   recommender: TRecommender;
   questions: TQuestionWrapper[];
 };
+
+export type TUpdateCandidateResponse = TStatusResponse & {
+  data: string;
+};
+
+// ----------------------------------------------------------------------
 
 export type TGetCandidateByIdResponse = TStatusResponse & {
   data: TCandidateData;

@@ -79,7 +79,6 @@ export const AccordionDetails: Components<Omit<Theme, 'components'>>['MuiAccordi
   styleOverrides: {
     root: ({ theme }) => ({
       padding: theme.spacing(0, 3, 3, 7),
-      color: theme.vars.palette.text.secondary,
     }),
   },
 };

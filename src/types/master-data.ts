@@ -161,6 +161,53 @@ export type TUser = {
   surname: string;
 };
 
+// skill ------------------------------------------------------------------------
+
+export type TGetSkillResponse = TStatusResponse & {
+  data: TSkill[];
+};
+
+export type TSkill = {
+  skillId: string;
+  skillNameTh: string;
+  skillNameEn: string;
+  skillCategory: string;
+  skillOptionType: 'Dropdown' | 'Checkbox' | 'Radio';
+  isSkillFreeText: boolean;
+  skillOptions: TSkillOptions[];
+};
+
+export type TSkillOptions = {
+  skillOptionId: string;
+  skillTextTh: string;
+  skillTextEn: string;
+};
+
+// title name ------------------------------------------------------------------
+
+export type TGetTitleNameResponse = TStatusResponse & {
+  data: TitleName[];
+};
+
+export type TitleName = {
+  titleId: string;
+  titleNameTh: string;
+  titleNameEn: string;
+};
+
+// document type ----------------------------------------------------------------
+
+export type TGetDocumentTypeResponse = TStatusResponse & {
+  data: TDocumentType[];
+};
+
+export type TDocumentType = {
+  documentTypeId: string;
+  documentTypeNameTh: string;
+  documentTypeNameEn: string;
+  documentTypeKey: string;
+};
+
 // MAP master data --------------------------------------------------------------
 
 export type MasterDataMaps = {

@@ -17,6 +17,7 @@ const paths = {
   notifications: `/${rootPaths.pagesRoot}/notifications`, //? update path
   importCandidates: `/${rootPaths.manageRoot}/candidates/import`,
   listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
+  editCandidates: `/${rootPaths.manageRoot}/candidates/:id/edit`,
   candidateDetail: `/${rootPaths.manageRoot}/candidates/:id/detail`,
 
   404: `/${rootPaths.errorRoot}/404`,
@@ -31,6 +32,7 @@ export const navigatePaths = {
   },
   candidate: {
     detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
+    edit: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/edit`,
   },
 };
 

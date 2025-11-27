@@ -9,6 +9,7 @@ import {
   TGetCandidateByIdResponse,
   TGetCandidateListPayload,
   TGetCandidateListResponse,
+  TUpdateCandidateResponse,
 } from 'types/candidate';
 
 export const fetchCandidateList = async (
@@ -54,6 +55,20 @@ export const updateCandidateBlacklist = async (
     method: 'POST',
     url: endpoint.candidate.updateBlacklist,
     data: payload,
+  });
+
+  return data;
+};
+
+// Mutation -------------------------------------------------------------
+
+export const postUpdateCandidateInfo = async (
+  payload: FormData,
+): Promise<TUpdateCandidateResponse> => {
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.updateInfo,
   });
 
   return data;

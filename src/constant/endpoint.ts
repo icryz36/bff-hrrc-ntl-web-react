@@ -11,6 +11,9 @@ const endpoint = {
     degree: `get-degree-master-xapi`,
     employeeType: `get-employeetype-master-xapi`,
     users: `get-users-xapi`,
+    skill: `get-skill-master-xapi`,
+    titleName: `get-title-name-master-xapi`,
+    documentType: `get-document-type-master-xapi`,
   },
   jobpost: {
     list: `get-jobpost-list-xapi`,
@@ -25,6 +28,7 @@ const endpoint = {
   candidate: {
     list: `get-candidates-list-xapi`,
     detail: `get-candidate-xapi`,
+    updateInfo: `update-candidate-xapi`,
     updateStatus: `update-candidate-status-xapi`,
     updateBlacklist: `update-candidate-blacklist-xapi`,
   },
