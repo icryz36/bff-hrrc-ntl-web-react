@@ -1,4 +1,4 @@
-import { RefObject, useMemo } from 'react';
+import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Chip, ChipOwnProps, Link, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
@@ -24,6 +24,10 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
       return 'neutral';
   }
 };
+type SelectionType = {
+  type: 'include';
+  ids: string[];
+};
 
 const defaultPageSize = 10;
 
@@ -37,7 +41,13 @@ type ProductsTableProps = {
   loading: boolean;
 };
 
-const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
+const ListCandidateTableView = ({
+  apiRef,
+  filterButtonEl,
+  tableData,
+  loading,
+}: ProductsTableProps) => {
+  const [selectedCandidateIds, setSelectedCandidateIds] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
@@ -61,6 +71,12 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         onError: () => {},
       },
     );
+  };
+
+  console.log('selectedCandidateIds', selectedCandidateIds);
+  const handleSelectionChange = (newSelection: SelectionType) => {
+    const myArray = Array.from(newSelection.ids);
+    setSelectedCandidateIds(myArray);
   };
 
   const columns: GridColDef<TCandidateTableRow>[] = useMemo(
@@ -97,7 +113,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
               {params.row.isBlacklist ? (
                 <Chip label="Blacklist" variant="soft" color="error" />
               ) : (
-                <Typography color="text.secondary" variant="subtitle2">
+                <Typography color="text.secondary" variant="subtitle1_regular">
                   -
                 </Typography>
               )}
@@ -106,19 +122,64 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         },
       },
       {
-        field: 'titleNameEn',
+        field: 'titleNameTh',
         headerName: 'Title',
         width: 120,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.titleNameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.titleNameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
-        field: 'nameEn',
+        field: 'nameTh',
         headerName: 'Name',
         width: 160,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.nameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.nameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
-        field: 'surnameEn',
+        field: 'surnameTh',
         headerName: 'Surename',
         width: 200,
+        renderCell: (params) => {
+          return (
+            <>
+              {params.row.surnameTh ? (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  {params.row.surnameTh}
+                </Typography>
+              ) : (
+                <Typography color="text.secondary" variant="subtitle1_regular">
+                  -
+                </Typography>
+              )}
+            </>
+          );
+        },
       },
       {
         field: 'email',
@@ -151,11 +212,13 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         cellClassName: 'job-status-cell',
         renderCell: (params) => {
           return (
-            <Chip
-              label={params.row.status}
-              variant="soft"
-              color={getStatusBadgeColor(params.row.status)}
-            />
+            <>
+              <Chip
+                label={params.row.status}
+                variant="soft"
+                color={getStatusBadgeColor(params.row.status)}
+              />
+            </>
           );
         },
       },
@@ -218,6 +281,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
       <StyledDataGrid
         rowHeight={64}
         rows={tableData}
+        loading={loading}
         apiRef={apiRef}
         columns={columns}
         getRowId={(row) => row.candidateId}
@@ -231,6 +295,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
           },
         }}
         checkboxSelection
+        onRowSelectionModelChange={(newSelection) => {
+          handleSelectionChange(newSelection as any);
+        }}
         slots={{
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}

@@ -13,6 +13,10 @@ const setupInterceptors = (instance: any) => {
     if (authToken) {
       config.headers['authorization'] = `Bearer ${authToken}`;
     }
+    if (!navigator.onLine) {
+      window.dispatchEvent(new CustomEvent('network-offline'));
+      return Promise.reject(new Error('No internet connection'));
+    }
     // config.headers['Content-Type'] = 'application/json';
     config.headers['sender'] = 'ntlhrrecruit';
     config.headers['refer'] = 'ntlhrrecruit';
@@ -25,6 +29,9 @@ const setupInterceptors = (instance: any) => {
   instance.interceptors.response.use(
     (response: any) => response,
     (error: any) => {
+      if (error.response?.status >= 500) {
+        window.dispatchEvent(new CustomEvent('network-error'));
+      }
       return Promise.reject({
         status: error.response?.status,
         data: error.response?.data || error.message,

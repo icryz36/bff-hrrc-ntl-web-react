@@ -1,6 +1,6 @@
 import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Chip, ChipOwnProps, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, ChipOwnProps, Link, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
@@ -10,7 +10,6 @@ import ListJobDetailComponent from 'section/management-job/list-job/components/l
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
-import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
@@ -111,9 +110,11 @@ const ListJobTableView = ({
         headerName: 'Job Title',
         minWidth: 330,
         renderCell: (params) => (
-          <StyledTypographyLine line={2} variant="subtitle2_semibold">
-            {params.row.jobTitle}
-          </StyledTypographyLine>
+          <Tooltip title={params.row.jobTitle} placement="bottom">
+            <StyledTypographyLine line={2} variant="subtitle2_semibold">
+              {params.row.jobTitle}
+            </StyledTypographyLine>
+          </Tooltip>
         ),
       },
       {
@@ -121,9 +122,11 @@ const ListJobTableView = ({
         headerName: 'Department',
         minWidth: 160,
         renderCell: (params) => (
-          <StyledTypographyLine line={2} variant="subtitle2_regular">
-            {params.row.departmentName}
-          </StyledTypographyLine>
+          <Tooltip title={params.row.departmentName} placement="bottom">
+            <StyledTypographyLine line={2} variant="subtitle2_regular">
+              {params.row.departmentName}
+            </StyledTypographyLine>
+          </Tooltip>
         ),
       },
       {
@@ -150,6 +153,7 @@ const ListJobTableView = ({
         headerName: 'Start Date',
         minWidth: 140,
         filterable: false,
+        sortable: false,
         renderCell: (params) => {
           return dayjs(params.row.startDate).format('DD/MM/YYYY');
         },
@@ -159,6 +163,7 @@ const ListJobTableView = ({
         headerName: 'Active Day',
         minWidth: 130,
         filterable: false,
+        sortable: false,
         renderCell: (params) => {
           return `${params.row.totalActiveDays} Days`;
         },
@@ -168,17 +173,20 @@ const ListJobTableView = ({
         headerName: 'HC',
         minWidth: 74,
         filterable: false,
+        sortable: false,
       },
       {
         field: 'ownerUserName',
         headerName: 'Owner',
         minWidth: 200,
         filterable: false,
+        sortable: false,
       },
       {
         field: 'statusName',
         headerName: 'Job Status',
         minWidth: 90,
+        sortable: false,
         headerClassName: 'job-status-header',
         cellClassName: 'job-status-cell',
         renderCell: (params) => {
@@ -263,8 +271,10 @@ const ListJobTableView = ({
               },
             },
           }}
+          localeText={{
+            noRowsLabel: 'No List Job Post',
+          }}
           slots={{
-            loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}
           slotProps={{
