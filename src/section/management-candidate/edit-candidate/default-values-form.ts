@@ -13,12 +13,12 @@ export const defaultValues: TEditCandidate = {
 
   // basic information
   gender: '',
-  age: null,
+  age: 0,
   contactNo: '',
   email: '',
   desiredLocation: '',
   desiredProvince: [],
-  highestEducation: null,
+  highestEducation: '',
   workExperience: '',
   motorcycleDriving: '',
   carDriving: '',

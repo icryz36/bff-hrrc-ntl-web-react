@@ -26,9 +26,7 @@ export const CandidateBasicInformationSchema = z.object({
   email: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredLocation: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredProvince: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
-  highestEducation: schemaHelper.objectOrNull({
-    message: { required_error: REQUIRED_MESSAGE },
-  }),
+  highestEducation: z.string().min(1, { error: REQUIRED_MESSAGE }),
   workExperience: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   motorcycleDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
   carDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
@@ -36,8 +34,18 @@ export const CandidateBasicInformationSchema = z.object({
 
 // application documents --------------------------------------------------
 
+const RemoteFileSchema = z.object({
+  id: z.string(),
+  url: z.string(),
+  name: z.string(),
+  fromServer: z.literal(true),
+});
+
 export const CandidateApplicationDocumentsSchema = z.object({
-  documents: z.record(z.string(), z.array(z.custom<File>()).optional()).optional(),
+  documents: z
+    .record(z.string(), z.array(z.union([z.custom<File>(), RemoteFileSchema])).optional())
+    .optional(),
+
   files: z.custom<File | string | null>().optional(),
 });
 
@@ -71,66 +79,76 @@ export const PersonalDataSchema = z.object({
   cardexpiredDate: z.string().optional(),
   militaryStatus: z.string().optional(),
   maritalStatus: z.string().optional(),
-  familys: z.array(
-    z.object({
-      relationship: z.string().optional(),
-      name: z.string().optional(),
-      age: z.number().optional(),
-      mobileNo: z.string().optional(),
-      occupation: z.string().optional(),
-      workplace: z.string().optional(),
-    }),
-  ),
-  emergency: z.array(
-    z.object({
-      relationship: z.string().optional(),
-      name: z.string().optional(),
-      mobileNo: z.string().optional(),
-    }),
-  ),
+  familys: z
+    .array(
+      z.object({
+        relationship: z.string().optional(),
+        name: z.string().optional(),
+        age: z.number().optional(),
+        mobileNo: z.string().optional(),
+        occupation: z.string().optional(),
+        workplace: z.string().optional(),
+      }),
+    )
+    .optional(),
+  emergency: z
+    .array(
+      z.object({
+        relationship: z.string().optional(),
+        name: z.string().optional(),
+        mobileNo: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 // personal references -----------------------------------------------------
 
 export const PersonalReferencesSchema = z.object({
-  referencePersons: z.array(
-    z.object({
-      name: z.string().optional(),
-      position: z.string().optional(),
-      relation: z.string().optional(),
-      workplace: z.string().optional(),
-      mobileNo: z.string().optional(),
-    }),
-  ),
+  referencePersons: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        position: z.string().optional(),
+        relation: z.string().optional(),
+        workplace: z.string().optional(),
+        mobileNo: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 // educations ---------------------------------------------------------------
 
 export const EducationSchema = z.object({
-  educations: z.array(
-    z.object({
-      degreeId: z.string().optional(),
-      institutionName: z.string().optional(),
-      startYear: z.string().optional(),
-      endYear: z.string().optional(),
-      degreeConferred: z.string().optional(),
-      major: z.string().optional(),
-      gpa: z.string().optional(),
-    }),
-  ),
+  educations: z
+    .array(
+      z.object({
+        degreeId: z.string().optional(),
+        institutionName: z.string().optional(),
+        startYear: z.string().optional(),
+        endYear: z.string().optional(),
+        degreeConferred: z.string().optional(),
+        major: z.string().optional(),
+        gpa: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 // language -----------------------------------------------------------------
 
 export const LanguageSchema = z.object({
-  languages: z.array(
-    z.object({
-      language: schemaHelper.objectOrNull().nullable().optional(),
-      speaking: z.string().optional(),
-      reading: z.string().optional(),
-      writing: z.string().optional(),
-    }),
-  ),
+  languages: z
+    .array(
+      z.object({
+        language: schemaHelper.objectOrNull().nullable().optional(),
+        speaking: z.string().optional(),
+        reading: z.string().optional(),
+        writing: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 // office skill & special ability -------------------------------------------

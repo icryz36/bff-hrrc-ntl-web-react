@@ -198,7 +198,7 @@ export type TitleName = {
 // document type ----------------------------------------------------------------
 
 export type TGetDocumentTypeResponse = TStatusResponse & {
-  data: TDocumentType;
+  data: TDocumentType[];
 };
 
 export type TDocumentType = {

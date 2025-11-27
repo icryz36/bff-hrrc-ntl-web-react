@@ -35,8 +35,14 @@ const OPTION_CONFIRM = [
 ] as const;
 
 const OPTION_GENDER = [
-  { label: 'ชาย', value: 'M' },
-  { label: 'หญืง', value: 'F' },
+  { label: 'ชาย', value: 'm' },
+  { label: 'หญืง', value: 'f' },
+] as const;
+
+const OPTION_VEHICLE = [
+  { label: 'ได้ มีใบขับขี่', value: 'yes_licensed' },
+  { label: 'ได้ ไม่มีใบขับขี่', value: 'yes_unlicensed' },
+  { label: 'ไม่ได้', value: 'no' },
 ] as const;
 
 export {
@@ -48,4 +54,5 @@ export {
   OPTION_HAS_EXPERIENCE,
   OPTION_CONFIRM,
   OPTION_GENDER,
+  OPTION_VEHICLE,
 };

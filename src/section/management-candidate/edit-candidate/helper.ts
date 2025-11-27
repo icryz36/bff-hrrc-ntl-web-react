@@ -1,81 +1,238 @@
-import { TCandidateData, TCandidateDocumentsItem, TCreateCandidatePayload } from 'types/candidate';
+import {
+  TCandidateData,
+  TCandidateDocumentsItem,
+  TDocumentItem,
+  TUpdateCandidatePayload,
+} from 'types/candidate';
+import { RemoteFile, UploadFile } from 'components/hook-form';
 import { TEditCandidate } from './schema';
 
 const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
-  console.log('data aaaaaa', data?.candidate);
-
   return {
     title: data?.candidate.title.titleId || '',
     name: data?.candidate.nameTh || '',
     surName: data?.candidate.surnameTh || '',
     nickName: data?.candidate.nickname || '',
     candidateId: data?.candidate.candidateId || '',
-    //
     gender: data?.candidate.gender || '',
-    age: data?.candidate.age || 0, //TODO: ทำ number
+    age: data?.candidate.age || 0,
     contactNo: data?.candidate.mobileNo || '',
     email: data?.candidate.email || '',
     desiredLocation: data?.candidate.desiredLocation || '',
     desiredProvince: data?.candidate.desiredProvinces || [],
     highestEducation: data?.candidate.highestdegreeId || '',
     workExperience: data?.candidate.workExperience || '',
-    motorcycleDriving: data?.candidate.hasmotorcycleLicense || '',
-    carDriving: data?.candidate.hascarLicense || '',
+    motorcycleDriving: data?.candidate.canDriveMotorcycle || '',
+    carDriving: data?.candidate.canDriveCar || '',
     link: data?.candidate.linkReference || '',
+    documents: mapDocumentsToForm(data?.documents || []),
   };
 };
-const convertCreateEditCandidatePostPayload = (data: TEditCandidate): TCreateCandidatePayload => {
-  const docs = data.documents ?? {};
 
-  const candidateDocuments: Array<TCandidateDocumentsItem> = [];
-  const dynamicFiles: Record<string, File> = {};
+const extractFileNameFromUrl = (url: string) => {
+  const path = url.split('?')[0];
+  const parts = path.split('/');
+  return parts[parts.length - 1] || 'document';
+};
 
-  Object.entries(docs).forEach(([docTypeKey, files]) => {
-    if (!files || files.length === 0) return;
+const mapDocumentsToForm = (documents: TDocumentItem[]) => {
+  const result: Record<string, UploadFile[]> = {};
 
-    files.forEach((file) => {
-      candidateDocuments.push({
-        documentId: '',
-        operation: 'CREATE',
+  documents.forEach((doc) => {
+    const key = doc.documentType.documentTypeKey;
+
+    const remoteFile: RemoteFile = {
+      id: doc.documentId,
+      url: doc.filePath,
+      name: extractFileNameFromUrl(doc.filePath),
+      fromServer: true,
+    };
+
+    if (!result[key]) result[key] = [];
+    result[key].push(remoteFile);
+  });
+
+  return result;
+};
+
+// ----------------------------------------------------------------------
+
+const groupApiDocumentsByKey = (apiDocs: TDocumentItem[]) => {
+  return apiDocs.reduce<Record<string, TDocumentItem[]>>((acc, doc) => {
+    const key = doc.documentType.documentTypeKey;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(doc);
+    return acc;
+  }, {});
+};
+
+const isRemoteFile = (file: UploadFile): file is RemoteFile => !(file instanceof File);
+
+const processDeletedDocumentTypes = (
+  docs: Record<string, UploadFile[] | undefined>,
+  originalByKey: Record<string, TDocumentItem[]>,
+): TCandidateDocumentsItem[] => {
+  const operations: TCandidateDocumentsItem[] = [];
+
+  Object.entries(originalByKey).forEach(([docTypeKey, originals]) => {
+    if (!docs[docTypeKey] || docs[docTypeKey]?.length === 0) {
+      originals.forEach((ori) => {
+        operations.push({
+          documentId: ori.documentId,
+          operation: 'delete',
+          fileName: ori.filePath.split('/').pop() ?? '',
+          docTypeKey,
+        });
+      });
+    }
+  });
+
+  return operations;
+};
+
+const getDeletedDocuments = (
+  originals: TDocumentItem[],
+  currentRemoteIds: Set<string>,
+  hasNewFiles: boolean,
+  docTypeKey: string,
+): TCandidateDocumentsItem[] => {
+  return originals
+    .filter((ori) => {
+      const isReplacedByNewFile = hasNewFiles && ori.documentId === originals[0].documentId;
+      return !currentRemoteIds.has(ori.documentId) && !isReplacedByNewFile;
+    })
+    .map((ori) => ({
+      documentId: ori.documentId,
+      operation: 'delete' as const,
+      fileName: ori.filePath.split('/').pop() ?? '',
+      docTypeKey,
+    }));
+};
+
+const processDocumentOperations = (
+  docTypeKey: string,
+  files: UploadFile[] | undefined,
+  originals: TDocumentItem[],
+): {
+  operations: TCandidateDocumentsItem[];
+  newFile?: File;
+} => {
+  if (!files) {
+    return { operations: [] };
+  }
+
+  const newFiles = files.filter((f) => f instanceof File) as File[];
+  const currentRemoteFiles = files.filter(isRemoteFile);
+  const operations: TCandidateDocumentsItem[] = [];
+
+  // กรณีไม่มีไฟล์เดิม - insert ใหม่
+  if (originals.length === 0) {
+    newFiles.forEach((file) => {
+      operations.push({
+        documentId: null,
+        operation: 'insert',
         fileName: file.name,
         docTypeKey,
       });
-      if (!dynamicFiles[docTypeKey]) {
-        dynamicFiles[docTypeKey] = file;
-      }
     });
+
+    return {
+      operations,
+      newFile: newFiles[0],
+    };
+  }
+
+  // กรณีมีไฟล์ใหม่ - update ไฟล์
+  if (newFiles.length > 0) {
+    const targetOriginal = originals[0];
+    operations.push({
+      documentId: targetOriginal.documentId,
+      operation: 'update',
+      fileName: newFiles[0].name,
+      docTypeKey,
+    });
+  }
+
+  // หาไฟล์ที่ถูกลบ
+  const currentRemoteIds = new Set(currentRemoteFiles.map((f) => f.id));
+  const deletedOperations = getDeletedDocuments(
+    originals,
+    currentRemoteIds,
+    newFiles.length > 0,
+    docTypeKey,
+  );
+
+  return {
+    operations: [...operations, ...deletedOperations],
+    newFile: newFiles[0],
+  };
+};
+
+const buildCandidatePayload = (
+  data: TEditCandidate,
+): Omit<TUpdateCandidatePayload['payload'], 'candidateDocuments'> => ({
+  candidateId: data.candidateId || '',
+  idNo: data.idNo || '',
+  titleId: data.title,
+  nameTh: data.name,
+  surnameTh: data.surName,
+  nickname: data.nickName,
+  gender: data.gender,
+  age: data.age,
+  email: data.email,
+  desiredLocation: data.desiredLocation,
+  mobileNo: data.contactNo,
+  canDriveCar: data.carDriving,
+  canDriveMotorcycle: data.motorcycleDriving,
+  linkReference: data.link,
+  note: data.note || '',
+  desiredProvinces: data.desiredProvince.map((item) => ({
+    provinceId: item.provinceId,
+    desiredLocation: item.provinceName,
+  })),
+});
+
+const convertCreateEditCandidatePostPayload = (
+  data: TEditCandidate,
+  originalDocuments: TDocumentItem[],
+): TUpdateCandidatePayload => {
+  const docs = data.documents ?? {};
+  const originalByKey = groupApiDocumentsByKey(originalDocuments);
+
+  const candidateDocuments: TCandidateDocumentsItem[] = [];
+  const dynamicFiles: Record<string, File> = {};
+
+  Object.entries(docs).forEach(([docTypeKey, files]) => {
+    const { operations, newFile } = processDocumentOperations(
+      docTypeKey,
+      files,
+      originalByKey[docTypeKey] ?? [],
+    );
+
+    candidateDocuments.push(...operations);
+
+    if (newFile) {
+      dynamicFiles[docTypeKey] = newFile;
+    }
   });
+
+  const deletedOperations = processDeletedDocumentTypes(docs, originalByKey);
+  candidateDocuments.push(...deletedOperations);
 
   return {
     payload: {
-      candidateId: data.candidateId || '',
-      idNo: data.idNo || '',
-      titleId: data.title,
-      nameTh: data.name,
-      surnameTh: data.surName,
-      nickname: data.nickName,
-      gender: data.gender,
-      age: data.age,
-      email: data.email,
-      desiredProvinces: data.desiredProvince.map((p) => ({ provinceId: p.provinceId })),
-      desiredLocation: data.desiredLocation,
-      mobileNo: data.contactNo,
-      canDriveCar: data.carDriving,
-      canDriveMotorcycle: data.motorcycleDriving,
-      linkReference: data.link,
-      note: data.note || '',
+      ...buildCandidatePayload(data),
       candidateDocuments,
     },
     ...dynamicFiles,
   };
 };
-const buildCreateCandidateFormData = (payload: TCreateCandidatePayload) => {
+
+const buildCreateCandidateFormData = (payload: TUpdateCandidatePayload) => {
   const formData = new FormData();
 
-  // ใส่ payload JSON
   formData.append('payload', JSON.stringify(payload.payload));
 
-  // วนทุก key ที่เหลือ (ไฟล์)
   Object.entries(payload).forEach(([key, value]) => {
     if (key === 'payload') return; // ข้าม payload
     if (value instanceof File) {

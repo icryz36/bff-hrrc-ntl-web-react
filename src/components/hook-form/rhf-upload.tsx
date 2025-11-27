@@ -11,6 +11,15 @@ type RHFUploadProps = {
   hideInputIfHaveValue?: boolean;
 } & Omit<DropzoneOptions, 'onDrop'>;
 
+export type RemoteFile = {
+  id: string;
+  url: string;
+  name: string;
+  fromServer: true;
+};
+
+export type UploadFile = File | RemoteFile;
+
 // ----------------------------------------------------------------------
 
 export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploadProps) {
@@ -21,7 +30,7 @@ export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploa
       name={name}
       control={control}
       render={({ field: { value, onChange }, formState: { errors } }) => {
-        const filesValue = (value ?? []) as File[];
+        const filesValue = (value ?? []) as UploadFile[];
 
         return (
           <FileDropZone
@@ -29,8 +38,13 @@ export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploa
             {...other}
             defaultFiles={filesValue}
             error={errors.root?.message}
+            // onDrop={(acceptedFiles) => {
+            //   onChange(acceptedFiles);
+            // }}
+
             onDrop={(acceptedFiles) => {
-              onChange(acceptedFiles);
+              const newFiles: UploadFile[] = [...filesValue, ...acceptedFiles];
+              onChange(newFiles);
             }}
             hideInputIfHaveValue={hideInputIfHaveValue}
             onRemove={(index) => {

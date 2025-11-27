@@ -32,6 +32,7 @@ export const navigatePaths = {
   },
   candidate: {
     detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
+    edit: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/edit`,
   },
 };
 

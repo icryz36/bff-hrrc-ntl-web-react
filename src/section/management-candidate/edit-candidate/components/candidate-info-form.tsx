@@ -1,6 +1,5 @@
 import { Grid, MenuItem, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { TITLES } from 'data/title';
 import { useMasterDataQuery } from 'services/master-data/query';
 import { Field } from 'components/hook-form/fields';
 
@@ -8,7 +7,6 @@ import { Field } from 'components/hook-form/fields';
 
 export const CandidateInfoForm = () => {
   const { data: titleNameList } = useQuery(useMasterDataQuery.titleName());
-  console.log('titleNameList', titleNameList);
 
   return (
     <Stack spacing={2}>
@@ -20,7 +18,7 @@ export const CandidateInfoForm = () => {
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
             <Field.Select name="title" label="Title" required>
-              {TITLES.map((option) => (
+              {titleNameList?.map((option) => (
                 <MenuItem key={option.titleId} value={option.titleId}>
                   {option.titleNameTh}
                 </MenuItem>

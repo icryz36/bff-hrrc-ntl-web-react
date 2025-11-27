@@ -16,7 +16,7 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
-  const { jobApplications, candidate, ducuments } = candidateDetail || ({} as TCandidateData);
+  const { jobApplications, candidate, documents } = candidateDetail || ({} as TCandidateData);
 
   const accordionData = [
     {
@@ -61,7 +61,7 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Application Documents',
-      children: <FileDownloadBox data={ducuments} />,
+      children: <FileDownloadBox data={documents} />,
       defaultExpanded: true,
     },
     {

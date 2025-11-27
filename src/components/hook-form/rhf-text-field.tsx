@@ -30,6 +30,7 @@ export function RHFTextField({ name, helperText, maxLength, type, ...other }: Pr
               field.onChange(event.target.value);
             }
           }}
+          {...(type === 'number' && { onWheel: (e) => (e.target as HTMLInputElement).blur() })}
           autoComplete="off"
           error={!!error}
           helperText={<Typography variant="caption">{error?.message ?? helperText}</Typography>}
@@ -37,6 +38,18 @@ export function RHFTextField({ name, helperText, maxLength, type, ...other }: Pr
             autoComplete: 'off',
             ...(maxLength && {
               maxLength,
+            }),
+          }}
+          sx={{
+            ...(type === 'number' && {
+              '& input[type=number]': {
+                MozAppearance: 'textfield',
+              },
+              '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button':
+                {
+                  WebkitAppearance: 'none',
+                  margin: 0,
+                },
             }),
           }}
           {...other}

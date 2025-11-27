@@ -193,6 +193,9 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
             {
               label: 'Edit',
               icon: 'mdi:edit-outline',
+              onClick: () => {
+                navigate(navigatePaths.candidate.edit(candidateId));
+              },
             },
             statusItem,
             {

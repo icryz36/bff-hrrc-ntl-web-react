@@ -17,11 +17,12 @@ import { convertFileToAttachment } from 'lib/utils';
 import { FileAttachment } from 'types/common';
 import IconifyIcon from 'components/base/IconifyIcon';
 import FilePreview from 'components/common/FilePreview';
+import { UploadFile } from 'components/hook-form';
 
 interface FileDropZoneProps extends DropzoneOptions {
   error?: string;
   onRemove?: (index: number) => void;
-  defaultFiles?: File[];
+  defaultFiles?: UploadFile[];
   previewType?: 'list' | 'thumbnail';
   hideInputIfHaveValue?: boolean;
   sx?: BoxProps['sx'];
@@ -37,7 +38,7 @@ const FileDropZone = ({
   sx,
   ...rest
 }: FileDropZoneProps) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<UploadFile[]>([]);
   const [previews, setPreviews] = useState<FileAttachment[]>([]);
 
   const handleRemoveFile = (index: number) => {

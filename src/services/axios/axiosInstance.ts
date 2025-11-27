@@ -13,7 +13,7 @@ const setupInterceptors = (instance: any) => {
     if (authToken) {
       config.headers['authorization'] = `Bearer ${authToken}`;
     }
-    config.headers['Content-Type'] = 'application/json';
+    // config.headers['Content-Type'] = 'application/json';
     config.headers['sender'] = 'ntlhrrecruit';
     config.headers['refer'] = 'ntlhrrecruit';
     config.headers['forward'] = '192.168.1.100';

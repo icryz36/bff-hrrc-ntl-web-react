@@ -2,7 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from 'services/client';
 import { TCandidateBlacklistPayload, TCandidateUpdateStatusPayload } from 'types/candidate';
 import { useCandidateQuery } from './query';
-import { updateCandidateBlacklist, updateCandidateStatus } from './services';
+import {
+  postUpdateCandidateInfo,
+  updateCandidateBlacklist,
+  updateCandidateStatus,
+} from './services';
 
 export const useCandidateUpdateStatusMutation = () =>
   useMutation({
@@ -17,6 +21,16 @@ export const useCandidateUpdateStatusMutation = () =>
 export const useCandidateUpdateBlacklistMutation = () =>
   useMutation({
     mutationFn: (payload: TCandidateBlacklistPayload) => updateCandidateBlacklist(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: useCandidateQuery.keysList(),
+      });
+    },
+  });
+
+export const useUpdateCandidateMutation = () =>
+  useMutation({
+    mutationFn: (payload: FormData) => postUpdateCandidateInfo(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: useCandidateQuery.keysList(),
