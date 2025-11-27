@@ -47,6 +47,7 @@ const ListCandidateTableView = ({
 }: ProductsTableProps) => {
   const navigate = useNavigate();
   const isOpenConfirmActiveStatusDialog = useBoolean();
+  const isOpenActiveStatuDialog = useBoolean();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
   const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
@@ -63,7 +64,10 @@ const ListCandidateTableView = ({
     updateCandidateStatus(
       { candidateId, status },
       {
-        onSuccess: () => {},
+        onSuccess: () => {
+          isOpenConfirmActiveStatusDialog.onFalse();
+          isOpenActiveStatuDialog.onTrue();
+        },
         onError: () => {},
       },
     );
@@ -337,6 +341,22 @@ const ListCandidateTableView = ({
               Comfirm
             </Button>
           </Stack>
+        }
+      />
+
+      <CustomConfirmDialog
+        title="เปลี่ยนสถานะสำเร็จ"
+        open={isOpenActiveStatuDialog.value}
+        onClose={isOpenActiveStatuDialog.onFalse}
+        description={
+          <Typography color="text.secondary" variant="subtitle1">
+            ดำเนินการเปลี่ยนสถานะผู้สมัครเรียบร้อยแล้ว
+          </Typography>
+        }
+        action={
+          <Button variant="contained" onClick={isOpenActiveStatuDialog.onFalse}>
+            Close
+          </Button>
         }
       />
     </>
