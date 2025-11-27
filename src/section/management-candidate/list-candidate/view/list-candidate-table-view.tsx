@@ -85,24 +85,7 @@ const ListCandidateTableView = ({
         ...GRID_CHECKBOX_SELECTION_COL_DEF,
         width: 64,
       },
-      {
-        field: 'candidateId',
-        headerName: 'Candidate ID',
-        width: 300,
-        renderCell: (params) => {
-          const { candidateId } = params.row;
 
-          return (
-            <Link
-              onClick={() => {
-                navigate(navigatePaths.candidate.detail(candidateId));
-              }}
-            >
-              {params.row.candidateId}
-            </Link>
-          );
-        },
-      },
       {
         field: 'isBlacklist',
         headerName: 'Blacklist',
@@ -149,9 +132,13 @@ const ListCandidateTableView = ({
           return (
             <>
               {params.row.nameTh ? (
-                <Typography color="text.secondary" variant="subtitle1_regular">
-                  {params.row.nameTh}
-                </Typography>
+                <Link
+                  onClick={() => {
+                    navigate(navigatePaths.candidate.detail(params.row.candidateId));
+                  }}
+                >
+                  <Typography variant="subtitle1_regular">{params.row.nameTh}</Typography>
+                </Link>
               ) : (
                 <Typography color="text.secondary" variant="subtitle1_regular">
                   -
@@ -203,6 +190,12 @@ const ListCandidateTableView = ({
         field: 'countJobApplication',
         headerName: 'Applied Jobs',
         width: 130,
+      },
+
+      {
+        field: 'candidateId',
+        headerName: 'Candidate ID',
+        width: 300,
       },
       {
         field: 'status',
