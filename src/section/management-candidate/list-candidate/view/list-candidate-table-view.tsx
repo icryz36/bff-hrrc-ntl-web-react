@@ -12,7 +12,6 @@ import {
 } from 'services/candidate/mutation';
 import { TCandidateListItems, TCandidateTableRow } from 'types/candidate';
 import DashboardMenu from 'components/common/DashboardMenu';
-import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
@@ -38,7 +37,12 @@ type ProductsTableProps = {
   loading: boolean;
 };
 
-const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsTableProps) => {
+const ListCandidateTableView = ({
+  apiRef,
+  filterButtonEl,
+  tableData,
+  loading,
+}: ProductsTableProps) => {
   const navigate = useNavigate();
 
   const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
@@ -197,11 +201,13 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         cellClassName: 'job-status-cell',
         renderCell: (params) => {
           return (
-            <Chip
-              label={params.row.status}
-              variant="soft"
-              color={getStatusBadgeColor(params.row.status)}
-            />
+            <>
+              <Chip
+                label={params.row.status}
+                variant="soft"
+                color={getStatusBadgeColor(params.row.status)}
+              />
+            </>
           );
         },
       },
@@ -261,6 +267,7 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
       <StyledDataGrid
         rowHeight={64}
         rows={tableData}
+        loading={loading}
         apiRef={apiRef}
         columns={columns}
         getRowId={(row) => row.candidateId}
@@ -275,7 +282,6 @@ const ListCandidateTableView = ({ apiRef, filterButtonEl, tableData }: ProductsT
         }}
         checkboxSelection
         slots={{
-          loadingOverlay: () => <DataGridSkeleton rows={defaultPageSize} />,
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}
         slotProps={{

@@ -27,7 +27,6 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
   const { data: usersList = [] } = useQuery(useMasterDataQuery.users());
 
   const jobData = data?.data;
-
   // value ---------------------------------------------------------------
 
   const recruiterNames = usersList

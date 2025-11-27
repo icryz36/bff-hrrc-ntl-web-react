@@ -33,7 +33,7 @@ const CandidateDetailView = () => {
         <InformationBox
           background
           rows={[
-            { label: 'Gender', value: candidate?.gender },
+            { label: 'Gender', value: candidate?.gender === 'm' ? 'ชาย' : 'หญิง' },
             { label: 'Age', value: candidate?.age },
             { label: 'Contact No.', value: candidate?.mobileNo },
             { label: 'Email', value: candidate?.email },
