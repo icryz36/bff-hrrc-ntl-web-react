@@ -36,7 +36,7 @@ const OPTION_CONFIRM = [
 
 const OPTION_GENDER = [
   { label: 'ชาย', value: 'm' },
-  { label: 'หญืง', value: 'f' },
+  { label: 'หญิง', value: 'f' },
 ] as const;
 
 const OPTION_VEHICLE = [

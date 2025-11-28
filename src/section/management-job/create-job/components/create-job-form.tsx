@@ -152,7 +152,7 @@ export const CreateJobForm = ({
           shouldDirty: true,
         });
       }
-    } else if (isHO && !selectedBigEvent) {
+    } else if (isHO && !selectedBigEvent && newHeadCount > 10) {
       newHeadCount = 10;
       if (selectedHeadCount !== '10') {
         setValue('headCount', '10', {
