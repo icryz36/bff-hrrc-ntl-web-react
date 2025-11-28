@@ -163,7 +163,7 @@ export const EditCandidateForm = ({
                   key={item.title}
                   title={item.title}
                   panelId={index}
-                  defaultExpanded
+                  defaultExpanded={item.title !== 'Applied Job'}
                 >
                   {item.children}
                 </AccordionCustom>

@@ -25,7 +25,7 @@ export const CandidateApplicationDocumentsForm = () => {
         {filterDocTypeKey?.map((item) => (
           <Grid size={{ xs: 12, md: 6 }} key={item.documentTypeId}>
             <Stack direction="column" spacing={2}>
-              <Typography variant="subtitle2_medium">{item.documentTypeNameTh}</Typography>
+              <Typography variant="subtitle2_medium">{item.documentTypeNameEn}</Typography>
               <Field.Upload
                 sx={{ height: 82 }}
                 hideInputIfHaveValue

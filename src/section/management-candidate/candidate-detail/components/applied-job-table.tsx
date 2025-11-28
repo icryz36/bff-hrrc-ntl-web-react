@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Chip, ChipOwnProps } from '@mui/material';
+import { Box, Chip, ChipOwnProps, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useGridApiRef } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
@@ -106,6 +106,23 @@ const AppliedJobTable = ({ tableData }: { tableData: TJobApplications[] }) => {
         getRowClassName={(params) =>
           params.row.jobStatus.statusNameEn.toLowerCase() === 'new' ? 'row-disabled' : ''
         }
+        slots={{
+          noRowsOverlay: () => (
+            <Box
+              sx={{
+                height: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                color: 'text.secondary',
+                gap: 1,
+              }}
+            >
+              <Typography variant="subtitle2">No Applied Job</Typography>
+            </Box>
+          ),
+        }}
       />
     </Box>
   );

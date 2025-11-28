@@ -403,6 +403,7 @@ const ListCandidateTableView = ({
               sx={{ mt: 2 }}
               value={blcklistReason}
               onChange={(e) => setBlcklistReason(e.target.value)}
+              inputProps={{ maxLength: 250 }}
             />
           </Box>
         }
@@ -447,12 +448,12 @@ const ListCandidateTableView = ({
       />
 
       <CustomConfirmDialog
-        title="แบนผู้สมัครสำเร็จ"
+        title="บันทึกสำเร็จ"
         open={isOpenBlacklistDialog.value}
         onClose={isOpenBlacklistDialog.onFalse}
         description={
           <Typography color="text.secondary" variant="subtitle1">
-            ระบบได้บันทึกการแบนผู้สมัครเรียบร้อยแล้ว
+            ระบบได้อัพเดทสถานะผู้สมัครเรียบร้อยแล้ว
           </Typography>
         }
         action={
