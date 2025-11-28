@@ -9,6 +9,7 @@ import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import AppliedJobTable from '../components/applied-job-table';
 import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
+import NoteBox from '../components/note-box';
 
 const CandidateDetailView = () => {
   const { id = '' } = useParams();
@@ -18,7 +19,17 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
+  const result = candidateDetail?.documents.filter(
+    (doc) => doc.documentType.documentTypeKey === 'profile_picture',
+  );
+  const { data: fileData, isLoading: fileLoading } = useQuery({
+    ...useCandidateQuery.document({ filePath: result?.[0]?.filePath || '' }),
+    enabled: !!candidateDetail?.candidate?.candidateId,
+  });
   const { jobApplications, candidate, documents } = candidateDetail || ({} as TCandidateData);
+
+  console.log('result', result);
+  console.log('fileData', fileData);
 
   const accordionData = [
     {
@@ -75,7 +86,7 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Note (Optional)',
-      children: '',
+      children: <NoteBox candidateId={candidate?.candidateId} data={candidate?.note} />,
       defaultExpanded: true,
     },
     {
@@ -173,7 +184,9 @@ const CandidateDetailView = () => {
             width: 72,
             borderRadius: 150,
           }}
-        />
+        >
+          {fileLoading && <IconifyIcon icon="line-md:loading-twotone-loop" fontSize={72} />}
+        </Avatar>
         <Stack direction={'column'} gap={1}>
           <Typography variant="h5">
             {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}

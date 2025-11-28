@@ -1,6 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
-import { TGetCandidateByIdPayload, TGetCandidateListPayload } from 'types/candidate';
-import { fetchCandidateById, fetchCandidateList } from './services';
+import {
+  TGetCandidateByIdPayload,
+  TGetCandidateDocumentByIdPayload,
+  TGetCandidateListPayload,
+} from 'types/candidate';
+import { fetchCandidateById, fetchCandidateDocumentById, fetchCandidateList } from './services';
 
 // ----------------------------------------------------------------------
 
@@ -8,6 +12,7 @@ const useCandidateQuery = {
   keys: () => ['candidate'] as const,
   keysList: () => [...useCandidateQuery.keys(), 'list'] as const,
   keysDetail: () => [...useCandidateQuery.keys(), 'detail'] as const,
+  keysDocument: () => [...useCandidateQuery.keys(), 'document'] as const,
 
   list: (payload: TGetCandidateListPayload) =>
     queryOptions({
@@ -19,6 +24,12 @@ const useCandidateQuery = {
     queryOptions({
       queryKey: [...useCandidateQuery.keysDetail(), payload],
       queryFn: () => fetchCandidateById(payload),
+      select: (response) => response.data,
+    }),
+  document: (payload: TGetCandidateDocumentByIdPayload) =>
+    queryOptions({
+      queryKey: [...useCandidateQuery.keysDocument(), payload],
+      queryFn: () => fetchCandidateDocumentById(payload),
       select: (response) => response.data,
     }),
 };

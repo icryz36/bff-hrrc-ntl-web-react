@@ -31,6 +31,8 @@ const endpoint = {
     updateInfo: `update-candidate-xapi`,
     updateStatus: `update-candidate-status-xapi`,
     updateBlacklist: `update-candidate-blacklist-xapi`,
+    updateNote: `update-candidate-note-xapi`,
+    document: `get-document-xapi`,
   },
 };
 

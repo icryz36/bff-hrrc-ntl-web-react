@@ -96,7 +96,7 @@ const ListCandidateTableView = ({
   const handleUpdateBlacklist = () => {
     updateCandidateBlacklist(
       {
-        candidatId: updateBlacklist.candidateId,
+        candidateId: updateBlacklist.candidateId,
         isBlacklist: updateBlacklist.isBlacklist,
         blcklistReason,
       },

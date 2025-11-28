@@ -41,6 +41,9 @@ export type TGetCandidateListPagination = {
 export type TGetCandidateByIdPayload = {
   candidateId: string;
 };
+export type TGetCandidateDocumentByIdPayload = {
+  filePath: string;
+};
 export type TCandidateDocumentsItem = {
   documentId?: string | null;
   operation: 'insert' | 'update' | 'delete';
@@ -309,15 +312,22 @@ export type TCandidateUpdateStatusPayload = {
 };
 
 export type TCandidateUpdateStatusResponse = TStatusResponse & {
-  data: { candidatId: string };
+  data: { candidateId: string };
 };
 
 export type TCandidateBlacklistPayload = {
-  candidatId: string;
+  candidateId: string;
   isBlacklist: boolean;
   blcklistReason: string;
 };
 
 export type TCandidateBlacklistResponse = TStatusResponse & {
-  data: { candidatId: string };
+  data: { candidateId: string };
+};
+export type TCandidateNotePayload = {
+  candidateId: string;
+  note: string;
+};
+export type TCandidateDocumentResponse = TStatusResponse & {
+  data: { binaryBase64: string };
 };

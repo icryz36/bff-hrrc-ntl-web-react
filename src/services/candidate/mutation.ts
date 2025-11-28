@@ -1,9 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from 'services/client';
-import { TCandidateBlacklistPayload, TCandidateUpdateStatusPayload } from 'types/candidate';
+import {
+  TCandidateBlacklistPayload,
+  TCandidateNotePayload,
+  TCandidateUpdateStatusPayload,
+  TGetCandidateDocumentByIdPayload,
+} from 'types/candidate';
 import { useCandidateQuery } from './query';
 import {
+  postUpdateCandidateDocument,
   postUpdateCandidateInfo,
+  postUpdateCandidateNote,
   updateCandidateBlacklist,
   updateCandidateStatus,
 } from './services';
@@ -36,4 +43,12 @@ export const useUpdateCandidateMutation = () =>
         queryKey: useCandidateQuery.keys(),
       });
     },
+  });
+export const useUpdateCandidate์NoteMutation = () =>
+  useMutation({
+    mutationFn: (payload: TCandidateNotePayload) => postUpdateCandidateNote(payload),
+  });
+export const useDownloadCandidateDocumentMutation = () =>
+  useMutation({
+    mutationFn: (payload: TGetCandidateDocumentByIdPayload) => postUpdateCandidateDocument(payload),
   });

@@ -3,10 +3,13 @@ import { axiosCandidateInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
   TCandidateBlacklistResponse,
+  TCandidateDocumentResponse,
+  TCandidateNotePayload,
   TCandidateUpdateStatusPayload,
   TCandidateUpdateStatusResponse,
   TGetCandidateByIdPayload,
   TGetCandidateByIdResponse,
+  TGetCandidateDocumentByIdPayload,
   TGetCandidateListPayload,
   TGetCandidateListResponse,
   TUpdateCandidateResponse,
@@ -30,6 +33,17 @@ export const fetchCandidateById = async (
   const { data } = await axiosCandidateInstance({
     method: 'POST',
     url: endpoint.candidate.detail,
+    data: payload,
+  });
+
+  return data;
+};
+export const fetchCandidateDocumentById = async (
+  payload: TGetCandidateDocumentByIdPayload,
+): Promise<TGetCandidateByIdResponse> => {
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    url: endpoint.candidate.document,
     data: payload,
   });
 
@@ -69,6 +83,29 @@ export const postUpdateCandidateInfo = async (
     method: 'POST',
     data: payload,
     url: endpoint.candidate.updateInfo,
+  });
+
+  return data;
+};
+
+export const postUpdateCandidateNote = async (
+  payload: TCandidateNotePayload,
+): Promise<TUpdateCandidateResponse> => {
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.updateNote,
+  });
+
+  return data;
+};
+export const postUpdateCandidateDocument = async (
+  payload: TGetCandidateDocumentByIdPayload,
+): Promise<TCandidateDocumentResponse> => {
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.document,
   });
 
   return data;
