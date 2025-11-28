@@ -31,6 +31,7 @@ export const navigatePaths = {
     duplicateJob: (id: string) => `/${rootPaths.manageRoot}/job/${id}/duplicate`,
   },
   candidate: {
+    list: `/${rootPaths.manageRoot}/candidates/list`,
     detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
     edit: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/edit`,
   },

@@ -26,6 +26,7 @@ const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
     carDriving: data?.candidate.canDriveCar || '',
     link: data?.candidate.linkReference || '',
     documents: mapDocumentsToForm(data?.documents || []),
+    note: data?.candidate.note || '',
   };
 };
 
