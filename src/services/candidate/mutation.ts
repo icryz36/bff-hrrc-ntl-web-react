@@ -40,7 +40,7 @@ export const useUpdateCandidateMutation = () =>
     mutationFn: (payload: FormData) => postUpdateCandidateInfo(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: useCandidateQuery.keys(),
+        queryKey: useCandidateQuery.keysList(),
       });
     },
   });

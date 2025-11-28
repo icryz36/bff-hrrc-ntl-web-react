@@ -7,7 +7,17 @@ import {
 import { RemoteFile, UploadFile } from 'components/hook-form';
 import { TEditCandidate } from './schema';
 
+// ----------------------------------------------------------------------
+
+const PROFILE_DOC_TYPE_KEY = 'profile_picture';
+
+// ----------------------------------------------------------------------
+
 const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
+  const documentsMap = mapDocumentsToForm(data?.documents || []);
+  const profileDocs = documentsMap[PROFILE_DOC_TYPE_KEY] || [];
+  const profile = profileDocs[0] && isRemoteFile(profileDocs[0]) ? profileDocs[0]?.url : null;
+
   return {
     title: data?.candidate.title.titleId || '',
     name: data?.candidate.nameTh || '',
@@ -26,6 +36,8 @@ const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
     carDriving: data?.candidate.canDriveCar || '',
     link: data?.candidate.linkReference || '',
     documents: mapDocumentsToForm(data?.documents || []),
+    note: data?.candidate.note || '',
+    profile,
   };
 };
 
@@ -69,6 +81,8 @@ const processDeletedDocumentTypes = (
   const operations: TCandidateDocumentsItem[] = [];
 
   Object.entries(originalByKey).forEach(([docTypeKey, originals]) => {
+    if (docTypeKey === PROFILE_DOC_TYPE_KEY) return;
+
     if (docs[docTypeKey] === undefined) {
       originals.forEach((ori) => {
         operations.push({
@@ -211,6 +225,43 @@ const convertCreateEditCandidatePostPayload = (
     }
   });
 
+  // uplaod new profile  -------------------------------------
+
+  const originalProfileDocs = originalByKey[PROFILE_DOC_TYPE_KEY] ?? [];
+  const profileValue = data.profile;
+
+  if (profileValue instanceof File) {
+    const files: UploadFile[] = [profileValue];
+
+    const { operations, newFile } = processDocumentOperations(
+      PROFILE_DOC_TYPE_KEY,
+      files,
+      originalProfileDocs,
+    );
+
+    candidateDocuments.push(...operations);
+
+    if (newFile) {
+      dynamicFiles[PROFILE_DOC_TYPE_KEY] = newFile;
+    }
+  }
+
+  // delete image profile -------------------------------------
+
+  if (profileValue === null && originalProfileDocs.length > 0) {
+    const currentRemoteIds = new Set<string>();
+    const deletedOps = getDeletedDocuments(
+      originalProfileDocs,
+      currentRemoteIds,
+      false,
+      PROFILE_DOC_TYPE_KEY,
+    );
+    candidateDocuments.push(...deletedOps);
+  }
+
+  // --------------------------------------------------------------
+
+  // ลบ docType ที่หายไป
   const deletedOperations = processDeletedDocumentTypes(docs, originalByKey);
   candidateDocuments.push(...deletedOperations);
 

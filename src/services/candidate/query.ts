@@ -25,6 +25,8 @@ const useCandidateQuery = {
       queryKey: [...useCandidateQuery.keysDetail(), payload],
       queryFn: () => fetchCandidateById(payload),
       select: (response) => response.data,
+      gcTime: 0,
+      staleTime: 0,
     }),
   document: (payload: TGetCandidateDocumentByIdPayload) =>
     queryOptions({
