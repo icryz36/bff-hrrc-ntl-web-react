@@ -28,8 +28,10 @@ const CandidateDetailView = () => {
   });
   const { jobApplications, candidate, documents } = candidateDetail || ({} as TCandidateData);
 
-  console.log('result', result);
-  console.log('fileData', fileData);
+  const getBase64Src = (base64?: string) => {
+    if (!base64) return '';
+    return `data:image/*;base64,${base64}`;
+  };
 
   const accordionData = [
     {
@@ -181,7 +183,7 @@ const CandidateDetailView = () => {
       )}
       <Stack gap={2} alignItems={'center'} mt={2} py={1}>
         <Avatar
-          src=""
+          src={getBase64Src(fileData?.binaryBase64)}
           sx={{
             height: 72,
             width: 72,

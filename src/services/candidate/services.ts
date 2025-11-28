@@ -40,7 +40,7 @@ export const fetchCandidateById = async (
 };
 export const fetchCandidateDocumentById = async (
   payload: TGetCandidateDocumentByIdPayload,
-): Promise<TGetCandidateByIdResponse> => {
+): Promise<TCandidateDocumentResponse> => {
   const { data } = await axiosCandidateInstance({
     method: 'POST',
     url: endpoint.candidate.document,
