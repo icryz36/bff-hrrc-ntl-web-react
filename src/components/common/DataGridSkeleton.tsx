@@ -1,22 +1,17 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
-const DataGridSkeleton = ({ rows = 10, message }: { rows?: number; message?: string }) => (
+const DataGridSkeleton = ({ rows = 3, message }: { rows?: number; message?: string }) => (
   <Box p={2}>
     {message && (
       <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary' }}>
         {message}
       </Typography>
     )}
-
-    {Array.from({ length: rows }).map((_, i) => (
-      <Skeleton
-        key={i}
-        variant="rectangular"
-        height={50}
-        animation="wave"
-        sx={{ mb: 1, borderRadius: 1 }}
-      />
-    ))}
+    <Stack direction={'column'} spacing={1} sx={{ width: '100%' }}>
+      {Array.from({ length: rows }).map((_, i) => (
+        <Skeleton key={i} variant="rectangular" sx={{ width: '100%' }} animation="wave" />
+      ))}
+    </Stack>
   </Box>
 );
 

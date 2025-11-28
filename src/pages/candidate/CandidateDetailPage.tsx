@@ -14,11 +14,7 @@ const CandidateDatailPage = () => {
           title="Candidate Detail"
           actionComponent={
             <IconButton edge="end" aria-label="back" onClick={() => navigate(-1)}>
-              <IconifyIcon
-                icon="material-symbols:arrow-back-ios-rounded"
-                fontSize="24px"
-                color="primary"
-              />
+              <IconifyIcon icon="material-symbols:arrow-back-ios-rounded" />
             </IconButton>
           }
           sx={{

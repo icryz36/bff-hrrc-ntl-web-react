@@ -32,7 +32,9 @@ const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
                   >
                     <IconifyIcon icon="mdi:note-text-outline" fontSize="20px" color="primary" />
                   </Paper>
-                  <Typography variant="subtitle2_regular">{item.filePath}</Typography>
+                  <Typography variant="subtitle2_regular">
+                    {item.documentType.documentTypeNameEn}
+                  </Typography>
                 </Stack>
                 <IconifyIcon
                   icon="material-symbols:download"

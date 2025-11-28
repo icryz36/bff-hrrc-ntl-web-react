@@ -6,6 +6,7 @@ import { Box, Button, Container, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import AccordionCustom from 'components/common/AccordionCustom';
+import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import { Form } from 'components/hook-form';
 import { defaultValues } from '../default-values-form';
 import { buildCreateCandidateFormData, convertCreateEditCandidatePostPayload } from '../helper';
@@ -113,7 +114,7 @@ export const EditCandidateForm = ({
 
   // ----------------------------------------------------------------------
 
-  const { data: candidateDetail } = useQuery({
+  const { data: candidateDetail, isLoading: isLoadingCandidateDetail } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
@@ -145,6 +146,9 @@ export const EditCandidateForm = ({
 
   // ----------------------------------------------------------------------
 
+  if (isLoadingCandidateDetail) {
+    return <DataGridSkeleton />;
+  }
   return (
     <>
       <Container maxWidth="md">

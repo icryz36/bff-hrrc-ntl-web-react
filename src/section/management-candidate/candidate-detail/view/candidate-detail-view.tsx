@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { Avatar, Box, Container, Paper, Stack, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
@@ -155,15 +155,17 @@ const CandidateDetailView = () => {
   return (
     <Container maxWidth="md">
       {candidate?.isBlacklist && (
-        <Paper elevation={0} background={2} variant="elevation" sx={{ p: 2, height: 52, my: 3 }}>
-          <Stack alignItems={'center'} gap={1}>
-            <IconifyIcon icon="tdesign:close-octagon" fontSize="20px" color="primary" />
-            <Typography variant="subtitle2_bold">Black List :</Typography>
-            <Typography variant="subtitle2_regular">{candidate?.blacklistReason || '-'}</Typography>
-          </Stack>
-        </Paper>
+        <Alert
+          color="error"
+          icon={<IconifyIcon icon="tdesign:close-octagon" />}
+          sx={{
+            fontSize: 24,
+          }}
+        >
+          Black List : {candidate?.blacklistReason || '-'}
+        </Alert>
       )}
-      <Stack gap={2} alignItems={'center'} py={1}>
+      <Stack gap={2} alignItems={'center'} mt={2} py={1}>
         <Avatar
           src=""
           sx={{
@@ -178,7 +180,7 @@ const CandidateDetailView = () => {
             {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
           </Typography>
           <Typography variant="subtitle2">
-            Candidate Id : {candidateDetail?.candidate?.idNo}{' '}
+            Candidate Id : {candidateDetail?.candidate.candidateId}
           </Typography>
         </Stack>
       </Stack>

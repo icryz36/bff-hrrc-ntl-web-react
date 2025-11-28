@@ -1,5 +1,6 @@
 import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, TextField, Typography } from '@mui/material';
 import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
@@ -56,8 +57,10 @@ const ListCandidateTableView = ({
   const isOpenConfirmBlacklistDialog = useBoolean();
   const isOpenBlacklistDialog = useBoolean();
 
-  const { mutate: updateCandidateStatus } = useCandidateUpdateStatusMutation();
-  const { mutate: updateCandidateBlacklist } = useCandidateUpdateBlacklistMutation();
+  const { mutate: updateCandidateStatus, isPending: isUpdatingStatus } =
+    useCandidateUpdateStatusMutation();
+  const { mutate: updateCandidateBlacklist, isPending: isUpdatingBlacklist } =
+    useCandidateUpdateBlacklistMutation();
 
   const [updateStatus, setUpdateStatus] = useState<{
     candidateId: string;
@@ -372,13 +375,14 @@ const ListCandidateTableView = ({
             >
               Cancel
             </Button>
-            <Button
+            <LoadingButton
+              loading={isUpdatingStatus}
               variant="contained"
               sx={{ backgroundColor: 'primary' }}
               onClick={() => handleUpdateStatus(updateStatus.candidateId, updateStatus.status)}
             >
               Comfirm
-            </Button>
+            </LoadingButton>
           </Stack>
         }
       />
@@ -416,13 +420,14 @@ const ListCandidateTableView = ({
             >
               Cancel
             </Button>
-            <Button
+            <LoadingButton
+              loading={isUpdatingBlacklist}
               variant="contained"
               sx={{ backgroundColor: 'primary' }}
               onClick={() => handleUpdateBlacklist()}
             >
               Comfirm
-            </Button>
+            </LoadingButton>
           </Stack>
         }
       />
