@@ -146,7 +146,7 @@ const FileDropZone = ({
         </Box>
       )}
 
-      {error && <FormHelperText>{error}</FormHelperText>}
+      {error && <FormHelperText sx={{ color: 'error.main' }}>{error}</FormHelperText>}
 
       {previews.length > 0 && previewType === 'list' && (
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -171,7 +171,9 @@ const FileDropZone = ({
                 sx={(theme) => ({
                   pl: 1,
                   gap: 2,
-                  bgcolor: theme.vars.palette.background.elevation1,
+                  bgcolor: error
+                    ? theme.palette.error.lighter
+                    : theme.vars.palette.background.elevation1,
                   borderRadius: 2,
                   ...theme.applyStyles('dark', {
                     bgcolor: theme.vars.palette.background.elevation2,

@@ -63,7 +63,7 @@ export const CandidateBasicInformationForm = () => {
       </Grid>
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <Field.Select name="highestEducation" label="Highest Education" required>
+        <Field.Select name="highestEducation" label="Highest Education">
           {degreeList?.map((option) => (
             <MenuItem key={option.degreeId} value={option.degreeId}>
               {option.degreeNameTh}
