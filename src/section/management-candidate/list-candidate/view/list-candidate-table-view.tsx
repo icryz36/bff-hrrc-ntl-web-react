@@ -2,7 +2,7 @@ import { RefObject, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, Chip, ChipOwnProps, Link, Stack, TextField, Typography } from '@mui/material';
-import { GRID_CHECKBOX_SELECTION_COL_DEF, GridColDef } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
@@ -119,11 +119,6 @@ const ListCandidateTableView = ({
 
   const columns: GridColDef<TCandidateTableRow>[] = useMemo(
     () => [
-      {
-        ...GRID_CHECKBOX_SELECTION_COL_DEF,
-        width: 64,
-      },
-
       {
         field: 'isBlacklist',
         headerName: 'Blacklist',
@@ -343,7 +338,6 @@ const ListCandidateTableView = ({
               },
             },
           }}
-          checkboxSelection
           slots={{
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}

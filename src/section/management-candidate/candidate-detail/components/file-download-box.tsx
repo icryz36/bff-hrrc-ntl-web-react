@@ -7,7 +7,8 @@ import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 
 const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
   const isOpenUpdateFailedDialog = useBoolean();
-  const { mutate: downloadCandidateDocument } = useDownloadCandidateDocumentMutation();
+  const { mutate: downloadCandidateDocument, isPending: isDownloading } =
+    useDownloadCandidateDocumentMutation();
 
   const downloadBase64File = (
     base64String: string,
@@ -76,8 +77,12 @@ const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
                   <Typography variant="subtitle2_regular">{item.fileName}</Typography>
                 </Stack>
                 <IconifyIcon
-                  icon="material-symbols:download"
-                  fontSize="20px"
+                  icon={
+                    isDownloading
+                      ? 'line-md:loading-twotone-loop'
+                      : 'material-symbols-light:download'
+                  }
+                  fontSize={25}
                   color="primary"
                   onClick={() => handleDownload(item.filePath, item.fileName)}
                   style={{ cursor: 'pointer' }}
