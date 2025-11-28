@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { Alert, Avatar, Box, Container, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
@@ -36,7 +36,7 @@ const CandidateDetailView = () => {
       icon: 'mdi:account-outline',
       title: 'Applied Job',
       children: <AppliedJobTable tableData={jobApplications ?? []} />,
-      defaultExpanded: true,
+      defaultExpanded: !(jobApplications?.length === 0),
     },
     {
       icon: 'mdi:account-outline',
@@ -166,15 +166,18 @@ const CandidateDetailView = () => {
   return (
     <Container maxWidth="md">
       {candidate?.isBlacklist && (
-        <Alert
-          color="error"
-          icon={<IconifyIcon icon="tdesign:close-octagon" />}
-          sx={{
-            fontSize: 24,
-          }}
-        >
-          Black List : {candidate?.blacklistReason || '-'}
-        </Alert>
+        <Box sx={{ bgcolor: '#E31837', p: 1.5, borderRadius: 2, mb: 2, color: 'white' }}>
+          <Stack spacing={1}>
+            <IconifyIcon
+              icon="tdesign:close-octagon"
+              fontSize="20px"
+              style={{ verticalAlign: 'middle', marginRight: 8 }}
+            />
+            <Typography variant="subtitle2_bold">
+              Black List : {candidate?.blacklistReason || '-'}
+            </Typography>
+          </Stack>
+        </Box>
       )}
       <Stack gap={2} alignItems={'center'} mt={2} py={1}>
         <Avatar

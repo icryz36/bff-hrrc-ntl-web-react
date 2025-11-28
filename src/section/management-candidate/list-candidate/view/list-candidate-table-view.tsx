@@ -306,11 +306,24 @@ const ListCandidateTableView = ({
                 isOpenConfirmBlacklistDialog.onTrue();
               },
             },
+            {
+              label: 'Cancel Black List',
+              icon: 'mdi:close-octagon-outline',
+              onClick: () => {
+                setUpdateBlacklist({
+                  candidateId,
+                  isBlacklist: false,
+                });
+                isOpenConfirmBlacklistDialog.onTrue();
+              },
+            },
           ];
 
-          const filteredMenuItems = menuItems.filter(
-            (item) => !(isBlacklist && item.label === 'Black List'),
-          );
+          const filteredMenuItems = menuItems.filter((item) => {
+            if (isBlacklist && item.label === 'Black List') return false;
+            if (!isBlacklist && item.label === 'Cancel Black List') return false;
+            return true;
+          });
 
           return <DashboardMenu menuItems={filteredMenuItems} />;
         },
@@ -382,7 +395,7 @@ const ListCandidateTableView = ({
       />
 
       <CustomConfirmDialog
-        title="Blacklist*"
+        title="Note"
         open={isOpenConfirmBlacklistDialog.value}
         onClose={isOpenConfirmBlacklistDialog.onFalse}
         description={
