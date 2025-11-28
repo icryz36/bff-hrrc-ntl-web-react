@@ -27,6 +27,16 @@ const EditCandidateView = () => {
     enabled: !!id,
   });
 
+  const result = candidateDetail?.documents.filter(
+    (doc) => doc.documentType.documentTypeKey === 'profile_picture',
+  );
+  const firstFilePath = result?.[0]?.filePath || '';
+
+  const { data: fileImageData } = useQuery({
+    ...useCandidateQuery.document({ filePath: firstFilePath }),
+    enabled: !!firstFilePath,
+  });
+
   const { mutate: updateCandidate, isPending: isLoadingUpdateCandidate } =
     useUpdateCandidateMutation();
 
@@ -52,8 +62,8 @@ const EditCandidateView = () => {
   // ----------------------------------------------------------------------
 
   const defaultValuesForm = useMemo(
-    () => convertDefaultValuesForm(candidateDetail),
-    [candidateDetail],
+    () => convertDefaultValuesForm(candidateDetail, fileImageData?.binaryBase64),
+    [candidateDetail, fileImageData],
   );
 
   // ----------------------------------------------------------------------

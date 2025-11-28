@@ -33,6 +33,8 @@ const useCandidateQuery = {
       queryKey: [...useCandidateQuery.keysDocument(), payload],
       queryFn: () => fetchCandidateDocumentById(payload),
       select: (response) => response.data,
+      gcTime: 0,
+      staleTime: 0,
     }),
 };
 export { useCandidateQuery };

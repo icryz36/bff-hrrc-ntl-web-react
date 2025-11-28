@@ -52,9 +52,11 @@ const FileDownloadBox = ({ data }: { data: TDocumentItem[] }) => {
     );
   };
 
+  const ducumentData = data.filter((doc) => doc.documentType.documentTypeKey !== 'profile_picture');
+
   return (
     <Grid container spacing={2}>
-      {data?.map((item) => (
+      {ducumentData?.map((item) => (
         <Grid key={item.documentId} size={{ md: 6 }}>
           <Stack flexDirection="column" spacing={2} width="100%">
             <Typography>{item.documentType.documentTypeNameEn}</Typography>

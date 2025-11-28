@@ -9,7 +9,7 @@ import { Field } from 'components/hook-form/fields';
 export const CandidateBasicInformationForm = () => {
   const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
 
-  const { data: degreeList = [] } = useQuery(useMasterDataQuery.degree());
+  //const { data: degreeList = [] } = useQuery(useMasterDataQuery.degree());
 
   // value ---------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export const CandidateBasicInformationForm = () => {
         />
       </Grid>
 
-      <Grid size={{ xs: 12, md: 6 }}>
+      {/* <Grid size={{ xs: 12, md: 6 }}>
         <Field.Select name="highestEducation" label="Highest Education">
           {degreeList?.map((option) => (
             <MenuItem key={option.degreeId} value={option.degreeId}>
@@ -74,7 +74,7 @@ export const CandidateBasicInformationForm = () => {
 
       <Grid size={{ xs: 12, md: 6 }}>
         <Field.Text name="workExperience" label="Work Experience" required />
-      </Grid>
+      </Grid> */}
 
       <Grid size={{ xs: 12 }}>
         <Stack spacing={1.5} direction="column">

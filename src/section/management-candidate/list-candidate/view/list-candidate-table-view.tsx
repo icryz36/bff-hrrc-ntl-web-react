@@ -125,15 +125,7 @@ const ListCandidateTableView = ({
         width: 110,
         renderCell: (params) => {
           return (
-            <>
-              {params.row.isBlacklist ? (
-                <Chip label="Blacklist" variant="soft" color="error" />
-              ) : (
-                <Typography color="text.secondary" variant="subtitle1_regular">
-                  -
-                </Typography>
-              )}
-            </>
+            <>{params.row.isBlacklist && <Chip label="Blacklist" variant="soft" color="error" />}</>
           );
         },
       },
@@ -232,7 +224,7 @@ const ListCandidateTableView = ({
       },
       {
         field: 'status',
-        headerName: 'Job Status',
+        headerName: 'Status',
         width: 90,
         headerClassName: 'job-status-header',
         cellClassName: 'job-status-cell',
@@ -296,7 +288,7 @@ const ListCandidateTableView = ({
             },
             statusItem,
             {
-              label: 'Black List',
+              label: 'Blacklist',
               icon: 'mdi:close-octagon-outline',
               onClick: () => {
                 setUpdateBlacklist({
@@ -307,7 +299,7 @@ const ListCandidateTableView = ({
               },
             },
             {
-              label: 'Cancel Black List',
+              label: 'Cancel Blacklist',
               icon: 'mdi:close-octagon-outline',
               onClick: () => {
                 setUpdateBlacklist({
@@ -320,8 +312,8 @@ const ListCandidateTableView = ({
           ];
 
           const filteredMenuItems = menuItems.filter((item) => {
-            if (isBlacklist && item.label === 'Black List') return false;
-            if (!isBlacklist && item.label === 'Cancel Black List') return false;
+            if (isBlacklist && item.label === 'Blacklist') return false;
+            if (!isBlacklist && item.label === 'Cancel Blacklist') return false;
             return true;
           });
 
@@ -401,8 +393,7 @@ const ListCandidateTableView = ({
         description={
           <Box>
             <Typography variant="subtitle1_regular">
-              Provide a reason for blacklisting. The candidate will be blocked from future
-              applications.
+              Please provide the reason for modifying the Blacklist status of this candidate.
             </Typography>
             <TextField
               label="write a Note"

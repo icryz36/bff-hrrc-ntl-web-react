@@ -184,7 +184,7 @@ const ListJobTableView = ({
       },
       {
         field: 'statusName',
-        headerName: 'Job Status',
+        headerName: 'Status',
         minWidth: 90,
         sortable: false,
         headerClassName: 'job-status-header',

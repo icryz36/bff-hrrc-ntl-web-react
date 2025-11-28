@@ -13,10 +13,16 @@ const PROFILE_DOC_TYPE_KEY = 'profile_picture';
 
 // ----------------------------------------------------------------------
 
-const convertDefaultValuesForm = (data?: TCandidateData): TEditCandidate => {
-  const documentsMap = mapDocumentsToForm(data?.documents || []);
-  const profileDocs = documentsMap[PROFILE_DOC_TYPE_KEY] || [];
-  const profile = profileDocs[0] && isRemoteFile(profileDocs[0]) ? profileDocs[0]?.url : null;
+const getBase64Src = (base64?: string) => {
+  if (!base64) return '';
+  return `data:image/*;base64,${base64}`;
+};
+
+const convertDefaultValuesForm = (
+  data?: TCandidateData,
+  fileImageData?: string,
+): TEditCandidate => {
+  const profile = getBase64Src(fileImageData);
 
   return {
     title: data?.candidate.title.titleId || '',

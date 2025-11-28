@@ -1,6 +1,8 @@
 import { useParams } from 'react-router';
-import { Avatar, Box, Container, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Container, Link, Stack, Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { useQuery } from '@tanstack/react-query';
+import { OPTION_VEHICLE } from 'constant/enum';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
 import IconifyIcon from 'components/base/IconifyIcon';
@@ -33,6 +35,10 @@ const CandidateDetailView = () => {
     return `data:image/*;base64,${base64}`;
   };
 
+  const carDrivingCar = OPTION_VEHICLE.find((item) => item.value === candidate?.canDriveCar);
+  const canDriveMotorcycle = OPTION_VEHICLE.find(
+    (item) => item.value === candidate?.canDriveMotorcycle,
+  );
   const accordionData = [
     {
       icon: 'mdi:account-outline',
@@ -64,10 +70,10 @@ const CandidateDetailView = () => {
             },
             {
               label: 'Motorcycle Driving',
-              value: candidate?.hasmotorcycleLicense,
+              value: canDriveMotorcycle?.label || '-',
               fullWidth: true,
             },
-            { label: 'Car Driving', value: candidate?.hascarLicense, fullWidth: true },
+            { label: 'Car Driving', value: carDrivingCar?.label || '-', fullWidth: true },
           ]}
         />
       ),
@@ -82,7 +88,20 @@ const CandidateDetailView = () => {
     {
       icon: 'mdi:note-text-outline',
       title: 'Link Reference',
-      children: <Typography variant="subtitle2_regular">{candidate?.linkReference}</Typography>,
+      children: (
+        <Box>
+          <Typography
+            sx={{
+              wordBreak: 'break-all',
+            }}
+            variant="subtitle2_regular"
+          >
+            <Link href={candidate?.linkReference} target="_blank" rel="noopener noreferrer">
+              {candidate?.linkReference}
+            </Link>
+          </Typography>
+        </Box>
+      ),
       defaultExpanded: true,
     },
     {
@@ -168,7 +187,7 @@ const CandidateDetailView = () => {
   return (
     <Container maxWidth="md">
       {candidate?.isBlacklist && (
-        <Box sx={{ bgcolor: '#E31837', p: 1.5, borderRadius: 2, mb: 2, color: 'white' }}>
+        <Box sx={{ bgcolor: red[700], p: 1.5, borderRadius: 2, mb: 2, color: 'white' }}>
           <Stack spacing={1}>
             <IconifyIcon
               icon="tdesign:close-octagon"
