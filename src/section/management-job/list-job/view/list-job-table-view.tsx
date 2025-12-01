@@ -260,16 +260,14 @@ const ListJobTableView = ({
           pagination
           paginationMode="server"
           onPaginationModelChange={(model) => {
-            onPageChange(model);
+            if (model.page + 1 !== currentPage || model.pageSize !== defaultPageSize) {
+              onPageChange(model);
+            }
           }}
           pageSizeOptions={[defaultPageSize, 15]}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: defaultPageSize,
-                page: currentPage - 1,
-              },
-            },
+          paginationModel={{
+            page: currentPage - 1,
+            pageSize: defaultPageSize,
           }}
           localeText={{
             noRowsLabel: 'No List Job Post',
