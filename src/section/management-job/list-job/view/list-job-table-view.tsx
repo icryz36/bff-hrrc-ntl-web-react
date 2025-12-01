@@ -10,6 +10,7 @@ import ListJobDetailComponent from 'section/management-job/list-job/components/l
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
+import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
@@ -269,10 +270,8 @@ const ListJobTableView = ({
             page: currentPage - 1,
             pageSize: defaultPageSize,
           }}
-          localeText={{
-            noRowsLabel: 'No List Job Post',
-          }}
           slots={{
+            noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Post" />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}
           slotProps={{
