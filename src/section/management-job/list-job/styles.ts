@@ -50,9 +50,6 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     background: theme.palette.grey[200],
     pointerEvents: 'none',
   },
-  '& .MuiDataGrid-main': {
-    minHeight: '320px',
-  },
 }));
 
 export const StyledCheckbox = styled(Checkbox)(({ theme }) => ({

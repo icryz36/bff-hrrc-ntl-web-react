@@ -265,6 +265,11 @@ const ListJobTableView = ({
               onPageChange(model);
             }
           }}
+          sx={{
+            '& .MuiDataGrid-main': {
+              height: totalItem > 0 ? '100%' : '320px',
+            },
+          }}
           pageSizeOptions={[defaultPageSize, 15]}
           paginationModel={{
             page: currentPage - 1,
