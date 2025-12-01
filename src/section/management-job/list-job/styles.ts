@@ -1,3 +1,4 @@
+import { Checkbox } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -51,5 +52,15 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
   '& .MuiDataGrid-main': {
     minHeight: '320px',
+  },
+}));
+
+export const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
+  '&.Mui-checked': {
+    color: theme.palette.chBlue[500],
+  },
+  '& .MuiSvgIcon-root': {
+    backgroundColor: theme.palette.grey[200],
+    borderRadius: '4px',
   },
 }));
