@@ -22,6 +22,7 @@ import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 const EditJobView = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
+  const isSubmitSuccess = useBoolean();
   const isOpenEditJobFailedDialog = useBoolean();
   const isOpenLoadDataFailedDialog = useBoolean();
   const isOpenUpdateJobSuccessDialog = useBoolean();
@@ -104,6 +105,7 @@ const EditJobView = () => {
         onSuccess: (response) => {
           if (response.status) {
             isOpenUpdateJobSuccessDialog.onTrue();
+            isSubmitSuccess.onTrue();
             return;
           }
 
@@ -134,6 +136,7 @@ const EditJobView = () => {
         onSubmit={onSubmit}
         isLoading={isLoadingUpdateJobPost}
         defaultValuesForm={defaultValuesForm}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* Dialog */}

@@ -1,35 +1,26 @@
 import { useFormContext, useFormState } from 'react-hook-form';
 import { useBlocker } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/material';
-import { CreateJobSchemaType } from 'section/management-job/create-job/schema';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 
 // ----------------------------------------------------------------------
 
-export const DirtyFormLeaveGuardDialog = () => {
-  // Form context -------------------------------------------------------
+type UnsavedChangesGuardProps = {
+  isSubmitSuccess?: boolean;
+};
 
-  const { control } = useFormContext<CreateJobSchemaType>();
+export const UnsavedChangesGuard = ({ isSubmitSuccess }: UnsavedChangesGuardProps) => {
+  const { control } = useFormContext();
 
-  const { isDirty, isSubmitSuccessful, isSubmitting, isSubmitted } = useFormState({ control });
-
-  // const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-  //   return isDirty && currentLocation.pathname !== nextLocation.pathname;
-  // });
+  const { isDirty } = useFormState({ control });
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+    if (isSubmitSuccess) return false;
+
     if (!isDirty) return false;
-
-    if (isSubmitting) return false;
-
-    if (isSubmitSuccessful) return false;
-
-    if (isSubmitted) return false;
 
     return currentLocation.pathname !== nextLocation.pathname;
   });
-
-  // --------------------------------------------------------------------
 
   return (
     <CustomConfirmDialog

@@ -24,6 +24,7 @@ const DuplicateJobView = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const [jobNo, setJobNo] = useState<string>('');
+  const isSubmitSuccess = useBoolean();
   const isOpenLoadDataFailedDialog = useBoolean();
   const isOpenDuplicateJobSuccessDialog = useBoolean();
   const isOpenDuplicateJobFailedDialog = useBoolean();
@@ -104,6 +105,7 @@ const DuplicateJobView = () => {
       onSuccess: (response) => {
         if (response.status) {
           setJobNo(response.data.jobPostNo);
+          isSubmitSuccess.onTrue();
           isOpenDuplicateJobSuccessDialog.onTrue();
           return;
         }
@@ -142,6 +144,7 @@ const DuplicateJobView = () => {
         onSubmit={onSubmit}
         isLoading={isLoadingCreateJobPost}
         defaultValuesForm={defaultValuesForm}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* Dialog */}

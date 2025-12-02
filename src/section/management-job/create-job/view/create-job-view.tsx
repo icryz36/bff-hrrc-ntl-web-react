@@ -16,6 +16,8 @@ const CreateJobView = () => {
   const navigate = useNavigate();
   const [jobNo, setJobNo] = useState<string>('');
   const [formKey, setFormKey] = useState<number>(0);
+
+  const isSubmitSuccess = useBoolean();
   const isOpenCreateJobFailedDialog = useBoolean();
   const isOpenCreateJobSuccessDialog = useBoolean();
 
@@ -33,6 +35,7 @@ const CreateJobView = () => {
         if (response.status) {
           setJobNo(response.data.jobPostNo);
           isOpenCreateJobSuccessDialog.onTrue();
+          isSubmitSuccess.onTrue();
           return;
         }
 
@@ -61,7 +64,12 @@ const CreateJobView = () => {
 
   return (
     <>
-      <CreateJobForm onSubmit={onSubmit} isLoading={isLoadingCreateJobPost} key={formKey} />
+      <CreateJobForm
+        key={formKey}
+        onSubmit={onSubmit}
+        isLoading={isLoadingCreateJobPost}
+        isSubmitSuccess={isSubmitSuccess.value}
+      />
 
       {/* Dialog */}
 
