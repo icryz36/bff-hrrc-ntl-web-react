@@ -10,6 +10,7 @@ import ListJobDetailComponent from 'section/management-job/list-job/components/l
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
 import DashboardMenu from 'components/common/DashboardMenu';
+import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
@@ -260,21 +261,22 @@ const ListJobTableView = ({
           pagination
           paginationMode="server"
           onPaginationModelChange={(model) => {
-            onPageChange(model);
+            if (model.page + 1 !== currentPage || model.pageSize !== defaultPageSize) {
+              onPageChange(model);
+            }
           }}
-          pageSizeOptions={[defaultPageSize, 15]}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: defaultPageSize,
-                page: currentPage - 1,
-              },
+          sx={{
+            '& .MuiDataGrid-main': {
+              height: totalItem > 0 ? '100%' : '320px',
             },
           }}
-          localeText={{
-            noRowsLabel: 'No List Job Post',
+          pageSizeOptions={[defaultPageSize, 15]}
+          paginationModel={{
+            page: currentPage - 1,
+            pageSize: defaultPageSize,
           }}
           slots={{
+            noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Post" />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
           }}
           slotProps={{

@@ -12,16 +12,13 @@ const ListJobView = () => {
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
   const apiRef = useGridApiRef();
   const isOpenJobFailedDialog = useBoolean();
-  const [pagination, setPagination] = useState({
-    pageNo: 1,
-    pageSize: 10,
-  });
+  const [pageNo, setPageNo] = useState(1);
 
   const query = useJobpostQuery.list({
     ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
     recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
-    pageNo: pagination.pageNo,
-    pageSize: pagination.pageSize,
+    pageNo: pageNo,
+    pageSize: 10,
   });
 
   const { data: listJobData, isLoading } = useQuery(query);
@@ -42,11 +39,8 @@ const ListJobView = () => {
     apiRef.current?.showFilterPanel();
   };
 
-  const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
-    setPagination({
-      pageNo: page + 1,
-      pageSize,
-    });
+  const handlePageChange = ({ page }: { page: number }) => {
+    setPageNo(page + 1);
   };
 
   return (
@@ -77,7 +71,7 @@ const ListJobView = () => {
         tableData={tableData}
         onPageChange={handlePageChange}
         totalItem={tableTotalRecords}
-        currentPage={pagination.pageNo}
+        currentPage={pageNo}
         loading={isLoading}
       />
       <CustomConfirmDialog

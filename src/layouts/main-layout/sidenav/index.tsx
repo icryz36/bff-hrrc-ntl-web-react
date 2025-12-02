@@ -1,10 +1,10 @@
 import { Backdrop, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
-import { useBreakpoints } from 'providers/BreakpointsProvider';
 import { useSettingsContext } from 'providers/SettingsProvider';
 import { sidenavVibrantStyle } from 'theme/styles/vibrantNav';
 import VibrantBackground from 'components/common/VibrantBackground';
+import { useBreakpoints } from '../../../providers/BreakpointsProvider';
 import SidenavCollapse from './SidenavCollapse';
 import SidenavDrawerContent from './SidenavDrawerContent';
 

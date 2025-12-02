@@ -8,6 +8,7 @@ import { navigatePaths } from 'routes/paths';
 import { useUpdateCandidateMutation } from 'services/candidate/mutation';
 import { useCandidateQuery } from 'services/candidate/query';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
+import DefaultLoader from 'components/loading/DefaultLoader';
 import { EditCandidateForm } from '../components/edit-candidate-form';
 import { convertDefaultValuesForm } from '../helper';
 
@@ -22,7 +23,7 @@ const EditCandidateView = () => {
 
   // api ---------------------------------------------------------------
 
-  const { data: candidateDetail } = useQuery({
+  const { data: candidateDetail, isLoading } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
@@ -67,6 +68,10 @@ const EditCandidateView = () => {
   );
 
   // ----------------------------------------------------------------------
+
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
 
   return (
     <>

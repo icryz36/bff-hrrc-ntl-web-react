@@ -16,6 +16,7 @@ import { useJobpostQuery } from 'services/jobpost/query';
 import { useMasterDataQuery } from 'services/master-data/query';
 import { MasterDataMaps } from 'types/master-data';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
+import DefaultLoader from 'components/loading/DefaultLoader';
 
 // ---------------------------------------------------------------------
 
@@ -30,7 +31,11 @@ const EditJobView = () => {
   // api ----------------------------------------------------------------
 
   const { mutate: updateJobPost, isPending: isLoadingUpdateJobPost } = useUpdateJobpostMutation();
-  const { data: jobpostDetail, isError: isErrorGetjobDetail } = useQuery({
+  const {
+    data: jobpostDetail,
+    isError: isErrorGetjobDetail,
+    isLoading,
+  } = useQuery({
     ...useJobpostQuery.detail({ jobPostId: id }),
     enabled: !!id,
   });
@@ -129,6 +134,9 @@ const EditJobView = () => {
 
   // --------------------------------------------------------------------
 
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
   return (
     <>
       <CreateJobForm
