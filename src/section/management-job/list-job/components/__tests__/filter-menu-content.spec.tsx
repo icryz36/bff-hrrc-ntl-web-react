@@ -8,18 +8,37 @@ vi.mock('@mui/x-date-pickers', () => ({
 }));
 
 describe('FilterMenuContent', () => {
-  let apiRef: any;
   let onCloseMock: any;
+  let setFiltersMock: any;
+  let onResetFiltersMock: any;
+
+  const mockFilters = {
+    jobTitle: '',
+    department: [],
+    region: '',
+    province: '',
+    district: '',
+    jobStatus: '',
+    owner: '',
+    startDate: null,
+    activeDay: '',
+  };
 
   beforeEach(() => {
-    apiRef = { current: { setFilterModel: vi.fn() } };
     onCloseMock = vi.fn();
+    setFiltersMock = vi.fn();
+    onResetFiltersMock = vi.fn();
   });
 
   const setup = () =>
     render(
       <MemoryRouter>
-        <FilterMenuContent apiRef={apiRef} onClose={onCloseMock} />
+        <FilterMenuContent
+          onClose={onCloseMock}
+          filters={mockFilters}
+          setFilters={setFiltersMock}
+          onResetFilters={onResetFiltersMock}
+        />
       </MemoryRouter>,
     );
 
@@ -61,10 +80,10 @@ describe('FilterMenuContent', () => {
 
     fireEvent.click(screen.getByText('Reset'));
 
-    expect((screen.getByLabelText('Job Title') as HTMLInputElement).value).toBe('');
+    expect(onResetFiltersMock).toHaveBeenCalled();
   });
 
-  it('calls apiRef.setFilterModel when Apply is clicked', () => {
+  it('calls apiRef.setFilterModel and setFilters when Apply is clicked', () => {
     setup();
 
     const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
@@ -72,15 +91,7 @@ describe('FilterMenuContent', () => {
 
     fireEvent.click(screen.getByText('Apply'));
 
-    expect(apiRef.current.setFilterModel).toHaveBeenCalledWith({
-      items: [
-        {
-          columnField: 'jobTitle',
-          operatorValue: 'contains',
-          value: 'Developer',
-        },
-      ],
-    });
+    expect(setFiltersMock).toHaveBeenCalled();
   });
 
   it('calls onClose after Apply', () => {

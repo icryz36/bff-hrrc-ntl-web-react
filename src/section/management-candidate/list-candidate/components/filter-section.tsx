@@ -1,16 +1,16 @@
 import { MouseEvent, useState } from 'react';
 import { Box, Button, Popover, Stack } from '@mui/material';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
-import FilterMenuContent from 'section/management-job/list-job/components/filter-menu-content';
 import IconifyIcon from 'components/base/IconifyIcon';
+import FilterMenuContent from './filter-menu-content';
 import { FilterState } from './type';
 
 // ----------------------------------------------------------------------
 
 interface FilterSectionProps {
-  handleToggleFilterPanel: (e: MouseEvent<HTMLButtonElement>) => void;
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
+  handleToggleFilterPanel: (e: MouseEvent<HTMLButtonElement>) => void;
   onResetFilters: () => void;
 }
 
