@@ -7,7 +7,7 @@ import { useCandidateQuery } from 'services/candidate/query';
 import { TCandidateData } from 'types/candidate';
 import IconifyIcon from 'components/base/IconifyIcon';
 import AccordionCustom from 'components/common/AccordionCustom';
-import DataGridSkeleton from 'components/common/DataGridSkeleton';
+import DefaultLoader from 'components/loading/DefaultLoader';
 import AppliedJobTable from '../components/applied-job-table';
 import FileDownloadBox from '../components/file-download-box';
 import InformationBox from '../components/information-box';
@@ -181,7 +181,7 @@ const CandidateDetailView = () => {
   ];
 
   if (isLoading) {
-    return <DataGridSkeleton />;
+    return <DefaultLoader />;
   }
 
   return (
