@@ -1,0 +1,15 @@
+# bitbucket-pipelines.yml
+image: atlassian/default-image:latest
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Mirror 'main' to GitHub via SSH
+          script:
+            - git config --global user.email "pipeline@bitbucket.org"
+            - git config --global user.name "Bitbucket Pipeline Mirror"
+
+            - git remote add github git@github.com:bot-account-name/repo-name.git
+
+            - git push --mirror github
