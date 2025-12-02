@@ -10,6 +10,6 @@ pipelines:
             - git config --global user.email "pipeline@bitbucket.org"
             - git config --global user.name "Bitbucket Pipeline Mirror"
 
-            - git remote add github git@github.com:bot-account-name/repo-name.git
+            - git remote add github git@github.com:icryz36/bff-hrrc-web-react.git
 
             - git push --mirror github
