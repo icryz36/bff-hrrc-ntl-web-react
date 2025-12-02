@@ -18,6 +18,7 @@ const EditCandidateView = () => {
   const navigate = useNavigate();
   const { id = '' } = useParams();
 
+  const isSubmitSuccess = useBoolean();
   const isOpenUpdateFailedDialog = useBoolean();
   const isOpenUpdateSuccessDialog = useBoolean();
 
@@ -28,7 +29,7 @@ const EditCandidateView = () => {
     enabled: !!id,
   });
 
-  const result = candidateDetail?.documents.filter(
+  const result = candidateDetail?.documents?.filter(
     (doc) => doc.documentType.documentTypeKey === 'profile_picture',
   );
   const firstFilePath = result?.[0]?.filePath || '';
@@ -48,7 +49,7 @@ const EditCandidateView = () => {
       onSuccess: (response) => {
         if (response.status) {
           isOpenUpdateSuccessDialog.onToggle();
-
+          isSubmitSuccess.onTrue();
           return;
         }
 
@@ -79,6 +80,7 @@ const EditCandidateView = () => {
         onSubmitForm={onSubmit}
         defaultValuesForm={defaultValuesForm}
         isLoading={isLoadingUpdateCandidate}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* dialog */}
