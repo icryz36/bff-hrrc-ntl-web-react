@@ -11,12 +11,11 @@ interface FilterSectionProps {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
   handleToggleFilterPanel: (e: MouseEvent<HTMLButtonElement>) => void;
-  onResetFilters: () => void;
 }
 
 // ----------------------------------------------------------------------
 
-const FilterSection = ({ filters, setFilters, onResetFilters }: FilterSectionProps) => {
+const FilterSection = ({ filters, setFilters }: FilterSectionProps) => {
   const { up } = useBreakpoints();
   const upSm = up('sm');
 
@@ -58,7 +57,6 @@ const FilterSection = ({ filters, setFilters, onResetFilters }: FilterSectionPro
             onClose={handleClose}
             filters={filters}
             setFilters={setFilters}
-            onResetFilters={onResetFilters}
           />
         </Popover>
       </Stack>

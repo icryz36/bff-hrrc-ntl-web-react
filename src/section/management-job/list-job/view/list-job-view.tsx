@@ -76,26 +76,6 @@ const ListJobView = () => {
     activeDay: filters.activeDay,
   };
 
-  const handleResetFilters = () => {
-    setFilters({
-      jobTitle: '',
-      department: [],
-      region: '',
-      province: '',
-      district: '',
-      jobStatus: '',
-      owner: '',
-      startDate: null,
-      activeDay: '',
-      ownerUserId: defaultUserId,
-      recruiterUserId: defaultUserId,
-    });
-    setPagination({
-      pageNo: 1,
-      pageSize: 10,
-    });
-  };
-
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;
 
@@ -143,7 +123,6 @@ const ListJobView = () => {
           filters={filterFields}
           handleToggleFilterPanel={handleToggleFilterPanel}
           setFilters={handleSetFilterFields}
-          onResetFilters={handleResetFilters}
         />
         <Button
           href={'/manage/job/create'}

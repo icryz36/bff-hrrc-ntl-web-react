@@ -10,7 +10,6 @@ vi.mock('@mui/x-date-pickers', () => ({
 describe('FilterMenuContent', () => {
   let onCloseMock: any;
   let setFiltersMock: any;
-  let onResetFiltersMock: any;
 
   const mockFilters = {
     jobTitle: '',
@@ -27,7 +26,6 @@ describe('FilterMenuContent', () => {
   beforeEach(() => {
     onCloseMock = vi.fn();
     setFiltersMock = vi.fn();
-    onResetFiltersMock = vi.fn();
   });
 
   const setup = () =>
@@ -37,7 +35,6 @@ describe('FilterMenuContent', () => {
           onClose={onCloseMock}
           filters={mockFilters}
           setFilters={setFiltersMock}
-          onResetFilters={onResetFiltersMock}
         />
       </MemoryRouter>,
     );
@@ -71,16 +68,40 @@ describe('FilterMenuContent', () => {
     expect(input.value).toBe('Engineer');
   });
 
-  it('resets filters when clicking Reset', () => {
+  it('resets local filters when clicking Reset but does not call setFilters', () => {
     setup();
 
-    const input = screen.getByLabelText('Job Title') as HTMLInputElement;
-    fireEvent.change(input, { target: { value: 'Engineer' } });
-    expect(input.value).toBe('Engineer');
+    const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
+    fireEvent.change(jobTitleInput, { target: { value: 'Engineer' } });
+    expect(jobTitleInput.value).toBe('Engineer');
 
     fireEvent.click(screen.getByText('Reset'));
 
-    expect(onResetFiltersMock).toHaveBeenCalled();
+    expect(jobTitleInput.value).toBe('');
+
+    expect(setFiltersMock).not.toHaveBeenCalled();
+
+    expect(onCloseMock).not.toHaveBeenCalled();
+  });
+
+  it('resets all filter fields when clicking Reset', () => {
+    setup();
+
+    const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
+    const activeDaySelect = screen.getByLabelText('Active Day') as HTMLSelectElement;
+
+    fireEvent.change(jobTitleInput, { target: { value: 'Engineer' } });
+    fireEvent.change(activeDaySelect, { target: { value: '7' } });
+
+    expect(jobTitleInput.value).toBe('Engineer');
+    expect(activeDaySelect.value).toBe('7');
+
+    fireEvent.click(screen.getByText('Reset'));
+
+    expect(jobTitleInput.value).toBe('');
+    expect(activeDaySelect.value).toBe('');
+
+    expect(setFiltersMock).not.toHaveBeenCalled();
   });
 
   it('calls apiRef.setFilterModel and setFilters when Apply is clicked', () => {

@@ -22,17 +22,11 @@ interface FilterMenuContentProps {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
   onClose: () => void;
-  onResetFilters: () => void;
 }
 
 // ----------------------------------------------------------------------
 
-const FilterMenuContent = ({
-  filters,
-  setFilters,
-  onClose,
-  onResetFilters,
-}: FilterMenuContentProps) => {
+const FilterMenuContent = ({ filters, setFilters, onClose }: FilterMenuContentProps) => {
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
 
   const { data: departmentList = [] } = useQuery(useMasterDataQuery.department());
@@ -63,7 +57,6 @@ const FilterMenuContent = ({
       activeDay: '',
     };
     setLocalFilters(resetFilters);
-    onResetFilters();
   };
 
   return (
@@ -216,7 +209,19 @@ const FilterMenuContent = ({
       </Stack>
 
       <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
-        <Button variant="outlined" onClick={handleReset} sx={{ width: '25%' }}>
+        <Button
+          variant="outlined"
+          onClick={handleReset}
+          sx={{
+            width: '25%',
+            borderColor: 'divider',
+            color: 'text.primary',
+            '&:hover': {
+              borderColor: 'divider',
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
           Reset
         </Button>
         <Button variant="contained" onClick={handleApply} sx={{ width: '25%' }}>

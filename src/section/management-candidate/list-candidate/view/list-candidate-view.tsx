@@ -41,20 +41,6 @@ const ListCandidateView = () => {
   const tableData = listCandidateData?.items || [];
   const tableTotalRecords = listCandidateData?.pagination?.totalRecords || 0;
 
-  const handleResetFilters = () => {
-    setFilters({
-      status: '',
-      name: '',
-      surname: '',
-      email: '',
-      mobileNumber: '',
-    });
-    setPagination({
-      pageNo: 1,
-      pageSize: 10,
-    });
-  };
-
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;
 
@@ -102,7 +88,6 @@ const ListCandidateView = () => {
           filters={filters}
           handleToggleFilterPanel={handleToggleFilterPanel}
           setFilters={handleSetFilterFields}
-          onResetFilters={handleResetFilters}
         />
       </Stack>
       <ListCandidateTableView

@@ -9,17 +9,11 @@ interface FilterMenuContentProps {
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
   onClose: () => void;
-  onResetFilters: () => void;
 }
 
 // ----------------------------------------------------------------------
 
-const FilterMenuContent = ({
-  onClose,
-  filters,
-  setFilters,
-  onResetFilters,
-}: FilterMenuContentProps) => {
+const FilterMenuContent = ({ onClose, filters, setFilters }: FilterMenuContentProps) => {
   const [localFilters, setLocalFilters] = useState<FilterState>(filters);
 
   const handleApply = () => {
@@ -36,7 +30,6 @@ const FilterMenuContent = ({
       mobileNumber: '',
     };
     setLocalFilters(resetFilters);
-    onResetFilters();
   };
 
   return (
@@ -93,7 +86,19 @@ const FilterMenuContent = ({
       </Stack>
 
       <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
-        <Button variant="outlined" onClick={handleReset} sx={{ width: '25%' }}>
+        <Button
+          variant="outlined"
+          onClick={handleReset}
+          sx={{
+            width: '25%',
+            borderColor: 'divider',
+            color: 'text.primary',
+            '&:hover': {
+              borderColor: 'divider',
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
           Reset
         </Button>
         <Button variant="contained" onClick={handleApply} sx={{ width: '25%' }}>

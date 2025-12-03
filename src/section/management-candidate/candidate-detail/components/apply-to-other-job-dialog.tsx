@@ -46,21 +46,22 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
   const department = useWatch({ control, name: 'department' });
   const jobTitle = useWatch({ control, name: 'jobTitle' });
 
+  // const { id = '' } = useParams<{ id: string }>();
+  const id = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
+
   const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
   const { data: departmentList = [] } = useQuery(useMasterDataQuery.department());
 
-  const defaultUserId = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
-
   const { data: jobListData } = useQuery({
     ...useJobpostQuery.list({
-      ownerUserId: defaultUserId,
-      recruiterUserId: defaultUserId,
+      ownerUserId: id,
+      recruiterUserId: id,
       pageNo: 1,
       pageSize: 1000,
       ...(province && { provinceId: province }),
       ...(department && { departments: [department] }),
     }),
-    enabled: open,
+    enabled: open && !!id,
   });
 
   const handleClose = () => {
@@ -69,22 +70,23 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
   };
 
   const onSubmit = async (data: ApplyToOtherJobFormValues) => {
-    try {
-      console.log('submit form :', data);
-      const mockSuccess = Math.random() > 0.3;
+    console.log('submit form :', data);
+    // try {
+    //   console.log('submit form :', data);
+    //   const mockSuccess = Math.random() > 0.3;
 
-      if (mockSuccess) {
-        handleClose();
-        isOpenSuccessDialog.onTrue();
-      } else {
-        handleClose();
-        isOpenErrorDialog.onTrue();
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      handleClose();
-      isOpenNetworkErrorDialog.onTrue();
-    }
+    //   if (mockSuccess) {
+    //     handleClose();
+    //     isOpenSuccessDialog.onTrue();
+    //   } else {
+    //     handleClose();
+    //     isOpenErrorDialog.onTrue();
+    //   }
+    //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // } catch (error) {
+    //   handleClose();
+    //   isOpenNetworkErrorDialog.onTrue();
+    // }
   };
 
   return (
