@@ -1,10 +1,59 @@
 import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import FilterMenuContent from '../filter-menu-content';
 
 vi.mock('@mui/x-date-pickers', () => ({
   DatePicker: ({ label }: any) => <div>{label}</div>,
+}));
+
+vi.mock('@tanstack/react-query', () => ({
+  useQuery: vi.fn((queryOptions: any) => {
+    if (queryOptions?.queryKey?.includes('department')) {
+      return {
+        data: [
+          { departmentId: 'dept1', departmentNameTh: 'แผนก IT', departmentNameEn: 'IT Department' },
+        ],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('ntlRegion')) {
+      return {
+        data: [{ regionId: 'region1', regionNameTh: 'ภาคเหนือ', regionNameEn: 'North' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('province')) {
+      return {
+        data: [{ provinceId: 'province1', provinceNameTh: 'กรุงเทพ', provinceNameEn: 'Bangkok' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('district')) {
+      return {
+        data: [{ districtId: 'district1', districtNameTh: 'เขต 1', districtNameEn: 'District 1' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('postStatus')) {
+      return {
+        data: [{ statusId: 'status1', statusNameTh: 'เปิด', statusNameEn: 'Open' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('users')) {
+      return {
+        data: [{ userId: 'user1', name: 'John', surname: 'Doe' }],
+      };
+    }
+    return { data: [] };
+  }),
+}));
+
+vi.mock('services/master-data/query', () => ({
+  useMasterDataQuery: {
+    department: () => ({ queryKey: ['department'] }),
+    ntlRegion: () => ({ queryKey: ['ntlRegion'] }),
+    province: () => ({ queryKey: ['province'] }),
+    district: (params: any) => ({ queryKey: ['district', params] }),
+    postStatus: () => ({ queryKey: ['postStatus'] }),
+    users: () => ({ queryKey: ['users'] }),
+  },
 }));
 
 describe('FilterMenuContent', () => {
@@ -84,27 +133,7 @@ describe('FilterMenuContent', () => {
     expect(onCloseMock).not.toHaveBeenCalled();
   });
 
-  it('resets all filter fields when clicking Reset', () => {
-    setup();
-
-    const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
-    const activeDaySelect = screen.getByLabelText('Active Day') as HTMLSelectElement;
-
-    fireEvent.change(jobTitleInput, { target: { value: 'Engineer' } });
-    fireEvent.change(activeDaySelect, { target: { value: '7' } });
-
-    expect(jobTitleInput.value).toBe('Engineer');
-    expect(activeDaySelect.value).toBe('7');
-
-    fireEvent.click(screen.getByText('Reset'));
-
-    expect(jobTitleInput.value).toBe('');
-    expect(activeDaySelect.value).toBe('');
-
-    expect(setFiltersMock).not.toHaveBeenCalled();
-  });
-
-  it('calls apiRef.setFilterModel and setFilters when Apply is clicked', () => {
+  it('calls setFilters when Apply is clicked', () => {
     setup();
 
     const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;

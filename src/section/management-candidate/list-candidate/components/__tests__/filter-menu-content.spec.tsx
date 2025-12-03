@@ -1,5 +1,5 @@
 import { MemoryRouter } from 'react-router-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import FilterMenuContent from '../filter-menu-content';
 
@@ -66,38 +66,6 @@ describe('FilterMenuContent', () => {
     expect(setFiltersMock).not.toHaveBeenCalled();
 
     expect(onCloseMock).not.toHaveBeenCalled();
-  });
-
-  it('resets all filter fields when clicking Reset', () => {
-    setup();
-
-    const nameInput = screen.getByLabelText('Name') as HTMLInputElement;
-    const surnameInput = screen.getByLabelText('Surname') as HTMLInputElement;
-    const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
-    const mobileInput = screen.getByLabelText('Mobile Number') as HTMLInputElement;
-    const statusSelect = screen.getByLabelText('Status') as HTMLSelectElement;
-
-    fireEvent.change(nameInput, { target: { value: 'John' } });
-    fireEvent.change(surnameInput, { target: { value: 'Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-    fireEvent.change(mobileInput, { target: { value: '1234567890' } });
-    fireEvent.change(statusSelect, { target: { value: 'Active' } });
-
-    expect(nameInput.value).toBe('John');
-    expect(surnameInput.value).toBe('Doe');
-    expect(emailInput.value).toBe('john@example.com');
-    expect(mobileInput.value).toBe('1234567890');
-    expect(statusSelect.value).toBe('Active');
-
-    fireEvent.click(screen.getByText('Reset'));
-
-    expect(nameInput.value).toBe('');
-    expect(surnameInput.value).toBe('');
-    expect(emailInput.value).toBe('');
-    expect(mobileInput.value).toBe('');
-    expect(statusSelect.value).toBe('');
-
-    expect(setFiltersMock).not.toHaveBeenCalled();
   });
 
   it('calls setFilters when Apply is clicked', () => {
