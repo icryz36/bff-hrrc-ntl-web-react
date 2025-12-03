@@ -1,5 +1,4 @@
 import { Dialog, dialogClasses } from '@mui/material';
-import SearchResult from './SearchResult';
 
 interface SearchDialogProps {
   anchorEl: HTMLDivElement | HTMLButtonElement | null;
@@ -24,9 +23,7 @@ const SearchDialog = ({ anchorEl, handleClose }: SearchDialogProps) => {
           overflow: 'hidden',
         },
       }}
-    >
-      <SearchResult handleClose={handleClose} />
-    </Dialog>
+    ></Dialog>
   );
 };
 

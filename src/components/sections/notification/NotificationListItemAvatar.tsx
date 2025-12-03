@@ -1,6 +1,5 @@
 import { AvatarGroup, Badge, badgeClasses } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { notificationBadge } from 'data/notifications';
 import { Notification } from 'types/notification';
 import IconifyIcon from 'components/base/IconifyIcon';
 
@@ -20,7 +19,6 @@ const NotificationListItemAvatar = ({ notification, variant }: NotificationListI
             {
               height: 24,
               width: 24,
-              bgcolor: notificationBadge[notification.type].color,
             },
             variant === 'small' && {
               height: 16,
@@ -29,7 +27,11 @@ const NotificationListItemAvatar = ({ notification, variant }: NotificationListI
           ]}
         >
           <IconifyIcon
-            icon={notificationBadge[notification.type].icon}
+            icon={
+              notification.type === 'reaction_smile'
+                ? 'emojione:smiling-face-with-smiling-eyes'
+                : 'material-symbols:notifications-outline-rounded'
+            }
             sx={[
               { fontSize: notification.type === 'reaction_smile' ? 22 : 16 },
               variant === 'small' && { fontSize: notification.type === 'reaction_smile' ? 16 : 10 },
