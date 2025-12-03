@@ -21,12 +21,15 @@ const CandidateDetailView = () => {
     enabled: !!id,
   });
 
-  const result = candidateDetail?.documents.filter(
+  const profileDocument = candidateDetail?.documents?.find(
     (doc) => doc.documentType.documentTypeKey === 'profile_picture',
   );
+
+  const filePath = profileDocument?.filePath;
+
   const { data: fileData, isLoading: fileLoading } = useQuery({
-    ...useCandidateQuery.document({ filePath: result?.[0]?.filePath || '' }),
-    enabled: !!candidateDetail?.candidate?.candidateId,
+    ...useCandidateQuery.document({ filePath: filePath || '' }),
+    enabled: !!filePath,
   });
   const { jobApplications, candidate, documents } = candidateDetail || ({} as TCandidateData);
 
@@ -39,6 +42,18 @@ const CandidateDetailView = () => {
   const canDriveMotorcycle = OPTION_VEHICLE.find(
     (item) => item.value === candidate?.canDriveMotorcycle,
   );
+
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
+  if (!candidateDetail?.candidate) {
+    return (
+      <Box sx={{ width: '100%', textAlign: 'center', mt: 10 }}>
+        <Typography>ไม่พบข้อมูล</Typography>
+      </Box>
+    );
+  }
+
   const accordionData = [
     {
       icon: 'mdi:account-outline',
@@ -179,11 +194,6 @@ const CandidateDetailView = () => {
       children: '',
     },
   ];
-
-  if (isLoading) {
-    return <DefaultLoader />;
-  }
-
   return (
     <Container maxWidth="md">
       {candidate?.isBlacklist && (
