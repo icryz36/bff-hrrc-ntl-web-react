@@ -24,7 +24,7 @@ const CssBaseline: Components<Omit<Theme, 'components'>>['MuiCssBaseline'] = {
     ...simplebar(theme),
     ...keyFrames(),
     ...popper(theme),
-    ...vibrantNav(theme),
+    ...vibrantNav(),
   }),
 };
 
