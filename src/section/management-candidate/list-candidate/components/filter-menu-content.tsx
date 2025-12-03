@@ -59,7 +59,6 @@ const FilterMenuContent = ({
           onChange={(e) => setLocalFilters({ ...localFilters, status: e.target.value })}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           <MenuItem value="Active">Active</MenuItem>
           <MenuItem value="Inactive">Inactive</MenuItem>
         </TextField>

@@ -116,7 +116,6 @@ const FilterMenuContent = ({
           }}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           {ntlRegionList.map((region) => (
             <MenuItem key={region.regionId} value={region.regionId}>
               {region.regionNameTh || region.regionNameEn}
@@ -137,7 +136,6 @@ const FilterMenuContent = ({
           }}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           {provinceList.map((province) => (
             <MenuItem key={province.provinceId} value={province.provinceId}>
               {province.provinceNameTh || province.provinceNameEn}
@@ -153,7 +151,6 @@ const FilterMenuContent = ({
           disabled={!localFilters.province}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           {districtList.map((district) => (
             <MenuItem key={district.districtId} value={district.districtId}>
               {district.districtNameTh || district.districtNameEn}
@@ -168,7 +165,6 @@ const FilterMenuContent = ({
           onChange={(e) => setLocalFilters({ ...localFilters, jobStatus: e.target.value })}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           {postStatusList.map((status) => (
             <MenuItem key={status.statusId} value={status.statusId}>
               {status.statusNameTh || status.statusNameEn}
@@ -183,7 +179,6 @@ const FilterMenuContent = ({
           onChange={(e) => setLocalFilters({ ...localFilters, owner: e.target.value })}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           {usersList.map((user) => (
             <MenuItem key={user.userId} value={user.userId}>
               {user.name} {user.surname}
@@ -215,7 +210,6 @@ const FilterMenuContent = ({
           onChange={(e) => setLocalFilters({ ...localFilters, activeDay: e.target.value })}
           fullWidth
         >
-          <MenuItem value="">All</MenuItem>
           <MenuItem value="7">Last 7 days</MenuItem>
           <MenuItem value="30">Last 30 days</MenuItem>
         </TextField>
