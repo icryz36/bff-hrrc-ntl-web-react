@@ -24,6 +24,12 @@ const ListCandidatesPage = lazy(() => import('pages/candidate/CandidateListPage'
 // candidate
 const EditCandidatePage = lazy(() => import('pages/candidate/CandidateEditPage'));
 
+// job application
+const JobApplicationPage = lazy(() => import('pages/job-application/JobApplicationPage'));
+const JobApplicationDetailPage = lazy(
+  () => import('pages/job-application/JobApplicationDetailPage'),
+);
+
 export const SuspenseOutlet = () => {
   const location = useLocation();
 
@@ -96,6 +102,14 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.candidateDetail,
                     element: <CandidateDatailPage />,
+                  },
+                  {
+                    path: paths.listJobApplication,
+                    element: <JobApplicationPage />,
+                  },
+                  {
+                    path: paths.listJobApplicationDetail,
+                    element: <JobApplicationDetailPage />,
                   },
                 ],
               },

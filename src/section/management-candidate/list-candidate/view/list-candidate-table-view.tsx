@@ -6,7 +6,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { StyledDataGrid } from 'section/management-job/list-job/styles';
 import {
   useCandidateUpdateBlacklistMutation,
@@ -159,7 +159,7 @@ const ListCandidateTableView = ({
               {params.row.nameTh ? (
                 <Link
                   onClick={() => {
-                    navigate(navigatePaths.candidate.detail(params.row.candidateId));
+                    navigate(pathsNavigate.candidate.detail(params.row.candidateId));
                   }}
                 >
                   <Typography variant="subtitle1_regular">{params.row.nameTh}</Typography>
@@ -283,7 +283,7 @@ const ListCandidateTableView = ({
               label: 'Edit',
               icon: 'mdi:edit-outline',
               onClick: () => {
-                navigate(navigatePaths.candidate.edit(candidateId));
+                navigate(pathsNavigate.candidate.edit(candidateId));
               },
             },
             statusItem,
