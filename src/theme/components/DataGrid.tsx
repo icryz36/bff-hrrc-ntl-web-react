@@ -2,7 +2,6 @@ import { Theme, inputBaseClasses, tablePaginationClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
 import { cssVarRgba } from 'lib/utils';
 import IconifyIcon from 'components/base/IconifyIcon';
-import DataGridPagination from 'components/pagination/DataGridPagination';
 
 const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
   defaultProps: {
@@ -11,13 +10,11 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
     columnHeaderHeight: 48,
     slots: {
       columnSortedDescendingIcon: (props) => {
-        const { onLoad, ...rest } = props as any;
-        void onLoad;
+        const { ...rest } = props as any;
         return <IconifyIcon icon="material-symbols:sort-rounded" {...rest} />;
       },
       columnSortedAscendingIcon: (props) => {
-        const { onLoad, ...rest } = props as any;
-        void onLoad;
+        const { ...rest } = props as any;
         return (
           <IconifyIcon
             icon="material-symbols:sort-rounded"
@@ -26,7 +23,6 @@ const DataGrid: Components<Omit<Theme, 'components'>>['MuiDataGrid'] = {
           />
         );
       },
-      basePagination: DataGridPagination,
     },
     slotProps: {
       filterPanel: {

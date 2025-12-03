@@ -2,10 +2,6 @@ import { apiEndpoints } from 'routes/paths';
 import axiosFetcher from 'services/axios/axiosFetcher';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { ForgotPasswordFormValues } from 'components/sections/authentications/default/ForgotPasswordForm';
-import { LoginFormValues } from 'components/sections/authentications/default/LoginForm';
-import { SetPasswordFormValues } from 'components/sections/authentications/default/SetPassworForm';
-import { SignupFormValues } from 'components/sections/authentications/default/SignupForm';
 import { sendPasswordResetLinkFetcher } from '../dummyFetcher';
 
 export interface User {
@@ -39,15 +35,14 @@ export const useLoginUser = () => {
       user: User;
     },
     any,
-    any,
-    LoginFormValues
+    any
   >([apiEndpoints.login, { method: 'post' }], axiosFetcher);
 
   return mutation;
 };
 
 export const useRegisterUser = () => {
-  const mutation = useSWRMutation<any, any, any, SignupFormValues>(
+  const mutation = useSWRMutation<any, any, any>(
     [apiEndpoints.register, { method: 'post' }],
     axiosFetcher,
   );
@@ -61,7 +56,7 @@ export const useLogOutUser = () => {
   return mutation;
 };
 export const useSendPasswordResetLink = () => {
-  const mutation = useSWRMutation<any, any, any, ForgotPasswordFormValues>(
+  const mutation = useSWRMutation<any, any, any>(
     [apiEndpoints.forgotPassword, { method: 'post' }],
     //In your real project use axiosFetcher instead of dummy sendPasswordResetLinkFetcher
     sendPasswordResetLinkFetcher,
@@ -71,7 +66,7 @@ export const useSendPasswordResetLink = () => {
 };
 
 export const useSetPassword = () => {
-  const mutation = useSWRMutation<{ data: { message: string } }, any, any, SetPasswordFormValues>(
+  const mutation = useSWRMutation<{ data: { message: string } }, any, any>(
     [apiEndpoints.setPassword, { method: 'post' }],
     axiosFetcher,
   );

@@ -31,80 +31,113 @@ const generateArrowStyles = (
   };
 };
 
+const getBorderRadiusForTop = (isRTL: boolean, position: 'start' | 'end' | 'center') => {
+  if (position === 'start') return isRTL ? 'borderBottomRightRadius' : 'borderBottomLeftRadius';
+  return isRTL ? 'borderBottomLeftRadius' : 'borderBottomRightRadius';
+};
+
+const getBorderRadiusForBottom = (isRTL: boolean, position: 'start' | 'end' | 'center') => {
+  if (position === 'start') return isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius';
+  if (position === 'end') return isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius';
+  return isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius';
+};
+
+const getBorderRadiusForLeft = (isRTL: boolean, position: 'start' | 'end' | 'center') => {
+  if (position === 'start') return isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius';
+  if (position === 'end') return isRTL ? 'borderBottomLeftRadius' : 'borderBottomRightRadius';
+  return isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius';
+};
+
+const getBorderRadiusForRight = (isRTL: boolean, position: 'start' | 'end' | 'center') => {
+  if (position === 'start') return isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius';
+  return isRTL ? 'borderBottomRightRadius' : 'borderBottomLeftRadius';
+};
+
+const getHorizontalPosition = (isRTL: boolean, side: 'left' | 'right') => {
+  if (side === 'left') {
+    return {
+      right: isRTL ? 'unset !important' : '0px !important',
+      left: isRTL ? 0 : 'unset !important',
+    };
+  }
+  return {
+    left: isRTL ? 'unset' : 3,
+  };
+};
+
 const placements = (theme: Theme) => {
   const isRTL = theme.direction === 'rtl';
 
   return [
     {
       placement: 'top-start',
-      borderRadiusProperty: isRTL ? 'borderBottomRightRadius' : 'borderBottomLeftRadius',
+      borderRadiusProperty: getBorderRadiusForTop(isRTL, 'start'),
       clipPath: 'polygon(0 0, 100% 0, 17% 100%, 0% 100%)',
       positions: { bottom: 3 },
     },
     {
       placement: 'top',
-      borderRadiusProperty: isRTL ? 'borderBottomLeftRadius' : 'borderBottomRightRadius',
+      borderRadiusProperty: getBorderRadiusForTop(isRTL, 'center'),
     },
     {
       placement: 'top-end',
-      borderRadiusProperty: isRTL ? 'borderBottomLeftRadius' : 'borderBottomRightRadius',
+      borderRadiusProperty: getBorderRadiusForTop(isRTL, 'end'),
       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 83% 100%)',
       positions: {
         bottom: 3,
-        right: isRTL ? 'unset !important' : '0px !important',
-        left: isRTL ? 0 : 'unset !important',
+        ...getHorizontalPosition(isRTL, 'left'),
       },
     },
     {
       placement: 'bottom-start',
-      borderRadiusProperty: isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius',
+      borderRadiusProperty: getBorderRadiusForBottom(isRTL, 'start'),
       clipPath: 'polygon(0 0, 17% 0, 100% 100%, 0 100%)',
       positions: { top: 3 },
     },
     {
       placement: 'bottom',
-      borderRadiusProperty: isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius',
+      borderRadiusProperty: getBorderRadiusForBottom(isRTL, 'center'),
     },
     {
       placement: 'bottom-end',
-      borderRadiusProperty: isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius',
+      borderRadiusProperty: getBorderRadiusForBottom(isRTL, 'end'),
       clipPath: 'polygon(87% 0, 100% 0, 100% 100%, 0 100%)',
       positions: { top: 3, right: '0px !important', left: isRTL ? 0 : 'unset !important' },
     },
     {
       placement: 'left-start',
-      borderRadiusProperty: isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius',
+      borderRadiusProperty: getBorderRadiusForLeft(isRTL, 'start'),
       clipPath: 'polygon(100% 0, 100% 17%, 0 100%, 0 0)',
       positions: { right: 3 },
     },
     {
       placement: 'left-end',
-      borderRadiusProperty: isRTL ? 'borderBottomLeftRadius' : 'borderBottomRightRadius',
+      borderRadiusProperty: getBorderRadiusForLeft(isRTL, 'end'),
       clipPath: 'polygon(0 0, 100% 87%, 100% 100%, 0 100%)',
       positions: { top: 'unset !important', bottom: 0, right: 3 },
     },
     {
       placement: 'left',
-      borderRadiusProperty: isRTL ? 'borderTopLeftRadius' : 'borderTopRightRadius',
+      borderRadiusProperty: getBorderRadiusForLeft(isRTL, 'center'),
     },
     {
       placement: 'right-start',
-      borderRadiusProperty: isRTL ? 'borderTopRightRadius' : 'borderTopLeftRadius',
+      borderRadiusProperty: getBorderRadiusForRight(isRTL, 'start'),
       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 17%)',
-      positions: { left: isRTL ? 'unset' : 3 },
+      positions: getHorizontalPosition(isRTL, 'right'),
     },
     {
       placement: 'right',
-      borderRadiusProperty: isRTL ? 'borderBottomRightRadius' : 'borderBottomLeftRadius',
+      borderRadiusProperty: getBorderRadiusForRight(isRTL, 'center'),
     },
     {
       placement: 'right-end',
-      borderRadiusProperty: isRTL ? 'borderBottomRightRadius' : 'borderBottomLeftRadius',
+      borderRadiusProperty: getBorderRadiusForRight(isRTL, 'end'),
       clipPath: 'polygon(0 83%, 100% 0, 100% 100%, 0 100%)',
       positions: {
         top: 'unset !important',
         bottom: 0,
-        left: isRTL ? 'unset' : 3,
+        ...getHorizontalPosition(isRTL, 'right'),
       },
     },
   ];

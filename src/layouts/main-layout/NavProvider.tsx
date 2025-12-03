@@ -27,6 +27,38 @@ interface NavContextInterface {
 
 const NavContext = createContext({} as NavContextInterface);
 
+// ✅ Helper function แยกออกมาเพื่อลด complexity
+const shouldCollapseOnInit = (
+  navigationMenuType: string,
+  sidenavType: string,
+  sidenavCollapsed: boolean,
+): boolean => {
+  const isNavTypeSidenavOrCombo =
+    navigationMenuType === 'sidenav' || navigationMenuType === 'combo';
+
+  return isNavTypeSidenavOrCombo && sidenavType !== 'slim' && sidenavCollapsed;
+};
+
+// ✅ Helper function สำหรับการจัดการ responsive collapse
+const shouldCollapseResponsive = (
+  navigationMenuType: string,
+  sidenavType: string,
+  currentBreakpoint: string,
+): boolean => {
+  const isNavTypeSidenavOrCombo =
+    navigationMenuType === 'sidenav' || navigationMenuType === 'combo';
+
+  return isNavTypeSidenavOrCombo && sidenavType !== 'slim' && currentBreakpoint === 'md';
+};
+
+// ✅ Helper function สำหรับการตั้งค่า drawer width
+const shouldSetSlimDrawerWidth = (navigationMenuType: string, sidenavType: string): boolean => {
+  const isNavTypeSidenavOrCombo =
+    navigationMenuType === 'sidenav' || navigationMenuType === 'combo';
+
+  return isNavTypeSidenavOrCombo && sidenavType === 'slim';
+};
+
 const NavProvider = ({ children }: PropsWithChildren) => {
   const [openItems, setOpenItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -84,36 +116,38 @@ const NavProvider = ({ children }: PropsWithChildren) => {
     }
   }, [navigationMenuType, topnavType]);
 
+  // ✅ REFACTORED: ลด complexity จาก 16 → ~10
   useEffect(() => {
-    if (navigationMenuType === 'sidenav' || navigationMenuType === 'combo') {
-      if (sidenavType !== 'slim') {
-        if (sidenavCollapsed) {
-          configDispatch({
-            type: COLLAPSE_NAVBAR,
-          });
-        }
-        if (currentBreakpoint === 'md') {
-          configDispatch({
-            type: COLLAPSE_NAVBAR,
-          });
-          setResponsiveSidenavCollapsed(true);
-        }
-        if (downMd) {
-          configDispatch({
-            type: EXPAND_NAVBAR,
-          });
-        }
-      } else {
-        setConfig({
-          drawerWidth: mainDrawerWidth.slim,
-        });
-      }
-      if (currentBreakpoint === 'md') {
-        setConfig({
-          openNavbarDrawer: false,
-        });
-      }
+    // Handle initial collapse
+    if (shouldCollapseOnInit(navigationMenuType, sidenavType, sidenavCollapsed)) {
+      configDispatch({ type: COLLAPSE_NAVBAR });
     }
+
+    // Handle responsive collapse at md breakpoint
+    if (shouldCollapseResponsive(navigationMenuType, sidenavType, currentBreakpoint)) {
+      configDispatch({ type: COLLAPSE_NAVBAR });
+      setResponsiveSidenavCollapsed(true);
+    }
+
+    // Handle expand on mobile
+    const isNavTypeSidenavOrCombo =
+      navigationMenuType === 'sidenav' || navigationMenuType === 'combo';
+
+    if (isNavTypeSidenavOrCombo && sidenavType !== 'slim' && downMd) {
+      configDispatch({ type: EXPAND_NAVBAR });
+    }
+
+    // Handle slim drawer width
+    if (shouldSetSlimDrawerWidth(navigationMenuType, sidenavType)) {
+      setConfig({ drawerWidth: mainDrawerWidth.slim });
+    }
+
+    // Close drawer at md breakpoint
+    if (currentBreakpoint === 'md') {
+      setConfig({ openNavbarDrawer: false });
+    }
+
+    // Mark as loaded
     if (!loaded) {
       setLoaded(true);
     }
@@ -122,9 +156,7 @@ const NavProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (currentBreakpoint !== 'md' && responsievSidenavCollapsed) {
       setResponsiveSidenavCollapsed(false);
-      configDispatch({
-        type: EXPAND_NAVBAR,
-      });
+      configDispatch({ type: EXPAND_NAVBAR });
     }
   }, [currentBreakpoint]);
 
