@@ -5,6 +5,14 @@ import { TStatusResponse } from './common';
 export type TGetJobPostListPayload = {
   ownerUserId: string;
   recruiterUserId: string;
+  jobTitle?: string;
+  departments?: string[];
+  regionId?: string;
+  districtId?: string;
+  provinceId?: string;
+  statusId?: string;
+  ownerId?: string;
+  activeDay?: number;
   pageNo: number;
   pageSize: number;
 };

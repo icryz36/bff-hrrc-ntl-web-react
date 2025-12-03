@@ -47,6 +47,14 @@ const ListJobView = () => {
   const query = useJobpostQuery.list({
     ownerUserId: filters.ownerUserId,
     recruiterUserId: filters.recruiterUserId,
+    ...(filters.jobTitle && { jobTitle: filters.jobTitle }),
+    ...(filters.department.length > 0 && { departments: filters.department }),
+    ...(filters.region && { regionId: filters.region }),
+    ...(filters.province && { provinceId: filters.province }),
+    ...(filters.district && { districtId: filters.district }),
+    ...(filters.jobStatus && { statusId: filters.jobStatus }),
+    ...(filters.owner && { ownerId: filters.owner }),
+    ...(filters.activeDay && { activeDay: Number(filters.activeDay) }),
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
   });

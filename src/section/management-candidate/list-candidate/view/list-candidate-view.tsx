@@ -27,7 +27,11 @@ const ListCandidateView = () => {
   });
 
   const query = useCandidateQuery.list({
-    status: ['Active', 'Inactive'],
+    status: filters.status ? [filters.status as 'Active' | 'Inactive'] : ['Active', 'Inactive'],
+    ...(filters.name && { name: filters.name }),
+    ...(filters.surname && { surname: filters.surname }),
+    ...(filters.email && { email: filters.email }),
+    ...(filters.mobileNumber && { mobile: filters.mobileNumber }),
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
   });

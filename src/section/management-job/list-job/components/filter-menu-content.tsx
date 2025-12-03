@@ -42,6 +42,8 @@ const FilterMenuContent = ({
     ...useMasterDataQuery.district({ provinceId: localFilters.province }),
     enabled: !!localFilters.province,
   });
+  const { data: postStatusList = [] } = useQuery(useMasterDataQuery.postStatus());
+  const { data: usersList = [] } = useQuery(useMasterDataQuery.users());
 
   const handleApply = () => {
     setFilters(localFilters);
@@ -167,8 +169,11 @@ const FilterMenuContent = ({
           fullWidth
         >
           <MenuItem value="">All</MenuItem>
-          <MenuItem value="Open">Open</MenuItem>
-          <MenuItem value="Closed">Closed</MenuItem>
+          {postStatusList.map((status) => (
+            <MenuItem key={status.statusId} value={status.statusId}>
+              {status.statusNameTh || status.statusNameEn}
+            </MenuItem>
+          ))}
         </TextField>
 
         <TextField
@@ -179,7 +184,11 @@ const FilterMenuContent = ({
           fullWidth
         >
           <MenuItem value="">All</MenuItem>
-          <MenuItem value="User01">User01</MenuItem>
+          {usersList.map((user) => (
+            <MenuItem key={user.userId} value={user.userId}>
+              {user.name} {user.surname}
+            </MenuItem>
+          ))}
         </TextField>
 
         <DatePicker
