@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Box, Button, Link, Popover, Stack, paperClasses } from '@mui/material';
-import { notifications as notificationsData } from 'data/notifications';
-import dayjs from 'dayjs';
+import { useState } from 'react';
+import { Button, Popover, paperClasses } from '@mui/material';
 import { useSettingsContext } from 'providers/SettingsProvider';
-import { DatewiseNotification } from 'types/notification';
 import IconifyIcon from 'components/base/IconifyIcon';
-import SimpleBar from 'components/base/SimpleBar';
-import NotificationList from 'components/sections/notification/NotificationList';
 
 interface NotificationMenuProps {
   type?: 'default' | 'slim';
 }
 
 const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
-  const [notifications, setNotifications] = useState<DatewiseNotification>({
-    today: [],
-    older: [],
-  });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const {
@@ -30,25 +21,6 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    const datewiseNotification = notificationsData.reduce(
-      (acc: DatewiseNotification, val) => {
-        if (dayjs().diff(dayjs(val.createdAt), 'days') === 0) {
-          acc.today.push(val);
-        } else {
-          acc.older.push(val);
-        }
-        return acc;
-      },
-      {
-        today: [],
-        older: [],
-      },
-    );
-
-    setNotifications(datewiseNotification);
-  }, [notificationsData]);
 
   return (
     <>
@@ -90,35 +62,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
             flexDirection: 'column',
           },
         }}
-      >
-        <Box sx={{ pt: 2, flex: 1, overflow: 'hidden' }}>
-          <SimpleBar disableHorizontal>
-            <NotificationList
-              title="Today"
-              notifications={notifications.today}
-              variant="small"
-              onItemClick={handleClose}
-            />
-            <NotificationList
-              title="Older"
-              notifications={notifications.older}
-              variant="small"
-              onItemClick={handleClose}
-            />
-          </SimpleBar>
-        </Box>
-        <Stack
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            py: 1,
-          }}
-        >
-          <Button component={Link} underline="none" href="#!" variant="text" color="primary">
-            Load more notifications
-          </Button>
-        </Stack>
-      </Popover>
+      ></Popover>
     </>
   );
 };
