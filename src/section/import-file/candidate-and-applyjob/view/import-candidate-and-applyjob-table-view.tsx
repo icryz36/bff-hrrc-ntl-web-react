@@ -39,6 +39,8 @@ const ImportCandidateAndApplyJobTableView = ({
         field: 'validateStatus',
         headerName: 'Validate Status',
         width: 130,
+        headerClassName: 'validate-status-header',
+        cellClassName: 'validate-status-cell',
         renderCell: (params) => {
           return (
             <Chip
@@ -53,9 +55,13 @@ const ImportCandidateAndApplyJobTableView = ({
       {
         field: 'errorMsg',
         headerName: 'Error msg',
-        width: 100,
+        width: 120,
+        headerClassName: 'error-msg-header',
+        cellClassName: 'error-msg-cell',
         renderCell: (params) => (
-          <Typography variant="subtitle2_regular">{params.row.errorMsg}</Typography>
+          <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
+            {params.row.errorMsg}
+          </Typography>
         ),
       },
       {

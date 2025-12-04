@@ -81,7 +81,7 @@ const ImportCandidateAndApplyJobView = () => {
           'application/vnd.ms-excel': ['.xls'],
         }}
       />
-      <Stack py={2} gap={0.8} alignItems={'center'}>
+      <Stack py={3} gap={0.8} alignItems={'center'}>
         <Typography variant="h6_bold">Validate Detail : </Typography>
         <Typography variant="h6_regular">
           Total <b>0</b> Record |{' '}
