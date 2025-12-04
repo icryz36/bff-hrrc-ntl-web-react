@@ -1,8 +1,9 @@
 import { RefObject, useMemo } from 'react';
-import { Box } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
+import IconifyIcon from 'components/base/IconifyIcon';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 
@@ -18,6 +19,8 @@ type ProductsTableProps = {
 const defaultPageSize = 10;
 
 const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTableProps) => {
+  const theme = useTheme();
+
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
@@ -44,6 +47,9 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         field: 'fail',
         headerName: 'Fail',
         width: 130,
+        renderCell: (params) => (
+          <Typography color={theme.palette.chRed[400]}>{params.row.fail}</Typography>
+        ),
       },
       {
         field: 'importDate',
@@ -59,6 +65,11 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         field: 'action',
         headerName: 'Action',
         width: 130,
+        renderCell: () => (
+          <IconButton aria-label="batch" sx={{ p: 0 }}>
+            <IconifyIcon icon="material-symbols-light:docs-outline-rounded" fontSize="18px" />
+          </IconButton>
+        ),
       },
     ],
     [],

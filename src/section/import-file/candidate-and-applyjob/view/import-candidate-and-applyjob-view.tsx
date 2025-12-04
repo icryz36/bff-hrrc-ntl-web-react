@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import FileDropZone from 'components/base/FileDropZone';
 import ImportCandidateAndApplyJobTableView from './import-candidate-and-applyjob-table-view';
 
 const ImportCandidateAndApplyJobView = () => {
   const apiRef = useGridApiRef();
+  const theme = useTheme();
 
   const [pagination, setPagination] = useState({
     pageNo: 1,
@@ -90,7 +91,7 @@ const ImportCandidateAndApplyJobView = () => {
           Success <b>0</b> Record |{' '}
         </Typography>
         <Typography variant="h6_regular">
-          Fail <b style={{ color: '#B61C2A' }}>0</b> Record
+          Fail <b style={{ color: theme.palette.chRed[400] }}>0</b> Record
         </Typography>
       </Stack>
       <ImportCandidateAndApplyJobTableView

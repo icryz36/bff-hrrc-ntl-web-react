@@ -9,7 +9,18 @@ const TrackingAndHistoryView = () => {
     pageSize: 10,
   });
 
-  const tableData: any[] = [];
+  const tableData: any[] = [
+    {
+      id: '1',
+      batchId: '001',
+      fileName: 'File Name 001',
+      record: 10,
+      success: 9,
+      fail: 1,
+      importDate: '13/11/2568',
+      owner: 'Akkharaphon Wattanapong',
+    },
+  ];
   const tableTotalRecords = 0;
 
   const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
