@@ -68,14 +68,6 @@ const sitemap: MenuItem[] = [
         icon: 'bytesize:bag',
         path: paths.listJob,
       },
-      {
-        name: 'Import Job',
-        key: 'Import Job',
-        pathName: 'Import Job',
-        active: true,
-        icon: 'uil:import',
-        path: paths[404],
-      },
     ],
   },
   {
@@ -84,14 +76,6 @@ const sitemap: MenuItem[] = [
     key: 'Management Candidate',
     icon: 'material-symbols:view-quilt-outline',
     items: [
-      {
-        name: 'Import Candidate',
-        key: 'Import Candidate',
-        pathName: 'Import Candidate',
-        active: true,
-        icon: 'uil:import',
-        path: paths.importCandidateAndApplyJob,
-      },
       {
         name: 'List Candidate',
         key: 'List Candidate',
@@ -123,6 +107,38 @@ const sitemap: MenuItem[] = [
         active: true,
         icon: 'tdesign:close-octagon',
         path: paths[404],
+      },
+    ],
+  },
+  {
+    id: 'Import File',
+    subheader: 'Import File',
+    key: 'Import File',
+    icon: 'material-symbols:view-quilt-outline',
+    items: [
+      {
+        name: 'Import Job',
+        key: 'Import Job',
+        pathName: 'Import Job',
+        active: true,
+        icon: 'uil:import',
+        path: paths[404],
+      },
+      {
+        name: 'Import Candidate & Apply Job',
+        key: 'Import Candidate & Apply Job',
+        pathName: 'Import Candidate & Apply Job',
+        active: true,
+        icon: 'uil:import',
+        path: paths.importCandidateAndApplyJob,
+      },
+      {
+        name: 'Import Tracking & History',
+        key: 'Import Tracking & History',
+        pathName: 'Import Tracking & History',
+        active: true,
+        icon: 'uil:import',
+        path: paths.importTrackingAndHistory,
       },
     ],
   },
