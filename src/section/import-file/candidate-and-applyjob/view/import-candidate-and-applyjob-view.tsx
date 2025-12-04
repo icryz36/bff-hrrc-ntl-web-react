@@ -1,8 +1,27 @@
-// ---------------------------------------------------------------------
+import { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { useGridApiRef } from '@mui/x-data-grid';
 import FileDropZone from 'components/base/FileDropZone';
+import ImportCandidateAndApplyJobTableView from './import-candidate-and-applyjob-table-view';
 
-const ImportCandidateView = () => {
+const ImportCandidateAndApplyJobView = () => {
+  const apiRef = useGridApiRef();
+
+  const [pagination, setPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+
+  const tableData: any = [];
+  const tableTotalRecords = 0;
+
+  const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
+    setPagination({
+      pageNo: page + 1,
+      pageSize,
+    });
+  };
+
   return (
     <>
       <FileDropZone
@@ -27,8 +46,16 @@ const ImportCandidateView = () => {
           Fail <b>0</b> Record
         </Typography>
       </Stack>
+      <ImportCandidateAndApplyJobTableView
+        apiRef={apiRef}
+        tableData={tableData}
+        onPageChange={handlePageChange}
+        totalItem={tableTotalRecords}
+        currentPage={pagination.pageNo}
+        loading={false}
+      />
     </>
   );
 };
 
-export default ImportCandidateView;
+export default ImportCandidateAndApplyJobView;

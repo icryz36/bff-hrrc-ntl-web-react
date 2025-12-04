@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import ImportCandidateView from 'section/import-file/candidate-and-applyjob/ImportCandidateAndApplyJobView';
+import ImportCandidateView from 'section/import-file/candidate-and-applyjob/view/import-candidate-and-applyjob-view';
 import PageHeader from 'components/page-header/page-header';
 
 const ImportCandidateAndApplyJobPage = () => {
