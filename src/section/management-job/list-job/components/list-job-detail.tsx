@@ -26,10 +26,12 @@ const ListJobDetailComponent: FC<IListJobDetailComponentProps> = ({ open, onClos
   const { data: usersList = [] } = useQuery(useMasterDataQuery.users());
 
   const jobData = data?.data;
-  const recruiterNames = usersList
-    ?.filter((user) => jobData?.recruiterUserId?.includes(user?.userId))
-    ?.map((user) => `${user?.name} ${user?.surname}`)
-    ?.join(', ');
+  const recruiterNames = Array.isArray(usersList)
+    ? usersList
+        ?.filter((user) => jobData?.recruiterUserId?.includes(user?.userId))
+        ?.map((user) => `${user?.name} ${user?.surname}`)
+        ?.join(', ')
+    : '';
 
   const InfoRow = ({
     label,
