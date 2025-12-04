@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Grid';
+import ImportCandidateView from 'section/import-file/candidate-and-applyjob/ImportCandidateAndApplyJobView';
 import PageHeader from 'components/page-header/page-header';
 
 const ImportCandidateAndApplyJobPage = () => {
@@ -8,7 +9,7 @@ const ImportCandidateAndApplyJobPage = () => {
         <PageHeader title="Import Candidate & Apply Job" />
       </Grid>
       <Grid size={12} sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
-        {/* <ListCandidateView /> */}
+        <ImportCandidateView />
       </Grid>
     </Grid>
   );
