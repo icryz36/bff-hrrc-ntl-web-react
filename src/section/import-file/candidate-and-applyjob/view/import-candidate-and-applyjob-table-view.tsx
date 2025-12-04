@@ -3,6 +3,7 @@ import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
+import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
@@ -185,6 +186,7 @@ const ImportCandidateAndApplyJobTableView = ({
           },
         }}
         slots={{
+          noRowsOverlay: () => <NoRowsOverlayCustom message="No List File" />,
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
         }}
       />
