@@ -26,7 +26,10 @@ const EditCandidatePage = lazy(() => import('pages/candidate/CandidateEditPage')
 
 // inmport file
 const ImportCandidateAndApplyJobPage = lazy(
-  () => import('pages/import/ImportCandidateAndApplyJobPage'),
+  () => import('pages/import/ImportCandidateAndApplyJobPage copy'),
+);
+const ImportTrackingAndHistoryPage = lazy(
+  () => import('pages/import/ImportTrackingAndHistoryPage'),
 );
 
 export const SuspenseOutlet = () => {
@@ -105,6 +108,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.importCandidateAndApplyJob,
                     element: <ImportCandidateAndApplyJobPage />,
+                  },
+                  {
+                    path: paths.importTrackingAndHistory,
+                    element: <ImportTrackingAndHistoryPage />,
                   },
                 ],
               },
