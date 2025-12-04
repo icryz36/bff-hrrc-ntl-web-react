@@ -1,9 +1,10 @@
 import { RefObject, useMemo } from 'react';
-import { Box } from '@mui/material';
+import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
 import DataGridPagination from 'components/pagination/DataGridPagination';
+import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
 type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
@@ -12,6 +13,17 @@ type ProductsTableProps = {
   totalItem: number;
   currentPage: number;
   loading: boolean;
+};
+
+export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+  switch (val?.toLocaleLowerCase()) {
+    case 'success':
+      return 'success';
+    case 'fail':
+      return 'error';
+    default:
+      return 'primary';
+  }
 };
 
 const defaultPageSize = 10;
@@ -24,9 +36,33 @@ const ImportCandidateAndApplyJobTableView = ({
   const columns: GridColDef<any>[] = useMemo(
     () => [
       {
+        field: 'validateStatus',
+        headerName: 'Validate Status',
+        width: 130,
+        renderCell: (params) => {
+          return (
+            <Chip
+              label={params.row.validateStatus}
+              variant="soft"
+              color={getStatusBadgeColor(params.row.validateStatus)}
+              sx={{ textTransform: 'capitalize' }}
+            />
+          );
+        },
+      },
+      {
+        field: 'errorMsg',
+        headerName: 'Error msg',
+        width: 100,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">{params.row.errorMsg}</Typography>
+        ),
+      },
+      {
         field: 'no',
         headerName: 'No',
         width: 80,
+        renderCell: () => <Typography variant="subtitle2_regular">01</Typography>,
       },
       {
         field: 'title',
@@ -87,6 +123,13 @@ const ImportCandidateAndApplyJobTableView = ({
         field: 'workExperience',
         headerName: 'Work Experience',
         width: 250,
+        renderCell: (params) => (
+          <Tooltip title={params.row.workExperience} placement="bottom">
+            <StyledTypographyLine line={1} variant="subtitle2_regular">
+              {params.row.workExperience}
+            </StyledTypographyLine>
+          </Tooltip>
+        ),
       },
       {
         field: 'canDriveMotorcycle',
@@ -125,7 +168,7 @@ const ImportCandidateAndApplyJobTableView = ({
         loading={loading}
         apiRef={apiRef}
         columns={columns}
-        getRowId={(row) => row.candidateId}
+        getRowId={(row) => row.id}
         pageSizeOptions={[defaultPageSize, 15]}
         disableVirtualization
         initialState={{
