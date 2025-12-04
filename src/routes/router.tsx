@@ -26,7 +26,7 @@ const EditCandidatePage = lazy(() => import('pages/candidate/CandidateEditPage')
 
 // inmport file
 const ImportCandidateAndApplyJobPage = lazy(
-  () => import('pages/import/ImportCandidateAndApplyJob'),
+  () => import('pages/import/ImportCandidateAndApplyJobPage'),
 );
 
 export const SuspenseOutlet = () => {
