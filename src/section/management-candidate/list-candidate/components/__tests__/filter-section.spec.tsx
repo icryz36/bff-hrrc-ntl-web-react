@@ -10,7 +10,7 @@ vi.mock('providers/BreakpointsProvider', () => ({
   }),
 }));
 
-vi.mock('section/management-job/list-job/components/filter-menu-content', () => ({
+vi.mock('section/management-candidate/list-candidate/components/filter-menu-content', () => ({
   default: ({ onClose }: { onClose: () => void }) => (
     <div data-testid="filter-menu-content">
       Mock Filter Menu
@@ -23,15 +23,11 @@ describe('<FilterSection />', () => {
   const apiRef = React.createRef<GridApiCommunity>();
   const handleToggleFilterPanel = vi.fn();
   const mockFilters = {
-    jobTitle: '',
-    department: [],
-    region: '',
-    province: '',
-    district: '',
-    jobStatus: '',
-    owner: '',
-    startDate: null,
-    activeDay: '',
+    status: '',
+    name: '',
+    surname: '',
+    email: '',
+    mobileNumber: '',
   };
   const setFiltersMock = vi.fn();
   const onResetFiltersMock = vi.fn();
