@@ -90,7 +90,7 @@ const sitemap: MenuItem[] = [
         pathName: 'Import Candidate',
         active: true,
         icon: 'uil:import',
-        path: paths[404],
+        path: paths.importCandidateAndApplyJob,
       },
       {
         name: 'List Candidate',

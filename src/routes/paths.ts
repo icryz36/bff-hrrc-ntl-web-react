@@ -19,6 +19,7 @@ const paths = {
   listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
   editCandidates: `/${rootPaths.manageRoot}/candidates/:id/edit`,
   candidateDetail: `/${rootPaths.manageRoot}/candidates/:id/detail`,
+  importCandidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-apply-job`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };
@@ -34,6 +35,9 @@ export const navigatePaths = {
     list: `/${rootPaths.manageRoot}/candidates/list`,
     detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
     edit: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/edit`,
+  },
+  importFile: {
+    candidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-apply-job`,
   },
 };
 
