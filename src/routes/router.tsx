@@ -31,6 +31,7 @@ const ImportCandidateAndApplyJobPage = lazy(
 const ImportTrackingAndHistoryPage = lazy(
   () => import('pages/import/ImportTrackingAndHistoryPage'),
 );
+const ImportDetailBatchIdPage = lazy(() => import('pages/import/ImportDetailBatchIdPage'));
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -112,6 +113,10 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.importTrackingAndHistory,
                     element: <ImportTrackingAndHistoryPage />,
+                  },
+                  {
+                    path: paths.importDetailBatchId,
+                    element: <ImportDetailBatchIdPage />,
                   },
                 ],
               },

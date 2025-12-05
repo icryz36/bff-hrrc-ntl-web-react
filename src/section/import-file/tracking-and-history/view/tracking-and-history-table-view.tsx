@@ -1,7 +1,9 @@
 import { RefObject, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import { navigatePaths } from 'routes/paths';
 import { StyledDataGrid } from 'section/import-file/styles';
 import IconifyIcon from 'components/base/IconifyIcon';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
@@ -20,6 +22,7 @@ const defaultPageSize = 10;
 
 const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTableProps) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const columns: GridColDef<any>[] = useMemo(
     () => [
@@ -65,8 +68,12 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         field: 'action',
         headerName: 'Action',
         width: 130,
-        renderCell: () => (
-          <IconButton aria-label="batch" sx={{ p: 0 }}>
+        renderCell: (params) => (
+          <IconButton
+            aria-label="batch"
+            sx={{ p: 0 }}
+            onClick={() => navigate(navigatePaths.importFile.importDetailBatchId(params.row.id))}
+          >
             <IconifyIcon icon="material-symbols-light:docs-outline-rounded" fontSize="18px" />
           </IconButton>
         ),

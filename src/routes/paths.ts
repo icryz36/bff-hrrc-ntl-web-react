@@ -21,6 +21,7 @@ const paths = {
   candidateDetail: `/${rootPaths.manageRoot}/candidates/:id/detail`,
   importCandidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
   importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
+  importDetailBatchId: `/${rootPaths.manageRoot}/import/batch/:id/detail`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };
@@ -40,6 +41,7 @@ export const navigatePaths = {
   importFile: {
     candidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
     importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
+    importDetailBatchId: (id: string) => `/${rootPaths.manageRoot}/import/batch/${id}/detail`,
   },
 };
 
