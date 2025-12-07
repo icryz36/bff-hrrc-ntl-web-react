@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { UseBooleanReturn } from 'hooks/useBoolean';
 import { useCandidateQuery } from 'services/candidate/query';
 import { TGetCandidateListPayload } from 'types/candidate';
-import { CustomArrowStepper } from 'components/custom-arrow-stepper/customArrowStepper';
+import CustomArrowStepper from 'components/custom-arrow-stepper/CustomArrowStepper';
+import { JobApplicationApplyCandidateDialog } from '../components/job-application-apply-candidate-dialog';
 import { JobApplicationCandidateTable } from '../components/job-application-candidate-table';
 import JobApplicationDetailSection from '../components/job-application-detail-section';
 
@@ -23,7 +25,13 @@ const STEPS = [
 
 // ----------------------------------------------------------------------
 
-const JobApplicationDetailView = () => {
+type JobApplicationDetailViewProps = {
+  isOpenApplyCandidateDialog: UseBooleanReturn;
+};
+
+const JobApplicationDetailView = ({
+  isOpenApplyCandidateDialog,
+}: JobApplicationDetailViewProps) => {
   const [activeStep, setActiveStep] = useState<string>('new');
   const [pagination, setPagination] = useState({
     page: 0,
@@ -67,6 +75,13 @@ const JobApplicationDetailView = () => {
         totalData={totalData}
         paginationModel={pagination}
         onChangePaginationModel={setPagination}
+      />
+
+      {/* Dialog */}
+
+      <JobApplicationApplyCandidateDialog
+        open={isOpenApplyCandidateDialog.value}
+        onClose={isOpenApplyCandidateDialog.onFalse}
       />
     </Stack>
   );

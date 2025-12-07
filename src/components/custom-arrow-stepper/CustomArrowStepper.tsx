@@ -19,11 +19,7 @@ type TStep = {
   count: number;
 };
 
-export const CustomArrowStepper = ({
-  steps,
-  activeStep,
-  onChangeStep,
-}: CustomArrowStepperProps) => {
+const CustomArrowStepper = ({ steps, activeStep, onChangeStep }: CustomArrowStepperProps) => {
   return (
     <StyledStepperContainer>
       {steps.map((step, index) => {
@@ -52,3 +48,5 @@ export const CustomArrowStepper = ({
     </StyledStepperContainer>
   );
 };
+
+export default CustomArrowStepper;

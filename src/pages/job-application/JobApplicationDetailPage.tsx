@@ -2,6 +2,7 @@ import { useParams } from 'react-router';
 import { Button, Chip, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useQuery } from '@tanstack/react-query';
+import { useBoolean } from 'hooks/useBoolean';
 import paths from 'routes/paths';
 import { getStatusJpbBadgeColor } from 'section/manage-job-application/job-application/helper';
 import JobApplicationDetailView from 'section/manage-job-application/job-application/view/job-application-detail-view';
@@ -11,6 +12,7 @@ import PageHeader from 'components/page-header/page-header';
 
 const ListJobPage = () => {
   const { id = '' } = useParams();
+  const isOpenApplyCandidateDialog = useBoolean();
 
   const { data } = useQuery(useJobpostQuery.detail({ jobPostId: id }));
 
@@ -29,6 +31,7 @@ const ListJobPage = () => {
               <Button
                 variant="soft"
                 color="neutral"
+                onClick={isOpenApplyCandidateDialog.onTrue}
                 startIcon={<IconifyIcon icon="mdi:user-outline" width={20} height={20} />}
               >
                 Apply Candidate
@@ -48,7 +51,7 @@ const ListJobPage = () => {
         />
       </Grid>
       <Grid size={12} sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
-        <JobApplicationDetailView />
+        <JobApplicationDetailView isOpenApplyCandidateDialog={isOpenApplyCandidateDialog} />
       </Grid>
     </Grid>
   );
