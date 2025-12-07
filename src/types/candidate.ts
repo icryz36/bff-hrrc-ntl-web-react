@@ -1,7 +1,11 @@
 import { TStatusResponse } from './common';
 
 export type TGetCandidateListPayload = {
-  status: ['Active', 'Inactive'];
+  status: ('Active' | 'Inactive')[];
+  name?: string;
+  surname?: string;
+  email?: string;
+  mobile?: string;
   pageNo: number;
   pageSize: number;
 };
