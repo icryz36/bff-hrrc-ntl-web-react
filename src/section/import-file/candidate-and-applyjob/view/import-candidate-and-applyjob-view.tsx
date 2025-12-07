@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
-import FileDropZone from 'components/base/FileDropZone';
+import IconifyIcon from 'components/base/IconifyIcon';
+import FileDropCustom from 'components/common/FileDropCustom';
 import ImportCandidateAndApplyJobTableView from './import-candidate-and-applyjob-table-view';
 
 const ImportCandidateAndApplyJobView = () => {
@@ -72,14 +73,34 @@ const ImportCandidateAndApplyJobView = () => {
 
   return (
     <>
-      <FileDropZone
+      <FileDropCustom
         maxSize={2 * 1024 * 1024}
         onDrop={(acceptedFiles) => {
           console.log({ acceptedFiles });
         }}
+        sx={{
+          height: 200,
+        }}
+        children={
+          <Stack flexDirection={'column'} alignItems={'center'} spacing={1}>
+            <IconifyIcon
+              icon="material-symbols:upload"
+              fontSize={72}
+              color={theme.palette.primary.main}
+            />
+            <Typography variant="body1_regular" color="primary">
+              browse from device
+            </Typography>
+            <Typography variant="caption_regular" color="textSecondary">
+              รองรับไฟล์ .xlsx และ .xls ขนาดไฟล์ไม่เกิน is 50 MB
+            </Typography>
+          </Stack>
+        }
         accept={{
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
           'application/vnd.ms-excel': ['.xls'],
+          'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
+          'application/pdf': ['.pdf'],
         }}
       />
       <Stack py={3} gap={0.8} alignItems={'center'}>
