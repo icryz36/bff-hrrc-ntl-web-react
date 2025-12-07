@@ -28,4 +28,3 @@ describe('<DataGridSkeleton />', () => {
     expect(screen.queryByText('Loading data...')).not.toBeInTheDocument();
   });
 });
-

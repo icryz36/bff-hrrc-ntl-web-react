@@ -74,4 +74,3 @@ describe('<Image />', () => {
     expect(image).not.toHaveAttribute('src');
   });
 });
-

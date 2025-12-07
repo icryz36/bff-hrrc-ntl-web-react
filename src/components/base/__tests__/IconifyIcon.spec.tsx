@@ -3,7 +3,9 @@ import { vi } from 'vitest';
 import IconifyIcon from '../IconifyIcon';
 
 vi.mock('@iconify/react', () => ({
-  Icon: ({ icon, ...props }: any) => <span data-testid="iconify-icon" data-icon={icon} {...props} />,
+  Icon: ({ icon, ...props }: any) => (
+    <span data-testid="iconify-icon" data-icon={icon} {...props} />
+  ),
 }));
 
 describe('<IconifyIcon />', () => {
@@ -16,7 +18,9 @@ describe('<IconifyIcon />', () => {
   });
 
   it('should apply custom sx styles', () => {
-    render(<IconifyIcon icon="material-symbols:home" sx={{ color: 'primary.main', fontSize: 24 }} />);
+    render(
+      <IconifyIcon icon="material-symbols:home" sx={{ color: 'primary.main', fontSize: 24 }} />,
+    );
 
     const icon = screen.getByTestId('iconify-icon');
     expect(icon).toBeInTheDocument();
@@ -37,7 +41,12 @@ describe('<IconifyIcon />', () => {
   });
 
   it('should handle sx as array', () => {
-    render(<IconifyIcon icon="material-symbols:home" sx={[{ color: 'primary.main' }, { fontSize: 24 }]} />);
+    render(
+      <IconifyIcon
+        icon="material-symbols:home"
+        sx={[{ color: 'primary.main' }, { fontSize: 24 }]}
+      />,
+    );
 
     const icon = screen.getByTestId('iconify-icon');
     expect(icon).toBeInTheDocument();
@@ -57,4 +66,3 @@ describe('<IconifyIcon />', () => {
     expect(icon).toBeInTheDocument();
   });
 });
-

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from 'test-utils';
+import { fireEvent, render, screen } from 'test-utils';
 import { vi } from 'vitest';
 import DashboardMenu from '../DashboardMenu';
 
@@ -63,4 +63,3 @@ describe('<DashboardMenu />', () => {
     expect(icons.length).toBe(2);
   });
 });
-

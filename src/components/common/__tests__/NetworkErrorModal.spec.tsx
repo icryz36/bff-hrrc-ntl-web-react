@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from 'test-utils';
+import { fireEvent, render, screen, waitFor } from 'test-utils';
 import { NetworkErrorModal } from '../NetworkErrorModal';
 
 describe('<NetworkErrorModal />', () => {
@@ -42,4 +42,3 @@ describe('<NetworkErrorModal />', () => {
     });
   });
 });
-

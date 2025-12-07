@@ -20,4 +20,3 @@ describe('<VibrantBackground />', () => {
     expect(container.firstChild).toBeInTheDocument();
   });
 });
-
