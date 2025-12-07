@@ -27,6 +27,7 @@ interface FileDropZoneProps extends DropzoneOptions {
   hideInputIfHaveValue?: boolean;
   sx?: BoxProps['sx'];
   children?: any;
+  buttonDelete?: boolean;
 }
 
 const FileDropCustom = ({
@@ -38,6 +39,7 @@ const FileDropCustom = ({
   hideInputIfHaveValue,
   sx,
   children,
+  buttonDelete,
   ...rest
 }: FileDropZoneProps) => {
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -162,17 +164,40 @@ const FileDropCustom = ({
               <ListItem
                 key={`${preview.preview}`}
                 secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => handleRemoveFile(index)}
-                  >
-                    <IconifyIcon
-                      icon="material-symbols:close-small-rounded"
-                      fontSize={20}
-                      sx={{ color: 'text.primary' }}
-                    />
-                  </IconButton>
+                  <>
+                    {buttonDelete ? (
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() => handleRemoveFile(index)}
+                      >
+                        <Stack alignItems={'center'}>
+                          <IconifyIcon
+                            icon="material-symbols:delete-outline-rounded"
+                            sx={{
+                              fontSize: { xs: 40, sm: 20 },
+                              color: 'error',
+                            }}
+                          />
+                          <Typography variant="subtitle1_semibold" color="error">
+                            Delete
+                          </Typography>
+                        </Stack>
+                      </Button>
+                    ) : (
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => handleRemoveFile(index)}
+                      >
+                        <IconifyIcon
+                          icon="material-symbols:close-small-rounded"
+                          fontSize={20}
+                          sx={{ color: 'text.primary' }}
+                        />
+                      </IconButton>
+                    )}
+                  </>
                 }
                 sx={(theme) => ({
                   pl: 1,

@@ -81,6 +81,7 @@ const ImportCandidateAndApplyJobView = () => {
         sx={{
           height: 200,
         }}
+        buttonDelete
         children={
           <Stack flexDirection={'column'} alignItems={'center'} spacing={1}>
             <IconifyIcon
