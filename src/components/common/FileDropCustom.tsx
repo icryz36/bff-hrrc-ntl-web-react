@@ -55,9 +55,8 @@ const FileDropCustom = ({
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (...args) => {
-      console.log({ args });
-
       const [acceptedFiles] = args;
+
       setFiles(acceptedFiles);
       setPreviews(acceptedFiles.map((file) => convertFileToAttachment(file)));
       if (onDrop) {

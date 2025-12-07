@@ -98,10 +98,8 @@ const ImportCandidateAndApplyJobView = () => {
           </Stack>
         }
         accept={{
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-          'application/vnd.ms-excel': ['.xls'],
-          'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
-          'application/pdf': ['.pdf'],
+          'application/vnd.ms-excel': [],
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [],
         }}
       />
       <Stack py={3} gap={0.8} alignItems={'center'}>
