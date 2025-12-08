@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import {
   Box,
@@ -26,7 +26,7 @@ interface FileDropZoneProps extends DropzoneOptions {
   previewType?: 'list' | 'thumbnail';
   hideInputIfHaveValue?: boolean;
   sx?: BoxProps['sx'];
-  children?: any;
+  children?: ReactNode;
   buttonDelete?: boolean;
 }
 
@@ -239,7 +239,6 @@ const FileDropCustom = ({
                       </Typography>
                     </Box>
                   }
-                  // secondary={preview.size}
                   slotProps={{
                     primary: {
                       variant: 'body2',
