@@ -1,10 +1,40 @@
 import { TStatusResponse } from './common';
 
-export type TApplyjobPayload = {
+// apply job ---------------------------------------------------------------
+
+export type TApplyJobPayload = {
   jobPostId: string;
   candidates: string[];
 };
 
-export type TApplyjobResponse = TStatusResponse & {
+export type TApplyJobResponse = TStatusResponse & {
   jobPostId: string;
+};
+
+// change job status --------------------------------------------------------
+
+export type TChangeJobStatus = {
+  statusId: string;
+  note?: string;
+};
+
+export type TChangeJobResponse = TStatusResponse;
+
+// count job application -----------------------------------------------------
+
+export type TGetCountApplicationPayload = {
+  jobPostId: string;
+};
+
+export type TGetCountApplicationResponse = TStatusResponse & {
+  data: {
+    new: number;
+    cv: number;
+    first_interview: number;
+    second_interview: number;
+    final_interview: number;
+    offer: number;
+    sign_contract: number;
+    on_board: number;
+  };
 };

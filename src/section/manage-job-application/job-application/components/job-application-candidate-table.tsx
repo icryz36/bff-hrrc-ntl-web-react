@@ -13,6 +13,7 @@ type JobApplicationCandidateTableProps = {
   isLoading: boolean;
   tableData: TCandidateListItems[];
   paginationModel: GridPaginationModel;
+  onViewCandidateDetail: (id: string) => void;
   onChangePaginationModel: (model: GridPaginationModel) => void;
 };
 
@@ -21,6 +22,7 @@ export const JobApplicationCandidateTable = ({
   totalData,
   isLoading,
   paginationModel,
+  onViewCandidateDetail,
   onChangePaginationModel,
 }: JobApplicationCandidateTableProps) => {
   const defaultPageSize = 10;
@@ -40,7 +42,11 @@ export const JobApplicationCandidateTable = ({
         sortable: true,
         renderCell: (params) => {
           return (
-            <Link>
+            <Link
+              onClick={() => {
+                onViewCandidateDetail(params.row.candidateId);
+              }}
+            >
               <Typography variant="subtitle2_regular">{params.row.nameTh}</Typography>
             </Link>
           );
@@ -145,11 +151,6 @@ export const JobApplicationCandidateTable = ({
         pageSizeOptions={[defaultPageSize]}
         paginationModel={paginationModel}
         onPaginationModelChange={onChangePaginationModel}
-        // checkbox
-        checkboxSelection
-        onRowSelectionModelChange={(newSelection) => {
-          console.log('newSelection', newSelection);
-        }}
       />
     </Box>
   );

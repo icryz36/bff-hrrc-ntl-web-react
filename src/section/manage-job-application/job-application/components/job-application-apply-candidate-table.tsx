@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
-import { DataGrid, GridColDef, GridPaginationModel, GridRowSelectionModel } from '@mui/x-data-grid';
+import { GridColDef, GridPaginationModel, GridRowSelectionModel } from '@mui/x-data-grid';
 import { TCandidateListItems } from 'types/candidate';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import DataGridPagination from 'components/pagination/DataGridPagination';
+import { StyledDataGrid } from '../styles';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,8 @@ export const JobApplicationApplyCandidateTable = ({
   onSetSelectedCandidate,
   onChangePaginationModel,
 }: JobApplicationApplyCandidateTableProps) => {
+  const MAX_SELECTION = 10;
+
   const columns: GridColDef<TCandidateListItems>[] = useMemo(
     () => [
       {
@@ -62,7 +65,7 @@ export const JobApplicationApplyCandidateTable = ({
   );
 
   return (
-    <DataGrid
+    <StyledDataGrid
       rowHeight={64}
       rows={tableData}
       columns={columns}
@@ -81,10 +84,13 @@ export const JobApplicationApplyCandidateTable = ({
       onPaginationModelChange={onChangePaginationModel}
       // checkbox
       checkboxSelection
-      disableRowSelectionExcludeModel
+      keepNonExistentRowsSelected
       rowSelectionModel={selectedCandidate}
       onRowSelectionModelChange={(newRowSelectionModel) => {
         onSetSelectedCandidate(newRowSelectionModel);
+      }}
+      isRowSelectable={(params) => {
+        return selectedCandidate.ids.size < MAX_SELECTION || selectedCandidate.ids.has(params.id);
       }}
     />
   );

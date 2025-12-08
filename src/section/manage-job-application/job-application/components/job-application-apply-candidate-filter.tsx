@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
+import { Box, Button, InputAdornment, Stack } from '@mui/material';
 import IconifyIcon from 'components/base/IconifyIcon';
+import { StyledSearchTextField } from '../styles';
 import { TFilter } from './job-application-apply-candidate-dialog';
 
 // ----------------------------------------------------------------------
@@ -46,7 +47,7 @@ export const JobApplicationApplyCandidateFilter = ({
 
   return (
     <Stack spacing={2} alignItems="center">
-      <TextField
+      <StyledSearchTextField
         name="searchName"
         label="Search Name"
         size="small"
@@ -62,7 +63,7 @@ export const JobApplicationApplyCandidateFilter = ({
           },
         }}
       />
-      <TextField
+      <StyledSearchTextField
         name="searchSurname"
         label="Search Surname"
         size="small"
@@ -82,8 +83,8 @@ export const JobApplicationApplyCandidateFilter = ({
       <Box width={100}>
         <Button
           fullWidth
+          size="medium"
           variant="contained"
-          sx={{ height: 42 }}
           onClick={handleConfirmFilter}
           startIcon={<IconifyIcon icon="material-symbols:search-rounded" width={20} height={20} />}
         >

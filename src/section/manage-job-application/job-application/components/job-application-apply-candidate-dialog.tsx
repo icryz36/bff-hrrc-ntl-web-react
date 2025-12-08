@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useParams } from 'react-router';
 import {
   Button,
   Dialog,
@@ -11,7 +12,9 @@ import {
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
+import { useApplyJobMutation } from 'services/job-application/mutation';
 import { TGetCandidateListPayload } from 'types/candidate';
+import { TApplyJobPayload } from 'types/job-application';
 import { JobApplicationApplyCandidateFilter } from './job-application-apply-candidate-filter';
 import { JobApplicationApplyCandidateTable } from './job-application-apply-candidate-table';
 
@@ -20,6 +23,8 @@ import { JobApplicationApplyCandidateTable } from './job-application-apply-candi
 type JobApplicationApplyCandidateDialogProps = {
   open: boolean;
   onClose: VoidFunction;
+  onApplySuccess: VoidFunction;
+  onApplyError: VoidFunction;
 };
 
 export type TFilter = {
@@ -30,13 +35,15 @@ export type TFilter = {
 export const JobApplicationApplyCandidateDialog = ({
   open,
   onClose,
+  onApplySuccess,
+  onApplyError,
 }: JobApplicationApplyCandidateDialogProps) => {
+  const { id = '' } = useParams();
+
   const [filter, setFilter] = useState<TFilter>({
     searchName: '',
     searchSurname: '',
   });
-
-  console.log('filter', filter);
 
   const [pagination, setPagination] = useState({
     page: 0,
@@ -48,21 +55,21 @@ export const JobApplicationApplyCandidateDialog = ({
     ids: new Set(),
   });
 
-  // api
-  if (selectedCandidate.ids instanceof Set) {
-    console.log('sdsdsds', Array.from(selectedCandidate.ids));
-  }
-
   const queryPayload: TGetCandidateListPayload = useMemo(
     () => ({
+      // jobPostId: id, // TODO: ส่งไปแล้ว error 400
+      status: ['Active'],
       pageNo: pagination.page + 1,
       pageSize: pagination.pageSize,
-      status: ['Active', 'Inactive'],
+      ...(filter.searchName && { name: filter.searchName }),
+      ...(filter.searchSurname && { surname: filter.searchSurname }),
     }),
-    [pagination.page],
+    [pagination.page, filter.searchName, filter.searchSurname, id],
   );
 
   // api ---------------------------------------------------------------
+
+  const { mutate: applyJob, isPending: isLoadingApplyJob } = useApplyJobMutation();
 
   const { data: candidateList, isPending: isLoading } = useQuery({
     ...useCandidateQuery.list(queryPayload),
@@ -70,12 +77,45 @@ export const JobApplicationApplyCandidateDialog = ({
   });
 
   const tableData = candidateList?.items || [];
-  const totalData = candidateList?.pagination?.totalRecords || 0; // NOTE: why BE not return in  totalRecords  ?
+  const totalData = candidateList?.total || 0;
+
+  // ----------------------------------------------------------------------
+
+  const handleSubmitApplyJob = () => {
+    const candidates = Array.from(selectedCandidate.ids)?.map((id) => String(id));
+
+    const payload: TApplyJobPayload = {
+      jobPostId: id,
+      candidates,
+    };
+
+    applyJob(payload, {
+      onSuccess: (response) => {
+        if (response.status) {
+          onApplySuccess();
+          return;
+        }
+
+        onApplyError();
+      },
+      onError: () => {
+        onApplyError();
+      },
+      onSettled: () => {
+        handleClose();
+      },
+    });
+  };
+
+  const handleClose = () => {
+    setSelectedCandidate({ type: 'include', ids: new Set() });
+    onClose();
+  };
 
   // ----------------------------------------------------------------------
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle mt={3}>Apply Candidate</DialogTitle>
 
       <DialogContent>
@@ -100,10 +140,17 @@ export const JobApplicationApplyCandidateDialog = ({
 
       <DialogActions>
         <Stack spacing={1} px={2} py={1}>
-          <Button variant="soft" color="neutral" onClick={onClose}>
+          <Button variant="soft" color="neutral" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained">Confirm</Button>
+          <Button
+            variant="contained"
+            loading={isLoadingApplyJob}
+            onClick={handleSubmitApplyJob}
+            disabled={selectedCandidate.ids.size === 0}
+          >
+            Confirm
+          </Button>
         </Stack>
       </DialogActions>
     </Dialog>
