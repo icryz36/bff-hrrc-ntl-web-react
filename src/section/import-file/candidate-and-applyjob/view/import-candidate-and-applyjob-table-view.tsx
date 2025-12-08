@@ -1,10 +1,9 @@
 import { RefObject, useMemo } from 'react';
-import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
+import { Box, Chip, ChipOwnProps, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
-import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
 type ProductsTableProps = {
@@ -33,6 +32,7 @@ const ImportCandidateAndApplyJobTableView = ({
   apiRef,
   tableData,
   loading,
+  totalItem,
 }: ProductsTableProps) => {
   const columns: GridColDef<any>[] = useMemo(
     () => [
@@ -185,9 +185,20 @@ const ImportCandidateAndApplyJobTableView = ({
             },
           },
         }}
+        sx={{
+          '& .MuiDataGrid-main': {
+            height: totalItem > 0 ? '100%' : '320px',
+          },
+        }}
         slots={{
           noRowsOverlay: () => <NoRowsOverlayCustom message="No List File" />,
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+          basePagination: () => (
+            <Stack width="100%" px={2} spacing={1}>
+              <Typography variant="caption_light">Showing</Typography>
+              <Typography variant="caption_bold">{totalItem}</Typography>
+              <Typography variant="caption_light">Record</Typography>
+            </Stack>
+          ),
         }}
       />
     </Box>

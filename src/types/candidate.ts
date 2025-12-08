@@ -337,7 +337,7 @@ export type TCandidateDocumentResponse = TStatusResponse & {
 };
 
 export type TImportCandidatePayload = {
-  file: File;
+  file: File | undefined;
 };
 
 export type ITImportCandidateItem = {

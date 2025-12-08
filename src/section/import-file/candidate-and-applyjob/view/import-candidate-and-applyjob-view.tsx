@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
+import { useQuery } from '@tanstack/react-query';
+import { useCandidateQuery } from 'services/candidate/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import FileDropCustom from 'components/common/FileDropCustom';
 import ImportCandidateAndApplyJobTableView from './import-candidate-and-applyjob-table-view';
@@ -14,54 +16,15 @@ const ImportCandidateAndApplyJobView = () => {
     pageSize: 10,
   });
 
-  const tableData: any = [
-    {
-      id: '1',
-      validateStatus: 'success',
-      errorMsg: '',
-      title: 'Mr.',
-      nameTh: 'Akkharaphon',
-      surnameTh: 'Wattanapongphisitkulchai',
-      gender: 'Male',
-      age: '28',
-      mobileNo: '000-000-0000',
-      email: 'Exampleemail@gmail.com',
-      desiredLocation: 'Head Office',
-      desiredProvince: 'Bangkok',
-      source: 'Job website : JobsDB',
-      highestDegree: 'Master',
-      workExperience:
-        'Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      canDriveMotorcycle: 'ได้ มีใบขับขี่',
-      canDriveCar: 'ได้ มีใบขับขี่',
-      jobPostNo: 'HYYYYMM-0000010',
-      applicationSource: 'Job website : JobsDB.',
-      applicationDate: '11/11/2025',
-    },
-    {
-      id: '2',
-      validateStatus: 'fail',
-      errorMsg: 'Wrong Email Format',
-      title: 'Mr.',
-      nameTh: 'Akkharaphon',
-      surnameTh: 'Wattanapongphisitkulchai',
-      gender: 'Male',
-      age: '28',
-      mobileNo: '000-000-0000',
-      email: 'Exampleemail@gmail.com',
-      desiredLocation: 'Head Office',
-      desiredProvince: 'Bangkok',
-      source: 'Job website : JobsDB',
-      highestDegree: 'Master',
-      workExperience:
-        'Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      canDriveMotorcycle: 'ได้ มีใบขับขี่',
-      canDriveCar: 'ได้ มีใบขับขี่',
-      jobPostNo: 'HYYYYMM-0000010',
-      applicationSource: 'Job website : JobsDB.',
-      applicationDate: '11/11/2025',
-    },
-  ];
+  const [fileUpload, setFileUpload] = useState<File | undefined>();
+
+  const query = useCandidateQuery.import({
+    file: fileUpload,
+  });
+
+  const { data: listCandidateImport, isLoading } = useQuery(query);
+
+  const tableData = listCandidateImport?.items || [];
   const tableTotalRecords = 0;
 
   const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
@@ -74,9 +37,9 @@ const ImportCandidateAndApplyJobView = () => {
   return (
     <>
       <FileDropCustom
-        maxSize={2 * 1024 * 1024}
+        maxSize={50 * 1024 * 1024}
         onDrop={(acceptedFiles) => {
-          console.log({ acceptedFiles });
+          setFileUpload(acceptedFiles[0]);
         }}
         sx={{
           height: 200,
@@ -120,7 +83,7 @@ const ImportCandidateAndApplyJobView = () => {
         onPageChange={handlePageChange}
         totalItem={tableTotalRecords}
         currentPage={pagination.pageNo}
-        loading={false}
+        loading={isLoading}
       />
     </>
   );
