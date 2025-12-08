@@ -12,6 +12,8 @@ import {
   TGetCandidateDocumentByIdPayload,
   TGetCandidateListPayload,
   TGetCandidateListResponse,
+  TImportCandidatePayload,
+  TImportCandidateResponse,
   TUpdateCandidateResponse,
 } from 'types/candidate';
 
@@ -68,6 +70,18 @@ export const updateCandidateBlacklist = async (
   const { data } = await axiosCandidateInstance({
     method: 'POST',
     url: endpoint.candidate.updateBlacklist,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const fetchImportCandidate = async (
+  payload: TImportCandidatePayload,
+): Promise<TImportCandidateResponse> => {
+  const { data } = await axiosCandidateInstance({
+    method: 'POST',
+    url: endpoint.candidate.import,
     data: payload,
   });
 

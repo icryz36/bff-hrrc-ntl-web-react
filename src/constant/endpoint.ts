@@ -33,6 +33,7 @@ const endpoint = {
     updateBlacklist: `update-candidate-blacklist-xapi`,
     updateNote: `update-candidate-note-xapi`,
     document: `get-document-xapi`,
+    import: `validate-candidates-xapi`,
   },
 };
 
