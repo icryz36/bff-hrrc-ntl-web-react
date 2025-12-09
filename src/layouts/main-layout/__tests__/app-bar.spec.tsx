@@ -46,3 +46,5 @@ describe('<AppBar />', () => {
     expect(screen.getByTestId('appbar-action-items')).toBeInTheDocument();
   });
 });
+
+

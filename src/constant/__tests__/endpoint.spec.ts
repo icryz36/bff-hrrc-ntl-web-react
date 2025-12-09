@@ -45,3 +45,5 @@ describe('endpoint', () => {
     expect(endpoint.candidate.document).toBe('get-document-xapi');
   });
 });
+
+

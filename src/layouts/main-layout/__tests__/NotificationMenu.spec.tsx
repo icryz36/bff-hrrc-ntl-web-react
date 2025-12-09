@@ -31,3 +31,5 @@ describe('<NotificationMenu />', () => {
     expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 });
+
+

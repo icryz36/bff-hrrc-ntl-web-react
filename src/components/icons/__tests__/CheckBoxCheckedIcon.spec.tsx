@@ -18,3 +18,5 @@ describe('<CheckBoxCheckedIcon />', () => {
     expect(icon).toBeInTheDocument();
   });
 });
+
+
