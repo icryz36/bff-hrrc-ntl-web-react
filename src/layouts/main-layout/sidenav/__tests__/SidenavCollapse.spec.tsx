@@ -22,13 +22,22 @@ vi.mock('@gsap/react', () => ({
   }),
 }));
 
-vi.mock('gsap', () => ({
-  default: {
-    to: vi.fn(),
-  },
-}));
+vi.mock('gsap', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('gsap')>();
+  return {
+    ...actual,
+    default: {
+      ...actual.default,
+      to: vi.fn(),
+      registerPlugin: vi.fn(),
+    },
+  };
+});
 
-vi.mock('gsap/MorphSVGPlugin', () => ({}));
+vi.mock('gsap/MorphSVGPlugin', () => ({
+  MorphSVGPlugin: {},
+  default: {},
+}));
 
 describe('<SidenavCollapse />', () => {
   beforeEach(() => {
@@ -41,9 +50,10 @@ describe('<SidenavCollapse />', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('should call toggleNavbarCollapse when clicked', () => {
+  it('should call toggleNavbarCollapse when clicked', async () => {
     const mockToggleNavbarCollapse = vi.fn();
-    vi.mocked(require('providers/SettingsProvider').useSettingsContext).mockReturnValue({
+    const SettingsProvider = await import('providers/SettingsProvider');
+    vi.mocked(SettingsProvider.useSettingsContext).mockReturnValue({
       config: {
         sidenavCollapsed: false,
         textDirection: 'ltr',

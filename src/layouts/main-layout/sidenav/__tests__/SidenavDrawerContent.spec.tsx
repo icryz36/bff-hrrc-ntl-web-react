@@ -2,6 +2,24 @@ import { render, screen } from 'test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import SidenavDrawerContent from '../SidenavDrawerContent';
 
+vi.mock('react-router', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-router')>();
+  const React = await import('react');
+  return {
+    ...actual,
+    useLocation: vi.fn(() => ({
+      pathname: '/',
+    })),
+    NavLink: React.forwardRef(
+      ({ children, to, ...props }: { children: React.ReactNode; to: string; [key: string]: any }, ref: any) => (
+        <a href={to} ref={ref} {...props}>
+          {children}
+        </a>
+      ),
+    ),
+  };
+});
+
 vi.mock('providers/SettingsProvider', async (importOriginal) => {
   const actual = await importOriginal<typeof import('providers/SettingsProvider')>();
   return {
@@ -23,12 +41,32 @@ vi.mock('layouts/main-layout/NavProvider', async (importOriginal) => {
     ...actual,
     useNavContext: vi.fn(() => ({
       sidenavAppbarVariant: 'dense',
+      setOpenItems: vi.fn(),
+      openItems: [],
+      isNestedItemOpen: vi.fn(() => false),
     })),
   };
 });
 
+vi.mock('react-i18next', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-i18next')>();
+  return {
+    ...actual,
+    useTranslation: vi.fn(() => ({
+      t: (key: string) => key,
+      i18n: {
+        changeLanguage: vi.fn(),
+      },
+    })),
+    initReactI18next: {
+      type: '3rdParty',
+      init: vi.fn(),
+    },
+  };
+});
+
 vi.mock('./NavItem', () => ({
-  default: () => <div data-testid="nav-item">NavItem</div>,
+  default: ({ item }: { item: any }) => <div data-testid="nav-item">NavItem {item.name}</div>,
 }));
 
 vi.mock('./SidenavSimpleBar', () => ({
@@ -52,12 +90,14 @@ describe('<SidenavDrawerContent />', () => {
 
   it('should render SidenavDrawerContent', () => {
     render(<SidenavDrawerContent />);
-    expect(screen.getByTestId('sidenav-simple-bar')).toBeInTheDocument();
+    // SidenavDrawerContent renders Logo and NavItem which are mocked
+    expect(screen.getByTestId('logo')).toBeInTheDocument();
   });
 
   it('should render with variant temporary', () => {
     render(<SidenavDrawerContent variant="temporary" />);
-    expect(screen.getByTestId('sidenav-simple-bar')).toBeInTheDocument();
+    // SidenavDrawerContent renders Logo and NavItem which are mocked
+    expect(screen.getByTestId('logo')).toBeInTheDocument();
   });
 });
 

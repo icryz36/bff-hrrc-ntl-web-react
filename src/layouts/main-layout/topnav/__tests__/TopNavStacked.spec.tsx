@@ -33,7 +33,7 @@ vi.mock('layouts/main-layout/topnav/TopnavItems', () => ({
 }));
 
 vi.mock('layouts/main-layout/common/AppbarActionItems', () => ({
-  default: ({ sx }: { sx?: any }) => <div data-testid="appbar-action-items">AppbarActionItems</div>,
+  default: () => <div data-testid="appbar-action-items">AppbarActionItems</div>,
 }));
 
 vi.mock('layouts/main-layout/common/ProfileMenu', () => ({

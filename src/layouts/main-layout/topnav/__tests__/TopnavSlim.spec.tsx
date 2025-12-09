@@ -4,15 +4,16 @@ import TopnavSlim from '../TopnavSlim';
 
 vi.mock('providers/SettingsProvider', async (importOriginal) => {
   const actual = await importOriginal<typeof import('providers/SettingsProvider')>();
+  const mockUseSettingsContext = vi.fn(() => ({
+    config: {
+      navColor: 'default',
+      navigationMenuType: 'topnav',
+    },
+    handleDrawerToggle: vi.fn(),
+  }));
   return {
     ...actual,
-    useSettingsContext: vi.fn(() => ({
-      config: {
-        navColor: 'default',
-        navigationMenuType: 'topnav',
-      },
-      handleDrawerToggle: vi.fn(),
-    })),
+    useSettingsContext: mockUseSettingsContext,
   };
 });
 
@@ -79,8 +80,9 @@ describe('<TopnavSlim />', () => {
     expect(screen.getByTestId('topnav-items')).toHaveTextContent('TopnavItems slim');
   });
 
-  it('should render VibrantBackground when navColor is vibrant', () => {
-    vi.mocked(require('providers/SettingsProvider').useSettingsContext).mockReturnValue({
+  it('should render VibrantBackground when navColor is vibrant', async () => {
+    const SettingsProvider = await import('providers/SettingsProvider');
+    vi.mocked(SettingsProvider.useSettingsContext).mockReturnValue({
       config: {
         navColor: 'vibrant',
         navigationMenuType: 'topnav',

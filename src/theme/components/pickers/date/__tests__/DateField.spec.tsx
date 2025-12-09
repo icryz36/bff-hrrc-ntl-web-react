@@ -9,5 +9,13 @@ describe('DateField component config', () => {
   it('should have enableAccessibleFieldDOMStructure set to false', () => {
     expect(DateField.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
   });
-});
 
+  it('should export DateField as default', () => {
+    expect(DateField).toBeDefined();
+    expect(typeof DateField).toBe('object');
+  });
+
+  it('should have defaultProps as object', () => {
+    expect(typeof DateField.defaultProps).toBe('object');
+  });
+});

@@ -1,5 +1,31 @@
-import { describe, expect, it } from 'vitest';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import MobileDateTimePicker from '../MobileDateTimePicker';
+
+vi.mock('components/base/IconifyIcon', () => ({
+  default: ({ icon }: { icon: string }) => <span data-testid="icon">{icon}</span>,
+}));
+
+vi.mock('components/pickers/ActionBar', () => ({
+  default: () => <div data-testid="action-bar">ActionBar</div>,
+}));
+
+vi.mock('components/pickers/DateTimePickersToolbar', () => ({
+  default: () => <div data-testid="date-time-pickers-toolbar">DateTimePickersToolbar</div>,
+}));
+
+const theme = createTheme();
+
+const renderWithTheme = (ui: React.ReactElement) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>{ui}</LocalizationProvider>
+    </ThemeProvider>,
+  );
+};
 
 describe('MobileDateTimePicker component config', () => {
   it('should have defaultProps defined', () => {
@@ -37,6 +63,10 @@ describe('MobileDateTimePicker component config', () => {
     expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper?.elevation).toBe(3);
   });
 
+  it('should have mobilePaper with margin 0 in sx', () => {
+    expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper?.sx?.margin).toBe(0);
+  });
+
   it('should have styleOverrides defined', () => {
     expect(MobileDateTimePicker.styleOverrides).toBeDefined();
   });
@@ -45,5 +75,41 @@ describe('MobileDateTimePicker component config', () => {
     expect(MobileDateTimePicker.styleOverrides?.root).toBeDefined();
     expect(MobileDateTimePicker.styleOverrides?.root?.width).toBe(536);
   });
-});
 
+  it('should render custom toolbar', () => {
+    const MockToolbar = MobileDateTimePicker.defaultProps?.slots?.toolbar;
+    if (MockToolbar) {
+      renderWithTheme(<MockToolbar />);
+      expect(screen.getByTestId('date-time-pickers-toolbar')).toBeInTheDocument();
+    } else {
+      expect.fail('MockToolbar is undefined');
+    }
+  });
+
+  it('should render custom actionBar', () => {
+    const MockActionBar = MobileDateTimePicker.defaultProps?.slots?.actionBar;
+    if (MockActionBar) {
+      renderWithTheme(<MockActionBar />);
+      expect(screen.getByTestId('action-bar')).toBeInTheDocument();
+    } else {
+      expect.fail('MockActionBar is undefined');
+    }
+  });
+
+  it('should render custom openPickerButton with IconifyIcon', () => {
+    const MockOpenPickerButton = MobileDateTimePicker.defaultProps?.slots?.openPickerButton;
+    if (MockOpenPickerButton) {
+      renderWithTheme(<MockOpenPickerButton />);
+      expect(screen.getByTestId('icon')).toHaveTextContent(
+        'material-symbols:calendar-today-outline-rounded',
+      );
+    } else {
+      expect.fail('MockOpenPickerButton is undefined');
+    }
+  });
+
+  it('should export MobileDateTimePicker as default', () => {
+    expect(MobileDateTimePicker).toBeDefined();
+    expect(typeof MobileDateTimePicker).toBe('object');
+  });
+});
