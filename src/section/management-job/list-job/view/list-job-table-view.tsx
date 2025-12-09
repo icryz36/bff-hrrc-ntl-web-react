@@ -5,7 +5,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
@@ -218,12 +218,12 @@ const ListJobTableView = ({
             {
               label: 'Edit',
               icon: 'mdi-light:pencil',
-              onClick: () => navigate(navigatePaths.jobPost.editJob(jobPostId)),
+              onClick: () => navigate(pathsNavigate.jobPost.editJob(jobPostId)),
             },
             {
               label: 'Duplicate',
               icon: 'material-symbols-light:file-copy-outline',
-              onClick: () => navigate(navigatePaths.jobPost.duplicateJob(jobPostId)),
+              onClick: () => navigate(pathsNavigate.jobPost.duplicateJob(jobPostId)),
             },
             {
               label: 'Delete',

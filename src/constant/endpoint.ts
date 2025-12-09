@@ -34,6 +34,11 @@ const endpoint = {
     updateNote: `update-candidate-note-xapi`,
     document: `get-document-xapi`,
   },
+  jobApplication: {
+    applyJob: '',
+    changeJobStatus: '',
+    count: '',
+  },
 };
 
 export { endpoint };
