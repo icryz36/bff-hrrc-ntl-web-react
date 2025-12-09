@@ -52,6 +52,3 @@ describe('<RHFEditor />', () => {
     expect(screen.getByText('Helper text')).toBeInTheDocument();
   });
 });
-
-
-
