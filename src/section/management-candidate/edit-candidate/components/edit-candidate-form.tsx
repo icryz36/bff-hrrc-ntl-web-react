@@ -154,7 +154,7 @@ export const EditCandidateForm = ({
   }
   return (
     <>
-      <Container maxWidth="md">
+      <Container maxWidth={false} sx={{ maxWidth: '1111px', mx: 'auto' }}>
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" spacing={4}>
             <CandidateInfoForm />

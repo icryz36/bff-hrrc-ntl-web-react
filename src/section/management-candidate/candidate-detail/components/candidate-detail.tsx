@@ -197,7 +197,7 @@ export const CandidateDetail = ({ candidateId }: CandidateDetailProps) => {
   ];
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth={false} sx={{ maxWidth: '1111px', mx: 'auto' }}>
       {candidate?.isBlacklist && (
         <Box sx={{ bgcolor: red[700], p: 1.5, borderRadius: 2, mb: 2, color: 'white' }}>
           <Stack spacing={1}>
