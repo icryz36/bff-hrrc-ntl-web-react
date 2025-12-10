@@ -28,6 +28,7 @@ export const CandidateApplicationDocumentsForm = () => {
               <Typography variant="subtitle2_medium">{item.documentTypeNameEn}</Typography>
               <Box sx={{ position: 'relative' }}>
                 <Field.Upload
+                  maxFiles={1}
                   sx={{ height: 82 }}
                   hideInputIfHaveValue
                   name={`documents[${item.documentTypeKey}]`}
