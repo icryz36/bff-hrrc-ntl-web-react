@@ -29,4 +29,3 @@ describe('<Form />', () => {
     expect(container.querySelector('form')).toBeInTheDocument();
   });
 });
-

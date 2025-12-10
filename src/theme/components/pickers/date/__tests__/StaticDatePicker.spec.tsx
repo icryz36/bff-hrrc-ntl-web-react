@@ -25,23 +25,23 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('StaticDatePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(StaticDatePicker.defaultProps).toBeDefined();
+    expect(StaticDatePicker?.defaultProps).toBeDefined();
   });
 
   it('should have slots defined', () => {
-    expect(StaticDatePicker.defaultProps?.slots).toBeDefined();
+    expect(StaticDatePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have toolbar slot', () => {
-    expect(StaticDatePicker.defaultProps?.slots?.toolbar).toBeDefined();
+    expect(StaticDatePicker?.defaultProps?.slots?.toolbar).toBeDefined();
   });
 
   it('should have actionBar slot', () => {
-    expect(StaticDatePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(StaticDatePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should render custom toolbar', () => {
-    const MockToolbar = StaticDatePicker.defaultProps?.slots?.toolbar;
+    const MockToolbar = StaticDatePicker?.defaultProps?.slots?.toolbar;
     if (MockToolbar) {
       renderWithTheme(<MockToolbar />);
       expect(screen.getByTestId('date-pickers-toolbar')).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe('StaticDatePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = StaticDatePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = StaticDatePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();

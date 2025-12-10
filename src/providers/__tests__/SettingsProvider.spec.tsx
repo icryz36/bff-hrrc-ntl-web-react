@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import SettingsProvider, { useSettingsContext } from '../SettingsProvider';
 import { PropsWithChildren } from 'react';
-import { SET_CONFIG, COLLAPSE_NAVBAR, EXPAND_NAVBAR } from 'reducers/SettingsReducer';
+import { act, renderHook } from '@testing-library/react';
+import { COLLAPSE_NAVBAR, EXPAND_NAVBAR, SET_CONFIG } from 'reducers/SettingsReducer';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import SettingsProvider, { useSettingsContext } from '../SettingsProvider';
 
 vi.mock('lib/utils', () => ({
   getItemFromStore: vi.fn((key: string, defaultValue: any) => defaultValue),
@@ -54,13 +54,12 @@ describe('SettingsProvider', () => {
 
   it('should update config using setConfig', () => {
     const { result } = renderHook(() => useSettingsContext(), { wrapper });
-    const initialThemeMode = result.current.config.themeMode;
 
     act(() => {
-      result.current.setConfig({ themeMode: 'dark' });
+      result.current.setConfig({ navColor: 'vibrant' });
     });
 
-    expect(result.current.config.themeMode).toBe('dark');
+    expect(result.current.config.navColor).toBe('vibrant');
   });
 
   it('should toggle drawer using handleDrawerToggle', () => {
@@ -130,19 +129,17 @@ describe('SettingsProvider', () => {
     act(() => {
       result.current.configDispatch({
         type: SET_CONFIG,
-        payload: { themeMode: 'dark' },
+        payload: { navColor: 'vibrant' },
       });
     });
-    expect(result.current.config.themeMode).toBe('dark');
+    expect(result.current.config.navColor).toBe('vibrant');
   });
 
   it('should change language when locale changes', () => {
     const { result } = renderHook(() => useSettingsContext(), { wrapper });
     act(() => {
-      result.current.setConfig({ locale: 'th-TH' });
+      result.current.setConfig({ locale: 'en-US' });
     });
     expect(mockChangeLanguage).toHaveBeenCalled();
   });
 });
-
-

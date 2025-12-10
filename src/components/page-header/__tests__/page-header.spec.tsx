@@ -20,7 +20,9 @@ vi.mock('components/sections/common/PageBreadcrumb', () => ({
 }));
 
 vi.mock('components/sections/common/PageContent', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="page-content">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="page-content">{children}</div>
+  ),
 }));
 
 describe('<PageHeader />', () => {
@@ -58,4 +60,3 @@ describe('<PageHeader />', () => {
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
 });
-

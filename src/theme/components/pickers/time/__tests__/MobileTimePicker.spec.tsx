@@ -29,47 +29,47 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('MobileTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(MobileTimePicker.defaultProps).toBeDefined();
+    expect(MobileTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have enableAccessibleFieldDOMStructure set to false', () => {
-    expect(MobileTimePicker.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
+    expect(MobileTimePicker?.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
   });
 
   it('should have slots defined', () => {
-    expect(MobileTimePicker.defaultProps?.slots).toBeDefined();
+    expect(MobileTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have dialog slot', () => {
-    expect(MobileTimePicker.defaultProps?.slots?.dialog).toBeDefined();
-    expect(typeof MobileTimePicker.defaultProps?.slots?.dialog).toBe('function');
+    expect(MobileTimePicker?.defaultProps?.slots?.dialog).toBeDefined();
+    expect(typeof MobileTimePicker?.defaultProps?.slots?.dialog).toBe('function');
   });
 
   it('should have toolbar slot', () => {
-    expect(MobileTimePicker.defaultProps?.slots?.toolbar).toBeDefined();
+    expect(MobileTimePicker?.defaultProps?.slots?.toolbar).toBeDefined();
   });
 
   it('should have actionBar slot', () => {
-    expect(MobileTimePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(MobileTimePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should have openPickerButton slot', () => {
-    expect(MobileTimePicker.defaultProps?.slots?.openPickerButton).toBeDefined();
-    expect(typeof MobileTimePicker.defaultProps?.slots?.openPickerButton).toBe('function');
+    expect(MobileTimePicker?.defaultProps?.slots?.openPickerButton).toBeDefined();
+    expect(typeof MobileTimePicker?.defaultProps?.slots?.openPickerButton).toBe('function');
   });
 
   it('should have slotProps defined', () => {
-    expect(MobileTimePicker.defaultProps?.slotProps).toBeDefined();
+    expect(MobileTimePicker?.defaultProps?.slotProps).toBeDefined();
   });
 
   it('should have mobilePaper in slotProps', () => {
-    expect(MobileTimePicker.defaultProps?.slotProps?.mobilePaper).toBeDefined();
-    expect(MobileTimePicker.defaultProps?.slotProps?.mobilePaper?.variant).toBe('elevation');
-    expect(MobileTimePicker.defaultProps?.slotProps?.mobilePaper?.elevation).toBe(3);
+    expect(MobileTimePicker?.defaultProps?.slotProps?.mobilePaper).toBeDefined();
+    expect(MobileTimePicker?.defaultProps?.slotProps?.mobilePaper?.variant).toBe('elevation');
+    expect(MobileTimePicker?.defaultProps?.slotProps?.mobilePaper?.elevation).toBe(3);
   });
 
   it('should render custom toolbar', () => {
-    const MockToolbar = MobileTimePicker.defaultProps?.slots?.toolbar;
+    const MockToolbar = MobileTimePicker?.defaultProps?.slots?.toolbar;
     if (MockToolbar) {
       renderWithTheme(<MockToolbar />);
       expect(screen.getByTestId('time-pickers-toolbar')).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('MobileTimePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = MobileTimePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = MobileTimePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe('MobileTimePicker component config', () => {
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
-    const MockOpenPickerButton = MobileTimePicker.defaultProps?.slots?.openPickerButton;
+    const MockOpenPickerButton = MobileTimePicker?.defaultProps?.slots?.openPickerButton;
     if (MockOpenPickerButton) {
       renderWithTheme(<MockOpenPickerButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent(
@@ -101,7 +101,7 @@ describe('MobileTimePicker component config', () => {
   });
 
   it('should render custom dialog with specific styles', () => {
-    const MockDialog = MobileTimePicker.defaultProps?.slots?.dialog;
+    const MockDialog = MobileTimePicker?.defaultProps?.slots?.dialog;
     if (MockDialog) {
       // Dialog requires specific props, so we just check it's defined
       expect(MockDialog).toBeDefined();

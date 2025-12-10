@@ -25,23 +25,23 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('StaticTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(StaticTimePicker.defaultProps).toBeDefined();
+    expect(StaticTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have slots defined', () => {
-    expect(StaticTimePicker.defaultProps?.slots).toBeDefined();
+    expect(StaticTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have toolbar slot', () => {
-    expect(StaticTimePicker.defaultProps?.slots?.toolbar).toBeDefined();
+    expect(StaticTimePicker?.defaultProps?.slots?.toolbar).toBeDefined();
   });
 
   it('should have actionBar slot', () => {
-    expect(StaticTimePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(StaticTimePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should render custom toolbar', () => {
-    const MockToolbar = StaticTimePicker.defaultProps?.slots?.toolbar;
+    const MockToolbar = StaticTimePicker?.defaultProps?.slots?.toolbar;
     if (MockToolbar) {
       renderWithTheme(<MockToolbar />);
       expect(screen.getByTestId('time-pickers-toolbar')).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe('StaticTimePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = StaticTimePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = StaticTimePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();

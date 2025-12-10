@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fDate, fDateTime, fTimestamp, fToNow } from '../format-time';
 
 vi.mock('dayjs', () => {
@@ -11,7 +11,7 @@ vi.mock('dayjs', () => {
   const mockValueOf = vi.fn(() => 1705312200000);
   const mockFromNow = vi.fn(() => '2 hours ago');
 
-  const mockDayjs = vi.fn((date: any) => ({
+  const mockDayjs = vi.fn(() => ({
     format: mockFormat,
     valueOf: mockValueOf,
     fromNow: mockFromNow,
@@ -116,4 +116,3 @@ describe('format-time', () => {
     });
   });
 });
-

@@ -26,4 +26,3 @@ describe('<TimePickersToolbar />', () => {
     expect(container.querySelector('.test-class')).toBeInTheDocument();
   });
 });
-

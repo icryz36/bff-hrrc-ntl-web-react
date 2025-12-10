@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SidenavDrawerContent from '../SidenavDrawerContent';
 
 vi.mock('react-router', async (importOriginal) => {
@@ -11,7 +11,10 @@ vi.mock('react-router', async (importOriginal) => {
       pathname: '/',
     })),
     NavLink: React.forwardRef(
-      ({ children, to, ...props }: { children: React.ReactNode; to: string; [key: string]: any }, ref: any) => (
+      (
+        { children, to, ...props }: { children: React.ReactNode; to: string; [key: string]: any },
+        ref: any,
+      ) => (
         <a href={to} ref={ref} {...props}>
           {children}
         </a>
@@ -100,4 +103,3 @@ describe('<SidenavDrawerContent />', () => {
     expect(screen.getByTestId('logo')).toBeInTheDocument();
   });
 });
-

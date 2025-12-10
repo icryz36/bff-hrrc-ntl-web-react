@@ -123,6 +123,3 @@ describe('schemaHelper', () => {
     });
   });
 });
-
-
-

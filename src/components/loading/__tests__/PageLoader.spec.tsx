@@ -1,4 +1,4 @@
-import { render, screen } from 'test-utils';
+import { render } from 'test-utils';
 import PageLoader from '../PageLoader';
 
 describe('<PageLoader />', () => {
@@ -16,7 +16,3 @@ describe('<PageLoader />', () => {
     expect(progress.length).toBeGreaterThan(0);
   });
 });
-
-
-
-

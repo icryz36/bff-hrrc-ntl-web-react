@@ -28,4 +28,3 @@ describe('AuthProvider', () => {
     expect(typeof useAuth).toBe('function');
   });
 });
-

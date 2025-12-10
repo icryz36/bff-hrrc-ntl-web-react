@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import BreakpointsProvider, { useBreakpoints } from '../BreakpointsProvider';
 import { PropsWithChildren } from 'react';
+import { renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import BreakpointsProvider, { useBreakpoints } from '../BreakpointsProvider';
 
 // Mock useMediaQuery
 const mockUseMediaQuery = vi.fn();
@@ -180,17 +180,12 @@ describe('BreakpointsProvider', () => {
   });
 
   it('should call between function', () => {
-    let upCalled = false;
-    let downCalled = false;
-    
     mockUseMediaQuery.mockImplementation((query: any) => {
       if (typeof query === 'string') {
         if (query.includes('up') && query.includes('sm')) {
-          upCalled = true;
           return true;
         }
         if (query.includes('down') && query.includes('md')) {
-          downCalled = true;
           return true;
         }
       }
@@ -209,4 +204,3 @@ describe('BreakpointsProvider', () => {
     expect(typeof betweenResult).toBe('boolean');
   });
 });
-

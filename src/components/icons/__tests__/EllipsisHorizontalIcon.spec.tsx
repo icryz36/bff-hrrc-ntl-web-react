@@ -16,6 +16,3 @@ describe('<EllipsisHorizontalIcon />', () => {
     expect(icon).toBeInTheDocument();
   });
 });
-
-
-

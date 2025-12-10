@@ -22,34 +22,34 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('DateCalendar component config', () => {
   it('should have defaultProps defined', () => {
-    expect(DateCalendar.defaultProps).toBeDefined();
+    expect(DateCalendar?.defaultProps).toBeDefined();
   });
 
   it('should have slots defined in defaultProps', () => {
-    expect(DateCalendar.defaultProps?.slots).toBeDefined();
+    expect(DateCalendar?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have calendarHeader slot', () => {
-    expect(DateCalendar.defaultProps?.slots?.calendarHeader).toBeDefined();
-    expect(typeof DateCalendar.defaultProps?.slots?.calendarHeader).toBe('function');
+    expect(DateCalendar?.defaultProps?.slots?.calendarHeader).toBeDefined();
+    expect(typeof DateCalendar?.defaultProps?.slots?.calendarHeader).toBe('function');
   });
 
   it('should have day slot', () => {
-    expect(DateCalendar.defaultProps?.slots?.day).toBeDefined();
-    expect(typeof DateCalendar.defaultProps?.slots?.day).toBe('function');
+    expect(DateCalendar?.defaultProps?.slots?.day).toBeDefined();
+    expect(typeof DateCalendar?.defaultProps?.slots?.day).toBe('function');
   });
 
   it('should have styleOverrides defined', () => {
-    expect(DateCalendar.styleOverrides).toBeDefined();
+    expect(DateCalendar?.styleOverrides).toBeDefined();
   });
 
   it('should have root styleOverride', () => {
-    expect(DateCalendar.styleOverrides?.root).toBeDefined();
-    expect(typeof DateCalendar.styleOverrides?.root).toBe('function');
+    expect(DateCalendar?.styleOverrides?.root).toBeDefined();
+    expect(typeof DateCalendar?.styleOverrides?.root).toBe('function');
   });
 
   it('should render custom calendarHeader with month and year', () => {
-    const MockCalendarHeader = DateCalendar.defaultProps?.slots?.calendarHeader;
+    const MockCalendarHeader = DateCalendar?.defaultProps?.slots?.calendarHeader;
     if (MockCalendarHeader) {
       const mockCurrentMonth = dayjs('2024-03-15');
       const mockOnMonthChange = vi.fn();
@@ -72,7 +72,7 @@ describe('DateCalendar component config', () => {
   });
 
   it('should call onMonthChange when previous month button is clicked', () => {
-    const MockCalendarHeader = DateCalendar.defaultProps?.slots?.calendarHeader;
+    const MockCalendarHeader = DateCalendar?.defaultProps?.slots?.calendarHeader;
     if (MockCalendarHeader) {
       const mockCurrentMonth = dayjs('2024-03-15');
       const mockOnMonthChange = vi.fn();
@@ -98,7 +98,7 @@ describe('DateCalendar component config', () => {
   });
 
   it('should call onMonthChange when next month button is clicked', () => {
-    const MockCalendarHeader = DateCalendar.defaultProps?.slots?.calendarHeader;
+    const MockCalendarHeader = DateCalendar?.defaultProps?.slots?.calendarHeader;
     if (MockCalendarHeader) {
       const mockCurrentMonth = dayjs('2024-03-15');
       const mockOnMonthChange = vi.fn();
@@ -124,7 +124,7 @@ describe('DateCalendar component config', () => {
   });
 
   it('should call onViewChange when month/year button is clicked', () => {
-    const MockCalendarHeader = DateCalendar.defaultProps?.slots?.calendarHeader;
+    const MockCalendarHeader = DateCalendar?.defaultProps?.slots?.calendarHeader;
     if (MockCalendarHeader) {
       const mockCurrentMonth = dayjs('2024-03-15');
       const mockOnMonthChange = vi.fn();
@@ -148,7 +148,7 @@ describe('DateCalendar component config', () => {
   });
 
   it('should toggle view from year to day when month/year button is clicked', () => {
-    const MockCalendarHeader = DateCalendar.defaultProps?.slots?.calendarHeader;
+    const MockCalendarHeader = DateCalendar?.defaultProps?.slots?.calendarHeader;
     if (MockCalendarHeader) {
       const mockCurrentMonth = dayjs('2024-03-15');
       const mockOnMonthChange = vi.fn();
@@ -172,9 +172,9 @@ describe('DateCalendar component config', () => {
   });
 
   it('should render day slot with PickersDay component', () => {
-    const MockDay = DateCalendar.defaultProps?.slots?.day;
+    const MockDay = DateCalendar?.defaultProps?.slots?.day;
     if (MockDay) {
-      const { container } = renderWithTheme(
+      renderWithTheme(
         <MockDay
           day={dayjs('2024-03-15')}
           selected={false}
@@ -189,7 +189,7 @@ describe('DateCalendar component config', () => {
   });
 
   it('should apply root styleOverrides correctly', () => {
-    const rootStyle = DateCalendar.styleOverrides?.root;
+    const rootStyle = DateCalendar?.styleOverrides?.root;
     if (rootStyle && typeof rootStyle === 'function') {
       // Create a mock theme with vars.palette to avoid errors
       const mockTheme = {

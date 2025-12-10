@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SearchBox, { SearchBoxButton } from '../SearchBox';
 
 const mockUp = vi.fn(() => true);
@@ -21,7 +21,7 @@ vi.mock('components/base/IconifyIcon', () => ({
 }));
 
 vi.mock('./SearchDialog', () => ({
-  default: ({ anchorEl, handleClose }: { anchorEl: any; handleClose: () => void }) => {
+  default: ({ anchorEl }: { anchorEl: any; handleClose: () => void }) => {
     const open = Boolean(anchorEl);
     return open ? <div data-testid="search-dialog">Dialog Open</div> : null;
   },
@@ -48,7 +48,6 @@ vi.mock('./SearchTextField', () => ({
     </div>
   ),
 }));
-
 
 describe('<SearchBox />', () => {
   beforeEach(() => {
@@ -136,7 +135,7 @@ describe('<SearchBoxButton />', () => {
   });
 
   it('should open dialog when button is clicked', () => {
-    const { container } = render(<SearchBoxButton />);
+    render(<SearchBoxButton />);
     const button = screen.getByRole('button');
     fireEvent.click(button);
     // Button click should work
@@ -157,4 +156,3 @@ describe('<SearchBoxButton />', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });
-

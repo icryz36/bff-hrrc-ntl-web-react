@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import StackedSidenav from '../StackedSidenav';
 
 vi.mock('react-router', async (importOriginal) => {
@@ -96,5 +96,3 @@ describe('<StackedSidenav />', () => {
     expect(screen.getByTestId('logo')).toBeInTheDocument();
   });
 });
-
-

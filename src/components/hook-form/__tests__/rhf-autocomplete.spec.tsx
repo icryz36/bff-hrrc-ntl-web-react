@@ -109,12 +109,7 @@ describe('<RHFAutocomplete />', () => {
 
       return (
         <FormProvider {...methods}>
-          <RHFAutocomplete
-            name="test"
-            label="Test Autocomplete"
-            rules={{ required: 'This field is required' }}
-            options={[]}
-          />
+          <RHFAutocomplete name="test" label="Test Autocomplete" options={[]} />
         </FormProvider>
       );
     };

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import createPalette from '../index';
 
 vi.mock('../darkPalette', () => ({
@@ -38,5 +38,3 @@ describe('createPalette', () => {
     expect(lightPalette.primary).toBeDefined();
   });
 });
-
-

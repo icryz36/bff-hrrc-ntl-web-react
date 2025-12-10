@@ -34,6 +34,3 @@ describe('<RadioIcon />', () => {
     });
   });
 });
-
-
-

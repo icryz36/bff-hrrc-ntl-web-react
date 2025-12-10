@@ -25,52 +25,58 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('DesktopDateTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(DesktopDateTimePicker.defaultProps).toBeDefined();
+    expect(DesktopDateTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have enableAccessibleFieldDOMStructure set to false', () => {
-    expect(DesktopDateTimePicker.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
+    expect(DesktopDateTimePicker?.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
   });
 
   it('should have slots defined', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slots).toBeDefined();
+    expect(DesktopDateTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have openPickerButton slot', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slots?.openPickerButton).toBeDefined();
-    expect(typeof DesktopDateTimePicker.defaultProps?.slots?.openPickerButton).toBe('function');
+    expect(DesktopDateTimePicker?.defaultProps?.slots?.openPickerButton).toBeDefined();
+    expect(typeof DesktopDateTimePicker?.defaultProps?.slots?.openPickerButton).toBe('function');
   });
 
   it('should have popper slot', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slots?.popper).toBeDefined();
-    expect(typeof DesktopDateTimePicker.defaultProps?.slots?.popper).toBe('function');
+    expect(DesktopDateTimePicker?.defaultProps?.slots?.popper).toBeDefined();
+    expect(typeof DesktopDateTimePicker?.defaultProps?.slots?.popper).toBe('function');
   });
 
   it('should have actionBar slot', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(DesktopDateTimePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should have slotProps defined', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slotProps).toBeDefined();
+    expect(DesktopDateTimePicker?.defaultProps?.slotProps).toBeDefined();
   });
 
   it('should have desktopPaper in slotProps', () => {
-    expect(DesktopDateTimePicker.defaultProps?.slotProps?.desktopPaper).toBeDefined();
-    expect(DesktopDateTimePicker.defaultProps?.slotProps?.desktopPaper?.variant).toBe('elevation');
-    expect(DesktopDateTimePicker.defaultProps?.slotProps?.desktopPaper?.elevation).toBe(3);
+    const desktopPaper = DesktopDateTimePicker?.defaultProps?.slotProps?.desktopPaper;
+    expect(desktopPaper).toBeDefined();
+    if (desktopPaper && typeof desktopPaper === 'object' && 'variant' in desktopPaper) {
+      expect(desktopPaper.variant).toBe('elevation');
+      expect(desktopPaper.elevation).toBe(3);
+    }
   });
 
   it('should have styleOverrides defined', () => {
-    expect(DesktopDateTimePicker.styleOverrides).toBeDefined();
+    expect(DesktopDateTimePicker?.styleOverrides).toBeDefined();
   });
 
   it('should have root styleOverride', () => {
-    expect(DesktopDateTimePicker.styleOverrides?.root).toBeDefined();
-    expect(DesktopDateTimePicker.styleOverrides?.root?.width).toBe(536);
+    expect(DesktopDateTimePicker?.styleOverrides?.root).toBeDefined();
+    const rootStyle = DesktopDateTimePicker?.styleOverrides?.root;
+    if (rootStyle && typeof rootStyle === 'object' && 'width' in rootStyle) {
+      expect(rootStyle.width).toBe(536);
+    }
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
-    const MockOpenPickerButton = DesktopDateTimePicker.defaultProps?.slots?.openPickerButton;
+    const MockOpenPickerButton = DesktopDateTimePicker?.defaultProps?.slots?.openPickerButton;
     if (MockOpenPickerButton) {
       renderWithTheme(<MockOpenPickerButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent(
@@ -82,7 +88,7 @@ describe('DesktopDateTimePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = DesktopDateTimePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = DesktopDateTimePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();
@@ -92,12 +98,12 @@ describe('DesktopDateTimePicker component config', () => {
   });
 
   it('should configure popper with specific styles', () => {
-    const MockPopper = DesktopDateTimePicker.defaultProps?.slots?.popper;
+    const MockPopper = DesktopDateTimePicker?.defaultProps?.slots?.popper;
     if (MockPopper) {
       // Popper requires a valid anchorEl, so we create a div element
       const anchorEl = document.createElement('div');
       document.body.appendChild(anchorEl);
-      const { container } = renderWithTheme(<MockPopper open={true} anchorEl={anchorEl} />);
+      renderWithTheme(<MockPopper open={true} anchorEl={anchorEl} />);
       // Popper might not render immediately, so we just check it's defined
       expect(MockPopper).toBeDefined();
       document.body.removeChild(anchorEl);

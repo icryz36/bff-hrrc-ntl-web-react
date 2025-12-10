@@ -82,7 +82,7 @@ describe('<RHFSelect />', () => {
 
       return (
         <FormProvider {...methods}>
-          <RHFSelect name="test" label="Test Select" rules={{ required: 'This field is required' }}>
+          <RHFSelect name="test" label="Test Select">
             <MenuItem value="1">Option 1</MenuItem>
             <MenuItem value="2">Option 2</MenuItem>
           </RHFSelect>
@@ -250,7 +250,6 @@ describe('<RHFMultiSelect />', () => {
           <RHFMultiSelect
             name="test"
             label="Test Multi Select"
-            rules={{ required: 'This field is required' }}
             options={[
               { label: 'Option 1', value: '1' },
               { label: 'Option 2', value: '2' },

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ThemeProvider from '../ThemeProvider';
 
 const mockUseSettingsContext = vi.fn();
@@ -105,4 +105,3 @@ describe('ThemeProvider', () => {
     expect(mockCreateTheme).toHaveBeenCalled();
   });
 });
-

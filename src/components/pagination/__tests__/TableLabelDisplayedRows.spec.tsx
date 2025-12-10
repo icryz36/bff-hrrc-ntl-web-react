@@ -20,7 +20,3 @@ describe('<TableLabelDisplayedRows />', () => {
     expect(screen.getByText(/1-10 out of 100/i)).toBeInTheDocument();
   });
 });
-
-
-
-

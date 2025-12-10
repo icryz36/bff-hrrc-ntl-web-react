@@ -81,7 +81,7 @@ describe('<RHFCheckbox />', () => {
 
       return (
         <FormProvider {...methods}>
-          <RHFCheckbox name="test" />
+          <RHFCheckbox name="test" label="Test Checkbox" />
         </FormProvider>
       );
     };
@@ -102,11 +102,7 @@ describe('<RHFCheckbox />', () => {
 
       return (
         <FormProvider {...methods}>
-          <RHFCheckbox
-            name="test"
-            label="Test Checkbox"
-            rules={{ required: 'This field is required' }}
-          />
+          <RHFCheckbox name="test" label="Test Checkbox" />
         </FormProvider>
       );
     };
@@ -265,7 +261,6 @@ describe('<RHFMultiCheckbox />', () => {
           <RHFMultiCheckbox
             name="test"
             label="Test Multi Checkbox"
-            rules={{ required: 'This field is required' }}
             options={[
               { label: 'Option 1', value: '1' },
               { label: 'Option 2', value: '2' },

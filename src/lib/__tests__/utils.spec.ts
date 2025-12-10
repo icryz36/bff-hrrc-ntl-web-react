@@ -46,7 +46,11 @@ describe('utils', () => {
   beforeEach(() => {
     localStorage.clear();
     // Mock URL.createObjectURL for test environment
-    global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/test');
+    if (typeof globalThis !== 'undefined') {
+      (globalThis as any).URL = {
+        createObjectURL: vi.fn(() => 'blob:http://localhost/test'),
+      };
+    }
   });
 
   afterEach(() => {

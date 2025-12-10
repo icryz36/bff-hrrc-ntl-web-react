@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { fireEvent, render, screen } from 'test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SidenavCollapse from '../SidenavCollapse';
 
 vi.mock('providers/SettingsProvider', async (importOriginal) => {
@@ -67,4 +67,3 @@ describe('<SidenavCollapse />', () => {
     expect(mockToggleNavbarCollapse).toHaveBeenCalled();
   });
 });
-

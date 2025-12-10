@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NavItemPopper from '../NavItemPopper';
 
 vi.mock('react-router', async (importOriginal) => {
@@ -49,5 +49,3 @@ describe('<NavItemPopper />', () => {
     expect(screen.queryByText('Test Content')).not.toBeInTheDocument();
   });
 });
-
-

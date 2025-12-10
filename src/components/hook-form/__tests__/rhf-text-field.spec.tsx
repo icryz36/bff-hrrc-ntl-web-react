@@ -142,11 +142,7 @@ describe('<RHFTextField />', () => {
 
       return (
         <FormProvider {...methods}>
-          <RHFTextField
-            name="test"
-            label="Test Field"
-            rules={{ required: 'This field is required' }}
-          />
+          <RHFTextField name="test" label="Test Field" />
         </FormProvider>
       );
     };

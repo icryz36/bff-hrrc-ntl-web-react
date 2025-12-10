@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { render } from 'test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SearchPopover from '../SearchPopover';
 
 const mockUseSettingsContext = vi.fn();
@@ -76,4 +76,3 @@ describe('<SearchPopover />', () => {
     document.body.removeChild(anchorEl);
   });
 });
-

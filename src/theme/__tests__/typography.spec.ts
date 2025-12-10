@@ -65,4 +65,3 @@ describe('typography', () => {
     expect(typography.h1_light?.fontWeight).toBe(300);
   });
 });
-

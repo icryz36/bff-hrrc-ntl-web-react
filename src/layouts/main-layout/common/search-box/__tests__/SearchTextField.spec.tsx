@@ -69,5 +69,3 @@ describe('<SearchTextField />', () => {
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
   });
 });
-
-

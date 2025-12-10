@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from 'test-utils';
+import { fireEvent, render, screen } from 'test-utils';
 import { vi } from 'vitest';
 import ActionBar from '../ActionBar';
 
@@ -46,4 +46,3 @@ describe('<ActionBar />', () => {
     expect(mockAcceptValueChanges).toHaveBeenCalledTimes(1);
   });
 });
-

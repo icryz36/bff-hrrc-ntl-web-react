@@ -21,34 +21,34 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('DesktopTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(DesktopTimePicker.defaultProps).toBeDefined();
+    expect(DesktopTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have enableAccessibleFieldDOMStructure set to false', () => {
-    expect(DesktopTimePicker.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
+    expect(DesktopTimePicker?.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
   });
 
   it('should have slots defined', () => {
-    expect(DesktopTimePicker.defaultProps?.slots).toBeDefined();
+    expect(DesktopTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have openPickerButton slot', () => {
-    expect(DesktopTimePicker.defaultProps?.slots?.openPickerButton).toBeDefined();
-    expect(typeof DesktopTimePicker.defaultProps?.slots?.openPickerButton).toBe('function');
+    expect(DesktopTimePicker?.defaultProps?.slots?.openPickerButton).toBeDefined();
+    expect(typeof DesktopTimePicker?.defaultProps?.slots?.openPickerButton).toBe('function');
   });
 
   it('should have slotProps defined', () => {
-    expect(DesktopTimePicker.defaultProps?.slotProps).toBeDefined();
+    expect(DesktopTimePicker?.defaultProps?.slotProps).toBeDefined();
   });
 
   it('should have desktopPaper in slotProps', () => {
-    expect(DesktopTimePicker.defaultProps?.slotProps?.desktopPaper).toBeDefined();
-    expect(DesktopTimePicker.defaultProps?.slotProps?.desktopPaper?.variant).toBe('elevation');
-    expect(DesktopTimePicker.defaultProps?.slotProps?.desktopPaper?.elevation).toBe(3);
+    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper).toBeDefined();
+    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper?.variant).toBe('elevation');
+    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper?.elevation).toBe(3);
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
-    const MockOpenPickerButton = DesktopTimePicker.defaultProps?.slots?.openPickerButton;
+    const MockOpenPickerButton = DesktopTimePicker?.defaultProps?.slots?.openPickerButton;
     if (MockOpenPickerButton) {
       renderWithTheme(<MockOpenPickerButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent(

@@ -21,6 +21,3 @@ describe('<CheckBoxIndeterminateIcon />', () => {
     expect(icon).toBeInTheDocument();
   });
 });
-
-
-

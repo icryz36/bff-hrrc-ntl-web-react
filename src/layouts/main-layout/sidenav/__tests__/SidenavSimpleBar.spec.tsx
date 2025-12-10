@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SidenavSimpleBar from '../SidenavSimpleBar';
 
 vi.mock('providers/SettingsProvider', async (importOriginal) => {
@@ -41,4 +41,3 @@ describe('<SidenavSimpleBar />', () => {
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 });
-

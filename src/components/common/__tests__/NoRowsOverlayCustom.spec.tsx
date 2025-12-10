@@ -14,6 +14,3 @@ describe('<NoRowsOverlayCustom />', () => {
     expect(screen.getByText('Custom message')).toBeInTheDocument();
   });
 });
-
-
-

@@ -34,4 +34,3 @@ describe('Field', () => {
     expect(typeof Field.Upload).toBe('function');
   });
 });
-

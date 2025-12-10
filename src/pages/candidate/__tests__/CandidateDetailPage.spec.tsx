@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CandidateDatailPage from '../CandidateDetailPage';
 
 const mockNavigate = vi.fn();
@@ -32,14 +32,17 @@ vi.mock('providers/BreakpointsProvider', async (importOriginal) => {
   };
 });
 
-vi.mock('section/management-candidate/candidate-detail/components/apply-to-other-job-dialog', () => ({
-  default: ({ open, onClose }: { open: boolean; onClose: () => void }) => (
-    <div data-testid="apply-dialog">
-      {open ? 'Dialog Open' : 'Dialog Closed'}
-      <button onClick={onClose}>Close</button>
-    </div>
-  ),
-}));
+vi.mock(
+  'section/management-candidate/candidate-detail/components/apply-to-other-job-dialog',
+  () => ({
+    default: ({ open, onClose }: { open: boolean; onClose: () => void }) => (
+      <div data-testid="apply-dialog">
+        {open ? 'Dialog Open' : 'Dialog Closed'}
+        <button onClick={onClose}>Close</button>
+      </div>
+    ),
+  }),
+);
 
 vi.mock('section/management-candidate/candidate-detail/view/candidate-detail-view', () => ({
   default: () => <div data-testid="candidate-detail-view">CandidateDetailView</div>,
@@ -82,5 +85,3 @@ describe('<CandidateDatailPage />', () => {
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });
-
-

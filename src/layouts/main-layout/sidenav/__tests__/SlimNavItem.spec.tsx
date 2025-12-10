@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import SlimNavItem from '../SlimNavItem';
 import { MemoryRouter } from 'react-router';
+import { fireEvent, render, screen } from 'test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import SlimNavItem from '../SlimNavItem';
 
 const mockUseSettingsContext = vi.fn();
 const mockUseNavContext = vi.fn();

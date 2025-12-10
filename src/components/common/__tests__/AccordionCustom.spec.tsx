@@ -52,4 +52,3 @@ describe('<AccordionCustom />', () => {
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
 });
-

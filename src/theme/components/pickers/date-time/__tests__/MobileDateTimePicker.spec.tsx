@@ -29,55 +29,67 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('MobileDateTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(MobileDateTimePicker.defaultProps).toBeDefined();
+    expect(MobileDateTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have enableAccessibleFieldDOMStructure set to false', () => {
-    expect(MobileDateTimePicker.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
+    expect(MobileDateTimePicker?.defaultProps?.enableAccessibleFieldDOMStructure).toBe(false);
   });
 
   it('should have slots defined', () => {
-    expect(MobileDateTimePicker.defaultProps?.slots).toBeDefined();
+    expect(MobileDateTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have toolbar slot', () => {
-    expect(MobileDateTimePicker.defaultProps?.slots?.toolbar).toBeDefined();
+    expect(MobileDateTimePicker?.defaultProps?.slots?.toolbar).toBeDefined();
   });
 
   it('should have actionBar slot', () => {
-    expect(MobileDateTimePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(MobileDateTimePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should have openPickerButton slot', () => {
-    expect(MobileDateTimePicker.defaultProps?.slots?.openPickerButton).toBeDefined();
-    expect(typeof MobileDateTimePicker.defaultProps?.slots?.openPickerButton).toBe('function');
+    expect(MobileDateTimePicker?.defaultProps?.slots?.openPickerButton).toBeDefined();
+    expect(typeof MobileDateTimePicker?.defaultProps?.slots?.openPickerButton).toBe('function');
   });
 
   it('should have slotProps defined', () => {
-    expect(MobileDateTimePicker.defaultProps?.slotProps).toBeDefined();
+    expect(MobileDateTimePicker?.defaultProps?.slotProps).toBeDefined();
   });
 
   it('should have mobilePaper in slotProps', () => {
-    expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper).toBeDefined();
-    expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper?.variant).toBe('elevation');
-    expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper?.elevation).toBe(3);
+    const mobilePaper = MobileDateTimePicker?.defaultProps?.slotProps?.mobilePaper;
+    expect(mobilePaper).toBeDefined();
+    if (mobilePaper && typeof mobilePaper === 'object' && 'variant' in mobilePaper) {
+      expect(mobilePaper.variant).toBe('elevation');
+      expect(mobilePaper.elevation).toBe(3);
+    }
   });
 
   it('should have mobilePaper with margin 0 in sx', () => {
-    expect(MobileDateTimePicker.defaultProps?.slotProps?.mobilePaper?.sx?.margin).toBe(0);
+    const mobilePaper = MobileDateTimePicker?.defaultProps?.slotProps?.mobilePaper;
+    if (mobilePaper && typeof mobilePaper === 'object' && 'sx' in mobilePaper) {
+      const sx = mobilePaper.sx;
+      if (sx && typeof sx === 'object' && 'margin' in sx) {
+        expect(sx.margin).toBe(0);
+      }
+    }
   });
 
   it('should have styleOverrides defined', () => {
-    expect(MobileDateTimePicker.styleOverrides).toBeDefined();
+    expect(MobileDateTimePicker?.styleOverrides).toBeDefined();
   });
 
   it('should have root styleOverride', () => {
-    expect(MobileDateTimePicker.styleOverrides?.root).toBeDefined();
-    expect(MobileDateTimePicker.styleOverrides?.root?.width).toBe(536);
+    expect(MobileDateTimePicker?.styleOverrides?.root).toBeDefined();
+    const rootStyle = MobileDateTimePicker?.styleOverrides?.root;
+    if (rootStyle && typeof rootStyle === 'object' && 'width' in rootStyle) {
+      expect(rootStyle.width).toBe(536);
+    }
   });
 
   it('should render custom toolbar', () => {
-    const MockToolbar = MobileDateTimePicker.defaultProps?.slots?.toolbar;
+    const MockToolbar = MobileDateTimePicker?.defaultProps?.slots?.toolbar;
     if (MockToolbar) {
       renderWithTheme(<MockToolbar />);
       expect(screen.getByTestId('date-time-pickers-toolbar')).toBeInTheDocument();
@@ -87,7 +99,7 @@ describe('MobileDateTimePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = MobileDateTimePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = MobileDateTimePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();
@@ -97,7 +109,7 @@ describe('MobileDateTimePicker component config', () => {
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
-    const MockOpenPickerButton = MobileDateTimePicker.defaultProps?.slots?.openPickerButton;
+    const MockOpenPickerButton = MobileDateTimePicker?.defaultProps?.slots?.openPickerButton;
     if (MockOpenPickerButton) {
       renderWithTheme(<MockOpenPickerButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent(

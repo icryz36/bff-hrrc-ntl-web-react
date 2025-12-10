@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import SnackbarIcon from '../SnackbarIcon';
 
 vi.mock('components/base/IconifyIcon', () => ({
@@ -50,7 +50,9 @@ describe('<SnackbarIcon />', () => {
   });
 
   it('should have correct className', () => {
-    const { container } = render(<SnackbarIcon variant="default" icon="material-symbols:check-circle" />);
+    const { container } = render(
+      <SnackbarIcon variant="default" icon="material-symbols:check-circle" />,
+    );
     const stack = container.querySelector('.notistack-Icon');
     expect(stack).toBeInTheDocument();
   });
@@ -60,4 +62,3 @@ describe('<SnackbarIcon />', () => {
     expect(screen.getByTestId('icon')).toHaveTextContent('material-symbols:done');
   });
 });
-

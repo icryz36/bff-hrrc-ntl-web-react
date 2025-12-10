@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NotistackProvider from '../NotistackProvider';
 
 vi.mock('components/snackbar/SnackbarCloseButton', () => ({
@@ -134,4 +134,3 @@ describe('NotistackProvider', () => {
     expect(action?.textContent).toContain('function');
   });
 });
-

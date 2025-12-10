@@ -25,32 +25,35 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('StaticDateTimePicker component config', () => {
   it('should have defaultProps defined', () => {
-    expect(StaticDateTimePicker.defaultProps).toBeDefined();
+    expect(StaticDateTimePicker?.defaultProps).toBeDefined();
   });
 
   it('should have slots defined', () => {
-    expect(StaticDateTimePicker.defaultProps?.slots).toBeDefined();
+    expect(StaticDateTimePicker?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have toolbar slot', () => {
-    expect(StaticDateTimePicker.defaultProps?.slots?.toolbar).toBeDefined();
+    expect(StaticDateTimePicker?.defaultProps?.slots?.toolbar).toBeDefined();
   });
 
   it('should have actionBar slot', () => {
-    expect(StaticDateTimePicker.defaultProps?.slots?.actionBar).toBeDefined();
+    expect(StaticDateTimePicker?.defaultProps?.slots?.actionBar).toBeDefined();
   });
 
   it('should have styleOverrides defined', () => {
-    expect(StaticDateTimePicker.styleOverrides).toBeDefined();
+    expect(StaticDateTimePicker?.styleOverrides).toBeDefined();
   });
 
   it('should have root styleOverride', () => {
-    expect(StaticDateTimePicker.styleOverrides?.root).toBeDefined();
-    expect(StaticDateTimePicker.styleOverrides?.root?.width).toBe(536);
+    expect(StaticDateTimePicker?.styleOverrides?.root).toBeDefined();
+    const rootStyle = StaticDateTimePicker?.styleOverrides?.root;
+    if (rootStyle && typeof rootStyle === 'object' && 'width' in rootStyle) {
+      expect(rootStyle.width).toBe(536);
+    }
   });
 
   it('should render custom toolbar', () => {
-    const MockToolbar = StaticDateTimePicker.defaultProps?.slots?.toolbar;
+    const MockToolbar = StaticDateTimePicker?.defaultProps?.slots?.toolbar;
     if (MockToolbar) {
       renderWithTheme(<MockToolbar />);
       expect(screen.getByTestId('date-time-pickers-toolbar')).toBeInTheDocument();
@@ -60,7 +63,7 @@ describe('StaticDateTimePicker component config', () => {
   });
 
   it('should render custom actionBar', () => {
-    const MockActionBar = StaticDateTimePicker.defaultProps?.slots?.actionBar;
+    const MockActionBar = StaticDateTimePicker?.defaultProps?.slots?.actionBar;
     if (MockActionBar) {
       renderWithTheme(<MockActionBar />);
       expect(screen.getByTestId('action-bar')).toBeInTheDocument();

@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Sidenav from '../index';
 
 vi.mock('providers/SettingsProvider', async (importOriginal) => {
@@ -54,4 +54,3 @@ describe('<Sidenav />', () => {
     expect(screen.getByTestId('sidenav-collapse')).toBeInTheDocument();
   });
 });
-

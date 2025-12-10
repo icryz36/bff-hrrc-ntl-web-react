@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from 'test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { fireEvent, render, screen } from 'test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DataGridPagination from '../DataGridPagination';
 
 // Mock react-router to prevent context errors
@@ -16,7 +16,13 @@ vi.mock('./CustomTablePaginationAction', () => ({
 
 // Mock DataGridPaginationAction before importing DataGridPagination
 vi.mock('./DataGridPaginationAction', () => ({
-  default: ({ showFullPagination, ...props }: { showFullPagination?: boolean; [key: string]: any }) => (
+  default: ({
+    showFullPagination,
+    ...props
+  }: {
+    showFullPagination?: boolean;
+    [key: string]: any;
+  }) => (
     <div data-testid="pagination-action" {...props}>
       {showFullPagination ? 'Full Pagination' : 'Normal Pagination'}
     </div>
@@ -133,7 +139,9 @@ describe('DataGridPagination', () => {
   });
 
   it('should render DataGridPaginationAction with showFullPagination when showFullPagination is true', () => {
-    const { container } = render(<DataGridPagination {...defaultProps} showFullPagination={true} />);
+    const { container } = render(
+      <DataGridPagination {...defaultProps} showFullPagination={true} />,
+    );
     const paginationAction = container.querySelector('[data-testid="pagination-action"]');
     // ActionsComponent should be rendered, but if not found, just check that TablePagination is rendered
     if (paginationAction) {
@@ -158,21 +166,21 @@ describe('DataGridPagination', () => {
   it('should call onRowsPerPageChange when rows per page changes', () => {
     const mockOnRowsPerPageChange = vi.fn();
     render(<DataGridPagination {...defaultProps} onRowsPerPageChange={mockOnRowsPerPageChange} />);
-    
+
     const select = screen.getByTestId('rows-per-page-select');
     fireEvent.change(select, { target: { value: '25' } });
-    
+
     expect(mockOnRowsPerPageChange).toHaveBeenCalledWith(25);
   });
 
   it('should handle onRowsPerPageChange with event', () => {
     const mockOnRowsPerPageChange = vi.fn();
     render(<DataGridPagination {...defaultProps} onRowsPerPageChange={mockOnRowsPerPageChange} />);
-    
+
     const select = screen.getByTestId('rows-per-page-select');
     const event = { target: { value: '25' } } as any;
     fireEvent.change(select, event);
-    
+
     expect(mockOnRowsPerPageChange).toHaveBeenCalled();
   });
 
@@ -199,4 +207,3 @@ describe('DataGridPagination', () => {
     expect(screen.getByTestId('table-pagination')).toBeInTheDocument();
   });
 });
-

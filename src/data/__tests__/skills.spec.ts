@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { SKILLS } from '../skills';
 
 describe('SKILLS', () => {
@@ -59,7 +59,3 @@ describe('SKILLS', () => {
     expect(nonFreeTextSkills.length).toBeGreaterThan(0);
   });
 });
-
-
-
-

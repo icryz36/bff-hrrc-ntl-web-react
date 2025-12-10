@@ -34,6 +34,3 @@ describe('<SimpleBar />', () => {
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
 });
-
-
-

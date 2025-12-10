@@ -68,6 +68,3 @@ describe('<NavProvider />', () => {
     expect(screen.getByTestId('open-items')).toBeInTheDocument();
   });
 });
-
-
-

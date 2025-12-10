@@ -1,7 +1,7 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import SettingsPanelProvider, { useSettingsPanelContext } from '../SettingsPanelProvider';
 import { PropsWithChildren } from 'react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import SettingsPanelProvider, { useSettingsPanelContext } from '../SettingsPanelProvider';
 
 describe('SettingsPanelProvider', () => {
   beforeEach(() => {
@@ -67,5 +67,3 @@ describe('SettingsPanelProvider', () => {
     expect(result.current.settingsPanelConfig.disableNavigationMenuSection).toBe(false);
   });
 });
-
-

@@ -38,6 +38,3 @@ describe('<FilePreview />', () => {
     expect(screen.getByTestId('file-icon')).toBeInTheDocument();
   });
 });
-
-
-

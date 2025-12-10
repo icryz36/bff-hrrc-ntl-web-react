@@ -78,7 +78,7 @@ describe('CustomConfirmDialog', () => {
     render(
       <CustomConfirmDialog
         open={true}
-        title={titleNode}
+        title={titleNode as any}
         action={<button>confirm-btn</button>}
         onClose={vi.fn()}
       />,
@@ -154,11 +154,7 @@ describe('CustomConfirmDialog', () => {
 
   it('should handle onClose being undefined', () => {
     render(
-      <CustomConfirmDialog
-        open={true}
-        title="Test Title"
-        action={<button>confirm-btn</button>}
-      />,
+      <CustomConfirmDialog open={true} title="Test Title" action={<button>confirm-btn</button>} />,
     );
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();

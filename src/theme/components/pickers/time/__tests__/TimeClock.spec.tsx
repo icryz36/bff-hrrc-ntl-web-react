@@ -29,34 +29,34 @@ const renderWithTheme = (ui: React.ReactElement) => {
 
 describe('TimeClock component config', () => {
   it('should have defaultProps defined', () => {
-    expect(TimeClock.defaultProps).toBeDefined();
+    expect(TimeClock?.defaultProps).toBeDefined();
   });
 
   it('should have slots defined', () => {
-    expect(TimeClock.defaultProps?.slots).toBeDefined();
+    expect(TimeClock?.defaultProps?.slots).toBeDefined();
   });
 
   it('should have nextIconButton slot', () => {
-    expect(TimeClock.defaultProps?.slots?.nextIconButton).toBeDefined();
-    expect(typeof TimeClock.defaultProps?.slots?.nextIconButton).toBe('function');
+    expect(TimeClock?.defaultProps?.slots?.nextIconButton).toBeDefined();
+    expect(typeof TimeClock?.defaultProps?.slots?.nextIconButton).toBe('function');
   });
 
   it('should have previousIconButton slot', () => {
-    expect(TimeClock.defaultProps?.slots?.previousIconButton).toBeDefined();
-    expect(typeof TimeClock.defaultProps?.slots?.previousIconButton).toBe('function');
+    expect(TimeClock?.defaultProps?.slots?.previousIconButton).toBeDefined();
+    expect(typeof TimeClock?.defaultProps?.slots?.previousIconButton).toBe('function');
   });
 
   it('should have styleOverrides defined', () => {
-    expect(TimeClock.styleOverrides).toBeDefined();
+    expect(TimeClock?.styleOverrides).toBeDefined();
   });
 
   it('should have root styleOverride', () => {
-    expect(TimeClock.styleOverrides?.root).toBeDefined();
-    expect(typeof TimeClock.styleOverrides?.root).toBe('function');
+    expect(TimeClock?.styleOverrides?.root).toBeDefined();
+    expect(typeof TimeClock?.styleOverrides?.root).toBe('function');
   });
 
   it('should render custom nextIconButton with IconifyIcon', () => {
-    const MockNextIconButton = TimeClock.defaultProps?.slots?.nextIconButton;
+    const MockNextIconButton = TimeClock?.defaultProps?.slots?.nextIconButton;
     if (MockNextIconButton) {
       renderWithTheme(<MockNextIconButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent(
@@ -68,7 +68,7 @@ describe('TimeClock component config', () => {
   });
 
   it('should render custom previousIconButton with IconifyIcon', () => {
-    const MockPreviousIconButton = TimeClock.defaultProps?.slots?.previousIconButton;
+    const MockPreviousIconButton = TimeClock?.defaultProps?.slots?.previousIconButton;
     if (MockPreviousIconButton) {
       renderWithTheme(<MockPreviousIconButton />);
       expect(screen.getByTestId('icon')).toHaveTextContent('material-symbols:chevron-left-rounded');
@@ -78,7 +78,7 @@ describe('TimeClock component config', () => {
   });
 
   it('should apply root styleOverrides correctly', () => {
-    const rootStyle = TimeClock.styleOverrides?.root;
+    const rootStyle = TimeClock?.styleOverrides?.root;
     if (rootStyle && typeof rootStyle === 'function') {
       // Create a mock theme with vars.palette to avoid errors
       const mockTheme = {

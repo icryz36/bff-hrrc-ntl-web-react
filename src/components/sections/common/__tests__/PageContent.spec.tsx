@@ -24,6 +24,3 @@ describe('<PageContent />', () => {
     expect(screen.getByText('Second')).toBeInTheDocument();
   });
 });
-
-
-

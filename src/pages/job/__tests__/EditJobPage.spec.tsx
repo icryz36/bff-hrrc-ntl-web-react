@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import EditJobPage from '../EditJobPage';
 
 vi.mock('section/management-job/edit-job/view/edit-job-view', () => ({
@@ -24,5 +24,3 @@ describe('<EditJobPage />', () => {
     expect(screen.getByTestId('edit-job-view')).toBeInTheDocument();
   });
 });
-
-

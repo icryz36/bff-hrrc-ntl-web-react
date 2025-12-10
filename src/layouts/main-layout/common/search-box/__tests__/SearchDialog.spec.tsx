@@ -34,4 +34,3 @@ describe('<SearchDialog />', () => {
     expect(dialog).toBeInTheDocument();
   });
 });
-
