@@ -10,5 +10,3 @@ describe('error-message', () => {
     expect(typeof REQUIRED_MESSAGE).toBe('string');
   });
 });
-
-

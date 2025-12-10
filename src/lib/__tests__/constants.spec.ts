@@ -1,5 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { muiComponentBaseLink, muiComponentXLink, folderBaseLink, mainDrawerWidth } from '../constants';
+import { describe, expect, it } from 'vitest';
+import {
+  folderBaseLink,
+  mainDrawerWidth,
+  muiComponentBaseLink,
+  muiComponentXLink,
+} from '../constants';
 
 describe('constants', () => {
   it('should have muiComponentBaseLink', () => {
@@ -21,6 +26,3 @@ describe('constants', () => {
     expect(mainDrawerWidth.stackedNavCollapsed).toBe(72);
   });
 });
-
-
-

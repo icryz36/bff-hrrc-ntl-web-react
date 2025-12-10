@@ -16,6 +16,3 @@ describe('<CheckBoxBlankIcon />', () => {
     expect(icon).toBeInTheDocument();
   });
 });
-
-
-

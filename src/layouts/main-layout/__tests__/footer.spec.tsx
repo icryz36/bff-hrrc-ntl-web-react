@@ -10,5 +10,3 @@ describe('<Footer />', () => {
     ).toBeInTheDocument();
   });
 });
-
-

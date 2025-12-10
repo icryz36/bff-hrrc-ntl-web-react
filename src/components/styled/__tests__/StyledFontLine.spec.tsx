@@ -23,12 +23,11 @@ describe('StyledTypographyLine', () => {
   });
 
   it('should render with line prop set to 3', () => {
-    render(<StyledTypographyLine line={3}>Long text that should be truncated</StyledTypographyLine>);
+    render(
+      <StyledTypographyLine line={3}>Long text that should be truncated</StyledTypographyLine>,
+    );
 
     const element = screen.getByText('Long text that should be truncated');
     expect(element).toBeInTheDocument();
   });
 });
-
-
-

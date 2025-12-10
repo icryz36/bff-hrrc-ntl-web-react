@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Field } from '../fields';
 
 describe('Field', () => {
@@ -34,6 +34,3 @@ describe('Field', () => {
     expect(typeof Field.Upload).toBe('function');
   });
 });
-
-
-

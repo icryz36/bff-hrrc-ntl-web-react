@@ -25,5 +25,3 @@ describe('<AppbarActionItems />', () => {
     expect(screen.getByTestId('profile-menu')).toBeInTheDocument();
   });
 });
-
-

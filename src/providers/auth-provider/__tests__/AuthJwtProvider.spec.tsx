@@ -1,7 +1,7 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import AuthJwtProvider, { useAuth, demoUser } from '../AuthJwtProvider';
+import { act, renderHook } from '@testing-library/react';
 import { removeItemFromStore } from 'lib/utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import AuthJwtProvider, { demoUser, useAuth } from '../AuthJwtProvider';
 
 vi.mock('lib/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('lib/utils')>();
@@ -135,6 +135,3 @@ describe('demoUser', () => {
     expect(demoUser.name).toBe('Guest');
   });
 });
-
-
-

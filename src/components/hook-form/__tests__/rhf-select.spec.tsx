@@ -58,5 +58,3 @@ describe('<RHFMultiSelect />', () => {
     expect(screen.getByText('Test Multi Select')).toBeInTheDocument();
   });
 });
-
-

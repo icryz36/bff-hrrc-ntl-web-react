@@ -43,7 +43,9 @@ describe('<RHFUpload />', () => {
     const TestComponentWithFiles = () => {
       const methods = useForm({
         defaultValues: {
-          test: [{ name: 'file1.jpg', url: 'http://example.com/file1.jpg', fromServer: true, id: '1' }],
+          test: [
+            { name: 'file1.jpg', url: 'http://example.com/file1.jpg', fromServer: true, id: '1' },
+          ],
         },
       });
 
@@ -59,6 +61,3 @@ describe('<RHFUpload />', () => {
     expect(screen.getByTestId('file-dropzone')).toBeInTheDocument();
   });
 });
-
-
-
