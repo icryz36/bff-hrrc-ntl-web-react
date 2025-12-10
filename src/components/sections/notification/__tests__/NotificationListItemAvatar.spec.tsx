@@ -66,3 +66,4 @@ describe('<NotificationListItemAvatar />', () => {
     expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 });
+

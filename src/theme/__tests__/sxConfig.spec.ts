@@ -26,3 +26,4 @@ describe('sxConfig', () => {
     expect(result2.WebkitLineClamp).toBe('5');
   });
 });
+

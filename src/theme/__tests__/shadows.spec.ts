@@ -42,3 +42,4 @@ describe('darkShadows', () => {
     expect(darkShadows[0]).toContain('rgba');
   });
 });
+

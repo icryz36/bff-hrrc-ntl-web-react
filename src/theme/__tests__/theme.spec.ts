@@ -55,3 +55,4 @@ describe('createTheme', () => {
     expect(theme.components).toBeDefined();
   });
 });
+
