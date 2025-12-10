@@ -77,7 +77,7 @@ const FileDropZone = ({
   }, [defaultFiles]);
 
   return (
-    <Stack direction="column" sx={{ rowGap: 3 }}>
+    <Stack direction="column">
       {!(hideInputIfHaveValue && files?.length > 0) && (
         <Box
           {...getRootProps()}
@@ -145,8 +145,6 @@ const FileDropZone = ({
           </Stack>
         </Box>
       )}
-
-      {error && <FormHelperText sx={{ color: 'error.main' }}>{error}</FormHelperText>}
 
       {previews.length > 0 && previewType === 'list' && (
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -227,7 +225,7 @@ const FileDropZone = ({
           })}
         </List>
       )}
-
+      {error && <FormHelperText sx={{ color: 'error.main' }}>{error}</FormHelperText>}
       {previews.length > 0 && previewType === 'thumbnail' && (
         <Stack
           spacing={1}
