@@ -1,5 +1,5 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useThemeMode } from '../useThemeMode';
 
 const mockSetMode = vi.fn();
@@ -119,6 +119,3 @@ describe('useThemeMode', () => {
     expect(mockSetMode).toHaveBeenCalledWith(null);
   });
 });
-
-
-

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Page404 from '../Page404';
 
 vi.mock('hooks/useThemeMode', () => ({
@@ -38,4 +38,3 @@ describe('<Page404 />', () => {
     expect(button.closest('a')).toHaveAttribute('href', '/');
   });
 });
-

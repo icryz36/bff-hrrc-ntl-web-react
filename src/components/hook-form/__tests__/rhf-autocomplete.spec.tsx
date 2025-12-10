@@ -55,6 +55,3 @@ describe('<RHFAutocomplete />', () => {
     expect(screen.getByPlaceholderText('Select option')).toBeInTheDocument();
   });
 });
-
-
-

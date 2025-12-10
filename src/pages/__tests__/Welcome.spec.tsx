@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import Welcome from '../Welcome';
 
 describe('<Welcome />', () => {
@@ -17,4 +17,3 @@ describe('<Welcome />', () => {
     expect(logo).toHaveAttribute('src');
   });
 });
-

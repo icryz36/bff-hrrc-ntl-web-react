@@ -19,4 +19,3 @@ describe('<DateTimePickersToolbar />', () => {
     expect(screen.getByTestId('datetime-picker-toolbar')).toBeInTheDocument();
   });
 });
-

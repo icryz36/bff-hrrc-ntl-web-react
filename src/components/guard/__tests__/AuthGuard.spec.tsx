@@ -64,5 +64,3 @@ describe('<AuthGuard />', () => {
     expect(navigate).toHaveAttribute('data-to', '/pages/authentication/jwt/login');
   });
 });
-
-

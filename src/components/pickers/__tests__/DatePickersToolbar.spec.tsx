@@ -1,6 +1,6 @@
+import dayjs from 'dayjs';
 import { render, screen } from 'test-utils';
 import { vi } from 'vitest';
-import dayjs from 'dayjs';
 import DatePickersToolbar from '../DatePickersToolbar';
 
 const mockValue = dayjs('2024-01-15');
@@ -35,4 +35,3 @@ describe('<DatePickersToolbar />', () => {
     expect(container.querySelector('.test-class')).toBeInTheDocument();
   });
 });
-

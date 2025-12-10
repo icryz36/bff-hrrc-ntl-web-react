@@ -77,5 +77,3 @@ describe('enum constants', () => {
     expect(OPTION_VEHICLE[2]).toEqual({ label: 'ไม่ได้', value: 'no' });
   });
 });
-
-

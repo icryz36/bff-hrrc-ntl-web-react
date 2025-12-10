@@ -28,6 +28,3 @@ describe('<StatusAvatar />', () => {
     expect(screen.getByText('JD')).toBeInTheDocument();
   });
 });
-
-
-

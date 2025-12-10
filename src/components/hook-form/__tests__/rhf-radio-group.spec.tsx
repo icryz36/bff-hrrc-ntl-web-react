@@ -57,6 +57,3 @@ describe('<RHFRadioGroup />', () => {
     expect(screen.getByText('Helper text')).toBeInTheDocument();
   });
 });
-
-
-

@@ -40,6 +40,3 @@ describe('<StyledTextField />', () => {
     expect(screen.getByLabelText('Test Label')).toBeInTheDocument();
   });
 });
-
-
-

@@ -60,5 +60,3 @@ describe('<RHFUploadAvatar />', () => {
     expect(screen.getByTestId('avatar-dropbox')).toBeInTheDocument();
   });
 });
-
-

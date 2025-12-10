@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from 'test-utils';
+import { fireEvent, render, screen } from 'test-utils';
 import { vi } from 'vitest';
 import SnackbarCloseButton from '../SnackbarCloseButton';
 
@@ -47,4 +47,3 @@ describe('<SnackbarCloseButton />', () => {
     expect(mockCloseSnackbar).toHaveBeenCalledWith(123);
   });
 });
-

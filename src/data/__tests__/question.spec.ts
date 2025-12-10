@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { QUSETIONS } from '../question';
 
 describe('QUSETIONS', () => {
@@ -50,6 +50,3 @@ describe('QUSETIONS', () => {
     expect(optionalQuestions.length).toBeGreaterThan(0);
   });
 });
-
-
-

@@ -21,6 +21,3 @@ describe('<Splash />', () => {
     expect(container.firstChild).toBeInTheDocument();
   });
 });
-
-
-
