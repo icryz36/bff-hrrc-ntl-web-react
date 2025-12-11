@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { useUpdateCandidateMutation } from 'services/candidate/mutation';
 import { useCandidateQuery } from 'services/candidate/query';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
@@ -95,7 +95,7 @@ const EditCandidateView = () => {
           </Typography>
         }
         action={
-          <Button variant="contained" onClick={() => navigate(navigatePaths.candidate.list)}>
+          <Button variant="contained" onClick={() => navigate(pathsNavigate.candidate.list)}>
             Go to List Candidate
           </Button>
         }

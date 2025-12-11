@@ -7,6 +7,7 @@ const Dialog: Components<Omit<Theme, 'components'>>['MuiDialog'] = {
       paper: {
         variant: 'elevation',
         elevation: 6,
+        sx: { borderRadius: '24px' },
       },
       backdrop: {
         sx: {

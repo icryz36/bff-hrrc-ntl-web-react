@@ -143,6 +143,22 @@ const sitemap: MenuItem[] = [
     ],
   },
   {
+    id: 'Manage JOb application',
+    subheader: 'Manage JOb application',
+    key: 'Manage JOb application',
+    icon: 'material-symbols:view-quilt-outline',
+    items: [
+      {
+        name: 'List Job Application',
+        key: 'List Job Application',
+        pathName: 'List Job Application',
+        active: true,
+        icon: 'material-symbols:list-alt-outline-rounded',
+        path: paths.listJobApplication,
+      },
+    ],
+  },
+  {
     id: 'Hiring admin',
     subheader: 'Hiring admin',
     key: 'Hiring admin',

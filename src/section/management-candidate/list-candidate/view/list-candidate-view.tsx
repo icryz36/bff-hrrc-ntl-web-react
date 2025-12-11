@@ -39,7 +39,7 @@ const ListCandidateView = () => {
   const { data: listCandidateData, isLoading } = useQuery(query);
 
   const tableData = listCandidateData?.items || [];
-  const tableTotalRecords = listCandidateData?.pagination?.totalRecords || 0;
+  const tableTotalRecords = listCandidateData?.total || 0;
 
   const handleToggleFilterPanel = (e: MouseEvent<HTMLButtonElement>) => {
     const clickedEl = e.currentTarget;

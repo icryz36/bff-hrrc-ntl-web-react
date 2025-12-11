@@ -35,6 +35,11 @@ const endpoint = {
     document: `get-document-xapi`,
     import: `validate-candidates-xapi`,
   },
+  jobApplication: {
+    applyJob: '',
+    changeJobStatus: '',
+    count: '',
+  },
 };
 
 export { endpoint };

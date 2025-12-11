@@ -22,11 +22,13 @@ const paths = {
   importCandidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
   importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
   importDetailBatchId: `/${rootPaths.manageRoot}/import/batch/:id/detail`,
+  listJobApplication: `/${rootPaths.manageRoot}/job-application/list`,
+  listJobApplicationDetail: `/${rootPaths.manageRoot}/job-application/:id/detail`,
 
   404: `/${rootPaths.errorRoot}/404`,
 };
 
-export const navigatePaths = {
+export const pathsNavigate = {
   jobPost: {
     listJob: `/${rootPaths.manageRoot}/job/list`,
     createJob: `/${rootPaths.manageRoot}/job/create`,
@@ -42,6 +44,10 @@ export const navigatePaths = {
     candidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
     importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
     importDetailBatchId: (id: string) => `/${rootPaths.manageRoot}/import/batch/${id}/detail`,
+  },
+  jobApplication: {
+    list: `/${rootPaths.manageRoot}/job-application/list`,
+    detail: (id: string) => `/${rootPaths.manageRoot}/job-application/${id}/detail`,
   },
 };
 
