@@ -19,6 +19,9 @@ const paths = {
   listCandidates: `/${rootPaths.manageRoot}/candidates/list`,
   editCandidates: `/${rootPaths.manageRoot}/candidates/:id/edit`,
   candidateDetail: `/${rootPaths.manageRoot}/candidates/:id/detail`,
+  importCandidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
+  importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
+  importDetailBatchId: `/${rootPaths.manageRoot}/import/batch/:id/detail`,
   listJobApplication: `/${rootPaths.manageRoot}/job-application/list`,
   listJobApplicationDetail: `/${rootPaths.manageRoot}/job-application/:id/detail`,
 
@@ -36,6 +39,11 @@ export const pathsNavigate = {
     list: `/${rootPaths.manageRoot}/candidates/list`,
     detail: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/detail`,
     edit: (id: string) => `/${rootPaths.manageRoot}/candidates/${id}/edit`,
+  },
+  importFile: {
+    candidateAndApplyJob: `/${rootPaths.manageRoot}/import/candidate-and-applyjob`,
+    importTrackingAndHistory: `/${rootPaths.manageRoot}/import/tracking-and-history`,
+    importDetailBatchId: (id: string) => `/${rootPaths.manageRoot}/import/batch/${id}/detail`,
   },
   jobApplication: {
     list: `/${rootPaths.manageRoot}/job-application/list`,

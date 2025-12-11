@@ -24,6 +24,14 @@ const ListCandidatesPage = lazy(() => import('pages/candidate/CandidateListPage'
 // candidate
 const EditCandidatePage = lazy(() => import('pages/candidate/CandidateEditPage'));
 
+// inmport file
+const ImportCandidateAndApplyJobPage = lazy(
+  () => import('pages/import/ImportCandidateAndApplyJobPage copy'),
+);
+const ImportTrackingAndHistoryPage = lazy(
+  () => import('pages/import/ImportTrackingAndHistoryPage'),
+);
+const ImportDetailBatchIdPage = lazy(() => import('pages/import/ImportDetailBatchIdPage'));
 // job application
 const JobApplicationPage = lazy(() => import('pages/job-application/JobApplicationPage'));
 const JobApplicationDetailPage = lazy(
@@ -102,6 +110,18 @@ export const routes: RouteObject[] = [
                   {
                     path: paths.candidateDetail,
                     element: <CandidateDatailPage />,
+                  },
+                  {
+                    path: paths.importCandidateAndApplyJob,
+                    element: <ImportCandidateAndApplyJobPage />,
+                  },
+                  {
+                    path: paths.importTrackingAndHistory,
+                    element: <ImportTrackingAndHistoryPage />,
+                  },
+                  {
+                    path: paths.importDetailBatchId,
+                    element: <ImportDetailBatchIdPage />,
                   },
                   {
                     path: paths.listJobApplication,
