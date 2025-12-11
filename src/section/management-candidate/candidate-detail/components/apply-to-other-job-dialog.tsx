@@ -1,9 +1,13 @@
 import { useForm, useWatch } from 'react-hook-form';
+import { useParams } from 'react-router';
 import { Box, Button, Dialog, IconButton, MenuItem, Stack, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
+import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
+import { useCreateJobApplicationMutation } from 'services/job-application/mutation';
+import { useJobpostQuery } from 'services/jobpost/query';
 import { useMasterDataQuery } from 'services/master-data/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
@@ -45,27 +49,22 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
   const department = useWatch({ control, name: 'department' });
   const jobTitle = useWatch({ control, name: 'jobTitle' });
 
-  // const { id = '' } = useParams<{ id: string }>();
-  // const id = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
-
+  const { id: candidateId = '' } = useParams<{ id: string }>();
   const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
   const { data: departmentList = [] } = useQuery(useMasterDataQuery.department());
 
-  // const { data: jobListData } = useQuery({
-  //   ...useJobpostQuery.list({
-  //     ownerUserId: id,
-  //     recruiterUserId: id,
-  //     pageNo: 1,
-  //     pageSize: 1000,
-  //     ...(province && { provinceId: province }),
-  //     ...(department && { departments: [department] }),
-  //   }),
-  //   enabled: open && !!id,
-  // });
+  const createJobApplicationMutation = useCreateJobApplicationMutation();
 
-  const jobListData = {
-    items: [{ jobTitle: '', jobPostId: '' }],
-  };
+  const { data: jobListData } = useQuery({
+    ...useJobpostQuery.listAll({
+      pageNo: 1,
+      pageSize: 50,
+      ...(groupLocation && { groupLocation: [groupLocation] }),
+      ...(province && { provinceId: [province] }),
+      ...(department && { departmentId: [department] }),
+    }),
+    enabled: open && (!!groupLocation || !!province || !!department),
+  });
 
   const handleClose = () => {
     reset(defaultValues);
@@ -73,23 +72,28 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
   };
 
   const onSubmit = async (data: ApplyToOtherJobFormValues) => {
-    console.log('submit form :', data);
-    // try {
-    //   console.log('submit form :', data);
-    //   const mockSuccess = Math.random() > 0.3;
+    if (!candidateId || !data.jobTitle) {
+      return;
+    }
 
-    //   if (mockSuccess) {
-    //     handleClose();
-    //     isOpenSuccessDialog.onTrue();
-    //   } else {
-    //     handleClose();
-    //     isOpenErrorDialog.onTrue();
-    //   }
-    //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // } catch (error) {
-    //   handleClose();
-    //   isOpenNetworkErrorDialog.onTrue();
-    // }
+    try {
+      await createJobApplicationMutation.mutateAsync({
+        candidateId,
+        jobPostId: data.jobTitle,
+        stageId: '57d87642-6c7d-4c51-b0eb-b76aa6976b8c',
+        statusId: 'a733f94c-59c5-40fa-903d-074c253b6820',
+        applicationDate: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS ZZ'),
+      });
+      handleClose();
+      isOpenSuccessDialog.onTrue();
+    } catch (error) {
+      handleClose();
+      if (error && typeof error === 'object' && 'status' in error && Number(error.status) >= 500) {
+        isOpenNetworkErrorDialog.onTrue();
+      } else {
+        isOpenErrorDialog.onTrue();
+      }
+    }
   };
 
   return (
@@ -198,8 +202,12 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
               >
                 Cancel
               </Button>
-              <Button type="submit" variant="contained" disabled={!jobTitle}>
-                Confirm
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!jobTitle || createJobApplicationMutation.isPending}
+              >
+                {createJobApplicationMutation.isPending ? 'Submitting...' : 'Confirm'}
               </Button>
             </Box>
           </Box>

@@ -1,10 +1,12 @@
 import { endpoint } from 'constant/endpoint';
-import { axiosJobPostInstance } from 'services/axios/axiosInstance';
+import axiosInstance, { axiosJobPostInstance } from 'services/axios/axiosInstance';
 import {
   TApplyJobPayload,
   TApplyJobResponse,
   TChangeJobResponse,
   TChangeJobStatus,
+  TCreateJobApplicationPayload,
+  TCreateJobApplicationResponse,
   TGetCountApplicationPayload,
   TGetCountApplicationResponse,
 } from 'types/job-application';
@@ -13,6 +15,18 @@ export const postApplyJob = async (payload: TApplyJobPayload): Promise<TApplyJob
   const { data } = await axiosJobPostInstance({
     method: 'POST',
     url: endpoint.jobApplication.applyJob,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const postCreateJobApplication = async (
+  payload: TCreateJobApplicationPayload,
+): Promise<TCreateJobApplicationResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    url: endpoint.jobApplication.create,
     data: payload,
   });
 
