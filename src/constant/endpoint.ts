@@ -1,3 +1,6 @@
+const bffHrrecGateway = `bff-hrrec-gateway/v1/`;
+const bffHrrecJobpostGateway = `bff-hrrec-jobpost-gateway/v1/`;
+
 const endpoint = {
   masterData: {
     postStatus: `get-poststatus-master-xapi`,
@@ -16,8 +19,8 @@ const endpoint = {
     documentType: `get-document-type-master-xapi`,
   },
   jobpost: {
-    list: `get-jobpost-list-xapi`,
-    listAll: `get-all-jobpost-list-xapi`,
+    list: `${bffHrrecJobpostGateway}get-jobpost-list-xapi`,
+    listAll: `${bffHrrecJobpostGateway}get-all-jobpost-list-xapi`,
     create: `create-jobpost-xapi`,
     detail: `get-jobpost-xapi`,
     updateStatus: `update-jobpost-status-xapi`,
@@ -38,7 +41,7 @@ const endpoint = {
   },
   jobApplication: {
     applyJob: '',
-    create: `create-jobapplication-xapi`,
+    create: `${bffHrrecGateway}create-job-application-xapi`,
     changeJobStatus: '',
     count: '',
   },

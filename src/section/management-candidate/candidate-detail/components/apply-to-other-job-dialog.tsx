@@ -4,6 +4,7 @@ import { Box, Button, Dialog, IconButton, MenuItem, Stack, Typography } from '@m
 import { grey } from '@mui/material/colors';
 import { useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
+import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
 import { useCreateJobApplicationMutation } from 'services/job-application/mutation';
 import { useJobpostQuery } from 'services/jobpost/query';
@@ -81,7 +82,7 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
         jobPostId: data.jobTitle,
         stageId: '57d87642-6c7d-4c51-b0eb-b76aa6976b8c',
         statusId: 'a733f94c-59c5-40fa-903d-074c253b6820',
-        applicationDate: String(Date.now()),
+        applicationDate: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS ZZ'),
       });
       handleClose();
       isOpenSuccessDialog.onTrue();

@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import { axiosJobPostInstance } from 'services/axios/axiosInstance';
+import axiosInstance, { axiosJobPostInstance } from 'services/axios/axiosInstance';
 import {
   TApplyJobPayload,
   TApplyJobResponse,
@@ -24,7 +24,7 @@ export const postApplyJob = async (payload: TApplyJobPayload): Promise<TApplyJob
 export const postCreateJobApplication = async (
   payload: TCreateJobApplicationPayload,
 ): Promise<TCreateJobApplicationResponse> => {
-  const { data } = await axiosJobPostInstance({
+  const { data } = await axiosInstance({
     method: 'POST',
     url: endpoint.jobApplication.create,
     data: payload,
