@@ -10,7 +10,7 @@ export type TGetJobPostListPayload = {
   regionId?: string[];
   districtId?: string[];
   provinceId?: string[];
-  statusId?: string;
+  statusId?: string[];
   userId?: string;
   totalActiveDays?: number;
   startDate?: Date;
