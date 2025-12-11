@@ -1,5 +1,5 @@
 import { RefObject, useMemo } from 'react';
-import { Box, Chip, ChipOwnProps, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
@@ -25,8 +25,6 @@ export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
       return 'primary';
   }
 };
-
-const defaultPageSize = 10;
 
 const ImportCandidateAndApplyJobTableView = ({
   apiRef,
@@ -56,20 +54,50 @@ const ImportCandidateAndApplyJobTableView = ({
       {
         field: 'errorMsg',
         headerName: 'Error msg',
-        width: 120,
+        width: 200,
         headerClassName: 'error-msg-header',
         cellClassName: 'error-msg-cell',
-        renderCell: (params) => (
-          <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
-            {params.row.errorMsg}
-          </Typography>
-        ),
+        renderCell: (params) => {
+          const errorMsg = params.row.errorMsg;
+          if (!errorMsg || errorMsg.length === 0) {
+            return <Typography variant="subtitle2_regular">-</Typography>;
+          }
+
+          if (Array.isArray(errorMsg) && errorMsg.length > 0 && typeof errorMsg[0] === 'object') {
+            const errorMessages = errorMsg.map((err: any) => err.errorMsg || err).join(', ');
+            return (
+              <Tooltip title={errorMessages} placement="bottom">
+                <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
+                  {errorMessages}
+                </Typography>
+              </Tooltip>
+            );
+          }
+
+          if (Array.isArray(errorMsg)) {
+            return (
+              <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
+                {errorMsg.join(', ')}
+              </Typography>
+            );
+          }
+
+          return (
+            <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
+              {String(errorMsg)}
+            </Typography>
+          );
+        },
       },
       {
         field: 'no',
         headerName: 'No',
         width: 80,
-        renderCell: () => <Typography variant="subtitle2_regular">01</Typography>,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">
+            {params.api.getRowIndexRelativeToVisibleRows(params.id) + 1}
+          </Typography>
+        ),
       },
       {
         field: 'title',
@@ -84,6 +112,16 @@ const ImportCandidateAndApplyJobTableView = ({
       {
         field: 'surnameTh',
         headerName: 'Surname',
+        width: 200,
+      },
+      {
+        field: 'nameEn',
+        headerName: 'Name (EN)',
+        width: 200,
+      },
+      {
+        field: 'surnameEn',
+        headerName: 'Surname (EN)',
         width: 200,
       },
       {
@@ -175,13 +213,21 @@ const ImportCandidateAndApplyJobTableView = ({
         loading={loading}
         apiRef={apiRef}
         columns={columns}
-        getRowId={(row) => row.id}
-        pageSizeOptions={[defaultPageSize, 15]}
+        getRowId={(row: any) => {
+          if (row.id) return row.id;
+          if (row.email) {
+            const index = tableData.findIndex((item) => item === row);
+            return `${row.email}-${index}`;
+          }
+          const index = tableData.findIndex((item) => item === row);
+          return `row-${index}`;
+        }}
         disableVirtualization
+        hideFooter
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: defaultPageSize,
+              pageSize: tableData.length || 100,
             },
           },
         }}
@@ -192,13 +238,6 @@ const ImportCandidateAndApplyJobTableView = ({
         }}
         slots={{
           noRowsOverlay: () => <NoRowsOverlayCustom message="No List File" />,
-          basePagination: () => (
-            <Stack width="100%" px={2} spacing={1}>
-              <Typography variant="caption_light">Showing</Typography>
-              <Typography variant="caption_bold">{totalItem}</Typography>
-              <Typography variant="caption_light">Record</Typography>
-            </Stack>
-          ),
         }}
       />
     </Box>

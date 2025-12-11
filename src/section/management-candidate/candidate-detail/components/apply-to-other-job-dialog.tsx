@@ -1,14 +1,17 @@
+import { useCallback, useMemo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router';
 import { Box, Button, Dialog, IconButton, MenuItem, Stack, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
 import { useCreateJobApplicationMutation } from 'services/job-application/mutation';
 import { useJobpostQuery } from 'services/jobpost/query';
+import { fetchAllJobpostList } from 'services/jobpost/services';
 import { useMasterDataQuery } from 'services/master-data/query';
+import type { TGetAllJobPostListPayload } from 'types/jobpost';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { Form } from 'components/hook-form';
@@ -55,16 +58,63 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
 
   const createJobApplicationMutation = useCreateJobApplicationMutation();
 
-  const { data: jobListData } = useQuery({
-    ...useJobpostQuery.listAll({
+  const baseQueryParams = useMemo<TGetAllJobPostListPayload>(
+    () => ({
       pageNo: 1,
       pageSize: 50,
       ...(groupLocation && { groupLocation: [groupLocation] }),
       ...(province && { provinceId: [province] }),
       ...(department && { departmentId: [department] }),
     }),
+    [groupLocation, province, department],
+  );
+
+  const {
+    data: jobListData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: [...useJobpostQuery.keysListAll(), baseQueryParams],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchAllJobpostList({
+        ...baseQueryParams,
+        pageNo: pageParam as number,
+      }),
+    getNextPageParam: (lastPage) => {
+      const items = lastPage.data?.items || [];
+      const total = lastPage.data?.total || 0;
+      const currentPage = lastPage.data?.page || 1;
+      const pageSize = baseQueryParams.pageSize;
+      const loadedItems = currentPage * pageSize;
+
+      if (items.length > 0 && loadedItems < total) {
+        return currentPage + 1;
+      }
+      return undefined;
+    },
     enabled: open && (!!groupLocation || !!province || !!department),
+    initialPageParam: 1,
   });
+
+  // Flatten all pages into a single array
+  const allJobs = useMemo(
+    () => jobListData?.pages?.flatMap((page) => page.data?.items || []) || [],
+    [jobListData],
+  );
+
+  const handleScroll = useCallback(
+    (event: React.UIEvent<HTMLElement>) => {
+      const { currentTarget } = event;
+      const { scrollTop, scrollHeight, clientHeight } = currentTarget;
+      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 20;
+
+      if (isNearBottom && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
 
   const handleClose = () => {
     reset(defaultValues);
@@ -178,12 +228,32 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
                 name="jobTitle"
                 label="Job Title"
                 disabled={!groupLocation && !province && !department}
+                SelectProps={{
+                  MenuProps: {
+                    slotProps: {
+                      paper: {
+                        sx: { mt: 0.6, maxHeight: 300 },
+                      },
+                    },
+                    MenuListProps: {
+                      onScroll: handleScroll,
+                      style: { maxHeight: 300, overflow: 'auto' },
+                    },
+                  },
+                }}
               >
-                {jobListData?.items?.map((job) => (
+                {allJobs.map((job) => (
                   <MenuItem key={job.jobPostId} value={job.jobPostId}>
                     {job.jobTitle}
                   </MenuItem>
                 ))}
+                {isFetchingNextPage && (
+                  <MenuItem disabled>
+                    <Typography variant="body2" color="text.secondary">
+                      Loading...
+                    </Typography>
+                  </MenuItem>
+                )}
               </Field.Select>
             </Stack>
 
