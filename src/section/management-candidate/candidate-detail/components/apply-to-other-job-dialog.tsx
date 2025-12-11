@@ -4,7 +4,6 @@ import { grey } from '@mui/material/colors';
 import { useQuery } from '@tanstack/react-query';
 import { GROUP_LOCATION } from 'constant/enum';
 import { useBoolean } from 'hooks/useBoolean';
-import { useJobpostQuery } from 'services/jobpost/query';
 import { useMasterDataQuery } from 'services/master-data/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
@@ -47,22 +46,26 @@ const ApplyToOtherJobDialog = ({ open, onClose }: ApplyToOtherJobDialogProps) =>
   const jobTitle = useWatch({ control, name: 'jobTitle' });
 
   // const { id = '' } = useParams<{ id: string }>();
-  const id = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
+  // const id = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
 
   const { data: provinceList = [] } = useQuery(useMasterDataQuery.province());
   const { data: departmentList = [] } = useQuery(useMasterDataQuery.department());
 
-  const { data: jobListData } = useQuery({
-    ...useJobpostQuery.list({
-      ownerUserId: id,
-      recruiterUserId: id,
-      pageNo: 1,
-      pageSize: 1000,
-      ...(province && { provinceId: province }),
-      ...(department && { departments: [department] }),
-    }),
-    enabled: open && !!id,
-  });
+  // const { data: jobListData } = useQuery({
+  //   ...useJobpostQuery.list({
+  //     ownerUserId: id,
+  //     recruiterUserId: id,
+  //     pageNo: 1,
+  //     pageSize: 1000,
+  //     ...(province && { provinceId: province }),
+  //     ...(department && { departments: [department] }),
+  //   }),
+  //   enabled: open && !!id,
+  // });
+
+  const jobListData = {
+    items: [{ jobTitle: '', jobPostId: '' }],
+  };
 
   const handleClose = () => {
     reset(defaultValues);

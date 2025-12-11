@@ -3,16 +3,20 @@ import { TStatusResponse } from './common';
 // get jobpost list -------------------------------------------------------------
 
 export type TGetJobPostListPayload = {
-  ownerUserId: string;
-  recruiterUserId: string;
+  ownerUserId?: string;
+  recruiterUserId?: string;
   jobTitle?: string;
-  departments?: string[];
-  regionId?: string;
-  districtId?: string;
-  provinceId?: string;
+  departmentId?: string[];
+  regionId?: string[];
+  districtId?: string[];
+  provinceId?: string[];
   statusId?: string;
-  ownerId?: string;
-  activeDay?: number;
+  userId?: string;
+  totalActiveDays?: number;
+  startDate?: Date;
+  groupLocation?: string[];
+  jobPostIdExcludeList?: string[];
+  containFieldName?: string[];
   pageNo: number;
   pageSize: number;
 };
@@ -23,7 +27,15 @@ export type TGetJobPostListResponse = TStatusResponse & {
 
 export type TGetJobPostListData = {
   items: TJobPost[];
-  pagination: TGetJobPostListPagination;
+  page: number;
+  total: number;
+};
+
+export type TGetJobPostListPagination = {
+  pageNo: number;
+  pageSize: number;
+  totalRecords: number;
+  totalPages: number;
 };
 
 export type TJobPost = {
@@ -34,18 +46,14 @@ export type TJobPost = {
   regionName: string;
   provinceName: string;
   districtName: string;
-  startDate: string;
+  startDate: Date | string;
   totalActiveDays: number;
   headcount: number;
   ownerUserName: string;
   statusName: string;
-};
-
-export type TGetJobPostListPagination = {
-  pageNo: number;
-  pageSize: number;
-  totalRecords: number;
-  totalPages: number;
+  ownerUserId: string;
+  recruiters: string[];
+  isViewMode: boolean;
 };
 
 // get jobpost by id -----------------------------------------------------------

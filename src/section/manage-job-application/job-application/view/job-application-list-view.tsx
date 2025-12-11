@@ -38,7 +38,7 @@ const JobApplicationListView = () => {
   // ---------------------------------------------------------------------
 
   const tableData = listJobData?.items || [];
-  const totalData = listJobData?.pagination.totalRecords || 0;
+  const totalData = listJobData?.total || 0;
 
   // ----------------------------------------------------------------------
 

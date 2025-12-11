@@ -1,7 +1,7 @@
 import { MouseEvent, useState } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
 import FilterSection from 'section/management-job/list-job/components/filter-section';
 import ListJobTableView from 'section/management-job/list-job/view/list-job-table-view';
@@ -45,24 +45,26 @@ const ListJobView = () => {
   });
 
   const query = useJobpostQuery.list({
-    ownerUserId: filters.ownerUserId,
-    recruiterUserId: filters.recruiterUserId,
+    ownerUserId: filters.owner || filters.ownerUserId,
     ...(filters.jobTitle && { jobTitle: filters.jobTitle }),
-    ...(filters.department.length > 0 && { departments: filters.department }),
-    ...(filters.region && { regionId: filters.region }),
-    ...(filters.province && { provinceId: filters.province }),
-    ...(filters.district && { districtId: filters.district }),
+    ...(filters.department.length > 0 && { departmentId: filters.department }),
+    ...(filters.region && { regionId: [filters.region] }),
+    ...(filters.province && { provinceId: [filters.province] }),
+    ...(filters.district && { districtId: [filters.district] }),
     ...(filters.jobStatus && { statusId: filters.jobStatus }),
-    ...(filters.owner && { ownerId: filters.owner }),
-    ...(filters.activeDay && { activeDay: Number(filters.activeDay) }),
+    ...(filters.startDate && { startDate: filters.startDate }),
+    ...(filters.activeDay && { totalActiveDays: Number(filters.activeDay) }),
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
   });
 
-  const { data: listJobData, isLoading } = useQuery(query);
+  const { data: listJobData, isLoading } = useQuery({
+    ...query,
+    placeholderData: keepPreviousData,
+  });
 
   const tableData = listJobData?.items || [];
-  const tableTotalRecords = listJobData?.pagination?.totalRecords || 0;
+  const tableTotalRecords = listJobData?.total || 0;
 
   const filterFields: FilterState = {
     jobTitle: filters.jobTitle,
@@ -140,6 +142,7 @@ const ListJobView = () => {
         onPageChange={handlePageChange}
         totalItem={tableTotalRecords}
         currentPage={pagination.pageNo}
+        currentPageSize={pagination.pageSize}
         loading={isLoading}
       />
       <CustomConfirmDialog
