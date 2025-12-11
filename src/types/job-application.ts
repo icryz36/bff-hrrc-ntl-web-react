@@ -135,6 +135,19 @@ export type TCreateJobApplicationBulkResponse = TStatusResponse & {
 
 export type TCreateJobApplicationBulkData = {
   jobAppId: string;
-  jobPostId: string;
+};
+// create job application -----------------------------------------------------
+
+export type TCreateJobApplicationPayload = {
   candidateId: string;
+  jobPostId: string;
+  stageId: string;
+  statusId: string;
+  applicationDate: string;
+};
+
+export type TCreateJobApplicationResponse = TStatusResponse & {
+  data: {
+    jobAppId: string;
+  };
 };

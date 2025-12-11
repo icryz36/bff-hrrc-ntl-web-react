@@ -340,3 +340,38 @@ export type TCandidateNotePayload = {
 export type TCandidateDocumentResponse = TStatusResponse & {
   data: { binaryBase64: string };
 };
+
+export type TImportCandidatePayload = {
+  file: File | undefined;
+};
+
+export type ITImportCandidateItem = {
+  validateStatus: 'success' | 'fail';
+  errorMsg: string[];
+  title: string;
+  nameTh: string;
+  surnameTh: string;
+  gender: string;
+  age: number;
+  mobileNo: string;
+  email: string;
+  desiredLocation: string;
+  desiredProvince: string;
+  source: string;
+  highestDegree: string;
+  workExperience: string;
+  canDriveMotorcycle: string;
+  canDriveCar: string;
+  jobPostNo: string;
+  applicationSource: string;
+  applicationDate: string;
+};
+
+export type TCandidateListData = {
+  items: ITImportCandidateItem[];
+  pagination: TGetCandidateListPagination;
+};
+
+export type TImportCandidateResponse = TStatusResponse & {
+  data: TCandidateListData;
+};

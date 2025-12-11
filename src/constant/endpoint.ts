@@ -21,6 +21,7 @@ const endpoint = {
   },
   jobpost: {
     list: `${bffHrrecJobpostGateway}/get-jobpost-list-xapi`,
+    listAll: `${bffHrrecJobpostGateway}/get-all-jobpost-list-xapi`,
     create: `${bffHrrecJobpostGateway}/create-jobpost-xapi`,
     detail: `${bffHrrecJobpostGateway}/get-jobpost-xapi`,
     updateStatus: `${bffHrrecJobpostGateway}/update-jobpost-status-xapi`,
@@ -37,8 +38,12 @@ const endpoint = {
     updateBlacklist: `${bffHrrecCandidatesGateway}/update-candidate-blacklist-xapi`,
     updateNote: `${bffHrrecCandidatesGateway}/update-candidate-note-xapi`,
     document: `${bffHrrecCandidatesGateway}/get-document-xapi`,
+    validate: `${bffHrrecCandidatesGateway}/validate-candidates-xapi`,
+    import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
+    downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
   },
   jobApplication: {
+    create: `${bffHrrecGateway}/create-job-application-xapi`,
     createJobBulk: `${bffHrrecGateway}/create-job-application-bulk-xapi`,
     board: `${bffHrrecGateway}/get-job-application-board-xapi`,
     list: `${bffHrrecGateway}/get-job-application-list-xapi`,
