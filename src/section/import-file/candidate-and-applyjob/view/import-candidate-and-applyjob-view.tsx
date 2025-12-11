@@ -4,7 +4,7 @@ import { Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { useCandidateQuery } from 'services/candidate/query';
 import IconifyIcon from 'components/base/IconifyIcon';
 import FileDropCustom from 'components/common/FileDropCustom';
@@ -166,7 +166,7 @@ const ImportCandidateAndApplyJobView = () => {
             </Button>
             <Button
               variant="contained"
-              onClick={() => navigate(navigatePaths.importFile.importTrackingAndHistory)}
+              onClick={() => navigate(pathsNavigate.importFile.importTrackingAndHistory)}
             >
               Go to Tracking & History
             </Button>
