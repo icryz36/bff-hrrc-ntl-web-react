@@ -14,7 +14,7 @@ describe('endpoint', () => {
     expect(endpoint.masterData.jobLevel).toBe('get-joblevel-master-xapi');
     expect(endpoint.masterData.degree).toBe('get-degree-master-xapi');
     expect(endpoint.masterData.employeeType).toBe('get-employeetype-master-xapi');
-    expect(endpoint.masterData.users).toBe('get-users-xapi');
+    expect(endpoint.user.list).toBe('get-users-xapi');
     expect(endpoint.masterData.skill).toBe('get-skill-master-xapi');
     expect(endpoint.masterData.titleName).toBe('get-title-name-master-xapi');
     expect(endpoint.masterData.documentType).toBe('get-document-type-master-xapi');

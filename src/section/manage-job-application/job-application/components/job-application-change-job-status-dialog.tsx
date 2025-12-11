@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { useParams } from 'react-router';
 import {
   Alert,
@@ -25,7 +24,6 @@ type JobApplicationChangeJobStatusDialogProps = {
   onClose: VoidFunction;
   onConfirm: VoidFunction;
   isWarningChangeJobStatus: boolean;
-  onChangeJobStatusNote: Dispatch<SetStateAction<string>>;
 };
 
 export const JobApplicationChangeJobStatusDialog = ({
@@ -33,7 +31,6 @@ export const JobApplicationChangeJobStatusDialog = ({
   onClose,
   onConfirm,
   isLoading,
-  onChangeJobStatusNote,
   isWarningChangeJobStatus,
 }: JobApplicationChangeJobStatusDialogProps) => {
   const MAX_LENGTH_NOTE = 250;
@@ -42,13 +39,11 @@ export const JobApplicationChangeJobStatusDialog = ({
 
   // api ---------------------------------------------------------------
 
-  const { data: countJobApplication } = useQuery(useJobApplicationQuery.count({ jobPostId: id }));
+  const { data: checkStatus } = useQuery(useJobApplicationQuery.checkStatus({ jobPostId: id }));
 
   // -------------------------------------------------------------------
 
-  const hasNoProcess = Object.values(countJobApplication?.data || {})?.every(
-    (value) => value === 0,
-  );
+  const hasOnProcess = (checkStatus?.totalCount || 0) > 0;
 
   return (
     <Dialog
@@ -58,7 +53,7 @@ export const JobApplicationChangeJobStatusDialog = ({
       slotProps={{ paper: { sx: { maxWidth: 463, width: '100%', borderRadius: '24px' } } }}
     >
       <DialogTitle mt={1} sx={{ paddingBottom: 1 }}>
-        {!hasNoProcess && isWarningChangeJobStatus && (
+        {hasOnProcess && isWarningChangeJobStatus && (
           <Alert severity="error" sx={{ mb: 2 }}>
             <Typography
               lineHeight={1}
@@ -89,7 +84,6 @@ export const JobApplicationChangeJobStatusDialog = ({
             rows={3}
             fullWidth
             label="write a Note"
-            onChange={(e) => onChangeJobStatusNote(e.target.value)}
             slotProps={{ htmlInput: { maxLength: MAX_LENGTH_NOTE } }}
           />
         </Stack>

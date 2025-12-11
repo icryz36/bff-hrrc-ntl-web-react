@@ -11,10 +11,11 @@ import {
 } from '@mui/material';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useCandidateQuery } from 'services/candidate/query';
-import { useApplyJobMutation } from 'services/job-application/mutation';
+import { useCreateJobApplicationBulkMutation } from 'services/job-application/mutation';
 import { TGetCandidateListPayload } from 'types/candidate';
-import { TApplyJobPayload } from 'types/job-application';
+import { TCreateJobApplicationBulkPayload } from 'types/job-application';
 import { JobApplicationApplyCandidateFilter } from './job-application-apply-candidate-filter';
 import { JobApplicationApplyCandidateTable } from './job-application-apply-candidate-table';
 
@@ -57,19 +58,20 @@ export const JobApplicationApplyCandidateDialog = ({
 
   const queryPayload: TGetCandidateListPayload = useMemo(
     () => ({
-      // jobPostId: id, // TODO: ส่งไปแล้ว error 400
       status: ['Active'],
       pageNo: pagination.page + 1,
       pageSize: pagination.pageSize,
+      maxJobApplication: 10,
       ...(filter.searchName && { name: filter.searchName }),
       ...(filter.searchSurname && { surname: filter.searchSurname }),
     }),
-    [pagination.page, filter.searchName, filter.searchSurname, id],
+    [pagination.page, filter.searchName, filter.searchSurname],
   );
 
   // api ---------------------------------------------------------------
 
-  const { mutate: applyJob, isPending: isLoadingApplyJob } = useApplyJobMutation();
+  const { mutate: createJobApplicationBulk, isPending: isLoadingApplyJob } =
+    useCreateJobApplicationBulkMutation();
 
   const { data: candidateList, isPending: isLoading } = useQuery({
     ...useCandidateQuery.list(queryPayload),
@@ -84,12 +86,15 @@ export const JobApplicationApplyCandidateDialog = ({
   const handleSubmitApplyJob = () => {
     const candidates = Array.from(selectedCandidate.ids)?.map((id) => String(id));
 
-    const payload: TApplyJobPayload = {
+    const payload: TCreateJobApplicationBulkPayload[] = candidates.map((candidateId) => ({
+      candidateId,
       jobPostId: id,
-      candidates,
-    };
+      stageId: '57d87642-6c7d-4c51-b0eb-b76aa6976b8c', // NOTE: fix for sprint 3 only !
+      statusId: 'a733f94c-59c5-40fa-903d-074c253b6820', // NOTE: fix for sprint 3 only !
+      applicationDate: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS ZZ'),
+    }));
 
-    applyJob(payload, {
+    createJobApplicationBulk(payload, {
       onSuccess: (response) => {
         if (response.status) {
           onApplySuccess();

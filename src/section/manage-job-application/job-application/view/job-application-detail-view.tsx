@@ -1,31 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { Button, Stack, Typography } from '@mui/material';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { UseBooleanReturn, useBoolean } from 'hooks/useBoolean';
-import { useCandidateQuery } from 'services/candidate/query';
 import { useJobApplicationQuery } from 'services/job-application/query';
-import { TGetCandidateListPayload } from 'types/candidate';
+import { TGetJobapplicationListPayload } from 'types/job-application';
 import CustomArrowStepper from 'components/custom-arrow-stepper/CustomArrowStepper';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import { JobApplicationApplyCandidateDialog } from '../components/job-application-apply-candidate-dialog';
 import { JobApplicationCandidateDetailDialog } from '../components/job-application-candidate-detail-dialog';
 import { JobApplicationCandidateTable } from '../components/job-application-candidate-table';
 import JobApplicationDetailSection from '../components/job-application-detail-section';
-
-// ----------------------------------------------------------------------
-
-const STEPS = [
-  { label: 'New', count: 10, id: 'new' },
-  { label: `CV Submit /\nPrescreen`, count: 12, id: 'cvSubmit' },
-  { label: `Show up / Short\nList`, count: 10, id: 'showUp' },
-  { label: 'First Interview', count: 8, id: 'firstInterview' },
-  { label: 'Second Interview', count: 8, id: 'secondInterview' },
-  { label: 'Final Interview', count: 8, id: 'finalInterview' },
-  { label: 'Offer', count: 2, id: 'offer' },
-  { label: 'Sign Contract', count: 3, id: 'signContract' },
-  { label: 'On Board', count: 4, id: 'onBoard' },
-];
 
 // ----------------------------------------------------------------------
 
@@ -43,35 +28,34 @@ const JobApplicationDetailView = ({
   const isOpenCandidateDetailDialog = useBoolean();
 
   const [selectedCandidateId, setSelectedCandidateId] = useState<string>('');
-  const [activeStep, setActiveStep] = useState<string>('new');
+  const [activeStep, setActiveStep] = useState<string>('');
   const [pagination, setPagination] = useState({
     page: 0,
     pageSize: 10,
   });
 
-  const queryPayload: TGetCandidateListPayload = useMemo(
+  const queryPayload: TGetJobapplicationListPayload = useMemo(
     () => ({
-      // jobPostId: id, // TODO: ส่งไปแล้ว error 400
-      status: ['Active'],
+      jobPostId: id,
       pageNo: pagination.page + 1,
       pageSize: pagination.pageSize,
+      stageId: activeStep,
     }),
-    [pagination.page, id],
+    [pagination.page, id, activeStep],
   );
 
   // api ---------------------------------------------------------------
 
-  const { data: candidateList, isPending: isLoading } = useQuery({
-    ...useCandidateQuery.list(queryPayload),
-    placeholderData: keepPreviousData,
-  });
+  const { data: boardData } = useQuery(useJobApplicationQuery.board({ jobPostId: id }));
 
-  const { data: countJobApplication } = useQuery(useJobApplicationQuery.count({ jobPostId: id }));
+  const { data: candidateList, isFetching: isLoading } = useQuery({
+    ...useJobApplicationQuery.list(queryPayload),
+    placeholderData: keepPreviousData,
+    enabled: !!activeStep,
+  });
 
   const tableData = candidateList?.items || [];
   const totalData = candidateList?.total || 0;
-
-  console.log('countJobApplication', countJobApplication);
 
   // -------------------------------------------------------------------
 
@@ -84,11 +68,26 @@ const JobApplicationDetailView = ({
     isOpenCandidateDetailDialog.onTrue();
   };
 
+  // ----------------------------------------------------------------------
+
+  // NOTE: set default stageId
+  useEffect(() => {
+    if (boardData) {
+      setActiveStep(boardData?.stageSummary[0]?.stageId);
+    }
+  }, [boardData?.stageSummary]);
+
+  // ----------------------------------------------------------------------
+
   return (
     <Stack direction="column" spacing={4}>
       <JobApplicationDetailSection />
 
-      <CustomArrowStepper steps={STEPS} activeStep={activeStep} onChangeStep={handleChangeStep} />
+      <CustomArrowStepper
+        activeStep={activeStep}
+        onChangeStep={handleChangeStep}
+        steps={boardData?.stageSummary || []}
+      />
 
       <JobApplicationCandidateTable
         tableData={tableData}

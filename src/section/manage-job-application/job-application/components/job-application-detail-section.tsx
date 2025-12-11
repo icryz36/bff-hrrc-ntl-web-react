@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import { Grid, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useJobpostQuery } from 'services/jobpost/query';
+import { useJobApplicationQuery } from 'services/job-application/query';
 
 // ----------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ type JobDataItemProps = {
 const JobApplicationDetailSection = () => {
   const { id = '' } = useParams();
 
-  const { data } = useQuery(useJobpostQuery.detail({ jobPostId: id }));
+  const { data } = useQuery(useJobApplicationQuery.board({ jobPostId: id }));
 
-  const jobData = data?.data;
+  const jobData = data?.jobPost;
 
   return (
     <>
