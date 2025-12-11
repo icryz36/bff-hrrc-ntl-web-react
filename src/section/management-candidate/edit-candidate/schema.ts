@@ -5,6 +5,7 @@ import { schemaHelper } from 'components/hook-form';
 // ----------------------------------------------------------------------
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024;
+const MAX_FILE_SIZE_RESUME = 2 * 1024 * 1024;
 
 // ----------------------------------------------------------------------
 
@@ -252,11 +253,14 @@ const EditCandidateSchema = CandidateInfoSchema.extend({
   for (const [key, files] of Object.entries(data.documents)) {
     if (!files) continue;
 
+    const maxSize = key === 'resume' ? MAX_FILE_SIZE_RESUME : MAX_FILE_SIZE;
+    const maxSizeMB = maxSize / 1024 / 1024;
+
     files.forEach((file) => {
-      if (file instanceof File && file.size > MAX_FILE_SIZE) {
+      if (file instanceof File && file.size > maxSize) {
         ctx.addIssue({
           code: 'custom',
-          message: `ไฟล์มีขนาดใหญ่เกินไป (สูงสุด ${MAX_FILE_SIZE / 1024 / 1024}MB)`,
+          message: `ไฟล์มีขนาดใหญ่เกินไป (สูงสุด ${maxSizeMB}MB)`,
           path: ['documents', key],
         });
       }
