@@ -40,6 +40,7 @@ interface ProductsTableProps {
   onPageChange: (model: { page: number; pageSize: number }) => void;
   totalItem: number;
   currentPage: number;
+  currentPageSize: number;
   loading: boolean;
 }
 
@@ -50,6 +51,7 @@ const ListJobTableView = ({
   onPageChange,
   totalItem,
   currentPage,
+  currentPageSize,
   loading,
 }: ProductsTableProps) => {
   const navigate = useNavigate();
@@ -245,6 +247,14 @@ const ListJobTableView = ({
     [],
   );
 
+  const paginationModel = useMemo(
+    () => ({
+      page: currentPage - 1,
+      pageSize: currentPageSize,
+    }),
+    [currentPage, currentPageSize],
+  );
+
   return (
     <>
       <Box width={1}>
@@ -261,9 +271,7 @@ const ListJobTableView = ({
           pagination
           paginationMode="server"
           onPaginationModelChange={(model) => {
-            if (model.page + 1 !== currentPage || model.pageSize !== defaultPageSize) {
-              onPageChange(model);
-            }
+            onPageChange(model);
           }}
           sx={{
             '& .MuiDataGrid-main': {
@@ -271,10 +279,7 @@ const ListJobTableView = ({
             },
           }}
           pageSizeOptions={[defaultPageSize, 15]}
-          paginationModel={{
-            page: currentPage - 1,
-            pageSize: defaultPageSize,
-          }}
+          paginationModel={paginationModel}
           slots={{
             noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Post" />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
