@@ -51,7 +51,7 @@ const ListJobView = () => {
     ...(filters.region && { regionId: [filters.region] }),
     ...(filters.province && { provinceId: [filters.province] }),
     ...(filters.district && { districtId: [filters.district] }),
-    ...(filters.jobStatus && { statusId: filters.jobStatus }),
+    ...(filters.jobStatus && { statusId: [filters.jobStatus] }),
     ...(filters.startDate && { startDate: filters.startDate }),
     ...(filters.activeDay && { totalActiveDays: Number(filters.activeDay) }),
     pageNo: pagination.pageNo,

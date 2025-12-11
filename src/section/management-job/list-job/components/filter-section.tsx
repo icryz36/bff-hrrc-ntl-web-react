@@ -8,7 +8,7 @@ import { FilterState } from './type';
 // ----------------------------------------------------------------------
 
 interface FilterSectionProps {
-  handleToggleFilterPanel: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleToggleFilterPanel?: (e: MouseEvent<HTMLButtonElement>) => void;
   filters: FilterState;
   setFilters: (filters: FilterState) => void;
 }
