@@ -1,21 +1,12 @@
 import { TStatusResponse } from './common';
 
-export type TCandidateStage =
-  | 'cv'
-  | 'first_interview'
-  | 'second_interview'
-  | 'final_interview'
-  | 'offer'
-  | 'sign_contract'
-  | 'on_board';
-
 export type TGetCandidateListPayload = {
   status: ('Active' | 'Inactive')[];
   name?: string;
   surname?: string;
   email?: string;
   mobile?: string;
-  stage?: TCandidateStage;
+  stage?: string;
   jobPostId?: string;
   pageNo: number;
   pageSize: number;

@@ -17,11 +17,11 @@ const JobApplicationListView = () => {
     pageSize: 10,
   });
 
+  // TODO: ส่ง statusId = success ไปด้วย
   const queryPayload: TGetJobPostListPayload = useMemo(
     () => ({
       pageNo: paginationModel.page + 1,
       pageSize: paginationModel.pageSize,
-      // statusId: '801ce7c7-2146-48d6-b260-323e9eb56667', TODO: ส่งไปแล้ว 400
       ownerUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
       recruiterUserId: 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b',
     }),

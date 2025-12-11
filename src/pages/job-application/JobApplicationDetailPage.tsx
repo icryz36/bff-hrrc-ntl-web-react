@@ -8,10 +8,11 @@ import paths from 'routes/paths';
 import { JobApplicationChangeJobStatusDialog } from 'section/manage-job-application/job-application/components/job-application-change-job-status-dialog';
 import { getStatusJpbBadgeColor } from 'section/manage-job-application/job-application/helper';
 import JobApplicationDetailView from 'section/manage-job-application/job-application/view/job-application-detail-view';
-import { useChangeJobStatusMutation } from 'services/job-application/mutation';
-import { useJobpostQuery } from 'services/jobpost/query';
+import { queryClient } from 'services/client';
+import { useJobApplicationQuery } from 'services/job-application/query';
+import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { useMasterDataQuery } from 'services/master-data/query';
-import { TChangeJobStatus } from 'types/job-application';
+import { TUpdateJobPostStatusPayload } from 'types/jobpost';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
 import PageHeader from 'components/page-header/page-header';
@@ -34,19 +35,18 @@ const ListJobPage = () => {
   const isOpenChangeJobStatusSuccessDialog = useBoolean();
 
   const [selectedStatusId, setSelectedStatusId] = useState<string>('');
-  const [changeJobStatusNote, setChangeJobStatusNote] = useState<string>('');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   // api ---------------------------------------------------------------
 
-  const { data: jobDetail } = useQuery(useJobpostQuery.detail({ jobPostId: id }));
+  const { data: boardData } = useQuery(useJobApplicationQuery.board({ jobPostId: id }));
 
   const { data: postStatusList = [] } = useQuery(useMasterDataQuery.postStatus());
 
-  const { mutate: changeJobStatus, isPending: isLoadingChangeJobStatus } =
-    useChangeJobStatusMutation();
+  const { mutate: updateJobPostStatus, isPending: isLoadingChangeJobStatus } =
+    useUpdateJobpostStatusMutation();
 
   // func ---------------------------------------------------------------
 
@@ -63,15 +63,16 @@ const ListJobPage = () => {
   };
 
   const handleConfirmChangeStatus = () => {
-    const payload: TChangeJobStatus = {
-      note: changeJobStatusNote,
+    const payload: TUpdateJobPostStatusPayload = {
+      jobPostId: id,
       statusId: selectedStatusId,
     };
 
-    changeJobStatus(payload, {
+    updateJobPostStatus(payload, {
       onSuccess: (response) => {
         if (response.status) {
           isOpenChangeJobStatusSuccessDialog.onTrue();
+          queryClient.invalidateQueries({ queryKey: useJobApplicationQuery.keys() });
           return;
         }
 
@@ -81,7 +82,6 @@ const ListJobPage = () => {
         isOpenChangeJobStatusFailedDialog.onTrue();
       },
       onSettled: () => {
-        setChangeJobStatusNote('');
         isOpenChangeJobStatusDialog.onFalse();
       },
     });
@@ -127,12 +127,12 @@ const ListJobPage = () => {
                     variant="soft"
                     component="button"
                     onClick={handleClickStatus}
-                    color={getStatusJpbBadgeColor(jobDetail?.data?.statusName || '')}
+                    color={getStatusJpbBadgeColor(boardData?.jobPost?.statusName || '')}
                     sx={{ textTransform: 'capitalize', py: 2, px: 1, cursor: 'pointer' }}
                     label={
                       <Stack alignItems="center" spacing={0.5}>
                         <Typography variant="body2_semibold">
-                          {jobDetail?.data?.statusName}
+                          {boardData?.jobPost?.statusName}
                         </Typography>
                         <IconifyIcon icon="icon-park-outline:down" width={20} height={20} />
                       </Stack>
@@ -143,7 +143,7 @@ const ListJobPage = () => {
                       <MenuItem
                         key={item.statusId}
                         onClick={() => handleSelectStatus(item.statusId)}
-                        selected={jobDetail?.data.statusId === item.statusId}
+                        selected={boardData?.jobPost.statusId === item.statusId}
                       >
                         {item.statusNameEn}
                       </MenuItem>
@@ -166,7 +166,6 @@ const ListJobPage = () => {
         onConfirm={handleConfirmChangeStatus}
         open={isOpenChangeJobStatusDialog.value}
         onClose={isOpenChangeJobStatusDialog.onFalse}
-        onChangeJobStatusNote={setChangeJobStatusNote}
         isWarningChangeJobStatus={isWarningChangeJobStatus}
       />
 

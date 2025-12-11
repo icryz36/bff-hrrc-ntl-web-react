@@ -1,17 +1,18 @@
 import { useMemo } from 'react';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Chip, Link, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import { TCandidateListItems } from 'types/candidate';
+import { TJobApplicationItem } from 'types/job-application';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import DataGridPagination from 'components/pagination/DataGridPagination';
+import { getStageStatusBadgeColor } from '../helper';
 
 // ----------------------------------------------------------------------
 
 type JobApplicationCandidateTableProps = {
   totalData: number;
   isLoading: boolean;
-  tableData: TCandidateListItems[];
+  tableData: TJobApplicationItem[];
   paginationModel: GridPaginationModel;
   onViewCandidateDetail: (id: string) => void;
   onChangePaginationModel: (model: GridPaginationModel) => void;
@@ -27,7 +28,7 @@ export const JobApplicationCandidateTable = ({
 }: JobApplicationCandidateTableProps) => {
   const defaultPageSize = 10;
 
-  const columns: GridColDef<TCandidateListItems>[] = useMemo(
+  const columns: GridColDef<TJobApplicationItem>[] = useMemo(
     () => [
       {
         field: 'titleNameTh',
@@ -36,7 +37,7 @@ export const JobApplicationCandidateTable = ({
         width: 120,
       },
       {
-        field: 'nameTh',
+        field: 'name',
         headerName: 'Name',
         width: 160,
         sortable: true,
@@ -47,13 +48,13 @@ export const JobApplicationCandidateTable = ({
                 onViewCandidateDetail(params.row.candidateId);
               }}
             >
-              <Typography variant="subtitle2_regular">{params.row.nameTh}</Typography>
+              <Typography variant="subtitle2_regular">{params.row.name}</Typography>
             </Link>
           );
         },
       },
       {
-        field: 'surnameTh',
+        field: 'surname',
         headerName: 'Surename',
         sortable: true,
         width: 120,
@@ -75,7 +76,7 @@ export const JobApplicationCandidateTable = ({
         headerName: 'Last Update',
         width: 130,
         renderCell: (params) => {
-          return dayjs(params.row.updatedDate).format('DD/MM/YYYY');
+          return params.row.updatedDate ? dayjs(params.row.updatedDate).format('DD/MM/YYYY') : '-';
         },
       },
       {
@@ -84,33 +85,20 @@ export const JobApplicationCandidateTable = ({
         headerName: 'Candidate ID',
         width: 300,
       },
-
-      // TODO:  waiting be return
       {
-        field: '1',
-        sortable: true,
-        headerName: 'Position From HRMS',
-        width: 200,
-        renderCell: () => {
-          return '-';
-        },
-      },
-      {
-        field: '2',
-        sortable: true,
-        headerName: 'Stage',
-        width: 200,
-        renderCell: () => {
-          return '-';
-        },
-      },
-      {
-        field: '3',
+        field: 'statusNameEn',
         sortable: true,
         headerName: 'Stage Status',
         width: 200,
-        renderCell: () => {
-          return '-';
+        renderCell: (params) => {
+          return (
+            <Chip
+              variant="soft"
+              label={params.row.statusNameEn}
+              sx={{ textTransform: 'capitalize' }}
+              color={getStageStatusBadgeColor(params.row.statusNameEn)}
+            />
+          );
         },
       },
       {
@@ -122,12 +110,12 @@ export const JobApplicationCandidateTable = ({
           return '-';
         },
       },
-      {
-        field: 'action',
-        sortable: true,
-        headerName: 'Action',
-        width: 200,
-      },
+      // {
+      //   field: 'action',
+      //   sortable: true,
+      //   headerName: '',
+      //   width: 200,
+      // },
     ],
     [],
   );
@@ -140,7 +128,7 @@ export const JobApplicationCandidateTable = ({
         columns={columns}
         loading={isLoading}
         rowCount={totalData}
-        getRowId={(row) => row.candidateId}
+        getRowId={(row) => `${row.candidateId}-${row.jobAppId}-${row.jobPostId}`}
         slots={{
           noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Application" />,
           basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
