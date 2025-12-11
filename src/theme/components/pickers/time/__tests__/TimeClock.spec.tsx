@@ -94,7 +94,7 @@ describe('TimeClock component config', () => {
           },
         },
       };
-      const result = rootStyle({ theme: mockTheme as any });
+      const result = rootStyle({ theme: mockTheme as any, ownerState: {} });
       expect(result).toBeDefined();
     } else {
       expect.fail('root styleOverride is not a function');

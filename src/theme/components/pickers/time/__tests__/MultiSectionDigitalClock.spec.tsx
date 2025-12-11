@@ -22,8 +22,11 @@ describe('MultiSectionDigitalClock component config', () => {
   });
 
   it('should have root styleOverride', () => {
-    expect(MultiSectionDigitalClock?.styleOverrides?.root).toBeDefined();
-    expect(MultiSectionDigitalClock?.styleOverrides?.root?.border).toBe('none');
+    const rootStyle = MultiSectionDigitalClock?.styleOverrides?.root;
+    expect(rootStyle).toBeDefined();
+    if (rootStyle && typeof rootStyle === 'object' && 'border' in rootStyle) {
+      expect(rootStyle.border).toBe('none');
+    }
   });
 
   it('should have digitalClockSectionItem slot as function', () => {

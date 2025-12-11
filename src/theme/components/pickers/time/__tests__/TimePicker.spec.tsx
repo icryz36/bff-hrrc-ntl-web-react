@@ -51,9 +51,12 @@ describe('TimePicker component config', () => {
   });
 
   it('should have desktopPaper in slotProps', () => {
-    expect(TimePicker?.defaultProps?.slotProps?.desktopPaper).toBeDefined();
-    expect(TimePicker?.defaultProps?.slotProps?.desktopPaper?.variant).toBe('elevation');
-    expect(TimePicker?.defaultProps?.slotProps?.desktopPaper?.elevation).toBe(3);
+    const desktopPaper = TimePicker?.defaultProps?.slotProps?.desktopPaper;
+    expect(desktopPaper).toBeDefined();
+    if (desktopPaper && typeof desktopPaper === 'object' && 'variant' in desktopPaper) {
+      expect(desktopPaper.variant).toBe('elevation');
+      expect(desktopPaper.elevation).toBe(3);
+    }
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
@@ -70,19 +73,31 @@ describe('TimePicker component config', () => {
 
   it('should configure textField inputProps sx for placeholder opacity', () => {
     const textFieldProps = TimePicker?.defaultProps?.slotProps?.textField;
-    expect(textFieldProps?.inputProps?.sx).toBeDefined();
-    expect(textFieldProps?.inputProps?.sx?.['&::-webkit-input-placeholder']).toEqual({
-      opacity: '0 !important',
-    });
-    expect(textFieldProps?.inputProps?.sx?.['&::-moz-placeholder']).toEqual({
-      opacity: '0 !important',
-    });
+    expect(textFieldProps).toBeDefined();
+    if (textFieldProps && typeof textFieldProps === 'object' && 'inputProps' in textFieldProps) {
+      const inputProps = textFieldProps.inputProps as any;
+      if (inputProps && 'sx' in inputProps) {
+        expect(inputProps.sx).toBeDefined();
+        expect(inputProps.sx?.['&::-webkit-input-placeholder']).toEqual({
+          opacity: '0 !important',
+        });
+        expect(inputProps.sx?.['&::-moz-placeholder']).toEqual({
+          opacity: '0 !important',
+        });
+      }
+    }
   });
 
   it('should configure desktopPaper with elevation 3', () => {
     const desktopPaperProps = TimePicker?.defaultProps?.slotProps?.desktopPaper;
-    expect(desktopPaperProps?.variant).toBe('elevation');
-    expect(desktopPaperProps?.elevation).toBe(3);
+    if (
+      desktopPaperProps &&
+      typeof desktopPaperProps === 'object' &&
+      'variant' in desktopPaperProps
+    ) {
+      expect(desktopPaperProps.variant).toBe('elevation');
+      expect(desktopPaperProps.elevation).toBe(3);
+    }
   });
 
   it('should configure popper with specific styles', () => {

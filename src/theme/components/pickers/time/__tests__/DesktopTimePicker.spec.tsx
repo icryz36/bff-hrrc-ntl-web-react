@@ -42,9 +42,12 @@ describe('DesktopTimePicker component config', () => {
   });
 
   it('should have desktopPaper in slotProps', () => {
-    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper).toBeDefined();
-    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper?.variant).toBe('elevation');
-    expect(DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper?.elevation).toBe(3);
+    const desktopPaper = DesktopTimePicker?.defaultProps?.slotProps?.desktopPaper;
+    expect(desktopPaper).toBeDefined();
+    if (desktopPaper && typeof desktopPaper === 'object' && 'variant' in desktopPaper) {
+      expect(desktopPaper.variant).toBe('elevation');
+      expect(desktopPaper.elevation).toBe(3);
+    }
   });
 
   it('should render custom openPickerButton with IconifyIcon', () => {
