@@ -17,6 +17,7 @@ const endpoint = {
   },
   jobpost: {
     list: `get-jobpost-list-xapi`,
+    listAll: `get-all-jobpost-list-xapi`,
     create: `create-jobpost-xapi`,
     detail: `get-jobpost-xapi`,
     updateStatus: `update-jobpost-status-xapi`,
@@ -37,6 +38,7 @@ const endpoint = {
   },
   jobApplication: {
     applyJob: '',
+    create: `create-jobapplication-xapi`,
     changeJobStatus: '',
     count: '',
   },

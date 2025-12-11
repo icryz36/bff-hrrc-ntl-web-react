@@ -3,6 +3,8 @@ import { axiosJobPostInstance } from 'services/axios/axiosInstance';
 import {
   TCreateJobPostPayload,
   TCreateJobPostResponse,
+  TGetAllJobPostListPayload,
+  TGetAllJobPostListResponse,
   TGetJobPostByIdPayload,
   TGetJobPostByIdResponse,
   TGetJobPostListPayload,
@@ -33,6 +35,18 @@ export const fetchJobpostById = async (
   const { data } = await axiosJobPostInstance({
     method: 'POST',
     url: endpoint.jobpost.detail,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const fetchAllJobpostList = async (
+  payload: TGetAllJobPostListPayload,
+): Promise<TGetAllJobPostListResponse> => {
+  const { data } = await axiosJobPostInstance({
+    method: 'POST',
+    url: endpoint.jobpost.listAll,
     data: payload,
   });
 

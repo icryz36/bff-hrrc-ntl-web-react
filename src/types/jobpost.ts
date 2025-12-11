@@ -56,6 +56,47 @@ export type TJobPost = {
   isViewMode: boolean;
 };
 
+// get all jobpost list -------------------------------------------------------------
+
+export type TGetAllJobPostListPayload = {
+  status?: ('active' | 'in_active')[];
+  ownerUserId?: string;
+  statusId?: string;
+  pageNo: number;
+  pageSize: number;
+  groupLocation?: string[];
+  provinceId?: string[];
+  departmentId?: string[];
+  jobPostIdExcludeList?: string[];
+};
+
+export type TGetAllJobPostListResponse = TStatusResponse & {
+  data: TGetAllJobPostListData;
+};
+
+export type TGetAllJobPostListData = {
+  items: TAllJobPostListItem[];
+  page: number;
+  total: number;
+};
+
+export type TAllJobPostListItem = {
+  jobPostId: string;
+  jobPostNo: number;
+  jobTitle: string;
+  departmentName: string;
+  regionName: string;
+  provinceName: string;
+  districtName: string;
+  startDate: string;
+  totalActiveDays: number;
+  headCount: number;
+  ownerUserName: string;
+  statusName: string;
+  recruiters: string[];
+  isViewMode: boolean;
+};
+
 // get jobpost by id -----------------------------------------------------------
 
 export type TGetJobPostByIdPayload = {

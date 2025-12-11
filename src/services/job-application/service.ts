@@ -5,6 +5,8 @@ import {
   TApplyJobResponse,
   TChangeJobResponse,
   TChangeJobStatus,
+  TCreateJobApplicationPayload,
+  TCreateJobApplicationResponse,
   TGetCountApplicationPayload,
   TGetCountApplicationResponse,
 } from 'types/job-application';
@@ -13,6 +15,18 @@ export const postApplyJob = async (payload: TApplyJobPayload): Promise<TApplyJob
   const { data } = await axiosJobPostInstance({
     method: 'POST',
     url: endpoint.jobApplication.applyJob,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const postCreateJobApplication = async (
+  payload: TCreateJobApplicationPayload,
+): Promise<TCreateJobApplicationResponse> => {
+  const { data } = await axiosJobPostInstance({
+    method: 'POST',
+    url: endpoint.jobApplication.create,
     data: payload,
   });
 
