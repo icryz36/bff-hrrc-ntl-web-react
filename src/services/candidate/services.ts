@@ -14,6 +14,8 @@ import {
   TGetCandidateListResponse,
   TImportCandidatePayload,
   TImportCandidateResponse,
+  TImportCandidatesPayload,
+  TImportCandidatesResponse,
   TUpdateCandidateResponse,
 } from 'types/candidate';
 
@@ -79,13 +81,55 @@ export const updateCandidateBlacklist = async (
 export const fetchImportCandidate = async (
   payload: TImportCandidatePayload,
 ): Promise<TImportCandidateResponse> => {
+  const formData = new FormData();
+  if (payload.file) {
+    formData.append('file', payload.file);
+  }
+
   const { data } = await axiosInstance({
     method: 'POST',
-    url: endpoint.candidate.import,
-    data: payload,
+    url: endpoint.candidate.validate,
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
-  return data;
+  if (Array.isArray(data)) {
+    return {
+      transactionNo: '',
+      timestamp: '',
+      status: true,
+      data: {
+        items: data,
+        pagination: {
+          pageNo: 1,
+          pageSize: data.length,
+          totalRecords: data.length,
+          totalPages: 1,
+        },
+      },
+    };
+  }
+
+  if (data?.data?.items) {
+    return data;
+  }
+
+  return {
+    transactionNo: data?.transactionNo || '',
+    timestamp: data?.timestamp || '',
+    status: data?.status ?? true,
+    data: {
+      items: Array.isArray(data?.data) ? data.data : data?.items || [],
+      pagination: {
+        pageNo: 1,
+        pageSize: Array.isArray(data?.data) ? data.data.length : data?.items?.length || 0,
+        totalRecords: Array.isArray(data?.data) ? data.data.length : data?.items?.length || 0,
+        totalPages: 1,
+      },
+    },
+  };
 };
 
 // Mutation -------------------------------------------------------------
@@ -120,6 +164,30 @@ export const postUpdateCandidateDocument = async (
     method: 'POST',
     data: payload,
     url: endpoint.candidate.document,
+  });
+
+  return data;
+};
+
+export const downloadCandidateTemplate = async (
+  payload: TGetCandidateDocumentByIdPayload,
+): Promise<TCandidateDocumentResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.downloadTemplate,
+  });
+
+  return data;
+};
+
+export const importCandidates = async (
+  payload: TImportCandidatesPayload,
+): Promise<TImportCandidatesResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.import,
   });
 
   return data;

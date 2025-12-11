@@ -19,7 +19,7 @@ const useCandidateQuery = {
   keysList: () => [...useCandidateQuery.keys(), 'list'] as const,
   keysDetail: () => [...useCandidateQuery.keys(), 'detail'] as const,
   keysDocument: () => [...useCandidateQuery.keys(), 'document'] as const,
-  keysImport: () => [...useCandidateQuery.keys(), 'import'] as const,
+  keysValidate: () => [...useCandidateQuery.keys(), 'validate'] as const,
 
   list: (payload: TGetCandidateListPayload) =>
     queryOptions({
@@ -43,9 +43,9 @@ const useCandidateQuery = {
       gcTime: 0,
       staleTime: 0,
     }),
-  import: (payload: TImportCandidatePayload) =>
+  validate: (payload: TImportCandidatePayload) =>
     queryOptions({
-      queryKey: [...useCandidateQuery.keysImport(), payload],
+      queryKey: [...useCandidateQuery.keysValidate(), payload],
       queryFn: () => fetchImportCandidate(payload),
       select: (response) => response.data,
       gcTime: 0,

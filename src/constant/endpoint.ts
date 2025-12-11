@@ -38,7 +38,7 @@ const endpoint = {
     updateBlacklist: `${bffHrrecCandidatesGateway}/update-candidate-blacklist-xapi`,
     updateNote: `${bffHrrecCandidatesGateway}/update-candidate-note-xapi`,
     document: `${bffHrrecCandidatesGateway}/get-document-xapi`,
-    validate: `${bffHrrecCandidatesGateway}/validate-candidates-xapi`,
+    validate: `${bffHrrecGateway}/validate-candidates-xapi`,
     import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
     downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
   },
