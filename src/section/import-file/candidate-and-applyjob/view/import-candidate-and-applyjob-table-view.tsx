@@ -63,7 +63,6 @@ const ImportCandidateAndApplyJobTableView = ({
             return <Typography variant="subtitle2_regular">-</Typography>;
           }
 
-          // Check if errorMsg is array of objects
           if (Array.isArray(errorMsg) && errorMsg.length > 0 && typeof errorMsg[0] === 'object') {
             const errorMessages = errorMsg.map((err: any) => err.errorMsg || err).join(', ');
             return (
@@ -75,7 +74,6 @@ const ImportCandidateAndApplyJobTableView = ({
             );
           }
 
-          // If it's array of strings
           if (Array.isArray(errorMsg)) {
             return (
               <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
@@ -216,7 +214,6 @@ const ImportCandidateAndApplyJobTableView = ({
         apiRef={apiRef}
         columns={columns}
         getRowId={(row: any) => {
-          // Use unique identifier if available, otherwise use email or generate unique id
           if (row.id) return row.id;
           if (row.email) {
             const index = tableData.findIndex((item) => item === row);

@@ -1,20 +1,64 @@
 import { endpoint } from 'constant/endpoint';
-import axiosInstance, { axiosJobPostInstance } from 'services/axios/axiosInstance';
+import axiosInstance from 'services/axios/axiosInstance';
 import {
-  TApplyJobPayload,
-  TApplyJobResponse,
-  TChangeJobResponse,
-  TChangeJobStatus,
+  TCreateJobApplicationBulkPayload,
+  TCreateJobApplicationBulkResponse,
   TCreateJobApplicationPayload,
   TCreateJobApplicationResponse,
-  TGetCountApplicationPayload,
-  TGetCountApplicationResponse,
+  TGetCheckJobaplicationStatusPayload,
+  TGetCheckJobaplicationStatusResponse,
+  TGetJobapplicationBoardPayload,
+  TGetJobapplicationBoardResponse,
+  TGetJobapplicationListPayload,
+  TGetJobapplicationListResponse,
 } from 'types/job-application';
 
-export const postApplyJob = async (payload: TApplyJobPayload): Promise<TApplyJobResponse> => {
-  const { data } = await axiosJobPostInstance({
+// query ---------------------------------------------------------------
+
+export const fetchJobApplicationBoard = async (
+  payload: TGetJobapplicationBoardPayload,
+): Promise<TGetJobapplicationBoardResponse> => {
+  const { data } = await axiosInstance({
     method: 'POST',
-    url: endpoint.jobApplication.applyJob,
+    url: endpoint.jobApplication.board,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const fetchJobApplicationList = async (
+  payload: TGetJobapplicationListPayload,
+): Promise<TGetJobapplicationListResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    url: endpoint.jobApplication.list,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const fetchCheckJobaplicationStatus = async (
+  payload: TGetCheckJobaplicationStatusPayload,
+): Promise<TGetCheckJobaplicationStatusResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    url: endpoint.jobApplication.checkStatus,
+    data: payload,
+  });
+
+  return data;
+};
+
+// mutation ---------------------------------------------------------------
+
+export const postCreateJobApplicationBulk = async (
+  payload: TCreateJobApplicationBulkPayload[],
+): Promise<TCreateJobApplicationBulkResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    url: endpoint.jobApplication.createJobBulk,
     data: payload,
   });
 
@@ -27,30 +71,6 @@ export const postCreateJobApplication = async (
   const { data } = await axiosInstance({
     method: 'POST',
     url: endpoint.jobApplication.create,
-    data: payload,
-  });
-
-  return data;
-};
-
-export const postChangeJobStatus = async (
-  payload: TChangeJobStatus,
-): Promise<TChangeJobResponse> => {
-  const { data } = await axiosJobPostInstance({
-    method: 'POST',
-    url: endpoint.jobApplication.changeJobStatus,
-    data: payload,
-  });
-
-  return data;
-};
-
-export const fetchCountJobApplication = async (
-  payload: TGetCountApplicationPayload,
-): Promise<TGetCountApplicationResponse> => {
-  const { data } = await axiosJobPostInstance({
-    method: 'POST',
-    url: endpoint.jobApplication.count,
     data: payload,
   });
 

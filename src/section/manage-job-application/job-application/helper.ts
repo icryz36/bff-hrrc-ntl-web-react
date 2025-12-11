@@ -16,3 +16,16 @@ export const getStatusJpbBadgeColor = (val: string): ChipOwnProps['color'] => {
       return 'primary';
   }
 };
+
+export const getStageStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
+  switch (val?.toLocaleLowerCase()) {
+    case 'Pending':
+      return 'neutral';
+    case 'Yes':
+      return 'success';
+    case 'No':
+      return 'error';
+    default:
+      return 'neutral';
+  }
+};

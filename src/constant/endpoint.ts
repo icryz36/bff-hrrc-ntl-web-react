@@ -1,6 +1,7 @@
-const bffHrrecGateway = `bff-hrrec-gateway/v1/`;
-const bffHrrecJobpostGateway = `bff-hrrec-jobpost-gateway/v1/`;
-const bffHrrecCandidatesGateway = `bff-hrrec-candidates-gateway/v1/`;
+const bffHrrecGateway = `bff-hrrec-gateway/v1`;
+const bffHrrecUsersGateway = `bff-hrrec-users-gateway/v1`;
+const bffHrrecJobpostGateway = `bff-hrrec-jobpost-gateway/v1`;
+const bffHrrecCandidatesGateway = `bff-hrrec-candidates-gateway/v1`;
 
 const endpoint = {
   masterData: {
@@ -14,40 +15,39 @@ const endpoint = {
     jobLevel: `get-joblevel-master-xapi`,
     degree: `get-degree-master-xapi`,
     employeeType: `get-employeetype-master-xapi`,
-    users: `get-users-xapi`,
     skill: `get-skill-master-xapi`,
     titleName: `get-title-name-master-xapi`,
     documentType: `get-document-type-master-xapi`,
   },
   jobpost: {
-    list: `${bffHrrecJobpostGateway}get-jobpost-list-xapi`,
-    listAll: `${bffHrrecJobpostGateway}get-all-jobpost-list-xapi`,
-    create: `create-jobpost-xapi`,
-    detail: `get-jobpost-xapi`,
-    updateStatus: `update-jobpost-status-xapi`,
-    update: `update-jobpost-xapi`,
+    list: `${bffHrrecJobpostGateway}/get-jobpost-list-xapi`,
+    listAll: `${bffHrrecJobpostGateway}/get-all-jobpost-list-xapi`,
+    create: `${bffHrrecJobpostGateway}/create-jobpost-xapi`,
+    detail: `${bffHrrecJobpostGateway}/get-jobpost-xapi`,
+    updateStatus: `${bffHrrecJobpostGateway}/update-jobpost-status-xapi`,
+    update: `${bffHrrecJobpostGateway}/update-jobpost-xapi`,
   },
   user: {
-    list: `get-users-xapi`,
+    list: `${bffHrrecUsersGateway}/get-users-xapi`,
   },
   candidate: {
-    list: `get-candidates-list-xapi`,
-    detail: `get-candidate-xapi`,
-    updateInfo: `update-candidate-xapi`,
-    updateStatus: `update-candidate-status-xapi`,
-    updateBlacklist: `update-candidate-blacklist-xapi`,
-    updateNote: `update-candidate-note-xapi`,
-    document: `get-document-xapi`,
-    validate: `${bffHrrecGateway}validate-candidates-xapi`,
-    // validate: `${bffHrrecCandidatesGateway}validate-candidates-xapi`,
-    import: `${bffHrrecCandidatesGateway}import-candidates-xapi`,
-    downloadTemplate: `${bffHrrecCandidatesGateway}get-document-xapi`,
+    list: `${bffHrrecCandidatesGateway}/get-candidates-list-xapi`,
+    detail: `${bffHrrecCandidatesGateway}/get-candidate-xapi`,
+    updateInfo: `${bffHrrecCandidatesGateway}/update-candidate-xapi`,
+    updateStatus: `${bffHrrecCandidatesGateway}/update-candidate-status-xapi`,
+    updateBlacklist: `${bffHrrecCandidatesGateway}/update-candidate-blacklist-xapi`,
+    updateNote: `${bffHrrecCandidatesGateway}/update-candidate-note-xapi`,
+    document: `${bffHrrecCandidatesGateway}/get-document-xapi`,
+    validate: `${bffHrrecGateway}/validate-candidates-xapi`,
+    import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
+    downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
   },
   jobApplication: {
-    applyJob: '',
-    create: `${bffHrrecGateway}create-job-application-xapi`,
-    changeJobStatus: '',
-    count: '',
+    create: `${bffHrrecGateway}/create-job-application-xapi`,
+    createJobBulk: `${bffHrrecGateway}/create-job-application-bulk-xapi`,
+    board: `${bffHrrecGateway}/get-job-application-board-xapi`,
+    list: `${bffHrrecGateway}/get-job-application-list-xapi`,
+    checkStatus: `${bffHrrecGateway}/check-job-application-status-xapi`,
   },
 };
 

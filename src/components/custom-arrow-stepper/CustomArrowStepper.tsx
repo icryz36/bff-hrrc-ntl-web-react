@@ -1,4 +1,5 @@
 import { Stack, Typography } from '@mui/material';
+import { TStageSummary } from 'types/job-application';
 import {
   StyledStepperButtonBase,
   StyledStepperContainer,
@@ -8,37 +9,31 @@ import {
 // ----------------------------------------------------------------------
 
 type CustomArrowStepperProps = {
-  steps: TStep[];
+  steps: TStageSummary[];
   activeStep: string;
   onChangeStep: (id: string) => void;
-};
-
-type TStep = {
-  id: string;
-  label: string;
-  count: number;
 };
 
 const CustomArrowStepper = ({ steps, activeStep, onChangeStep }: CustomArrowStepperProps) => {
   return (
     <StyledStepperContainer>
       {steps.map((step, index) => {
-        const isActive = step.id === activeStep;
+        const isActive = step.stageId === activeStep;
 
         return (
-          <StyledStepperItemContainer key={step.id}>
+          <StyledStepperItemContainer key={step.stageId}>
             <StyledStepperButtonBase
               index={index}
               isActive={isActive}
-              onClick={() => onChangeStep(step.id)}
+              onClick={() => onChangeStep(step.stageId)}
             >
               <Stack direction="column" sx={{ width: '100%', alignItems: 'flex-start' }}>
-                <Typography variant="h4">{step.count}</Typography>
+                <Typography variant="h4">{step.jobApplicationCount}</Typography>
                 <Typography
                   whiteSpace="pre-wrap"
                   variant={isActive ? 'subtitle1_semibold' : 'subtitle1_medium'}
                 >
-                  {step.label}
+                  {step.stageNameEn}
                 </Typography>
               </Stack>
             </StyledStepperButtonBase>

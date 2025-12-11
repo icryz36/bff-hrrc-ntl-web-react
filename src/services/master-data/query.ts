@@ -95,7 +95,7 @@ const useMasterDataQuery = {
 
   users: () =>
     queryOptions({
-      queryKey: [...useMasterDataQuery.keys(), endpoint.masterData.users],
+      queryKey: [...useMasterDataQuery.keys(), endpoint.user.list],
       queryFn: () => fetchUsers(),
       select: (response) => response.data,
     }),

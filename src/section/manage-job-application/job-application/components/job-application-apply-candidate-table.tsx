@@ -47,6 +47,9 @@ export const JobApplicationApplyCandidateTable = ({
         headerName: 'Desired Province',
         sortable: true,
         width: 200,
+        renderCell: () => {
+          return '-';
+        },
       },
       {
         field: 'countJobApplication',
