@@ -353,24 +353,31 @@ export type TImportCandidatePayload = {
   file: File | undefined;
 };
 
+export type TErrorMsgItem = {
+  field: string;
+  errorMsg: string;
+};
+
 export type ITImportCandidateItem = {
   validateStatus: 'success' | 'fail';
-  errorMsg: string[];
+  errorMsg: TErrorMsgItem[] | string[];
   title: string;
   nameTh: string;
   surnameTh: string;
-  gender: string;
+  nameEn?: string;
+  surnameEn?: string;
+  gender?: string;
   age: number;
   mobileNo: string;
   email: string;
   desiredLocation: string;
   desiredProvince: string;
-  source: string;
+  source?: string;
   highestDegree: string;
   workExperience: string;
   canDriveMotorcycle: string;
   canDriveCar: string;
-  jobPostNo: string;
+  jobPostNo: string | null;
   applicationSource: string;
   applicationDate: string;
 };
@@ -382,4 +389,22 @@ export type TCandidateListData = {
 
 export type TImportCandidateResponse = TStatusResponse & {
   data: TCandidateListData;
+};
+
+export type TImportCandidatesPayload = {
+  candidates: ITImportCandidateItem[];
+};
+
+export type TImportCandidatesResponse = TStatusResponse & {
+  data: {
+    batchId: string;
+  };
+  error?: {
+    code: string;
+    message: string;
+    path: string;
+    description: string;
+    type: string;
+    technicalError: string;
+  };
 };

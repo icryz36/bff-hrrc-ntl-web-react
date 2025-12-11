@@ -1,5 +1,6 @@
 const bffHrrecGateway = `bff-hrrec-gateway/v1/`;
 const bffHrrecJobpostGateway = `bff-hrrec-jobpost-gateway/v1/`;
+const bffHrrecCandidatesGateway = `bff-hrrec-candidates-gateway/v1/`;
 
 const endpoint = {
   masterData: {
@@ -37,7 +38,10 @@ const endpoint = {
     updateBlacklist: `update-candidate-blacklist-xapi`,
     updateNote: `update-candidate-note-xapi`,
     document: `get-document-xapi`,
-    import: `validate-candidates-xapi`,
+    validate: `${bffHrrecGateway}validate-candidates-xapi`,
+    // validate: `${bffHrrecCandidatesGateway}validate-candidates-xapi`,
+    import: `${bffHrrecCandidatesGateway}import-candidates-xapi`,
+    downloadTemplate: `${bffHrrecCandidatesGateway}get-document-xapi`,
   },
   jobApplication: {
     applyJob: '',

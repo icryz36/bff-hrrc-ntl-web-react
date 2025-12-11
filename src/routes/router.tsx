@@ -26,7 +26,7 @@ const EditCandidatePage = lazy(() => import('pages/candidate/CandidateEditPage')
 
 // inmport file
 const ImportCandidateAndApplyJobPage = lazy(
-  () => import('pages/import/ImportCandidateAndApplyJobPage copy'),
+  () => import('pages/import/ImportCandidateAndApplyJobPage'),
 );
 const ImportTrackingAndHistoryPage = lazy(
   () => import('pages/import/ImportTrackingAndHistoryPage'),
