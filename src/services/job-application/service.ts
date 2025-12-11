@@ -1,8 +1,8 @@
 import { endpoint } from 'constant/endpoint';
 import axiosInstance from 'services/axios/axiosInstance';
 import {
-  TApplyJobPayload,
-  TApplyJobResponse,
+  TCreateJobApplicationBulkPayload,
+  TCreateJobApplicationBulkResponse,
   TGetCheckJobaplicationStatusPayload,
   TGetCheckJobaplicationStatusResponse,
   TGetJobapplicationBoardPayload,
@@ -51,10 +51,12 @@ export const fetchCheckJobaplicationStatus = async (
 
 // mutation ---------------------------------------------------------------
 
-export const postApplyJob = async (payload: TApplyJobPayload): Promise<TApplyJobResponse> => {
+export const postCreateJobApplicationBulk = async (
+  payload: TCreateJobApplicationBulkPayload[],
+): Promise<TCreateJobApplicationBulkResponse> => {
   const { data } = await axiosInstance({
     method: 'POST',
-    url: endpoint.jobApplication.applyJob,
+    url: endpoint.jobApplication.createJobBulk,
     data: payload,
   });
 

@@ -10,6 +10,7 @@ export type TGetCandidateListPayload = {
   jobPostId?: string;
   pageNo: number;
   pageSize: number;
+  maxJobApplication?: number;
 };
 
 export type TCandidateListItems = {

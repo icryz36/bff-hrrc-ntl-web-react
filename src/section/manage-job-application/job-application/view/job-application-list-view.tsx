@@ -17,7 +17,6 @@ const JobApplicationListView = () => {
     pageSize: 10,
   });
 
-  // TODO: ส่ง statusId = success ไปด้วย
   const queryPayload: TGetJobPostListPayload = useMemo(
     () => ({
       pageNo: paginationModel.page + 1,

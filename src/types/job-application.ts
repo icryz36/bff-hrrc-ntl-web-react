@@ -121,11 +121,20 @@ export type TCheckJobaplicationStatusData = {
 
 // apply job ---------------------------------------------------------------
 
-export type TApplyJobPayload = {
+export type TCreateJobApplicationBulkPayload = {
+  candidateId: string;
   jobPostId: string;
-  candidates: string[];
+  applicationDate: string;
+  stageId: string;
+  statusId: string;
 };
 
-export type TApplyJobResponse = TStatusResponse & {
+export type TCreateJobApplicationBulkResponse = TStatusResponse & {
+  data: TCreateJobApplicationBulkData[];
+};
+
+export type TCreateJobApplicationBulkData = {
+  jobAppId: string;
   jobPostId: string;
+  candidateId: string;
 };

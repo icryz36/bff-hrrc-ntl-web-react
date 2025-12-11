@@ -1,25 +1,17 @@
 import { useMutation } from '@tanstack/react-query';
 import { useCandidateQuery } from 'services/candidate/query';
 import { queryClient } from 'services/client';
-import { TApplyJobPayload } from 'types/job-application';
-import { postApplyJob } from './service';
+import { TCreateJobApplicationBulkPayload } from 'types/job-application';
+import { useJobApplicationQuery } from './query';
+import { postCreateJobApplicationBulk } from './service';
 
-export const useApplyJobMutation = () =>
+export const useCreateJobApplicationBulkMutation = () =>
   useMutation({
-    mutationFn: (payload: TApplyJobPayload) => postApplyJob(payload),
+    mutationFn: (payload: TCreateJobApplicationBulkPayload[]) =>
+      postCreateJobApplicationBulk(payload),
+
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: useCandidateQuery.keysList(),
-      });
+      queryClient.invalidateQueries({ queryKey: useCandidateQuery.keysList() });
+      queryClient.invalidateQueries({ queryKey: useJobApplicationQuery.keys() });
     },
   });
-
-// export const useChangeJobStatusMutation = () =>
-//   useMutation({
-//     mutationFn: (payload: TChangeJobStatus) => postChangeJobStatus(payload),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: useJobpostQuery.keysDetail(),
-//       });
-//     },
-//   });
