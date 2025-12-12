@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import axiosInstance from 'services/axios/axiosInstance';
+import { axiosGatewayInstance, axiosInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
   TCandidateBlacklistResponse,
@@ -7,6 +7,8 @@ import {
   TCandidateNotePayload,
   TCandidateUpdateStatusPayload,
   TCandidateUpdateStatusResponse,
+  TGetBatchStatusListPayload,
+  TGetBatchStatusListResponse,
   TGetCandidateByIdPayload,
   TGetCandidateByIdResponse,
   TGetCandidateDocumentByIdPayload,
@@ -49,6 +51,18 @@ export const fetchCandidateDocumentById = async (
   const { data } = await axiosInstance({
     method: 'POST',
     url: endpoint.candidate.document,
+    data: payload,
+  });
+
+  return data;
+};
+
+export const fetchBatchStatusList = async (
+  payload: TGetBatchStatusListPayload,
+): Promise<TGetBatchStatusListResponse> => {
+  const { data } = await axiosGatewayInstance({
+    method: 'POST',
+    url: endpoint.candidate.batchList,
     data: payload,
   });
 

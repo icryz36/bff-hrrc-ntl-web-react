@@ -44,6 +44,7 @@ const endpoint = {
     validate: `${bffHrrecGateway}/validate-candidates-xapi`,
     import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
     downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
+    batchList: `batch/get-batch-status-list-xapi`,
     downloadCandidateFail: `${bffHrrecGateway}/get-batch-records-candidatefile-xapi`,
   },
   jobApplication: {

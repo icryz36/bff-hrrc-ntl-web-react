@@ -404,3 +404,38 @@ export type TImportCandidatesResponse = TStatusResponse & {
     technicalError: string;
   };
 };
+
+// ---------------------------------
+
+export type TGetBatchStatusListPayload = {
+  createdById: string;
+  pageNo: number;
+  pageSize: number;
+};
+
+export type TBatchStatusListItem = {
+  batchId: string;
+  batchType: string;
+  fileName: string;
+  status: string;
+  totalRecords: number;
+  successCount: number;
+  failCount: number;
+  finishedDate: string;
+  createdDate: string;
+  owner?: {
+    id: string;
+    name: string;
+    surname: string;
+  };
+};
+
+export type TGetBatchStatusListData = {
+  items: TBatchStatusListItem[];
+  page: number;
+  total: number;
+};
+
+export type TGetBatchStatusListResponse = TStatusResponse & {
+  data: TGetBatchStatusListData;
+};

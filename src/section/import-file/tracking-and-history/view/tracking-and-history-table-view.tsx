@@ -1,13 +1,13 @@
 import { RefObject, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
+import dayjs from 'dayjs';
 import { pathsNavigate } from 'routes/paths';
 import { StyledDataGrid } from 'section/import-file/styles';
 import IconifyIcon from 'components/base/IconifyIcon';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
-import DataGridPagination from 'components/pagination/DataGridPagination';
 
 type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
@@ -18,51 +18,98 @@ type ProductsTableProps = {
   loading: boolean;
 };
 
-const defaultPageSize = 10;
+export type TBatchListRow = {
+  batchId: string;
+  fileName: string;
+  totalRecords: number;
+  successCount: number;
+  failCount: number;
+  createdDate: string | Date;
+  owner?: {
+    name?: string;
+    surname?: string;
+  };
+};
 
-const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTableProps) => {
+const defaultPageSize = 100;
+
+const TrackingAndHistoryTableView = ({
+  apiRef,
+  tableData,
+  totalItem,
+  loading,
+}: ProductsTableProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<TBatchListRow>[] = useMemo(
     () => [
       {
         field: 'batchId',
         headerName: 'Batch ID',
         width: 142,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">{params.row.batchId}</Typography>
+        ),
       },
       {
         field: 'fileName',
         headerName: 'File Name',
         width: 350,
-      },
-      {
-        field: 'record',
-        headerName: 'Record',
-        width: 130,
-      },
-      {
-        field: 'success',
-        headerName: 'Success',
-        width: 130,
-      },
-      {
-        field: 'fail',
-        headerName: 'Fail',
-        width: 130,
         renderCell: (params) => (
-          <Typography color={theme.palette.chRed[400]}>{params.row.fail}</Typography>
+          <Typography variant="subtitle2_regular">{params.row.fileName}</Typography>
         ),
       },
       {
-        field: 'importDate',
+        field: 'totalRecords',
+        headerName: 'Record',
+        width: 130,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">{params.row.totalRecords}</Typography>
+        ),
+      },
+      {
+        field: 'successCount',
+        headerName: 'Success',
+        width: 130,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">{params.row.successCount}</Typography>
+        ),
+      },
+      {
+        field: 'failCount',
+        headerName: 'Fail',
+        width: 130,
+        renderCell: (params) => (
+          <Typography color={theme.palette.chRed[400]} variant="subtitle2_regular">
+            {params.row.failCount}
+          </Typography>
+        ),
+      },
+      {
+        field: 'createdDate',
         headerName: 'Import Date',
         width: 150,
+        renderCell: (params) => {
+          return (
+            <Typography variant="subtitle2_regular">
+              {dayjs(params.row.createdDate).format('DD/MM/YYYY')}
+            </Typography>
+          );
+        },
       },
       {
         field: 'owner',
         headerName: 'Owners',
         width: 330,
+        renderCell: (params) => {
+          return (
+            <Stack spacing={2}>
+              <Typography variant="subtitle2_regular">{params.row?.owner?.name}</Typography>
+              <Typography variant="subtitle2_regular">{params.row?.owner?.surname}</Typography>
+            </Stack>
+          );
+        },
       },
       {
         field: 'action',
@@ -72,7 +119,9 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
           <IconButton
             aria-label="batch"
             sx={{ p: 0 }}
-            onClick={() => navigate(pathsNavigate.importFile.importDetailBatchId(params.row.id))}
+            onClick={() =>
+              navigate(pathsNavigate.importFile.importDetailBatchId(params.row.batchId))
+            }
           >
             <IconifyIcon icon="material-symbols-light:docs-outline-rounded" fontSize="18px" />
           </IconButton>
@@ -90,7 +139,7 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         loading={loading}
         apiRef={apiRef}
         columns={columns}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row.batchId}
         pageSizeOptions={[defaultPageSize, 15]}
         disableVirtualization
         initialState={{
@@ -102,7 +151,13 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         }}
         slots={{
           noRowsOverlay: () => <NoRowsOverlayCustom message="No List File" />,
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+          basePagination: () => (
+            <Stack px={2} justifyContent="flex-start" width="100%" spacing={0.5}>
+              <Typography variant="caption_light">Showing</Typography>
+              <Typography variant="caption_bold">{totalItem}</Typography>
+              <Typography variant="caption_light">items</Typography>
+            </Stack>
+          ),
         }}
       />
     </Box>

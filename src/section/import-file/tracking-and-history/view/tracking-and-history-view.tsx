@@ -1,43 +1,30 @@
-import { useState } from 'react';
 import { useGridApiRef } from '@mui/x-data-grid';
+import { useQuery } from '@tanstack/react-query';
+import { useCandidateQuery } from 'services/candidate/query';
 import TrackingAndHistoryTableView from './tracking-and-history-table-view';
 
 const TrackingAndHistoryView = () => {
   const apiRef = useGridApiRef();
-  const [pagination, setPagination] = useState({
-    pageNo: 1,
-    pageSize: 10,
+
+  const { data: batchList, isPending: isLoading } = useQuery({
+    ...useCandidateQuery.batchList({
+      createdById: '8131df34-7068-443b-9919-c5ccb116d6ee',
+      pageNo: 1,
+      pageSize: 500,
+    }),
   });
 
-  const tableData: any[] = [
-    {
-      id: '1',
-      batchId: '001',
-      fileName: 'File Name 001',
-      record: 10,
-      success: 9,
-      fail: 1,
-      importDate: '13/11/2568',
-      owner: 'Akkharaphon Wattanapong',
-    },
-  ];
-  const tableTotalRecords = 0;
-
-  const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
-    setPagination({
-      pageNo: page + 1,
-      pageSize,
-    });
-  };
+  const tableTotalRecords = batchList?.total || 0;
+  const tableData = batchList?.items || [];
 
   return (
     <TrackingAndHistoryTableView
       apiRef={apiRef}
       tableData={tableData}
-      onPageChange={handlePageChange}
+      onPageChange={() => {}}
       totalItem={tableTotalRecords}
-      currentPage={pagination.pageNo}
-      loading={false}
+      currentPage={1}
+      loading={isLoading}
     />
   );
 };
