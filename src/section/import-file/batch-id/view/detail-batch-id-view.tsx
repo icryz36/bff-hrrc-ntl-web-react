@@ -1,63 +1,26 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 import { useGridApiRef } from '@mui/x-data-grid';
+import { useQuery } from '@tanstack/react-query';
 import ImportCandidateAndApplyJobTableView from 'section/import-file/candidate-and-applyjob/view/import-candidate-and-applyjob-table-view';
+import { useBatchQuery } from 'services/batch/query';
 
 const DetailBatchIDView = () => {
   const apiRef = useGridApiRef();
-
+  const { id = '' } = useParams();
   const [pagination, setPagination] = useState({
     pageNo: 1,
     pageSize: 10,
   });
+  const { data: batchDetail, isLoading } = useQuery({
+    ...useBatchQuery.detail({
+      pageNo: pagination.pageNo,
+      pageSize: pagination.pageSize,
+      batchId: '7e72ab4d-6652-4af9-9288-4828443c43c2',
+    }),
+    enabled: !!id,
+  });
 
-  const tableData: any = [
-    {
-      id: '1',
-      validateStatus: 'success',
-      errorMsg: '',
-      title: 'Mr.',
-      nameTh: 'Akkharaphon',
-      surnameTh: 'Wattanapongphisitkulchai',
-      gender: 'Male',
-      age: '28',
-      mobileNo: '000-000-0000',
-      email: 'Exampleemail@gmail.com',
-      desiredLocation: 'Head Office',
-      desiredProvince: 'Bangkok',
-      source: 'Job website : JobsDB',
-      highestDegree: 'Master',
-      workExperience:
-        'Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      canDriveMotorcycle: 'ได้ มีใบขับขี่',
-      canDriveCar: 'ได้ มีใบขับขี่',
-      jobPostNo: 'HYYYYMM-0000010',
-      applicationSource: 'Job website : JobsDB.',
-      applicationDate: '11/11/2025',
-    },
-    {
-      id: '2',
-      validateStatus: 'fail',
-      errorMsg: 'Wrong Email Format',
-      title: 'Mr.',
-      nameTh: 'Akkharaphon',
-      surnameTh: 'Wattanapongphisitkulchai',
-      gender: 'Male',
-      age: '28',
-      mobileNo: '000-000-0000',
-      email: 'Exampleemail@gmail.com',
-      desiredLocation: 'Head Office',
-      desiredProvince: 'Bangkok',
-      source: 'Job website : JobsDB',
-      highestDegree: 'Master',
-      workExperience:
-        'Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      canDriveMotorcycle: 'ได้ มีใบขับขี่',
-      canDriveCar: 'ได้ มีใบขับขี่',
-      jobPostNo: 'HYYYYMM-0000010',
-      applicationSource: 'Job website : JobsDB.',
-      applicationDate: '11/11/2025',
-    },
-  ];
   const tableTotalRecords = 0;
 
   const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
@@ -70,11 +33,11 @@ const DetailBatchIDView = () => {
   return (
     <ImportCandidateAndApplyJobTableView
       apiRef={apiRef}
-      tableData={tableData}
+      tableData={batchDetail?.items || []}
       onPageChange={handlePageChange}
       totalItem={tableTotalRecords}
       currentPage={pagination.pageNo}
-      loading={false}
+      loading={isLoading}
     />
   );
 };

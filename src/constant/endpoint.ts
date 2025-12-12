@@ -19,6 +19,9 @@ const endpoint = {
     titleName: `get-title-name-master-xapi`,
     documentType: `get-document-type-master-xapi`,
   },
+  batch: {
+    byId: `${bffHrrecGateway}/batch/get-batch-records-xapi`,
+  },
   jobpost: {
     list: `${bffHrrecJobpostGateway}/get-jobpost-list-xapi`,
     listAll: `${bffHrrecJobpostGateway}/get-all-jobpost-list-xapi`,

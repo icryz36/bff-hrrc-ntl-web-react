@@ -3,6 +3,7 @@ export type TStatusResponse = {
   transactionNo: string;
   timestamp: string;
   status: boolean;
+  data?: any;
 };
 export interface FileAttachment {
   name: string;
