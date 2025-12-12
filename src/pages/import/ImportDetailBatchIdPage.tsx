@@ -1,10 +1,13 @@
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { grey } from '@mui/material/colors';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import DetailBatchIDView from 'section/import-file/batch-id/view/detail-batch-id-view';
+import { useDownloadCandidateFailMutation } from 'services/candidate/mutation';
+import { downloadBase64File } from 'utils/convertBase64file';
 import IconifyIcon from 'components/base/IconifyIcon';
 import PageContent from 'components/sections/common/PageContent';
 
@@ -13,6 +16,19 @@ const ImportDetailBatchIdPage = () => {
   const { down } = useBreakpoints();
   const downLg = down('lg');
   const navigate = useNavigate();
+  const { mutate: downloadFail, isPending: isDownloadingFail } = useDownloadCandidateFailMutation();
+  const handleDownloadCandidateFail = () => {
+    downloadFail(
+      { batchId: id, status: 'fail' },
+      {
+        onSuccess: (response) => {
+          if (response.data?.binaryBase64) {
+            downloadBase64File(response.data.binaryBase64, 'candidate-fail.xlsx');
+          }
+        },
+      },
+    );
+  };
 
   return (
     <Grid container>
@@ -38,7 +54,9 @@ const ImportDetailBatchIdPage = () => {
             </Box>
 
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button
+              <LoadingButton
+                loading={isDownloadingFail}
+                onClick={handleDownloadCandidateFail}
                 variant="text"
                 startIcon={<IconifyIcon icon="uil:import" />}
                 sx={{
@@ -50,7 +68,7 @@ const ImportDetailBatchIdPage = () => {
                 }}
               >
                 Dowload
-              </Button>
+              </LoadingButton>
             </Stack>
           </Stack>
         </PageContent>

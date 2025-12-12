@@ -10,6 +10,7 @@ import {
   TGetCandidateByIdPayload,
   TGetCandidateByIdResponse,
   TGetCandidateDocumentByIdPayload,
+  TGetCandidateFailDocumentByIdPayload,
   TGetCandidateListPayload,
   TGetCandidateListResponse,
   TImportCandidatePayload,
@@ -176,6 +177,17 @@ export const downloadCandidateTemplate = async (
     method: 'POST',
     data: payload,
     url: endpoint.candidate.downloadTemplate,
+  });
+
+  return data;
+};
+export const downloadCandidateFail = async (
+  payload: TGetCandidateFailDocumentByIdPayload,
+): Promise<TCandidateDocumentResponse> => {
+  const { data } = await axiosInstance({
+    method: 'POST',
+    data: payload,
+    url: endpoint.candidate.downloadCandidateFail,
   });
 
   return data;

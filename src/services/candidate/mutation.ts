@@ -5,11 +5,13 @@ import {
   TCandidateNotePayload,
   TCandidateUpdateStatusPayload,
   TGetCandidateDocumentByIdPayload,
+  TGetCandidateFailDocumentByIdPayload,
   TImportCandidatePayload,
   TImportCandidatesPayload,
 } from 'types/candidate';
 import { useCandidateQuery } from './query';
 import {
+  downloadCandidateFail,
   downloadCandidateTemplate,
   fetchImportCandidate,
   importCandidates,
@@ -61,6 +63,11 @@ export const useDownloadCandidateDocumentMutation = () =>
 export const useDownloadCandidateTemplateMutation = () =>
   useMutation({
     mutationFn: (payload: TGetCandidateDocumentByIdPayload) => downloadCandidateTemplate(payload),
+  });
+
+export const useDownloadCandidateFailMutation = () =>
+  useMutation({
+    mutationFn: (payload: TGetCandidateFailDocumentByIdPayload) => downloadCandidateFail(payload),
   });
 
 export const useValidateCandidatesMutation = () =>
