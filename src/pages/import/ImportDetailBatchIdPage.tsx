@@ -67,7 +67,7 @@ const ImportDetailBatchIdPage = () => {
                   },
                 }}
               >
-                Dowload
+                Download
               </LoadingButton>
             </Stack>
           </Stack>

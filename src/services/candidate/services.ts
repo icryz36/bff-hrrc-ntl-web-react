@@ -1,5 +1,5 @@
 import { endpoint } from 'constant/endpoint';
-import { axiosGatewayInstance, axiosInstance } from 'services/axios/axiosInstance';
+import { axiosInstance } from 'services/axios/axiosInstance';
 import {
   TCandidateBlacklistPayload,
   TCandidateBlacklistResponse,
@@ -60,7 +60,7 @@ export const fetchCandidateDocumentById = async (
 export const fetchBatchStatusList = async (
   payload: TGetBatchStatusListPayload,
 ): Promise<TGetBatchStatusListResponse> => {
-  const { data } = await axiosGatewayInstance({
+  const { data } = await axiosInstance({
     method: 'POST',
     url: endpoint.candidate.batchList,
     data: payload,
