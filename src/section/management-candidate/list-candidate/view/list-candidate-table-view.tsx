@@ -175,7 +175,7 @@ const ListCandidateTableView = ({
       },
       {
         field: 'surnameTh',
-        headerName: 'Surename',
+        headerName: 'Surname',
         width: 200,
         renderCell: (params) => {
           return (

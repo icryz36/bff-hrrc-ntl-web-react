@@ -36,7 +36,7 @@ const JobApplicationListTable = ({
         sortable: true,
         minWidth: 148,
         field: 'jobPostNo',
-        headerName: 'Job Post ID',
+        headerName: 'Job Post No',
         renderCell: (params) => {
           return (
             <Link

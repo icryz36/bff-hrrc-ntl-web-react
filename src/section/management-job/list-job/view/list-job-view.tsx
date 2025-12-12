@@ -54,6 +54,7 @@ const ListJobView = () => {
     ...(filters.jobStatus && { statusId: [filters.jobStatus] }),
     ...(filters.startDate && { startDate: filters.startDate }),
     ...(filters.activeDay && { totalActiveDays: Number(filters.activeDay) }),
+    ...{ containFieldName: ['jobTitle'] },
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
   });

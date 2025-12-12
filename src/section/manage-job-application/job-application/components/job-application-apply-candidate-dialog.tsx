@@ -64,6 +64,7 @@ export const JobApplicationApplyCandidateDialog = ({
       maxJobApplication: 10,
       ...(filter.searchName && { name: filter.searchName }),
       ...(filter.searchSurname && { surname: filter.searchSurname }),
+      ...{ containFieldName: ['name', 'surname'] },
     }),
     [pagination.page, filter.searchName, filter.searchSurname],
   );

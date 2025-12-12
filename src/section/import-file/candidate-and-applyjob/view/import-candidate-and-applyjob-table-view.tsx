@@ -3,13 +3,12 @@ import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
-import { TGetBatchByIdItems } from 'types/batch';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
 type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
-  tableData: TGetBatchByIdItems[];
+  tableData: any[];
   onPageChange: (model: { page: number; pageSize: number }) => void;
   totalItem: number;
   currentPage: number;
@@ -33,7 +32,7 @@ const ImportCandidateAndApplyJobTableView = ({
   loading,
   totalItem,
 }: ProductsTableProps) => {
-  const columns: GridColDef<TGetBatchByIdItems>[] = useMemo(
+  const columns: GridColDef<any>[] = useMemo(
     () => [
       {
         field: 'validateStatus',

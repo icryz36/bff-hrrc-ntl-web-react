@@ -91,7 +91,7 @@ const ListJobTableView = ({
     () => [
       {
         field: 'jobPostNo',
-        headerName: 'Job Post ID',
+        headerName: 'Job Post No',
         filterable: false,
         sortable: false,
         minWidth: 148,

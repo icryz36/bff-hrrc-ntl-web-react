@@ -32,6 +32,7 @@ const ListCandidateView = () => {
     ...(filters.surname && { surname: filters.surname }),
     ...(filters.email && { email: filters.email }),
     ...(filters.mobileNumber && { mobile: filters.mobileNumber }),
+    ...{ containFieldName: ['name', 'surname', 'email', 'mobileNumber'] },
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
   });

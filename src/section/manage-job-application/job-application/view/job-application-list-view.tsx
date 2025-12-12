@@ -55,6 +55,7 @@ const JobApplicationListView = () => {
       ...(filters.jobStatus && { statusId: [filters.jobStatus] }),
       ...(filters.startDate && { startDate: filters.startDate }),
       ...(filters.activeDay && { totalActiveDays: Number(filters.activeDay) }),
+      ...{ containFieldName: ['jobTitle'] },
     }),
     [paginationModel.page, filters],
   );

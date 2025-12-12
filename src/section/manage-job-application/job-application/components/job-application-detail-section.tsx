@@ -21,7 +21,7 @@ const JobApplicationDetailSection = () => {
     <>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6 }}>
-          <JobDataItem label="Job Post ID" value={jobData?.jobPostNo} />
+          <JobDataItem label="Job Post No" value={jobData?.jobPostNo} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <JobDataItem label="Job Title" value={jobData?.jobTitle} />

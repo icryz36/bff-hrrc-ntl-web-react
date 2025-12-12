@@ -55,7 +55,7 @@ export const JobApplicationCandidateTable = ({
       },
       {
         field: 'surname',
-        headerName: 'Surename',
+        headerName: 'Surname',
         sortable: true,
         width: 120,
       },
