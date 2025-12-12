@@ -409,7 +409,7 @@ export type TGetBatchStatusListPayload = {
   pageSize: number;
 };
 
-export type TGetBatchStatusListResponse = TStatusResponse & {
+export type TBatchStatusListItem = {
   batchId: string;
   batchType: string;
   fileName: string;
@@ -424,4 +424,14 @@ export type TGetBatchStatusListResponse = TStatusResponse & {
     name: string;
     surname: string;
   };
+};
+
+export type TGetBatchStatusListData = {
+  items: TBatchStatusListItem[];
+  page: number;
+  total: number;
+};
+
+export type TGetBatchStatusListResponse = TStatusResponse & {
+  data: TGetBatchStatusListData;
 };

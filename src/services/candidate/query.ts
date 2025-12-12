@@ -1,11 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 import {
+  TGetBatchStatusListPayload,
   TGetCandidateByIdPayload,
   TGetCandidateDocumentByIdPayload,
   TGetCandidateListPayload,
   TImportCandidatePayload,
 } from 'types/candidate';
 import {
+  fetchBatchStatusList,
   fetchCandidateById,
   fetchCandidateDocumentById,
   fetchCandidateList,
@@ -20,6 +22,7 @@ const useCandidateQuery = {
   keysDetail: () => [...useCandidateQuery.keys(), 'detail'] as const,
   keysDocument: () => [...useCandidateQuery.keys(), 'document'] as const,
   keysValidate: () => [...useCandidateQuery.keys(), 'validate'] as const,
+  keysBatchList: () => [...useCandidateQuery.keys(), 'batch-list'] as const,
 
   list: (payload: TGetCandidateListPayload) =>
     queryOptions({
@@ -47,6 +50,14 @@ const useCandidateQuery = {
     queryOptions({
       queryKey: [...useCandidateQuery.keysValidate(), payload],
       queryFn: () => fetchImportCandidate(payload),
+      select: (response) => response.data,
+      gcTime: 0,
+      staleTime: 0,
+    }),
+  batchList: (payload: TGetBatchStatusListPayload) =>
+    queryOptions({
+      queryKey: [...useCandidateQuery.keysBatchList(), payload],
+      queryFn: () => fetchBatchStatusList(payload),
       select: (response) => response.data,
       gcTime: 0,
       staleTime: 0,
