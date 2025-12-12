@@ -1,13 +1,12 @@
 import { RefObject, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { pathsNavigate } from 'routes/paths';
 import { StyledDataGrid } from 'section/import-file/styles';
 import IconifyIcon from 'components/base/IconifyIcon';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
-import DataGridPagination from 'components/pagination/DataGridPagination';
 
 type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
@@ -20,7 +19,12 @@ type ProductsTableProps = {
 
 const defaultPageSize = 10;
 
-const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTableProps) => {
+const TrackingAndHistoryTableView = ({
+  apiRef,
+  tableData,
+  totalItem,
+  loading,
+}: ProductsTableProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -102,7 +106,13 @@ const TrackingAndHistoryTableView = ({ apiRef, tableData, loading }: ProductsTab
         }}
         slots={{
           noRowsOverlay: () => <NoRowsOverlayCustom message="No List File" />,
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+          basePagination: () => (
+            <Stack px={2} justifyContent="flex-start" width="100%" spacing={0.5}>
+              <Typography variant="caption_light">Showing</Typography>
+              <Typography variant="caption_bold">{totalItem}</Typography>
+              <Typography variant="caption_light">items</Typography>
+            </Stack>
+          ),
         }}
       />
     </Box>
