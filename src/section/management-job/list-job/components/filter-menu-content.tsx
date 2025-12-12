@@ -203,7 +203,7 @@ const FilterMenuContent = ({ filters, setFilters, onClose }: FilterMenuContentPr
           onChange={(e) => setLocalFilters({ ...localFilters, activeDay: e.target.value })}
           fullWidth
         >
-          <MenuItem value="30">ไม่เกิน 30วัน</MenuItem>
+          <MenuItem value="30">ไม่เกิน 30 วัน</MenuItem>
           <MenuItem value="45">ไม่เกิน 45 วัน</MenuItem>
           <MenuItem value="60">ไม่เกิน 60 วัน</MenuItem>
         </TextField>
