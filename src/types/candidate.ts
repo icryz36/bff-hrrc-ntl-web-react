@@ -53,6 +53,10 @@ export type TGetCandidateByIdPayload = {
 export type TGetCandidateDocumentByIdPayload = {
   filePath: string;
 };
+export type TGetCandidateFailDocumentByIdPayload = {
+  batchId: string;
+  status: string;
+};
 export type TCandidateDocumentsItem = {
   documentId?: string | null;
   operation: 'insert' | 'update' | 'delete';

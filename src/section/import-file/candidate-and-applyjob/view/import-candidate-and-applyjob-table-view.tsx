@@ -3,12 +3,13 @@ import { Box, Chip, ChipOwnProps, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { StyledDataGrid } from 'section/import-file/styles';
+import { TGetBatchByIdItems } from 'types/batch';
 import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 
 type ProductsTableProps = {
   apiRef: RefObject<GridApiCommunity | null>;
-  tableData: any[];
+  tableData: TGetBatchByIdItems[];
   onPageChange: (model: { page: number; pageSize: number }) => void;
   totalItem: number;
   currentPage: number;
@@ -32,7 +33,7 @@ const ImportCandidateAndApplyJobTableView = ({
   loading,
   totalItem,
 }: ProductsTableProps) => {
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<TGetBatchByIdItems>[] = useMemo(
     () => [
       {
         field: 'validateStatus',
@@ -43,9 +44,9 @@ const ImportCandidateAndApplyJobTableView = ({
         renderCell: (params) => {
           return (
             <Chip
-              label={params.row.validateStatus}
+              label={params.row.validationStatus}
               variant="soft"
-              color={getStatusBadgeColor(params.row.validateStatus)}
+              color={getStatusBadgeColor(params.row.validationStatus)}
               sx={{ textTransform: 'capitalize' }}
             />
           );
@@ -103,25 +104,18 @@ const ImportCandidateAndApplyJobTableView = ({
         field: 'title',
         headerName: 'title',
         width: 120,
+        renderCell: (params) => (
+          <Typography variant="subtitle2_regular">{params.row.title?.nameTh || '-'}</Typography>
+        ),
       },
       {
-        field: 'nameTh',
-        headerName: 'Name',
+        field: 'name',
+        headerName: 'name',
         width: 200,
       },
       {
-        field: 'surnameTh',
+        field: 'surname',
         headerName: 'Surname',
-        width: 200,
-      },
-      {
-        field: 'nameEn',
-        headerName: 'Name (EN)',
-        width: 200,
-      },
-      {
-        field: 'surnameEn',
-        headerName: 'Surname (EN)',
         width: 200,
       },
       {
@@ -204,6 +198,8 @@ const ImportCandidateAndApplyJobTableView = ({
     ],
     [],
   );
+
+  console.log('tableData', tableData);
 
   return (
     <Box sx={{ width: 1 }}>

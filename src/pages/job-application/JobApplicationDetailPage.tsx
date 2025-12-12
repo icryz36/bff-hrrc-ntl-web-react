@@ -15,6 +15,7 @@ import { useMasterDataQuery } from 'services/master-data/query';
 import { TUpdateJobPostStatusPayload } from 'types/jobpost';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
+import DefaultLoader from 'components/loading/DefaultLoader';
 import PageHeader from 'components/page-header/page-header';
 
 // ----------------------------------------------------------------------
@@ -41,7 +42,9 @@ const ListJobPage = () => {
 
   // api ---------------------------------------------------------------
 
-  const { data: boardData } = useQuery(useJobApplicationQuery.board({ jobPostId: id }));
+  const { data: boardData, isLoading: isLoadingBoardData } = useQuery(
+    useJobApplicationQuery.board({ jobPostId: id }),
+  );
 
   const { data: postStatusList = [] } = useQuery(useMasterDataQuery.postStatus());
 
@@ -97,6 +100,9 @@ const ListJobPage = () => {
   );
 
   // ----------------------------------------------------------------------
+  if (isLoadingBoardData) {
+    return <DefaultLoader />;
+  }
 
   return (
     <>

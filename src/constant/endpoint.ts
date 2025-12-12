@@ -19,6 +19,9 @@ const endpoint = {
     titleName: `get-title-name-master-xapi`,
     documentType: `get-document-type-master-xapi`,
   },
+  batch: {
+    byId: `${bffHrrecGateway}/batch/get-batch-records-xapi`,
+  },
   jobpost: {
     list: `${bffHrrecJobpostGateway}/get-jobpost-list-xapi`,
     listAll: `${bffHrrecJobpostGateway}/get-all-jobpost-list-xapi`,
@@ -42,6 +45,7 @@ const endpoint = {
     import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
     downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
     batchList: `batch/get-batch-status-list-xapi`,
+    downloadCandidateFail: `${bffHrrecGateway}/get-batch-records-candidatefile-xapi`,
   },
   jobApplication: {
     create: `${bffHrrecGateway}/create-job-application-xapi`,
