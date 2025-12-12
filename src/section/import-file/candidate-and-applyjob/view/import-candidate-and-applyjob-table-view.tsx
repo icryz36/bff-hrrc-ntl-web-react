@@ -43,9 +43,9 @@ const ImportCandidateAndApplyJobTableView = ({
         renderCell: (params) => {
           return (
             <Chip
-              label={params.row.validationStatus}
+              label={params.row.validateStatus}
               variant="soft"
-              color={getStatusBadgeColor(params.row.validationStatus)}
+              color={getStatusBadgeColor(params.row.validateStatus)}
               sx={{ textTransform: 'capitalize' }}
             />
           );
@@ -67,9 +67,9 @@ const ImportCandidateAndApplyJobTableView = ({
             const errorMessages = errorMsg.map((err: any) => err.errorMsg || err).join(', ');
             return (
               <Tooltip title={errorMessages} placement="bottom">
-                <Typography variant="subtitle2_regular" sx={{ whiteSpace: 'normal' }}>
+                <StyledTypographyLine line={2} variant="subtitle2_regular">
                   {errorMessages}
-                </Typography>
+                </StyledTypographyLine>
               </Tooltip>
             );
           }

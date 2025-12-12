@@ -10,7 +10,7 @@ const useBatchQuery = {
     queryOptions({
       queryKey: [...useBatchQuery.keysDetail(), payload],
       queryFn: () => fetchBatchById(payload),
-      select: (response) => response,
+      select: (response) => response.data,
       gcTime: 0,
       staleTime: 0,
     }),

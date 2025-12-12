@@ -38,8 +38,12 @@ export type TGetBatchByIdItems = {
   applicationDate: string;
 };
 
-export type TGetBatchByIdResponse = TStatusResponse & {
+export type TGetBatchByIdData = {
   total: number;
   page: number;
   items: TGetBatchByIdItems[];
+};
+
+export type TGetBatchByIdResponse = TStatusResponse & {
+  data: TGetBatchByIdData;
 };

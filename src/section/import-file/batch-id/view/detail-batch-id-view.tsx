@@ -21,7 +21,7 @@ const DetailBatchIDView = () => {
     enabled: !!id,
   });
 
-  const tableTotalRecords = 0;
+  const tableTotalRecords = batchDetail?.total || 0;
 
   const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
     setPagination({
