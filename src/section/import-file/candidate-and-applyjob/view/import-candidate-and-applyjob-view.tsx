@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 import { Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { useBoolean } from 'hooks/useBoolean';
@@ -127,13 +128,14 @@ const ImportCandidateAndApplyJobView = () => {
         loading={isLoading}
       />
       <Stack mt={3} justifyContent="flex-end">
-        <Button
+        <LoadingButton
           variant="contained"
           disabled={tableTotalRecords === 0 || isLoading || isImporting}
           onClick={() => isOpenConfirmDialog.onTrue()}
+          loading={isImporting}
         >
           Confirm
-        </Button>
+        </LoadingButton>
       </Stack>
       <CustomConfirmDialog
         title="ยืนยันการนำเข้าข้อมูล"

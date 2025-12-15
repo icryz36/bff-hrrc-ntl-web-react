@@ -8,7 +8,7 @@ const TrackingAndHistoryView = () => {
 
   const { data: batchList, isPending: isLoading } = useQuery({
     ...useCandidateQuery.batchList({
-      createdById: '8131df34-7068-443b-9919-c5ccb116d6ee',
+      createdById: '550e8400-e29b-41d4-a716-446655440001',
       pageNo: 1,
       pageSize: 500,
     }),
