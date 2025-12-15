@@ -58,6 +58,7 @@ export const JobApplicationApplyCandidateDialog = ({
 
   const queryPayload: TGetCandidateListPayload = useMemo(
     () => ({
+      currentJobId: id,
       status: ['Active'],
       pageNo: pagination.page + 1,
       pageSize: pagination.pageSize,

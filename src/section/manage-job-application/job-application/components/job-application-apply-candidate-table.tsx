@@ -93,6 +93,10 @@ export const JobApplicationApplyCandidateTable = ({
         onSetSelectedCandidate(newRowSelectionModel);
       }}
       isRowSelectable={(params) => {
+        const row = params.row as TCandidateListItems;
+
+        if (row?.isApplyThisJob) return false;
+
         return selectedCandidate.ids.size < MAX_SELECTION || selectedCandidate.ids.has(params.id);
       }}
     />
