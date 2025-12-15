@@ -47,7 +47,7 @@ const TrackingAndHistoryTableView = ({
       {
         field: 'batchId',
         headerName: 'Batch ID',
-        width: 142,
+        width: 300,
         renderCell: (params) => (
           <Typography variant="subtitle2_regular">{params.row.batchId}</Typography>
         ),
@@ -101,7 +101,7 @@ const TrackingAndHistoryTableView = ({
       {
         field: 'owner',
         headerName: 'Owners',
-        width: 330,
+        width: 220,
         renderCell: (params) => {
           return (
             <Stack spacing={2}>

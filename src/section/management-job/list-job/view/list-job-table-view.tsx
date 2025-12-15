@@ -42,6 +42,7 @@ interface ProductsTableProps {
   currentPage: number;
   currentPageSize: number;
   loading: boolean;
+  isJobApplicationTable?: boolean;
 }
 
 const ListJobTableView = ({
@@ -53,6 +54,7 @@ const ListJobTableView = ({
   currentPage,
   currentPageSize,
   loading,
+  isJobApplicationTable = false,
 }: ProductsTableProps) => {
   const navigate = useNavigate();
   const isOpenConfirmDeleteDialog = useBoolean();
@@ -87,8 +89,8 @@ const ListJobTableView = ({
     );
   };
 
-  const columns: GridColDef<any>[] = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const cols: GridColDef[] = [
       {
         field: 'jobPostNo',
         headerName: 'Job Post No',
@@ -99,8 +101,12 @@ const ListJobTableView = ({
           return (
             <Link
               onClick={() => {
-                setSelectedJobPostId(params.row.jobPostId);
-                isOpenDetailDialog.onTrue();
+                if (isJobApplicationTable) {
+                  navigate(pathsNavigate.jobApplication.detail(params.row.jobPostId));
+                } else {
+                  setSelectedJobPostId(params.row.jobPostId);
+                  isOpenDetailDialog.onTrue();
+                }
               }}
             >
               {params.row.jobPostNo}
@@ -190,8 +196,8 @@ const ListJobTableView = ({
         headerName: 'Status',
         minWidth: 90,
         sortable: false,
-        headerClassName: 'job-status-header',
-        cellClassName: 'job-status-cell',
+        headerClassName: !isJobApplicationTable ? 'job-status-header' : '',
+        cellClassName: !isJobApplicationTable ? 'job-status-cell' : '',
         renderCell: (params) => {
           return (
             <Chip
@@ -203,7 +209,9 @@ const ListJobTableView = ({
           );
         },
       },
-      {
+    ];
+    if (!isJobApplicationTable) {
+      cols.push({
         field: 'action',
         headerName: 'Actions',
         filterable: false,
@@ -242,11 +250,11 @@ const ListJobTableView = ({
 
           return <DashboardMenu menuItems={filteredMenu} />;
         },
-      },
-    ],
-    [],
-  );
+      });
+    }
 
+    return cols;
+  }, [isJobApplicationTable]);
   const paginationModel = useMemo(
     () => ({
       page: currentPage - 1,

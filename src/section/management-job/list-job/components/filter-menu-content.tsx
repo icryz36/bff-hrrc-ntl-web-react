@@ -60,7 +60,7 @@ const FilterMenuContent = ({ filters, setFilters, onClose }: FilterMenuContentPr
   };
 
   return (
-    <Box p={3} maxHeight="80vh">
+    <Box p={3}>
       <Stack justifyContent="space-between" alignItems="center">
         <Typography variant="h6">Filter</Typography>
         <IconButton aria-label="close" onClick={onClose} sx={{ p: 0 }}>
@@ -70,146 +70,146 @@ const FilterMenuContent = ({ filters, setFilters, onClose }: FilterMenuContentPr
       <Typography variant="body2" sx={{ my: 2 }}>
         Easily find the List Job Post you’re looking for using filters.
       </Typography>
+      <Box sx={{ maxHeight: '65vh', overflowY: 'scroll', px: 2, pb: 1 }}>
+        <Stack spacing={2} direction="column">
+          <TextField
+            label="Job Title"
+            value={localFilters.jobTitle}
+            onChange={(e) => setLocalFilters({ ...localFilters, jobTitle: e.target.value })}
+            fullWidth
+          />
 
-      <Stack spacing={2} direction="column">
-        <TextField
-          label="Job Title"
-          value={localFilters.jobTitle}
-          onChange={(e) => setLocalFilters({ ...localFilters, jobTitle: e.target.value })}
-          fullWidth
-        />
+          <Autocomplete
+            multiple
+            options={departmentList}
+            getOptionLabel={(option) => option.departmentNameTh || option.departmentNameEn}
+            value={departmentList.filter((dept) =>
+              localFilters.department.includes(dept.departmentId),
+            )}
+            onChange={(_, v) =>
+              setLocalFilters({
+                ...localFilters,
+                department: v.map((dept) => dept.departmentId),
+              })
+            }
+            renderInput={(params) => <TextField {...params} label="Department" />}
+          />
 
-        <Autocomplete
-          multiple
-          options={departmentList}
-          getOptionLabel={(option) => option.departmentNameTh || option.departmentNameEn}
-          value={departmentList.filter((dept) =>
-            localFilters.department.includes(dept.departmentId),
-          )}
-          onChange={(_, v) =>
-            setLocalFilters({
-              ...localFilters,
-              department: v.map((dept) => dept.departmentId),
-            })
-          }
-          renderInput={(params) => <TextField {...params} label="Department" />}
-        />
+          <TextField
+            label="NTL Regional"
+            select
+            value={localFilters.region}
+            onChange={(e) => {
+              setLocalFilters({
+                ...localFilters,
+                region: e.target.value,
+                province: '',
+                district: '',
+              });
+            }}
+            fullWidth
+          >
+            {ntlRegionList.map((region) => (
+              <MenuItem key={region.regionId} value={region.regionId}>
+                {region.regionNameTh || region.regionNameEn}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          label="NTL Regional"
-          select
-          value={localFilters.region}
-          onChange={(e) => {
-            setLocalFilters({
-              ...localFilters,
-              region: e.target.value,
-              province: '',
-              district: '',
-            });
-          }}
-          fullWidth
-        >
-          {ntlRegionList.map((region) => (
-            <MenuItem key={region.regionId} value={region.regionId}>
-              {region.regionNameTh || region.regionNameEn}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            label="Province"
+            select
+            value={localFilters.province}
+            onChange={(e) => {
+              setLocalFilters({
+                ...localFilters,
+                province: e.target.value,
+                district: '',
+              });
+            }}
+            fullWidth
+          >
+            {provinceList.map((province) => (
+              <MenuItem key={province.provinceId} value={province.provinceId}>
+                {province.provinceNameTh || province.provinceNameEn}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          label="Province"
-          select
-          value={localFilters.province}
-          onChange={(e) => {
-            setLocalFilters({
-              ...localFilters,
-              province: e.target.value,
-              district: '',
-            });
-          }}
-          fullWidth
-        >
-          {provinceList.map((province) => (
-            <MenuItem key={province.provinceId} value={province.provinceId}>
-              {province.provinceNameTh || province.provinceNameEn}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            label="District"
+            select
+            value={localFilters.district}
+            onChange={(e) => setLocalFilters({ ...localFilters, district: e.target.value })}
+            disabled={!localFilters.province}
+            fullWidth
+          >
+            {districtList.map((district) => (
+              <MenuItem key={district.districtId} value={district.districtId}>
+                {district.districtNameTh || district.districtNameEn}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          label="District"
-          select
-          value={localFilters.district}
-          onChange={(e) => setLocalFilters({ ...localFilters, district: e.target.value })}
-          disabled={!localFilters.province}
-          fullWidth
-        >
-          {districtList.map((district) => (
-            <MenuItem key={district.districtId} value={district.districtId}>
-              {district.districtNameTh || district.districtNameEn}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            label="Job Status"
+            select
+            value={localFilters.jobStatus}
+            onChange={(e) => setLocalFilters({ ...localFilters, jobStatus: e.target.value })}
+            fullWidth
+          >
+            {postStatusList.map((status) => (
+              <MenuItem key={status.statusId} value={status.statusId}>
+                {status.statusNameTh || status.statusNameEn}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          label="Job Status"
-          select
-          value={localFilters.jobStatus}
-          onChange={(e) => setLocalFilters({ ...localFilters, jobStatus: e.target.value })}
-          fullWidth
-        >
-          {postStatusList.map((status) => (
-            <MenuItem key={status.statusId} value={status.statusId}>
-              {status.statusNameTh || status.statusNameEn}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            label="Owner"
+            select
+            value={localFilters.owner}
+            onChange={(e) => setLocalFilters({ ...localFilters, owner: e.target.value })}
+            fullWidth
+          >
+            {usersList.map((user) => (
+              <MenuItem key={user.userId} value={user.userId}>
+                {user.name} {user.surname}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          label="Owner"
-          select
-          value={localFilters.owner}
-          onChange={(e) => setLocalFilters({ ...localFilters, owner: e.target.value })}
-          fullWidth
-        >
-          {usersList.map((user) => (
-            <MenuItem key={user.userId} value={user.userId}>
-              {user.name} {user.surname}
-            </MenuItem>
-          ))}
-        </TextField>
+          <DatePicker
+            label="Start Date"
+            format="DD/MM/YYYY"
+            value={localFilters.startDate ? dayjs(localFilters.startDate) : null}
+            onChange={(newValue) =>
+              setLocalFilters({
+                ...localFilters,
+                startDate: newValue ? (newValue.toDate() as Date) : null,
+              })
+            }
+            slotProps={{
+              textField: {
+                fullWidth: true,
+              },
+            }}
+          />
 
-        <DatePicker
-          label="Start Date"
-          format="DD/MM/YYYY"
-          value={localFilters.startDate ? dayjs(localFilters.startDate) : null}
-          onChange={(newValue) =>
-            setLocalFilters({
-              ...localFilters,
-              startDate: newValue ? (newValue.toDate() as Date) : null,
-            })
-          }
-          slotProps={{
-            textField: {
-              fullWidth: true,
-            },
-          }}
-        />
-
-        <TextField
-          label="Active Day"
-          select
-          value={localFilters.activeDay}
-          onChange={(e) => setLocalFilters({ ...localFilters, activeDay: e.target.value })}
-          fullWidth
-        >
-          <MenuItem value="30">ไม่เกิน 30 วัน</MenuItem>
-          <MenuItem value="45">ไม่เกิน 45 วัน</MenuItem>
-          <MenuItem value="60">ไม่เกิน 60 วัน</MenuItem>
-        </TextField>
-      </Stack>
-
-      <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
+          <TextField
+            label="Active Day"
+            select
+            value={localFilters.activeDay}
+            onChange={(e) => setLocalFilters({ ...localFilters, activeDay: e.target.value })}
+            fullWidth
+          >
+            <MenuItem value="30">ไม่เกิน 30 วัน</MenuItem>
+            <MenuItem value="45">ไม่เกิน 45 วัน</MenuItem>
+            <MenuItem value="60">ไม่เกิน 60 วัน</MenuItem>
+          </TextField>
+        </Stack>
+      </Box>
+      <Stack sx={{ mt: 3 }} justifyContent={'flex-end'} spacing={2}>
         <Button
           variant="outlined"
           onClick={handleReset}
@@ -228,7 +228,7 @@ const FilterMenuContent = ({ filters, setFilters, onClose }: FilterMenuContentPr
         <Button variant="contained" onClick={handleApply} sx={{ width: '25%' }}>
           Apply
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 };

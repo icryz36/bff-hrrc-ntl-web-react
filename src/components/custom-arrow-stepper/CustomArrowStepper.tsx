@@ -28,10 +28,10 @@ const CustomArrowStepper = ({ steps, activeStep, onChangeStep }: CustomArrowStep
               onClick={() => onChangeStep(step.stageId)}
             >
               <Stack direction="column" sx={{ width: '100%', alignItems: 'flex-start' }}>
-                <Typography variant="h4">{step.jobApplicationCount}</Typography>
+                <Typography variant="h5">{step.jobApplicationCount}</Typography>
                 <Typography
                   whiteSpace="pre-wrap"
-                  variant={isActive ? 'subtitle1_semibold' : 'subtitle1_medium'}
+                  variant={isActive ? 'subtitle2_semibold' : 'subtitle2_medium'}
                 >
                   {step.stageNameEn}
                 </Typography>

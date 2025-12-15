@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Chip, Link, Tooltip } from '@mui/material';
-import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import { pathsNavigate } from 'routes/paths';
 import { TJobPost } from 'types/jobpost';
@@ -9,6 +9,7 @@ import NoRowsOverlayCustom from 'components/common/NoRowsOverlayCustom';
 import DataGridPagination from 'components/pagination/DataGridPagination';
 import { StyledTypographyLine } from 'components/styled/StyledFontLine';
 import { getStatusJpbBadgeColor } from '../helper';
+import { StyledDataGrid } from '../styles';
 
 // ----------------------------------------------------------------------
 
@@ -146,23 +147,29 @@ const JobApplicationListTable = ({
 
   return (
     <Box sx={{ width: 1 }}>
-      <DataGrid
+      <StyledDataGrid
+        loading={isLoading}
         rowHeight={64}
         rows={tableData}
         columns={columns}
-        loading={isLoading}
-        rowCount={totalData}
         getRowId={(row) => row.jobPostId}
-        slots={{
-          noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Application" />,
-          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
-        }}
-        // pagination
+        disableVirtualization
+        rowCount={totalData}
+        checkboxSelection={false}
         pagination
         paginationMode="server"
-        pageSizeOptions={[defaultPageSize]}
-        paginationModel={paginationModel}
         onPaginationModelChange={onChangePaginationModel}
+        sx={{
+          '& .MuiDataGrid-main': {
+            height: totalData > 0 ? '100%' : '320px',
+          },
+        }}
+        pageSizeOptions={[defaultPageSize, 15]}
+        paginationModel={paginationModel}
+        slots={{
+          noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Post" />,
+          basePagination: (props) => <DataGridPagination showFullPagination {...props} />,
+        }}
       />
     </Box>
   );

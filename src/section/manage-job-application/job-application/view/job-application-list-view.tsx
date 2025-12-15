@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@mui/material';
+import { useGridApiRef } from '@mui/x-data-grid';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { pathsNavigate } from 'routes/paths';
 import FilterSection from 'section/management-job/list-job/components/filter-section';
 import { FilterState } from 'section/management-job/list-job/components/type';
+import ListJobTableView from 'section/management-job/list-job/view/list-job-table-view';
 import { useJobpostQuery } from 'services/jobpost/query';
 import { TGetJobPostListPayload } from 'types/jobpost';
-import JobApplicationListTable from '../components/job-application-list-table';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,7 @@ type FiltersListJobView = FilterState & {
 // ----------------------------------------------------------------------
 
 const JobApplicationListView = () => {
+  const apiRef = useGridApiRef();
   const navigate = useNavigate();
 
   const defaultUserId = 'e8f9a0b1-c2d3-4e5f-9a6b-7c8d9e0f1a2b';
@@ -71,7 +73,12 @@ const JobApplicationListView = () => {
     startDate: filters.startDate,
     activeDay: filters.activeDay,
   };
-
+  const handlePageChange = ({ page, pageSize }: { page: number; pageSize: number }) => {
+    setPaginationModel({
+      page: page,
+      pageSize,
+    });
+  };
   // api ---------------------------------------------------------------
 
   const { data: listJobData, isPending: isLoading } = useQuery({
@@ -113,12 +120,23 @@ const JobApplicationListView = () => {
         </Button>
       </Stack>
 
-      <JobApplicationListTable
+      {/* <JobApplicationListTable
         tableData={tableData}
         isLoading={isLoading}
         totalData={totalData}
         paginationModel={paginationModel}
         onChangePaginationModel={setPaginationModel}
+      /> */}
+      <ListJobTableView
+        isJobApplicationTable
+        tableData={tableData}
+        loading={isLoading}
+        totalItem={totalData}
+        onPageChange={handlePageChange}
+        currentPage={paginationModel.page + 1}
+        currentPageSize={paginationModel.pageSize}
+        apiRef={apiRef}
+        filterButtonEl={null}
       />
     </>
   );

@@ -30,7 +30,7 @@ export const StyledStepperButtonBase = styled(ButtonBase, {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    height: 102,
+    height: 95,
     padding: '10px 6px 0px 30px',
     minWidth: 120,
     flex: 1,
