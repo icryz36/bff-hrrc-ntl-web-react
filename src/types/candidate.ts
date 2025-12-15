@@ -11,6 +11,7 @@ export type TGetCandidateListPayload = {
   pageNo: number;
   pageSize: number;
   maxJobApplication?: number;
+  currentJobId?: string;
 };
 
 export type TCandidateListItems = {
@@ -27,6 +28,7 @@ export type TCandidateListItems = {
   updatedDate: string;
   isBlacklist: boolean;
   countJobApplication: number;
+  isApplyThisJob: boolean;
 };
 
 export type TGetCandidateListData = {
