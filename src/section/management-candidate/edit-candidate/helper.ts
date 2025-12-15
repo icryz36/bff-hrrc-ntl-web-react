@@ -204,7 +204,7 @@ const buildCandidatePayload = (
     provinceId: item.provinceId,
     desiredLocation: item.provinceName,
   })),
-  workExperience: data.workExperience,
+  workExperience: data.workExperience || '',
 });
 
 const convertCreateEditCandidatePostPayload = (
