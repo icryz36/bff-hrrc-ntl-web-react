@@ -32,7 +32,7 @@ export const CandidateBasicInformationSchema = z.object({
   desiredLocation: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
   desiredProvince: z.array(z.any()).min(1, { error: REQUIRED_MESSAGE }),
   highestEducation: z.string().optional(),
-  workExperience: z.string().trim().min(1, { error: REQUIRED_MESSAGE }),
+  workExperience: z.string().trim().optional(),
   motorcycleDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
   carDriving: z.string().min(1, { error: REQUIRED_MESSAGE }),
 });
