@@ -16,7 +16,7 @@ const DetailBatchIDView = () => {
     ...useBatchQuery.detail({
       pageNo: pagination.pageNo,
       pageSize: pagination.pageSize,
-      batchId: '7e72ab4d-6652-4af9-9288-4828443c43c2',
+      batchId: id,
     }),
     enabled: !!id,
   });
