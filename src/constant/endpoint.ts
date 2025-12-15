@@ -42,7 +42,7 @@ const endpoint = {
     updateNote: `${bffHrrecCandidatesGateway}/update-candidate-note-xapi`,
     document: `${bffHrrecCandidatesGateway}/get-document-xapi`,
     validate: `${bffHrrecGateway}/validate-candidates-xapi`,
-    import: `${bffHrrecCandidatesGateway}/import-candidates-xapi`,
+    import: `${bffHrrecGateway}/import-candidates-xapi`,
     downloadTemplate: `${bffHrrecCandidatesGateway}/get-document-xapi`,
     batchList: `${bffHrrecGateway}/batch/get-batch-status-list-xapi`,
     downloadCandidateFail: `${bffHrrecGateway}/get-batch-records-candidatefile-xapi`,
