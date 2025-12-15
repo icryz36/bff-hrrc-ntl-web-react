@@ -15,6 +15,38 @@ type ProductsTableProps = {
   loading: boolean;
 };
 
+type FieldError = {
+  field: string;
+  errorMsg: string;
+};
+
+type ImportCandidateRow = {
+  id?: string;
+  validateStatus: string;
+  errorMsg?: FieldError[];
+
+  title?: string;
+  nameTh?: string;
+  surnameTh?: string;
+  gender?: string;
+  age?: number | string;
+  email?: string;
+  mobileNo?: string;
+
+  desiredLocation?: string;
+  desiredProvince?: string;
+  source?: string;
+  highestDegree?: string;
+  workExperience?: string;
+
+  canDriveMotorcycle?: string;
+  canDriveCar?: string;
+
+  jobPostNo?: string;
+  applicationSource?: string;
+  applicationDate?: string;
+};
+
 export const getStatusBadgeColor = (val: string): ChipOwnProps['color'] => {
   switch (val?.toLocaleLowerCase()) {
     case 'success':
@@ -39,7 +71,7 @@ const ImportCandidateAndApplyJobTableView = ({
     return found ? found.errorMsg : null;
   };
 
-  const columns: GridColDef<any>[] = useMemo(
+  const columns: GridColDef<ImportCandidateRow>[] = useMemo(
     () => [
       {
         field: 'validateStatus',
@@ -529,8 +561,6 @@ const ImportCandidateAndApplyJobTableView = ({
     ],
     [],
   );
-
-  console.log('tableData', tableData);
 
   return (
     <Box sx={{ width: 1 }}>
