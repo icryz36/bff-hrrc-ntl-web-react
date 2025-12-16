@@ -3,7 +3,6 @@ import { useSettingsContext } from 'providers/SettingsProvider';
 import { rootPaths } from 'routes/paths';
 import IconLeft from '../../assets/images/icons/left_panel_close.svg';
 import IconRight from '../../assets/images/icons/right_panel_open.svg';
-import NTLLogoH from '../../assets/images/logo/logo-NTL-h.svg';
 import NTLLogo from '../../assets/images/logo/logo-NTL.svg';
 
 const Logo = () => {
@@ -32,16 +31,18 @@ const Logo = () => {
           },
         }}
       >
-        <Box
-          component={'img'}
-          src={sidenavCollapsed ? NTLLogoH : NTLLogo}
-          alt="Logo"
-          sx={{
-            width: sidenavCollapsed ? 56 : 172,
-            overflow: 'hidden',
-            mr: 1,
-          }}
-        />
+        {!sidenavCollapsed && (
+          <Box
+            component={'img'}
+            src={NTLLogo}
+            alt="Logo"
+            sx={{
+              width: sidenavCollapsed ? 56 : 172,
+              overflow: 'hidden',
+              mr: 1,
+            }}
+          />
+        )}
       </Link>
       <Link
         onClick={toggleNavbarCollapse}
