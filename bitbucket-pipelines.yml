@@ -4,7 +4,11 @@ pipelines:
   branches:
     main:
       - step:
-          name: Sync to GitHub
+          name: Sync to GitHub (BFF Project)
           script:
-            - echo "Syncing to GitHub..."
-            - git push --mirror https://${GITHUB_USER}:${GITHUB_PAT}@github.com:icryz36/bff-hrrc-ntl-web-react.git
+            - echo "Configuring credentials..."
+            - git config --global credential.helper store
+            - echo "https://${GITHUB_USER}:${GITHUB_PAT}@github.com" > ~/.git-credentials
+
+            - echo "Syncing to GitHub-> icryz36/bff-hrrc-ntl-web-react..."
+            - git push --mirror https://github.com/icryz36/bff-hrrc-ntl-web-react.git
