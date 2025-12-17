@@ -1,16 +1,21 @@
-import { MouseEvent, RefObject, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Box, Button, Popover, Stack } from '@mui/material';
-import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import FilterMenuContent from 'section/management-job/list-job/components/filter-menu-content';
 import IconifyIcon from 'components/base/IconifyIcon';
+import { FilterState } from './type';
+
+// ----------------------------------------------------------------------
 
 interface FilterSectionProps {
-  apiRef: RefObject<GridApiCommunity | null>;
-  handleToggleFilterPanel: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleToggleFilterPanel?: (e: MouseEvent<HTMLButtonElement>) => void;
+  filters: FilterState;
+  setFilters: (filters: FilterState) => void;
 }
 
-const FilterSection = ({ apiRef }: FilterSectionProps) => {
+// ----------------------------------------------------------------------
+
+const FilterSection = ({ filters, setFilters }: FilterSectionProps) => {
   const { up } = useBreakpoints();
   const upSm = up('sm');
 
@@ -32,7 +37,6 @@ const FilterSection = ({ apiRef }: FilterSectionProps) => {
           color="neutral"
           shape={upSm ? undefined : 'square'}
           onClick={handleOpenMenu}
-          disabled
         >
           {upSm && <IconifyIcon icon="material-symbols:filter-list-rounded" fontSize="20px" />}
           {upSm && <Box component="span">Filters</Box>}
@@ -48,7 +52,12 @@ const FilterSection = ({ apiRef }: FilterSectionProps) => {
             sx: { width: 360, borderRadius: 3, p: 0, overflow: 'visible' },
           }}
         >
-          <FilterMenuContent apiRef={apiRef} onClose={handleClose} />
+          <FilterMenuContent
+            key={open ? JSON.stringify(filters) : 'closed'}
+            onClose={handleClose}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </Popover>
       </Stack>
     </Stack>

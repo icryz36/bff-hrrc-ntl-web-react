@@ -13,8 +13,7 @@ import {
 } from '@mui/material';
 import type { SystemStyleObject } from '@mui/system';
 
-const vibrantNav = (_theme: Theme) => {
-  void _theme;
+const vibrantNav = () => {
   return {
     '& .nav-vibrant': {
       display: 'flex',

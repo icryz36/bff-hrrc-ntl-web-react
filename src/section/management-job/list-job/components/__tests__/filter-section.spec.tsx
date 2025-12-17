@@ -22,15 +22,36 @@ vi.mock('section/management-job/list-job/components/filter-menu-content', () => 
 describe('<FilterSection />', () => {
   const apiRef = React.createRef<GridApiCommunity>();
   const handleToggleFilterPanel = vi.fn();
+  const mockFilters = {
+    jobTitle: '',
+    department: [],
+    region: '',
+    province: '',
+    district: '',
+    jobStatus: '',
+    owner: '',
+    startDate: null,
+    activeDay: '',
+  };
+  const setFiltersMock = vi.fn();
+  const onResetFiltersMock = vi.fn();
+
+  const defaultProps = {
+    apiRef,
+    handleToggleFilterPanel,
+    filters: mockFilters,
+    setFilters: setFiltersMock,
+    onResetFilters: onResetFiltersMock,
+  };
 
   it('renders Filters button', () => {
-    render(<FilterSection apiRef={apiRef} handleToggleFilterPanel={handleToggleFilterPanel} />);
+    render(<FilterSection {...defaultProps} />);
 
     expect(screen.getByText('Filters')).toBeInTheDocument();
   });
 
   it('opens popover when button is clicked', () => {
-    render(<FilterSection apiRef={apiRef} handleToggleFilterPanel={handleToggleFilterPanel} />);
+    render(<FilterSection {...defaultProps} />);
 
     fireEvent.click(screen.getByText('Filters'));
 
@@ -38,7 +59,7 @@ describe('<FilterSection />', () => {
   });
 
   it('closes popover when onClose is called', () => {
-    render(<FilterSection apiRef={apiRef} handleToggleFilterPanel={vi.fn()} />);
+    render(<FilterSection {...defaultProps} />);
 
     fireEvent.click(screen.getByText('Filters'));
 

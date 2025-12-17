@@ -23,7 +23,7 @@ export type UploadFile = File | RemoteFile;
 // ----------------------------------------------------------------------
 
 export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploadProps) {
-  const { control } = useFormContext();
+  const { control, trigger } = useFormContext();
 
   return (
     <Controller
@@ -45,11 +45,13 @@ export function RHFUpload({ name, sx, hideInputIfHaveValue, ...other }: RHFUploa
             onDrop={(acceptedFiles) => {
               const newFiles: UploadFile[] = [...filesValue, ...acceptedFiles];
               onChange(newFiles);
+              trigger(name);
             }}
             hideInputIfHaveValue={hideInputIfHaveValue}
             onRemove={(index) => {
               const newFiles = filesValue.filter((_, i) => i !== index);
               onChange(newFiles);
+              trigger(name);
             }}
           />
         );

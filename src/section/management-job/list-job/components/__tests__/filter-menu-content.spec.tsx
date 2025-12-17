@@ -7,19 +7,84 @@ vi.mock('@mui/x-date-pickers', () => ({
   DatePicker: ({ label }: any) => <div>{label}</div>,
 }));
 
+vi.mock('@tanstack/react-query', () => ({
+  useQuery: vi.fn((queryOptions: any) => {
+    if (queryOptions?.queryKey?.includes('department')) {
+      return {
+        data: [
+          { departmentId: 'dept1', departmentNameTh: 'แผนก IT', departmentNameEn: 'IT Department' },
+        ],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('ntlRegion')) {
+      return {
+        data: [{ regionId: 'region1', regionNameTh: 'ภาคเหนือ', regionNameEn: 'North' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('province')) {
+      return {
+        data: [{ provinceId: 'province1', provinceNameTh: 'กรุงเทพ', provinceNameEn: 'Bangkok' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('district')) {
+      return {
+        data: [{ districtId: 'district1', districtNameTh: 'เขต 1', districtNameEn: 'District 1' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('postStatus')) {
+      return {
+        data: [{ statusId: 'status1', statusNameTh: 'เปิด', statusNameEn: 'Open' }],
+      };
+    }
+    if (queryOptions?.queryKey?.includes('users')) {
+      return {
+        data: [{ userId: 'user1', name: 'John', surname: 'Doe' }],
+      };
+    }
+    return { data: [] };
+  }),
+}));
+
+vi.mock('services/master-data/query', () => ({
+  useMasterDataQuery: {
+    department: () => ({ queryKey: ['department'] }),
+    ntlRegion: () => ({ queryKey: ['ntlRegion'] }),
+    province: () => ({ queryKey: ['province'] }),
+    district: (params: any) => ({ queryKey: ['district', params] }),
+    postStatus: () => ({ queryKey: ['postStatus'] }),
+    users: () => ({ queryKey: ['users'] }),
+  },
+}));
+
 describe('FilterMenuContent', () => {
-  let apiRef: any;
   let onCloseMock: any;
+  let setFiltersMock: any;
+
+  const mockFilters = {
+    jobTitle: '',
+    department: [],
+    region: '',
+    province: '',
+    district: '',
+    jobStatus: '',
+    owner: '',
+    startDate: null,
+    activeDay: '',
+  };
 
   beforeEach(() => {
-    apiRef = { current: { setFilterModel: vi.fn() } };
     onCloseMock = vi.fn();
+    setFiltersMock = vi.fn();
   });
 
   const setup = () =>
     render(
       <MemoryRouter>
-        <FilterMenuContent apiRef={apiRef} onClose={onCloseMock} />
+        <FilterMenuContent
+          onClose={onCloseMock}
+          filters={mockFilters}
+          setFilters={setFiltersMock}
+        />
       </MemoryRouter>,
     );
 
@@ -52,19 +117,23 @@ describe('FilterMenuContent', () => {
     expect(input.value).toBe('Engineer');
   });
 
-  it('resets filters when clicking Reset', () => {
+  it('resets local filters when clicking Reset but does not call setFilters', () => {
     setup();
 
-    const input = screen.getByLabelText('Job Title') as HTMLInputElement;
-    fireEvent.change(input, { target: { value: 'Engineer' } });
-    expect(input.value).toBe('Engineer');
+    const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
+    fireEvent.change(jobTitleInput, { target: { value: 'Engineer' } });
+    expect(jobTitleInput.value).toBe('Engineer');
 
     fireEvent.click(screen.getByText('Reset'));
 
-    expect((screen.getByLabelText('Job Title') as HTMLInputElement).value).toBe('');
+    expect(jobTitleInput.value).toBe('');
+
+    expect(setFiltersMock).not.toHaveBeenCalled();
+
+    expect(onCloseMock).not.toHaveBeenCalled();
   });
 
-  it('calls apiRef.setFilterModel when Apply is clicked', () => {
+  it('calls setFilters when Apply is clicked', () => {
     setup();
 
     const jobTitleInput = screen.getByLabelText('Job Title') as HTMLInputElement;
@@ -72,15 +141,7 @@ describe('FilterMenuContent', () => {
 
     fireEvent.click(screen.getByText('Apply'));
 
-    expect(apiRef.current.setFilterModel).toHaveBeenCalledWith({
-      items: [
-        {
-          columnField: 'jobTitle',
-          operatorValue: 'contains',
-          value: 'Developer',
-        },
-      ],
-    });
+    expect(setFiltersMock).toHaveBeenCalled();
   });
 
   it('calls onClose after Apply', () => {

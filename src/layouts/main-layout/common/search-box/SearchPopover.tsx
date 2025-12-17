@@ -2,7 +2,6 @@ import { ReactElement } from 'react';
 import { Fade, Popover } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { useSettingsContext } from 'providers/SettingsProvider';
-import SearchResult from './SearchResult';
 
 interface TransitionComponentProps extends TransitionProps {
   children: ReactElement<any>;
@@ -60,9 +59,7 @@ const SearchPopover = ({ anchorEl, handleClose }: SearchPopoverProps) => {
           },
         },
       }}
-    >
-      <SearchResult handleClose={handleClose} />
-    </Popover>
+    ></Popover>
   );
 };
 

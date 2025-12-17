@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { CreateJobForm } from 'section/management-job/create-job/components/create-job-form';
 import {
   convertCreateEditJobPostPayload,
@@ -24,6 +24,7 @@ const DuplicateJobView = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const [jobNo, setJobNo] = useState<string>('');
+  const isSubmitSuccess = useBoolean();
   const isOpenLoadDataFailedDialog = useBoolean();
   const isOpenDuplicateJobSuccessDialog = useBoolean();
   const isOpenDuplicateJobFailedDialog = useBoolean();
@@ -104,6 +105,7 @@ const DuplicateJobView = () => {
       onSuccess: (response) => {
         if (response.status) {
           setJobNo(response.data.jobPostNo);
+          isSubmitSuccess.onTrue();
           isOpenDuplicateJobSuccessDialog.onTrue();
           return;
         }
@@ -142,6 +144,7 @@ const DuplicateJobView = () => {
         onSubmit={onSubmit}
         isLoading={isLoadingCreateJobPost}
         defaultValuesForm={defaultValuesForm}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* Dialog */}
@@ -185,11 +188,11 @@ const DuplicateJobView = () => {
             <Button
               variant="outlined"
               color="neutral"
-              onClick={() => navigate(navigatePaths.jobPost.createJob)}
+              onClick={() => navigate(pathsNavigate.jobPost.createJob)}
             >
               Create new Job
             </Button>
-            <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
+            <Button variant="contained" onClick={() => navigate(pathsNavigate.jobPost.listJob)}>
               Go to List Job Post
             </Button>
           </Stack>

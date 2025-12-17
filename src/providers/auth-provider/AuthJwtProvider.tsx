@@ -9,7 +9,6 @@ import {
 } from 'react';
 import avatar14 from 'assets/images/avatar/avatar_14.webp';
 import { removeItemFromStore } from 'lib/utils';
-import { firebaseAuth } from 'services/firebase/firebase';
 import { User } from 'services/swr/api-hooks/useAuthApi';
 
 interface SessionUser extends User {
@@ -44,9 +43,6 @@ const AuthJwtProvider = ({ children }: PropsWithChildren) => {
     setSessionUser(null);
     removeItemFromStore('session_user');
     removeItemFromStore('auth_token');
-    if (sessionUser?.provider === 'firebase') {
-      firebaseAuth.signOut();
-    }
   }, [setSessionUser, sessionUser]);
 
   // useEffect(() => {

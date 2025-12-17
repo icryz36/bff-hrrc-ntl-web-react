@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { useCreateJobpostMutation } from 'services/jobpost/mutation';
 import IconifyIcon from 'components/base/IconifyIcon';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
@@ -16,6 +16,8 @@ const CreateJobView = () => {
   const navigate = useNavigate();
   const [jobNo, setJobNo] = useState<string>('');
   const [formKey, setFormKey] = useState<number>(0);
+
+  const isSubmitSuccess = useBoolean();
   const isOpenCreateJobFailedDialog = useBoolean();
   const isOpenCreateJobSuccessDialog = useBoolean();
 
@@ -33,6 +35,7 @@ const CreateJobView = () => {
         if (response.status) {
           setJobNo(response.data.jobPostNo);
           isOpenCreateJobSuccessDialog.onTrue();
+          isSubmitSuccess.onTrue();
           return;
         }
 
@@ -61,7 +64,12 @@ const CreateJobView = () => {
 
   return (
     <>
-      <CreateJobForm onSubmit={onSubmit} isLoading={isLoadingCreateJobPost} key={formKey} />
+      <CreateJobForm
+        key={formKey}
+        onSubmit={onSubmit}
+        isLoading={isLoadingCreateJobPost}
+        isSubmitSuccess={isSubmitSuccess.value}
+      />
 
       {/* Dialog */}
 
@@ -104,7 +112,7 @@ const CreateJobView = () => {
             <Button variant="outlined" color="neutral" onClick={handleCreateNewJob}>
               Create new Job
             </Button>
-            <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
+            <Button variant="contained" onClick={() => navigate(pathsNavigate.jobPost.listJob)}>
               Go to List Job Post
             </Button>
           </Stack>

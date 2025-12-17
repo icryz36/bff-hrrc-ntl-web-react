@@ -37,7 +37,7 @@ const AppliedJobTable = ({ tableData }: { tableData: TJobApplications[] }) => {
     () => [
       {
         field: 'jobAppId',
-        headerName: 'Job Post ID',
+        headerName: 'Job Post No',
         width: 104,
       },
       {

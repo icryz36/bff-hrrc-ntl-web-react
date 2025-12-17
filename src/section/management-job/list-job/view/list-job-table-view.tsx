@@ -5,7 +5,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 import dayjs from 'dayjs';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import ListJobDetailComponent from 'section/management-job/list-job/components/list-job-detail.tsx';
 import { useUpdateJobpostStatusMutation } from 'services/jobpost/mutation';
 import { TJobPost } from 'types/jobpost';
@@ -40,7 +40,9 @@ interface ProductsTableProps {
   onPageChange: (model: { page: number; pageSize: number }) => void;
   totalItem: number;
   currentPage: number;
+  currentPageSize: number;
   loading: boolean;
+  isJobApplicationTable?: boolean;
 }
 
 const ListJobTableView = ({
@@ -50,7 +52,9 @@ const ListJobTableView = ({
   onPageChange,
   totalItem,
   currentPage,
+  currentPageSize,
   loading,
+  isJobApplicationTable = false,
 }: ProductsTableProps) => {
   const navigate = useNavigate();
   const isOpenConfirmDeleteDialog = useBoolean();
@@ -85,11 +89,11 @@ const ListJobTableView = ({
     );
   };
 
-  const columns: GridColDef<any>[] = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const cols: GridColDef[] = [
       {
         field: 'jobPostNo',
-        headerName: 'Job Post ID',
+        headerName: 'Job Post No',
         filterable: false,
         sortable: false,
         minWidth: 148,
@@ -97,8 +101,12 @@ const ListJobTableView = ({
           return (
             <Link
               onClick={() => {
-                setSelectedJobPostId(params.row.jobPostId);
-                isOpenDetailDialog.onTrue();
+                if (isJobApplicationTable) {
+                  navigate(pathsNavigate.jobApplication.detail(params.row.jobPostId));
+                } else {
+                  setSelectedJobPostId(params.row.jobPostId);
+                  isOpenDetailDialog.onTrue();
+                }
               }}
             >
               {params.row.jobPostNo}
@@ -121,11 +129,11 @@ const ListJobTableView = ({
       {
         field: 'departmentName',
         headerName: 'Department',
-        minWidth: 160,
+        minWidth: 240,
         renderCell: (params) => (
           <Tooltip title={params.row.departmentName} placement="bottom">
             <StyledTypographyLine line={2} variant="subtitle2_regular">
-              {params.row.departmentName}
+              {params.row.departmentName ? params.row.departmentName : '-'}
             </StyledTypographyLine>
           </Tooltip>
         ),
@@ -133,7 +141,7 @@ const ListJobTableView = ({
       {
         field: 'regionName',
         headerName: 'NTL Regional',
-        minWidth: 240,
+        minWidth: 150,
       },
       {
         field: 'provinceName',
@@ -141,6 +149,11 @@ const ListJobTableView = ({
         filterable: false,
         sortable: false,
         minWidth: 140,
+        renderCell: (params) => (
+          <StyledTypographyLine line={2} variant="subtitle2_regular">
+            {params.row.provinceName ? params.row.provinceName : '-'}
+          </StyledTypographyLine>
+        ),
       },
       {
         field: 'districtName',
@@ -148,6 +161,11 @@ const ListJobTableView = ({
         filterable: false,
         sortable: false,
         minWidth: 140,
+        renderCell: (params) => (
+          <StyledTypographyLine line={2} variant="subtitle2_regular">
+            {params.row.districtName ? params.row.districtName : '-'}
+          </StyledTypographyLine>
+        ),
       },
       {
         field: 'startDate',
@@ -162,7 +180,7 @@ const ListJobTableView = ({
       {
         field: 'totalActiveDays',
         headerName: 'Active Day',
-        minWidth: 130,
+        minWidth: 100,
         filterable: false,
         sortable: false,
         renderCell: (params) => {
@@ -173,6 +191,8 @@ const ListJobTableView = ({
         field: 'headcount',
         headerName: 'HC',
         minWidth: 74,
+        align: 'center',
+        headerAlign: 'center',
         filterable: false,
         sortable: false,
       },
@@ -188,8 +208,8 @@ const ListJobTableView = ({
         headerName: 'Status',
         minWidth: 90,
         sortable: false,
-        headerClassName: 'job-status-header',
-        cellClassName: 'job-status-cell',
+        headerClassName: !isJobApplicationTable ? 'job-status-header' : '',
+        cellClassName: !isJobApplicationTable ? 'job-status-cell' : '',
         renderCell: (params) => {
           return (
             <Chip
@@ -201,7 +221,9 @@ const ListJobTableView = ({
           );
         },
       },
-      {
+    ];
+    if (!isJobApplicationTable) {
+      cols.push({
         field: 'action',
         headerName: 'Actions',
         filterable: false,
@@ -218,12 +240,12 @@ const ListJobTableView = ({
             {
               label: 'Edit',
               icon: 'mdi-light:pencil',
-              onClick: () => navigate(navigatePaths.jobPost.editJob(jobPostId)),
+              onClick: () => navigate(pathsNavigate.jobPost.editJob(jobPostId)),
             },
             {
               label: 'Duplicate',
               icon: 'material-symbols-light:file-copy-outline',
-              onClick: () => navigate(navigatePaths.jobPost.duplicateJob(jobPostId)),
+              onClick: () => navigate(pathsNavigate.jobPost.duplicateJob(jobPostId)),
             },
             {
               label: 'Delete',
@@ -240,9 +262,17 @@ const ListJobTableView = ({
 
           return <DashboardMenu menuItems={filteredMenu} />;
         },
-      },
-    ],
-    [],
+      });
+    }
+
+    return cols;
+  }, [isJobApplicationTable]);
+  const paginationModel = useMemo(
+    () => ({
+      page: currentPage - 1,
+      pageSize: currentPageSize,
+    }),
+    [currentPage, currentPageSize],
   );
 
   return (
@@ -261,9 +291,7 @@ const ListJobTableView = ({
           pagination
           paginationMode="server"
           onPaginationModelChange={(model) => {
-            if (model.page + 1 !== currentPage || model.pageSize !== defaultPageSize) {
-              onPageChange(model);
-            }
+            onPageChange(model);
           }}
           sx={{
             '& .MuiDataGrid-main': {
@@ -271,10 +299,7 @@ const ListJobTableView = ({
             },
           }}
           pageSizeOptions={[defaultPageSize, 15]}
-          paginationModel={{
-            page: currentPage - 1,
-            pageSize: defaultPageSize,
-          }}
+          paginationModel={paginationModel}
           slots={{
             noRowsOverlay: () => <NoRowsOverlayCustom message="No List Job Post" />,
             basePagination: (props) => <DataGridPagination showFullPagination {...props} />,

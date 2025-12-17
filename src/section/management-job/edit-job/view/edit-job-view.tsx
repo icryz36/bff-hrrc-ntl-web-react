@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { CreateJobForm } from 'section/management-job/create-job/components/create-job-form';
 import {
   convertCreateEditJobPostPayload,
@@ -16,12 +16,14 @@ import { useJobpostQuery } from 'services/jobpost/query';
 import { useMasterDataQuery } from 'services/master-data/query';
 import { MasterDataMaps } from 'types/master-data';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
+import DefaultLoader from 'components/loading/DefaultLoader';
 
 // ---------------------------------------------------------------------
 
 const EditJobView = () => {
   const { id = '' } = useParams();
   const navigate = useNavigate();
+  const isSubmitSuccess = useBoolean();
   const isOpenEditJobFailedDialog = useBoolean();
   const isOpenLoadDataFailedDialog = useBoolean();
   const isOpenUpdateJobSuccessDialog = useBoolean();
@@ -29,7 +31,11 @@ const EditJobView = () => {
   // api ----------------------------------------------------------------
 
   const { mutate: updateJobPost, isPending: isLoadingUpdateJobPost } = useUpdateJobpostMutation();
-  const { data: jobpostDetail, isError: isErrorGetjobDetail } = useQuery({
+  const {
+    data: jobpostDetail,
+    isError: isErrorGetjobDetail,
+    isLoading,
+  } = useQuery({
     ...useJobpostQuery.detail({ jobPostId: id }),
     enabled: !!id,
   });
@@ -104,6 +110,7 @@ const EditJobView = () => {
         onSuccess: (response) => {
           if (response.status) {
             isOpenUpdateJobSuccessDialog.onTrue();
+            isSubmitSuccess.onTrue();
             return;
           }
 
@@ -127,6 +134,9 @@ const EditJobView = () => {
 
   // --------------------------------------------------------------------
 
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
   return (
     <>
       <CreateJobForm
@@ -134,6 +144,7 @@ const EditJobView = () => {
         onSubmit={onSubmit}
         isLoading={isLoadingUpdateJobPost}
         defaultValuesForm={defaultValuesForm}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* Dialog */}
@@ -164,7 +175,7 @@ const EditJobView = () => {
           </Typography>
         }
         action={
-          <Button variant="contained" onClick={() => navigate(navigatePaths.jobPost.listJob)}>
+          <Button variant="contained" onClick={() => navigate(pathsNavigate.jobPost.listJob)}>
             Go to List Job Post
           </Button>
         }

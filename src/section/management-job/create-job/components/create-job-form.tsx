@@ -26,6 +26,7 @@ import { TDepartment, TDistrict } from 'types/master-data';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { Form } from 'components/hook-form';
 import { Field } from 'components/hook-form/fields';
+import { UnsavedChangesGuard } from 'components/unsaved-changes-guard/unsaved-changes-guard';
 import { handleHeadcountKeyPress, handleHeadcountPaste } from '../helper';
 import { CreateJobSchema, CreateJobSchemaType } from '../schema';
 import { StyledFormContainerBox } from '../styles';
@@ -34,6 +35,7 @@ type CreateJobFormProps = {
   isDuplicate?: boolean;
   isEdit?: boolean;
   isLoading?: boolean;
+  isSubmitSuccess?: boolean;
   defaultValuesForm?: CreateJobSchemaType;
   onSubmit: (data: CreateJobSchemaType) => void;
 };
@@ -71,6 +73,7 @@ export const CreateJobForm = ({
   isEdit,
   isLoading,
   defaultValuesForm,
+  isSubmitSuccess,
 }: CreateJobFormProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -607,10 +610,12 @@ export const CreateJobForm = ({
               Cancel
             </Button>
           )}
-          <LoadingButton variant="contained" type="submit" loading={isLoading}>
+          <LoadingButton variant="contained" type="submit" loading={isLoading} disabled={isLoading}>
             Post
           </LoadingButton>
         </Stack>
+
+        <UnsavedChangesGuard isSubmitSuccess={isSubmitSuccess} />
       </Form>
     </Container>
   );

@@ -3,8 +3,20 @@ import { TStatusResponse } from './common';
 // get jobpost list -------------------------------------------------------------
 
 export type TGetJobPostListPayload = {
-  ownerUserId: string;
-  recruiterUserId: string;
+  ownerUserId?: string;
+  recruiterUserId?: string;
+  jobTitle?: string;
+  departmentId?: string[];
+  regionId?: string[];
+  districtId?: string[];
+  provinceId?: string[];
+  statusId?: string[];
+  userId?: string;
+  totalActiveDays?: number;
+  startDate?: Date;
+  groupLocation?: string[];
+  jobPostIdExcludeList?: string[];
+  containFieldName?: string[];
   pageNo: number;
   pageSize: number;
 };
@@ -15,7 +27,15 @@ export type TGetJobPostListResponse = TStatusResponse & {
 
 export type TGetJobPostListData = {
   items: TJobPost[];
-  pagination: TGetJobPostListPagination;
+  page: number;
+  total: number;
+};
+
+export type TGetJobPostListPagination = {
+  pageNo: number;
+  pageSize: number;
+  totalRecords: number;
+  totalPages: number;
 };
 
 export type TJobPost = {
@@ -26,18 +46,55 @@ export type TJobPost = {
   regionName: string;
   provinceName: string;
   districtName: string;
-  startDate: string;
+  startDate: Date | string;
   totalActiveDays: number;
   headcount: number;
   ownerUserName: string;
   statusName: string;
+  ownerUserId: string;
+  recruiters: string[];
+  isViewMode: boolean;
 };
 
-export type TGetJobPostListPagination = {
+// get all jobpost list -------------------------------------------------------------
+
+export type TGetAllJobPostListPayload = {
+  status?: ('active' | 'in_active')[];
+  ownerUserId?: string;
+  statusId?: string;
   pageNo: number;
   pageSize: number;
-  totalRecords: number;
-  totalPages: number;
+  groupLocation?: string[];
+  provinceId?: string[];
+  departmentId?: string[];
+  jobPostIdExcludeList?: string[];
+};
+
+export type TGetAllJobPostListResponse = TStatusResponse & {
+  data: TGetAllJobPostListData;
+};
+
+export type TGetAllJobPostListData = {
+  items: TAllJobPostListItem[];
+  page: number;
+  total: number;
+};
+
+export type TAllJobPostListItem = {
+  jobPostId: string;
+  jobPostNo: number;
+  jobTitle: string;
+  departmentName: string;
+  regionName: string;
+  provinceName: string;
+  districtName: string;
+  startDate: string;
+  totalActiveDays: number;
+  headCount: number;
+  ownerUserName: string;
+  statusName: string;
+  recruiters: string[];
+  isViewMode: boolean;
 };
 
 // get jobpost by id -----------------------------------------------------------

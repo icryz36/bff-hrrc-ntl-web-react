@@ -1,9 +1,17 @@
 import { TStatusResponse } from './common';
 
 export type TGetCandidateListPayload = {
-  status: ['Active', 'Inactive'];
+  status: ('Active' | 'Inactive')[];
+  name?: string;
+  surname?: string;
+  email?: string;
+  mobile?: string;
+  stage?: string;
+  jobPostId?: string;
   pageNo: number;
   pageSize: number;
+  maxJobApplication?: number;
+  currentJobId?: string;
 };
 
 export type TCandidateListItems = {
@@ -20,11 +28,14 @@ export type TCandidateListItems = {
   updatedDate: string;
   isBlacklist: boolean;
   countJobApplication: number;
+  isApplyThisJob: boolean;
 };
 
 export type TGetCandidateListData = {
   items: TCandidateListItems[];
-  pagination: TGetCandidateListPagination;
+  page: number;
+  total: number;
+  // pagination: TGetCandidateListPagination;
 };
 
 export type TGetCandidateListResponse = TStatusResponse & {
@@ -43,6 +54,10 @@ export type TGetCandidateByIdPayload = {
 };
 export type TGetCandidateDocumentByIdPayload = {
   filePath: string;
+};
+export type TGetCandidateFailDocumentByIdPayload = {
+  batchId: string;
+  status: string;
 };
 export type TCandidateDocumentsItem = {
   documentId?: string | null;
@@ -330,4 +345,99 @@ export type TCandidateNotePayload = {
 };
 export type TCandidateDocumentResponse = TStatusResponse & {
   data: { binaryBase64: string };
+};
+
+export type TImportCandidatePayload = {
+  file: File | undefined;
+};
+
+export type TErrorMsgItem = {
+  field: string;
+  errorMsg: string;
+};
+
+export type ITImportCandidateItem = {
+  validateStatus: 'success' | 'fail';
+  errorMsg: TErrorMsgItem[] | string[];
+  title: string;
+  nameTh: string;
+  surnameTh: string;
+  nameEn?: string;
+  surnameEn?: string;
+  gender?: string;
+  age: number;
+  mobileNo: string;
+  email: string;
+  desiredLocation: string;
+  desiredProvince: string;
+  source?: string;
+  highestDegree: string;
+  workExperience: string;
+  canDriveMotorcycle: string;
+  canDriveCar: string;
+  jobPostNo: string | null;
+  applicationSource: string;
+  applicationDate: string;
+};
+
+export type TCandidateListData = {
+  items: ITImportCandidateItem[];
+  pagination: TGetCandidateListPagination;
+};
+
+export type TImportCandidateResponse = TStatusResponse & {
+  data: TCandidateListData;
+};
+
+export type TImportCandidatesPayload = {
+  candidates: ITImportCandidateItem[];
+};
+
+export type TImportCandidatesResponse = TStatusResponse & {
+  data: {
+    batchId: string;
+  };
+  error?: {
+    code: string;
+    message: string;
+    path: string;
+    description: string;
+    type: string;
+    technicalError: string;
+  };
+};
+
+// ---------------------------------
+
+export type TGetBatchStatusListPayload = {
+  createdById: string;
+  pageNo: number;
+  pageSize: number;
+};
+
+export type TBatchStatusListItem = {
+  batchId: string;
+  batchType: string;
+  fileName: string;
+  status: string;
+  totalRecords: number;
+  successCount: number;
+  failCount: number;
+  finishedDate: string;
+  createdDate: string;
+  owner?: {
+    id: string;
+    name: string;
+    surname: string;
+  };
+};
+
+export type TGetBatchStatusListData = {
+  items: TBatchStatusListItem[];
+  page: number;
+  total: number;
+};
+
+export type TGetBatchStatusListResponse = TStatusResponse & {
+  data: TGetBatchStatusListData;
 };

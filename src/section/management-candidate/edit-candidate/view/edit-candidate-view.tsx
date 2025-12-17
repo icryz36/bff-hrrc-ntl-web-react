@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useBoolean } from 'hooks/useBoolean';
-import { navigatePaths } from 'routes/paths';
+import { pathsNavigate } from 'routes/paths';
 import { useUpdateCandidateMutation } from 'services/candidate/mutation';
 import { useCandidateQuery } from 'services/candidate/query';
 import CustomConfirmDialog from 'components/custom-confirm-dialog/CustomDialog';
+import DefaultLoader from 'components/loading/DefaultLoader';
 import { EditCandidateForm } from '../components/edit-candidate-form';
 import { convertDefaultValuesForm } from '../helper';
 
@@ -17,17 +18,18 @@ const EditCandidateView = () => {
   const navigate = useNavigate();
   const { id = '' } = useParams();
 
+  const isSubmitSuccess = useBoolean();
   const isOpenUpdateFailedDialog = useBoolean();
   const isOpenUpdateSuccessDialog = useBoolean();
 
   // api ---------------------------------------------------------------
 
-  const { data: candidateDetail } = useQuery({
+  const { data: candidateDetail, isLoading } = useQuery({
     ...useCandidateQuery.detail({ candidateId: id }),
     enabled: !!id,
   });
 
-  const result = candidateDetail?.documents.filter(
+  const result = candidateDetail?.documents?.filter(
     (doc) => doc.documentType.documentTypeKey === 'profile_picture',
   );
   const firstFilePath = result?.[0]?.filePath || '';
@@ -47,7 +49,7 @@ const EditCandidateView = () => {
       onSuccess: (response) => {
         if (response.status) {
           isOpenUpdateSuccessDialog.onToggle();
-
+          isSubmitSuccess.onTrue();
           return;
         }
 
@@ -68,12 +70,17 @@ const EditCandidateView = () => {
 
   // ----------------------------------------------------------------------
 
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
+
   return (
     <>
       <EditCandidateForm
         onSubmitForm={onSubmit}
         defaultValuesForm={defaultValuesForm}
         isLoading={isLoadingUpdateCandidate}
+        isSubmitSuccess={isSubmitSuccess.value}
       />
 
       {/* dialog */}
@@ -88,7 +95,7 @@ const EditCandidateView = () => {
           </Typography>
         }
         action={
-          <Button variant="contained" onClick={() => navigate(navigatePaths.candidate.list)}>
+          <Button variant="contained" onClick={() => navigate(pathsNavigate.candidate.list)}>
             Go to List Candidate
           </Button>
         }

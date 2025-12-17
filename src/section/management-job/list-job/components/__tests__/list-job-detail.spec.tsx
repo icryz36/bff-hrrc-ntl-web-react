@@ -1,7 +1,17 @@
 import React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import ListJobDetailComponent from '../list-job-detail';
+
+const theme = createTheme({
+  palette: {
+    chBlue: {
+      500: '#1976d2',
+    },
+  },
+  shadows: [],
+});
 
 const mockJobData = {
   jobPostNo: 'JP-001',
@@ -58,7 +68,11 @@ describe('<ListJobDetailComponent />', () => {
   });
 
   it('renders Drawer and job post details', () => {
-    render(<ListJobDetailComponent open={true} onClose={onClose} jobPostId="1" />);
+    render(
+      <ThemeProvider theme={theme}>
+        <ListJobDetailComponent open={true} onClose={onClose} jobPostId="1" />
+      </ThemeProvider>,
+    );
 
     expect(screen.getByText(/Job Post Detail : JP-001/)).toBeInTheDocument();
 
@@ -75,7 +89,11 @@ describe('<ListJobDetailComponent />', () => {
   });
 
   it('calls onClose when close icon is clicked', () => {
-    render(<ListJobDetailComponent open={true} onClose={onClose} jobPostId="1" />);
+    render(
+      <ThemeProvider theme={theme}>
+        <ListJobDetailComponent open={true} onClose={onClose} jobPostId="1" />
+      </ThemeProvider>,
+    );
 
     const closeIcon = screen.getByTestId('iconify-icon');
     fireEvent.click(closeIcon);

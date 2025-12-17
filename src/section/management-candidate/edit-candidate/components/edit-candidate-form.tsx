@@ -8,6 +8,7 @@ import { useCandidateQuery } from 'services/candidate/query';
 import AccordionCustom from 'components/common/AccordionCustom';
 import DataGridSkeleton from 'components/common/DataGridSkeleton';
 import { Form } from 'components/hook-form';
+import { UnsavedChangesGuard } from 'components/unsaved-changes-guard/unsaved-changes-guard';
 import { defaultValues } from '../default-values-form';
 import { buildCreateCandidateFormData, convertCreateEditCandidatePostPayload } from '../helper';
 import { EditCandidateSchema, TEditCandidate } from '../schema';
@@ -101,6 +102,7 @@ const FORM_LIST = [
 
 type EditCandidateFormPropd = {
   isLoading?: boolean;
+  isSubmitSuccess?: boolean;
   onSubmitForm: (data: FormData) => void;
   defaultValuesForm: TEditCandidate;
 };
@@ -109,6 +111,7 @@ export const EditCandidateForm = ({
   defaultValuesForm,
   onSubmitForm,
   isLoading = false,
+  isSubmitSuccess,
 }: EditCandidateFormPropd) => {
   const { id = '' } = useParams();
 
@@ -151,7 +154,7 @@ export const EditCandidateForm = ({
   }
   return (
     <>
-      <Container maxWidth="md">
+      <Container maxWidth={false} sx={{ maxWidth: '1111px', mx: 'auto' }}>
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" spacing={4}>
             <CandidateInfoForm />
@@ -178,6 +181,8 @@ export const EditCandidateForm = ({
               </Button>
             </Stack>
           </StyledSubmitBtnContainer>
+
+          <UnsavedChangesGuard isSubmitSuccess={isSubmitSuccess} />
         </Form>
       </Container>
     </>
