@@ -1,11 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-const BASE_URL_JOBPOST = import.meta.env.VITE_API_URL_JOBPOST || 'http://localhost:8000/api';
-const BASE_URL_MASTERDATA = import.meta.env.VITE_API_URL_MASTERDATA || 'http://localhost:8000/api';
-const BASE_URL_USER = import.meta.env.VITE_API_URL_USER || 'http://localhost:8000/api';
-const BASE_URL_CANDIDATE = import.meta.env.VITE_API_URL_CANDIDATE || 'http://localhost:8000/api';
-const BASE_URL_GATEWAY = import.meta.env.VITE_API_URL_GATEWAY || 'http://localhost:8000/api';
 const KEY_ACCESS_TOKEN = import.meta.env.VITE_KEY_ACCESS_TOKEN || '';
 
 class ApiError extends Error {
@@ -64,28 +59,5 @@ const setupInterceptors = (instance: any) => {
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 setupInterceptors(axiosInstance);
 
-const axiosJobPostInstance = axios.create({ baseURL: BASE_URL_JOBPOST });
-setupInterceptors(axiosJobPostInstance);
-
-const axiosCandidateInstance = axios.create({ baseURL: BASE_URL_CANDIDATE });
-setupInterceptors(axiosCandidateInstance);
-
-const axiosMasterDataInstance = axios.create({ baseURL: BASE_URL_MASTERDATA });
-setupInterceptors(axiosMasterDataInstance);
-
-const axiosUserInstance = axios.create({ baseURL: BASE_URL_USER });
-setupInterceptors(axiosUserInstance);
-
-const axiosGatewayInstance = axios.create({ baseURL: BASE_URL_GATEWAY });
-setupInterceptors(axiosGatewayInstance);
-
 export default axiosInstance;
-export {
-  axiosInstance,
-  axiosJobPostInstance,
-  axiosMasterDataInstance,
-  axiosUserInstance,
-  axiosCandidateInstance,
-  axiosGatewayInstance,
-  ApiError,
-};
+export { axiosInstance, ApiError };

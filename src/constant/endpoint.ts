@@ -2,22 +2,23 @@ const bffHrrecGateway = `bff-hrrec-gateway/v1`;
 const bffHrrecUsersGateway = `bff-hrrec-users-gateway/v1`;
 const bffHrrecJobpostGateway = `bff-hrrec-jobpost-gateway/v1`;
 const bffHrrecCandidatesGateway = `bff-hrrec-candidates-gateway/v1`;
+const bffHrrecMasterdataGateway = `bff-hrrec-masterdata-gateway/v1`;
 
 const endpoint = {
   masterData: {
-    postStatus: `get-poststatus-master-xapi`,
-    ntlRegion: `get-ntlregion-master-xapi`,
-    position: `get-position-master-xapi`,
-    district: `get-district-master-xapi`,
-    department: `get-department-master-xapi`,
-    section: `get-section-master-xapi`,
-    province: `get-province-master-xapi`,
-    jobLevel: `get-joblevel-master-xapi`,
-    degree: `get-degree-master-xapi`,
-    employeeType: `get-employeetype-master-xapi`,
-    skill: `get-skill-master-xapi`,
-    titleName: `get-title-name-master-xapi`,
-    documentType: `get-document-type-master-xapi`,
+    postStatus: `${bffHrrecMasterdataGateway}/get-poststatus-master-xapi`,
+    ntlRegion: `${bffHrrecMasterdataGateway}/get-ntlregion-master-xapi`,
+    position: `${bffHrrecMasterdataGateway}/get-position-master-xapi`,
+    district: `${bffHrrecMasterdataGateway}/get-district-master-xapi`,
+    department: `${bffHrrecMasterdataGateway}/get-department-master-xapi`,
+    section: `${bffHrrecMasterdataGateway}/get-section-master-xapi`,
+    province: `${bffHrrecMasterdataGateway}/get-province-master-xapi`,
+    jobLevel: `${bffHrrecMasterdataGateway}/get-joblevel-master-xapi`,
+    degree: `${bffHrrecMasterdataGateway}/get-degree-master-xapi`,
+    employeeType: `${bffHrrecMasterdataGateway}/get-employeetype-master-xapi`,
+    skill: `${bffHrrecMasterdataGateway}/get-skill-master-xapi`,
+    titleName: `${bffHrrecMasterdataGateway}/get-title-name-master-xapi`,
+    documentType: `${bffHrrecMasterdataGateway}/get-document-type-master-xapi`,
   },
   batch: {
     byId: `${bffHrrecGateway}/batch/get-batch-records-xapi`,
