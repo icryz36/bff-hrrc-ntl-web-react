@@ -2,7 +2,7 @@ image: alpine/git:latest
 
 pipelines:
   branches:
-    master:
+    main:
       - step:
           name: Sync to GitHub
           script:
