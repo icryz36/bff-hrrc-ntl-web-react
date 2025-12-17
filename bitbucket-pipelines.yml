@@ -4,11 +4,16 @@ pipelines:
   branches:
     main:
       - step:
-          name: Sync to GitHub (BFF Project)
+          name: Sync to GitHub
           script:
             - echo "Configuring credentials..."
             - git config --global credential.helper store
             - echo "https://${GITHUB_USER}:${GITHUB_PAT}@github.com" > ~/.git-credentials
 
-            - echo "Syncing to GitHub-> icryz36/bff-hrrc-ntl-web-react..."
+            - echo "Fetching full history..."
+            # สำคัญมาก: ปลดล็อกการดึงข้อมูลแบบ Shallow เพื่อให้ได้ History ครบถ้วน
+            - git fetch --unshallow || git fetch --all
+
+            - echo "Syncing to GitHub..."
+            # ใช้ --force เพื่อให้มั่นใจว่าข้อมูลฝั่ง GitHub จะเหมือน Bitbucket เป๊ะๆ
             - git push --mirror https://github.com/icryz36/bff-hrrc-ntl-web-react.git
