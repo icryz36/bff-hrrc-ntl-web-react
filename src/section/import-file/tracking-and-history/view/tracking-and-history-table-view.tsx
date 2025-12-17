@@ -63,7 +63,9 @@ const TrackingAndHistoryTableView = ({
       {
         field: 'totalRecords',
         headerName: 'Record',
-        width: 130,
+        width: 100,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
           <Typography variant="subtitle2_regular">{params.row.totalRecords}</Typography>
         ),
@@ -71,7 +73,9 @@ const TrackingAndHistoryTableView = ({
       {
         field: 'successCount',
         headerName: 'Success',
-        width: 130,
+        width: 100,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
           <Typography variant="subtitle2_regular">{params.row.successCount}</Typography>
         ),
@@ -79,7 +83,9 @@ const TrackingAndHistoryTableView = ({
       {
         field: 'failCount',
         headerName: 'Fail',
-        width: 130,
+        width: 100,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
           <Typography color={theme.palette.chRed[400]} variant="subtitle2_regular">
             {params.row.failCount}
@@ -103,10 +109,19 @@ const TrackingAndHistoryTableView = ({
         headerName: 'Owners',
         width: 220,
         renderCell: (params) => {
+          const fulname = '-';
+          if (!params.row?.owner?.name && !params.row?.owner?.surname) {
+            return (
+              <Stack spacing={2}>
+                <Typography variant="subtitle2_regular">{fulname}</Typography>
+              </Stack>
+            );
+          }
           return (
             <Stack spacing={2}>
-              <Typography variant="subtitle2_regular">{params.row?.owner?.name}</Typography>
-              <Typography variant="subtitle2_regular">{params.row?.owner?.surname}</Typography>
+              <Typography variant="subtitle2_regular">
+                {params.row?.owner?.name} {params.row?.owner?.surname}
+              </Typography>
             </Stack>
           );
         },
@@ -115,6 +130,8 @@ const TrackingAndHistoryTableView = ({
         field: 'action',
         headerName: 'Action',
         width: 130,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
           <IconButton
             aria-label="batch"

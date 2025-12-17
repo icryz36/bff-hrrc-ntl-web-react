@@ -125,7 +125,13 @@ const ListCandidateTableView = ({
         width: 110,
         renderCell: (params) => {
           return (
-            <>{params.row.isBlacklist && <Chip label="Blacklist" variant="soft" color="error" />}</>
+            <>
+              {params.row.isBlacklist ? (
+                <Chip label="Blacklist" variant="soft" color="error" />
+              ) : (
+                '-'
+              )}
+            </>
           );
         },
       },
@@ -196,12 +202,12 @@ const ListCandidateTableView = ({
       {
         field: 'email',
         headerName: 'Email',
-        width: 200,
+        width: 250,
       },
       {
         field: 'mobileNo',
         headerName: 'Mobile Number',
-        width: 180,
+        width: 120,
       },
       {
         field: 'updatedDate',
@@ -214,7 +220,9 @@ const ListCandidateTableView = ({
       {
         field: 'countJobApplication',
         headerName: 'Applied Jobs',
-        width: 130,
+        width: 100,
+        headerAlign: 'center',
+        align: 'center',
       },
 
       {

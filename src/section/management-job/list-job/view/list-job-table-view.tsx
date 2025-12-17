@@ -129,11 +129,11 @@ const ListJobTableView = ({
       {
         field: 'departmentName',
         headerName: 'Department',
-        minWidth: 160,
+        minWidth: 240,
         renderCell: (params) => (
           <Tooltip title={params.row.departmentName} placement="bottom">
             <StyledTypographyLine line={2} variant="subtitle2_regular">
-              {params.row.departmentName}
+              {params.row.departmentName ? params.row.departmentName : '-'}
             </StyledTypographyLine>
           </Tooltip>
         ),
@@ -141,7 +141,7 @@ const ListJobTableView = ({
       {
         field: 'regionName',
         headerName: 'NTL Regional',
-        minWidth: 240,
+        minWidth: 150,
       },
       {
         field: 'provinceName',
@@ -149,6 +149,11 @@ const ListJobTableView = ({
         filterable: false,
         sortable: false,
         minWidth: 140,
+        renderCell: (params) => (
+          <StyledTypographyLine line={2} variant="subtitle2_regular">
+            {params.row.provinceName ? params.row.provinceName : '-'}
+          </StyledTypographyLine>
+        ),
       },
       {
         field: 'districtName',
@@ -156,6 +161,11 @@ const ListJobTableView = ({
         filterable: false,
         sortable: false,
         minWidth: 140,
+        renderCell: (params) => (
+          <StyledTypographyLine line={2} variant="subtitle2_regular">
+            {params.row.districtName ? params.row.districtName : '-'}
+          </StyledTypographyLine>
+        ),
       },
       {
         field: 'startDate',
@@ -170,7 +180,7 @@ const ListJobTableView = ({
       {
         field: 'totalActiveDays',
         headerName: 'Active Day',
-        minWidth: 130,
+        minWidth: 100,
         filterable: false,
         sortable: false,
         renderCell: (params) => {
@@ -181,6 +191,8 @@ const ListJobTableView = ({
         field: 'headcount',
         headerName: 'HC',
         minWidth: 74,
+        align: 'center',
+        headerAlign: 'center',
         filterable: false,
         sortable: false,
       },

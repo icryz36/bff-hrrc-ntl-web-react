@@ -219,7 +219,7 @@ const ImportCandidateAndApplyJobTableView = ({
             return (
               <Tooltip title={params.row.gender} placement="bottom">
                 <StyledTypographyLine line={1} variant="subtitle2_regular">
-                  {params.row.gender}
+                  {params.row.gender || '-'}
                 </StyledTypographyLine>
               </Tooltip>
             );
@@ -375,7 +375,7 @@ const ImportCandidateAndApplyJobTableView = ({
             return (
               <Tooltip title={params.row.source} placement="bottom">
                 <StyledTypographyLine line={1} variant="subtitle2_regular">
-                  {params.row.source}
+                  {params.row.source || '-'}
                 </StyledTypographyLine>
               </Tooltip>
             );

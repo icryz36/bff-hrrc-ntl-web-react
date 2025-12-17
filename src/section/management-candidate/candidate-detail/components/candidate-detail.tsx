@@ -226,7 +226,8 @@ export const CandidateDetail = ({ candidateId }: CandidateDetailProps) => {
         <Stack direction={'column'} gap={1}>
           <Typography variant="h5">
             {candidateDetail?.candidate?.title?.titleNameTh} {candidateDetail?.candidate?.nameTh}{' '}
-            {candidateDetail?.candidate?.surnameTh} ({candidateDetail?.candidate?.nickname})
+            {candidateDetail?.candidate?.surnameTh}
+            {candidateDetail?.candidate?.nickname && ` ('${candidateDetail?.candidate?.nickname}')`}
           </Typography>
           <Typography variant="subtitle2">
             Candidate Id : {candidateDetail?.candidate.candidateId}
