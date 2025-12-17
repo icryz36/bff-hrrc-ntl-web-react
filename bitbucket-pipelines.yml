@@ -1,19 +1,17 @@
 image: alpine/git:latest
 
 pipelines:
-  branches:
-    main:
+  custom:
+    sync-to-github:
       - step:
           name: Sync to GitHub
           script:
-            - echo "Configuring credentials..."
+            - echo "Configuring credentials for ${GITHUB_USER}..."
             - git config --global credential.helper store
             - echo "https://${GITHUB_USER}:${GITHUB_PAT}@github.com" > ~/.git-credentials
 
             - echo "Fetching full history..."
-            # สำคัญมาก: ปลดล็อกการดึงข้อมูลแบบ Shallow เพื่อให้ได้ History ครบถ้วน
             - git fetch --unshallow || git fetch --all
 
-            - echo "Syncing to GitHub..."
-            # ใช้ --force เพื่อให้มั่นใจว่าข้อมูลฝั่ง GitHub จะเหมือน Bitbucket เป๊ะๆ
-            - git push --mirror https://github.com/icryz36/bff-hrrc-ntl-web-react.git
+            - echo "Syncing to GitHub Repository-> ${GITHUB_REPO_URL}..."
+            - git push --mirror ${GITHUB_REPO_URL}
