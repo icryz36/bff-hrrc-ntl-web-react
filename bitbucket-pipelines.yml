@@ -1,17 +1,10 @@
-# bitbucket-pipelines.yml
-image: atlassian/default-image:latest
+image: alpine/git:latest
 
 pipelines:
   branches:
-    main:
+    master:
       - step:
-          clone:
-            depth: full
-          name: Mirror 'main' to GitHub via SSH
+          name: Sync to GitHub
           script:
-            - git config --global user.email "pipeline@bitbucket.org"
-            - git config --global user.name "Bitbucket Pipeline Mirror"
-
-            - git remote add github git@github.com:icryz36/bff-hrrc-web-react.git
-
-            - git push --mirror github
+            - echo "Syncing to GitHub..."
+            - git push --mirror https://${GITHUB_USER}:${GITHUB_PAT}@github.com:icryz36/bff-hrrc-ntl-web-react.git
